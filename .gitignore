@@ -50,5 +50,6 @@ next-env.d.ts
 
 # IDE/Editor files
 .vscode/
+*.code-workspace
 *.swp
 *.swo
