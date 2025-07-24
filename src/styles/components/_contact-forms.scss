@@ -1,0 +1,27 @@
+/*---- CONTACT FORMS [components/_contact-forms.scss] ----*/
+/*---- styles for contact forms ----*/
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;;
+  gap: 0.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-form label {
+  font-weight: bold;
+}
+
+.contact-form input {
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  resize: none;
+}
+
+.contact-form textarea {
+  height: 150px;
+  resize: vertical;
+}

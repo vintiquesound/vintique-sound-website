@@ -1,0 +1,75 @@
+/*---- DROPDOWN [component/_dropdown.scss] ----*/
+/*---- styles for dropdown components ----*/
+
+.dropdown * { // The '*' selector applies styles to all child elements
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.dropdown-select {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.dropdown-select:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.dropdown-select-clicked {
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0.5em 1em var(--color-secondary);
+}
+
+.dropdown-arrow {
+  width: 0;
+  height: 0;
+  border-left: 0.5em solid transparent;
+  border-right: 0.5em solid transparent;
+  border-top: 0.5em solid var(--color-primary);
+  transition: 0.3s;
+}
+
+.dropdown-arrow-rotated {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  list-style: none;
+  padding: 0.2em 0.5em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 4px var(--color-border);
+  border-radius: 0.5em;
+  position: absolute;
+  top: 3em;
+  left: 50%;
+  width: 100%;
+  transform: translateX(-50%);
+  opacity: 0;
+  display: none;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 1;
+}
+
+.dropdown-menu li {
+  padding: 0.7em 0.5em;
+  margin: 0.3em 0;
+  border-radius: 0.5em;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.dropdown-menu-open {
+  display: block;
+  opacity: 1;
+}
+
+.active {
+  background-color: var(--color-primary);
+  color: var(--color-primary);
+}

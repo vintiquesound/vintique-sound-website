@@ -1,0 +1,92 @@
+/*---- THEME [theme/_theme.scss] ----*/
+/*---- dynamic theming styles for light and dark modes ----*/
+
+[data-theme="light"] {
+  // Header
+  --color-header: var(--color-jet);
+  --color-header-text: var(--color-platinum);
+  // Footer
+  --color-footer: var(--color-jet);
+  --color-footer-text: var(--color-platinum);
+  // Surfaces
+  --color-bg: var(--color-platinum);
+  --color-surface: var(--color-silver);
+  --color-surface-hover: var(--color-aquamarine);
+  --color-surface-active: var(--color-salmon);
+  --color-surface-focus: var(--color-sunset);
+  // Borders (boundary around element)
+  --color-border: var(--color-jet);
+  --color-border-hover: var(--color-sunset);
+  --color-border-active: var(--color-aquamarine);
+  --color-border-focus: var(--color-salmon);
+  // Outlines (visual emphasis around border)
+  --color-outline: var(--color-silver);
+  --color-outline-hover: var(--color-sunset);
+  --color-outline-active: var(--color-aquamarine);
+  --color-outline-focus: var(--color-salmon);
+  // Text
+  --color-text: var(--color-jet);
+  --color-text-inverse: var(--color-platinum);
+  --color-text-shadow: var(--color-silver);
+  --color-text-highlight: var(--color-salmon);
+  // Primary palette
+  --color-primary: var(--color-salmon);
+  --color-primary-hover: var(--color-aquamarine);
+  --color-primary-active: var(--color-sunset);
+  --color-primary-focus: var(--color-jet);
+  // Secondary palette
+  --color-secondary: var(--color-aquamarine);
+  --color-secondary-hover: var(--color-sunset);
+  --color-secondary-active: var(--color-salmon);
+  --color-secondary-focus: var(--color-jet);
+  // Accent color
+  --color-accent: var(--color-sunset);
+  --color-accent-hover: var(--color-aquamarine);
+  --color-accent-active: var(--color-salmon);
+  --color-accent-focus: var(--color-jet);
+}
+
+[data-theme="dark"] {
+  // Header
+  --color-header: var(--color-jet);
+  --color-header-text: var(--color-platinum);
+  // Footer
+  --color-footer: var(--color-jet);
+  --color-footer-text: var(--color-platinum);
+  // Surfaces
+  --color-bg: var(--color-silver);
+  --color-surface: var(--color-platinum);
+  --color-surface-hover: var(--color-salmon);
+  --color-surface-active: var(--color-sunset);
+  --color-surface-focus: var(--color-aquamarine);
+  // Borders (boundary around element)
+  --color-border: var(--color-jet);
+  --color-border-hover: var(--color-aquamarine);
+  --color-border-active: var(--color-salmon);
+  --color-border-focus: var(--color-sunset);
+  // Outlines (visual emphasis around border)
+  --color-outline: var(--color-platinum);
+  --color-outline-hover: var(--color-aquamarine);
+  --color-outline-active: var(--color-salmon);
+  --color-outline-focus: var(--color-sunset);
+  // Text
+  --color-text: var(--color-jet);
+  --color-text-inverse: var(--color-platinum);
+  --color-text-shadow: var(--color-silver);
+  --color-text-highlight: var(--color-aquamarine);
+  // Primary palette
+  --color-primary: var(--color-aquamarine);
+  --color-primary-hover: var(--color-sunset);
+  --color-primary-active: var(--color-salmon);
+  --color-primary-focus: var(--color-jet);
+  // Secondary palette
+  --color-secondary: var(--color-sunset);
+  --color-secondary-hover: var(--color-aquamarine);
+  --color-secondary-active: var(--color-salmon);
+  --color-secondary-focus: var(--color-jet);
+  // Accent color
+  --color-accent: var(--color-salmon);
+  --color-accent-hover: var(--color-aquamarine);
+  --color-accent-active: var(--color-sunset);
+  --color-accent-focus: var(--color-jet);
+}

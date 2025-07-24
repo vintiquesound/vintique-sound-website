@@ -1,0 +1,271 @@
+/*---- LAYOUT [layout/_layout.scss] ----*/
+/*---- global layout styles for body, header, footer, main, grid/flex ----*/
+
+:root {
+  // Header and Footer
+  --header-height: 46px;
+  --footer-height: auto; // or 45px
+
+  // Layout
+  --max-width: 1200px; // Maximum width for content
+  --desktop-width: 1024px; // Desktop breakpoint
+  --tablet-width: 768px; // Tablet breakpoint
+  --phone-width: 480px; // Mobile breakpoint
+}
+
+/*---- BODY ----*/
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // min-height: 100vh;
+  margin: 0; // Removes white space around page
+  background-color: var(--color-bg);
+  // font-family: var(--font-main);
+  // width: 100vw;
+  overflow-x: hidden;
+}
+
+/*---- HEADER ----*/
+header {
+  /* Define header dimensions and behavior */
+  // height: var(--header-height);
+  width: 100vw;
+  padding: 10px;
+
+  /* Align items in header */
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  // gap: 24px;
+
+  /* Define color */
+  background-color: var(--color-header);
+  color: var(--color-header-text);
+}
+
+header #header-logo a img {
+  height: 40px;
+  width: auto;
+}
+
+header #menu-hamburger-icon {
+  display: none;
+}
+
+header #menu-items a {
+  padding: 10px;
+  font-family: var(--font-menu);
+  font-size: var(--font-size-menu);
+  font-weight: bold;
+  color: var(--color-header-text);
+  text-decoration: none;
+}
+
+header #menu-items a:hover {
+  text-decoration: none;
+  color: var(--color-primary);
+}
+
+/*---- MAIN ----*/
+main {
+  text-align: center;
+  // padding-top: 2em;
+  // padding-bottom: 2em;
+  // min-height: calc(100vh - 3 * var(--header-height) - var(--footer-height));
+  // align-items: center;
+  /* margin: auto; */
+}
+
+// .main-container {
+
+//   align-items: center;
+//   justify-content: center;
+//   width: 100%;
+//   // max-width: 1200px;
+//   // margin: 0 auto;
+//   padding: clamp(1rem, 5%, 3rem); // minimum 1rem, maximum 3rem, scales with 5%
+// }
+
+main #index-logo img {
+  padding: 2vw;
+  width: 80%;
+  max-width: 635px;
+  min-width: 25%;
+  height: auto;
+}
+
+main .image-large img,
+.spotify-container,
+.soundcloud-container {
+  justify-content: center;
+  align-items: center;
+  width: 70vw;
+  min-width: 25%;
+  max-width: 960px;
+  height: auto;
+  margin: 0 auto;
+  padding: 2vw;
+}
+
+main .google-sheets-container iframe {
+  justify-content: center;
+  align-items: center;
+  width: 70vw;
+  min-width: 25%;
+  max-width: 960px;
+  height: 100vh;
+  min-height: 100%;
+  max-height: 540px;
+  margin: 0 auto;
+  padding: 2vw;
+}
+
+main .video-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+main .video-container {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; // for 16:9 aspect ratio
+}
+
+main .video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/*---- FOOTER ----*/
+footer {
+  /* Define footer dimensions and behavior */
+  width: 100vw;
+  height: var(--footer-height);
+  // padding: 8px;
+  padding-top: 14px;
+  padding-bottom: 8px;
+
+  /* Align items in footer */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  /* Define color */
+  background-color: var(--color-footer);
+
+  /* Define text */
+  font-size: var(--font-size-footer);
+  color: var(--color-footer-text);
+}
+
+footer #footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+footer #footer-socials img {
+  width: 30px;
+  height: auto;
+}
+
+footer #footer-socials a:hover {
+  filter: invert(1);
+}
+
+footer #footer-copyright {
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+/*---- GLOBAL BEHAVIOUR ----*/
+html {
+  scroll-behavior: smooth;
+}
+
+/*---- ANIMATIONS ----*/
+nav a,
+button {
+  transition: all 0.3s ease;
+}
+
+/*---- Media Queries to adjust for desktop screen sizes ----*/
+@media screen and (max-width: var(--desktop-width)) {
+  // header {
+  //   display: flex;
+  //   gap: 25vw;
+  // }
+
+  header #menu-items {
+    display: none;
+    position: absolute;
+    top: calc(var(--header-height) + 20px); // 20px accounts for 10px header padding
+    right: 25%;
+    background-color: var(--color-header);
+  }
+
+  /* Show the menu items in a column */
+  header #menu-items.open {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header #menu-hamburger-icon {
+    display: block;
+    cursor: pointer;
+  }
+
+  header #menu-hamburger-icon img {
+    width: 40px;
+    height: auto;
+  }
+}
+
+/*---- Media Queries to adjust for tablet screen sizes ----*/
+@media screen and (max-width: var(--tablet-width)) {
+  header #menu-items a {
+    font-size: var(--font-size-menu-tablet);
+  }
+
+  main #index-logo img {
+    width: 90%;
+  }
+
+  main .image-large img,
+  .spotify-container,
+  .soundcloud-container {
+    width: 90%;
+  }
+
+  footer #footer-socials img {
+    width: 25px;
+  }
+}
+
+/*---- Media Queries to adjust for phone screen sizes ----*/
+@media screen and (max-width: var(--phone-width)) {
+  header #menu-items a {
+    font-size: var(--font-size-menu-phone);
+  }
+
+  main #index-logo img {
+    width: 100%;
+  }
+
+  main .image-large img,
+  .spotify-container,
+  .soundcloud-container {
+    width: 100%;
+  }
+
+  footer #footer-socials img {
+    width: 20px;
+  }
+}

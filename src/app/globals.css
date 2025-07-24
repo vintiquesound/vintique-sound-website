@@ -1,22 +1,42 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+
+/* https://www.realtimecolors.com/?colors=2F2E2E-ffffff-f8888d-e8c08c-8DECCC&fonts=Inter-Inter */
+@media (prefers-color-scheme: light) {
+  :root {
+    --text: #2e2d2d;
+    --text-muted: #2e2d2d;
+    --background: #ffffff;
+    --primary: #ff978a;
+    --secondary: #e8c08c;
+    --accent: #8eeccc;
+  }
+}
+@media (prefers-color-scheme: dark) { /* Fix! Choose better colors */
+  :root {
+    --text: oklch(0.96 0 20); /* f2f2f2 */
+    --text-muted: oklch(0.76 0 20); /* #b1b1b1 */
+    --background: oklch(0.3 0.001 17.24); /* #2e2d2d */
+    --primary: #750e00;
+    --secondary: #734b17;
+    --accent: #137152;
+  }
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background); /* Maps --background to Tailwind's background colors */
+  --color-foreground: var(--foreground); /* Maps --foreground to Tailwind's text colors */
+  --font-sans: var(--font-geist-sans); /* Maps --font-geist-sans to Tailwind's sans font */
+  --font-mono: var(--font-geist-mono); /* Maps --font-geist-mono to Tailwind's mono font */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Status Colors */
+:root {
+  --danger: oklch(0.7 0.11 30); /* #da8375 */
+  --warning: oklch(0.7 0.11 100); /* #aea048 */
+  --success: oklch(0.7 0.11 160); /* #59b387 */
+  --info: oklch(0.7 0.11 260); /* #769fe3 */
 }
 
 body {

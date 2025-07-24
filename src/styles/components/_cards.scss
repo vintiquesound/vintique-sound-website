@@ -1,0 +1,11 @@
+/*---- CARDS [components/_cards.scss] ----*/
+/*---- styles for card components ----*/
+
+.card {
+  background-color: var(--color-surface);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin: 1rem;
+  color: var(--color-text);
+}

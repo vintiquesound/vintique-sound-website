@@ -1,0 +1,17 @@
+/*---- SHAPES [theme/_shapes.scss] ----*/
+/*---- styles for shapes, borders, and other visual elements ----*/
+
+/*---- ROUNDED CORNERS ----*/
+.rounded {
+  border-radius: 6px;
+}
+
+/*---- BORDERS ----*/
+.bordered {
+  border: 5px solid var(--color-border);
+}
+
+/*---- SHADOWS ----*/
+.shadow {
+  box-shadow: 0 1px 3px var(--color-shadow);
+}

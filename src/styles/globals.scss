@@ -1,0 +1,22 @@
+// // Possibly import Tailwind later
+// @import "tailwindcss/preflight"
+// @tailwind utilities;
+
+/*---- IMPORT all .scss partials (in correct order!) ----*/
+/*---- order: core > theme > layout > components ----*/
+// next.js follows the import path in layout.tsx
+// it auto compiles to build directory .next/static/css/
+@use "core/_variables";
+@use "core/_mixins";
+@use "core/_utilities";
+@use "theme/_colors";
+@use "theme/_theme";
+@use "theme/_typography";
+@use "theme/_shapes";
+@use "layout/_layout";
+@use "layout/_sections";
+@use "components/_buttons";
+@use "components/_dropdowns";
+@use "components/_accordions";
+@use "components/_contact-forms";
+@use "components/_cards";
