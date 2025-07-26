@@ -3,30 +3,41 @@
 // NOTE: Use CSS color variable declaration for dynamic theming
 // [CSS: --color-jet: #2f2e2e;] vs [SCSS: $color-jet: #2f2e2e;]
 
+/* https://www.realtimecolors.com/?colors=2F2E2E-ffffff-f8888d-e8c08c-8DECCC&fonts=Inter-Inter */
 :root {
-  // /* Vintique Sound Logo Color Pallette */
-  // --color-bistre: #2d261eff;
-  // --color-coyote: #7b593dff;
-  // --color-copper: #ae7e4eff;
-  // --color-sunset: #ffcf83ff;
-  // --color-pearl: #e3ddc3ff;
-  // --color-alice-blue: #f5fafdff;
-  // --color-light-blue: #bce7f4ff;
-  // --color-sky-blue: #82d4eaff;
-  // --color-aquamarine: #8decccff;
-  // --color-straw: #ece583ff;
+  // Theme colors
+  --color-primary: oklch(78.19% 0.127 27.90); // #ff978a
+  --color-secondary: oklch(83.07% 0.082 73.60); // #e8c08c
+  --color-accent: oklch(87.56% 0.101 170.09); // #8eeccc
 
-  /* Vintique Sound Website Color Pallete */
-  --color-jet: #2f2e2e;
-  --color-silver: #ababa9;
-  --color-platinum: #eaeaea;
-  --color-aquamarine: #8deccc;
-  --color-sunset: #ffcf83;
-  --color-salmon: #ff7c6b;
+  --color-primary5: oklch(78.351% 0.12616 28.477 / 0.05); // Cards not stacked
+  --color-primary20: oklch(78.351% 0.12616 28.477 / 0.2); // Cards stacked on secondary cards
 
-  /* Status/utility */
-  --color-success: #43aa8b;
-  --color-warning: #f9c74f;
-  --color-danger: #e63946;
-  --color-info: #3998e6;
+  --color-secondary10: oklch(83.069% 0.08158 73.589 / 0.1); // Cards with buttons
+  --color-secondary20: oklch(83.069% 0.08158 73.589 / 0.2); // Large containers and accordions
+  --color-secondary30: oklch(83.069% 0.08158 73.589 / 0.3); // Secondary buttons
+
+  // Status colors
+  --danger: oklch(0.7 0.11 30); // #da8375
+  --warning: oklch(0.7 0.11 100); // #aea048
+  --success: oklch(0.7 0.11 160); // #59b387
+  --info: oklch(0.7 0.11 260); // #769fe3
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-text: oklch(29.82% 0.001 17.24); // #2e2d2d
+    --color-bg: oklch(100.00% 0.000 89.88); // #ffffff
+
+    --color-text50: oklch(29.82% 0.00143 15.934 / 0.5); // Muted text
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: oklch(100.00% 0.000 89.88); // #ffffff
+    --color-bg: oklch(29.82% 0.001 17.24); // #2e2d2d
+
+    --color-text50: oklch(100% 0.00011 271.152 / 0.5); // Muted text
+  }
 }
