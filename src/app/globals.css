@@ -1,8 +1,53 @@
 @import "tailwindcss";
 
-@theme inline {
-  --color-background: var(--color-bg); /* Maps --background to Tailwind's background colors */
-  --color-foreground: var(--color-text); /* Maps --foreground to Tailwind's text colors */
-  --font-sans: var(--font-geist-sans); /* Maps --font-geist-sans to Tailwind's sans font */
-  --font-mono: var(--font-geist-mono); /* Maps --font-geist-mono to Tailwind's mono font */
+/* https://www.realtimecolors.com/?colors=2F2E2E-ffffff-f8888d-e8c08c-8DECCC&fonts=Inter-Inter */
+/* Brand colors that don't change across light/dark modes */
+@theme {
+  /* Brand colors */
+  --color-primary: oklch(78.19% 0.127 27.90); /* #ff978a */
+  --color-secondary: oklch(83.07% 0.082 73.60); /* #e8c08c */
+  --color-accent: oklch(87.56% 0.101 170.09); /* #8eeccc */
+
+  /* Primary with opacity variants */
+  --color-primary5: oklch(78.351% 0.12616 28.477 / 0.05); /* Cards not stacked */
+  --color-primary20: oklch(78.351% 0.12616 28.477 / 0.2); /* Cards stacked on secondary cards */
+
+  /* Secondary with opacity variants */
+  --color-secondary10: oklch(83.069% 0.08158 73.589 / 0.1); /* Cards with buttons */
+  --color-secondary20: oklch(83.069% 0.08158 73.589 / 0.2); /* Large containers and accordions */
+  --color-secondary30: oklch(83.069% 0.08158 73.589 / 0.3); /* Secondary buttons */
+
+  /* Status background colors */
+  --bg-danger: oklch(0.7 0.11 30); /* #da8375 */
+  --bg-warning: oklch(0.7 0.11 100); /* #aea048 */
+  --bg-success: oklch(0.7 0.11 160); /* #59b387 */
+  --bg-info: oklch(0.7 0.11 260); /* #769fe3 */
+
+  /* Status text colors */
+  --text-danger: oklch(0.7 0.14 30); /* #e87a69 */
+  --text-warning: oklch(0.7 0.14 100); /* #b39f18 */
+  --text-success: oklch(0.7 0.14 160); /* #37b880 */
+  --text-info: oklch(0.7 0.14 260); /* #699ef5 */
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Theme-switching colors for light mode */
+@media (prefers-color-scheme: light) {
+  @theme {
+    --color-background: oklch(100.00% 0.000 89.88); /* #ffffff */
+    --color-foreground: oklch(29.82% 0.001 17.24); /* #2e2d2d */
+    --color-muted: oklch(29.82% 0.00143 15.934 / 0.5); /* Muted text */
+  }
+}
+
+/* Theme-switching colors for dark mode */
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-background: oklch(29.82% 0.001 17.24); /* #2e2d2d */
+    --color-foreground: oklch(100.00% 0.000 89.88); /* #ffffff */
+    --color-muted: oklch(100% 0.00011 271.152 / 0.5); /* Muted text */
+  }
 }
