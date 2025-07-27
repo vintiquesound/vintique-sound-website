@@ -21,7 +21,8 @@ body {
   // min-height: 100vh;
   margin: 0; // Removes white space around page
   background-color: var(--color-bg);
-  // font-family: var(--font-main);
+  color: var(--color-text);
+  font-family: var(--font-main);
   // width: 100vw;
   overflow-x: hidden;
 }
@@ -178,6 +179,7 @@ footer #footer-socials a:hover {
   filter: invert(1);
 }
 
+footer #footer-credits,
 footer #footer-copyright {
   text-align: center;
   margin-top: 0px;
