@@ -10,16 +10,16 @@ export default function ColorSwitcherButton() {
     const currentColors = colorRoles.map(role =>
       getComputedStyle(root).getPropertyValue(role)
     );
-    // Rotate array: accent → primary, primary → secondary, secondary → accent
-    const rotated = [currentColors[2], currentColors[0], currentColors[1]];
+    // Rotate array: secondary → primary, accent → secondary, primary → accent
+    const rotated = [currentColors[1], currentColors[2], currentColors[0]];
     colorRoles.forEach((role, i) => root.style.setProperty(role, rotated[i]));
   };
 
   return (
     <button type="button" onClick={handleRotate}
-        style={{ padding: "0.5rem 1rem", borderRadius: "0.25rem",
-        background: "var(--color-primary)", color: "var(--foreground)",
-        border: "none", cursor: "pointer" }}>
+        className="pt-1 pr-2 pb-1 pl-2 rounded-sm border-2 text-nowrap
+        border-secondary bg-primary text-accent
+          cursor-pointer hover:border-accent">
       Rotate Colors
     </button>
   );

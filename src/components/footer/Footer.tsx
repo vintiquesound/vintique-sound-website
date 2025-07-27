@@ -4,11 +4,11 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer>
-      <nav id="footer-socials">
+    <footer className="flex flex-col items-center pt-2 pb-2 bg-background text-foreground">
+      <nav className="flex gap-1.5 p-1">
         <a href="https://www.youtube.com/c/vintiquesound" target="_blank">
           <Image
-            className="socials-icon-youtube"
+            className="hover:invert"
             src="/images/icons/socials/socials-icon-youtube.png"
             alt="YouTube Icon"
             width={30}
@@ -17,7 +17,7 @@ export default function Footer() {
         </a>
         <a href="https://soundcloud.com/vintiquesound" target="_blank">
           <Image
-            className="socials-icon-soundcloud"
+            className="hover:invert"
             src="/images/icons/socials/socials-icon-soundcloud.png"
             alt="Soundcloud Icon"
             width={30}
@@ -26,7 +26,7 @@ export default function Footer() {
         </a>
         <a href="https://www.facebook.com/vintiquesound" target="_blank">
           <Image
-            className="socials-icon-facebook"
+            className="hover:invert"
             src="/images/icons/socials/socials-icon-facebook.png"
             alt="Facebook Icon"
             width={30}
@@ -35,7 +35,7 @@ export default function Footer() {
         </a>
         <a href="https://www.instagram.com/vintiquesound" target="_blank">
           <Image
-            className="socials-icon-instagram"
+            className="hover:invert"
             src="/images/icons/socials/socials-icon-instagram.png"
             alt="Instagram Icon"
             width={30}
@@ -44,7 +44,7 @@ export default function Footer() {
         </a>
         <a href="https://www.linkedin.com/in/kevinulliac" target="_blank">
           <Image
-            className="socials-icon-linkedin"
+            className="hover:invert"
             src="/images/icons/socials/socials-icon-linkedin.png"
             alt="LinkedIn Icon"
             width={30}
@@ -52,10 +52,10 @@ export default function Footer() {
           />
         </a>
       </nav>
-      <p id="footer-credits">
+      <p>
         Made with ❤️ by Kevin Ulliac
       </p>
-      <p id="footer-copyright">
+      <p>
         Vintique Sound &copy; 2011 - 2025. All rights reserved.
       </p>
     </footer>
