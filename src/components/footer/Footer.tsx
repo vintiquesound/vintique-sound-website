@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col items-center pt-2 pb-2 bg-background text-foreground">
+    <footer className="flex flex-col items-center pt-2 pb-2 bg-jet-black text-white">
       <nav className="flex gap-1.5 p-1">
         <a href="https://www.youtube.com/c/vintiquesound" target="_blank">
           <Image

@@ -24,6 +24,11 @@ root {
   --color-secondary20: oklch(83.069% 0.08158 73.589 / 0.2); /* Large containers and accordions */
   --color-secondary30: oklch(83.069% 0.08158 73.589 / 0.3); /* Secondary buttons */
 
+  /* Default light theme colors */
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-jet-black);
+  --color-muted: var(--color-jet-black50);
+
   /* Status background colors */
   --bg-danger: oklch(0.7 0.11 30); /* #da8375 */
   --bg-warning: oklch(0.7 0.11 100); /* #aea048 */
@@ -40,10 +45,17 @@ root {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 
-  /* Default light theme colors */
-  --color-background: var(--color-white);
-  --color-foreground: var(--color-jet-black);
-  --color-muted: var(--color-jet-black50);
+  /* Text sizes */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+  --text-5xl: 3rem; /* 48px */
+  --text-6xl: 3.75rem; /* 60px */
 }
 
 /* Explicit light theme override */
@@ -89,5 +101,38 @@ root {
   --color-secondary-10: oklch(83.069% 0.08158 73.589 / 0.1);
   --color-secondary-20: oklch(83.069% 0.08158 73.589 / 0.2);
   --color-secondary-30: oklch(83.069% 0.08158 73.589 / 0.3);
+
+  /* Status background colors */
+  --bg-danger: oklch(0.7 0.11 30);
+  --bg-warning: oklch(0.7 0.11 100);
+  --bg-success: oklch(0.7 0.11 160);
+  --bg-info: oklch(0.7 0.11 260);
+
+  /* Status text colors */
+  --text-danger: oklch(0.7 0.14 30);
+  --text-warning: oklch(0.7 0.14 100);
+  --text-success: oklch(0.7 0.14 160);
+  --text-info: oklch(0.7 0.14 260);
+
+  /* Font sizes */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+  --text-5xl: 3rem; /* 48px */
+  --text-6xl: 3.75rem; /* 60px */
+}
+
+@layer base {
+  h1 { @apply text-4xl font-bold mt-8 mb-4; }
+  h2 { @apply text-3xl font-bold mt-8 mb-4; }
+  h3 { @apply text-2xl font-semibold; }
+  h4 { @apply text-xl font-semibold; }
+  h5 { @apply text-lg font-normal; }
+  p  { @apply text-base; }
 }
 

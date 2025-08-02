@@ -7,7 +7,7 @@ import ColorSwitcherButton from "./ColorSwitcherButton";
 
 export default function Header() {
   return (
-    <header className="flex items-center justify-evenly p-2 bg-background text-foreground">
+    <header className="flex items-center justify-evenly p-2 bg-jet-black text-white">
       <nav className="">
         <Link href="/">
           <Image
