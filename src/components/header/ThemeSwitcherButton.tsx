@@ -11,14 +11,26 @@ export default function ThemeSwitcherButton() {
 
   // Check initial theme on component mount
   useEffect(() => {
+    const html = document.documentElement;
     const mediaQuery = window.matchMedia(DARK_MODE_QUERY);
-    console.log('User prefers dark mode:', mediaQuery.matches);
-    setIsDark(mediaQuery.matches);
 
-    // Listen for system theme changes
+    // Check if there's already a manual theme set, otherwise use system preference
+    const hasManualTheme = html.classList.contains('dark') || html.classList.contains('light');
+    const systemPrefersDark = mediaQuery.matches;
+    const isCurrentlyDark = hasManualTheme ? html.classList.contains('dark') : systemPrefersDark;
+
+    console.log('System prefers dark mode:', systemPrefersDark);
+    console.log('Manual theme set:', hasManualTheme);
+    console.log('Currently dark:', isCurrentlyDark);
+
+    setIsDark(isCurrentlyDark);
+
+    // Listen for system theme changes only if no manual theme is set
     const handleChange = (e: MediaQueryListEvent) => {
-      console.log('System theme changed to:', e.matches ? 'dark' : 'light');
-      setIsDark(e.matches);
+      if (!html.classList.contains('dark') && !html.classList.contains('light')) {
+        console.log('System theme changed to:', e.matches ? 'dark' : 'light');
+        setIsDark(e.matches);
+      }
     };
 
     mediaQuery.addEventListener('change', handleChange);
@@ -29,11 +41,15 @@ export default function ThemeSwitcherButton() {
     const html = document.documentElement;
 
     if (isDark) {
-      // Switch to light mode
+      // Switch to light mode - remove dark class and add light class for explicit override
       html.classList.remove('dark');
+      html.classList.add('light');
+      console.log('Switched to light mode');
     } else {
-      // Switch to dark mode
+      // Switch to dark mode - remove light class and add dark class
+      html.classList.remove('light');
       html.classList.add('dark');
+      console.log('Switched to dark mode');
     }
 
     setIsDark(!isDark);
