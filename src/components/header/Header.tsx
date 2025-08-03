@@ -11,7 +11,7 @@ export default function Header() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 px-4 p-2 bg-jet-black text-white">
+    <header className="sticky top-0 z-40 px-4 p-2 bg-jet-black text-white border-b-1 border-b-neutral-700">
       <div className="flex max-w-[1080px] mx-auto items-center justify-evenly">
         {/* Logo */}
         <nav className="flex flex-shrink-0 pr-3 pl-3">
@@ -48,14 +48,14 @@ export default function Header() {
             </div>
           </div>
           <div className="flex gap-7 pr-3 pl-3">
-            <Link href="/music"
-              className="hover:text-primary">Music</Link>
             <Link href="/studio"
               className="hover:text-primary">Studio</Link>
-            <Link href="/youtube"
-              className="hover:text-primary">Youtube</Link>
             <Link href="/blog"
               className="hover:text-primary">Blog</Link>
+            <Link href="/music"
+              className="hover:text-primary">Music</Link>
+            <Link href="/youtube"
+              className="hover:text-primary">YouTube</Link>
             <Link href="/about"
               className="hover:text-primary">About</Link>
             <Link href="/contact"

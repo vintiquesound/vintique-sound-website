@@ -35,14 +35,16 @@ export default function HeaderSidebar({ sidebarOpen, closeSidebar }: HeaderSideb
       </div>
       <div className="flex flex-col gap-2 pb-2">
         <h5 className="font-bold">Other Links</h5>
-        <Link href="/blog"
-          className="hover:text-primary">Blog</Link>
         <Link href="/studio"
           className="hover:text-primary">Studio</Link>
-        <Link href="/contact"
-          className="hover:text-primary">Contact</Link>
+        <Link href="/blog"
+          className="hover:text-primary">Blog</Link>
+        <Link href="/music"
+          className="hover:text-primary">Music</Link>
         <Link href="/youtube"
           className="hover:text-primary">YouTube</Link>
+        <Link href="/contact"
+          className="hover:text-primary">Contact</Link>
       </div>
     </aside>
   );
