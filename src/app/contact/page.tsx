@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image";
 import ContactForm from "@/components/ui/ContactForm"
 import Accordion, { AccordionItem } from "@/components/ui/Accordion"
 
@@ -82,45 +83,81 @@ export default function Contact() {
   ];
 
   return (
-    <div id="page-contact-main">
+    <div id="page-contact-main" className="flex flex-col items-center">
       <h1 id="contact-me">Contact Me</h1>
-      <p>
-        Feel free to contact me with any questions you may have
-        about my services, or if you would like to discuss a project.
-        Have questions about
-        <Link href="/mixing-and-mastering"
-          className="text-accent hover:text-primary">
-          {" "}Mixing & Mastering Services
-        </Link>
-        ,
-        <Link href="/education"
-          className="text-accent hover:text-primary">
-          {" "}Educational Services
-        </Link>
-        ,
-        <Link href="/education/#cubase"
-          className="text-accent hover:text-primary">
-          {" "}Cubase
-        </Link>
-        ,
-        <Link href="/samples-and-loops"
-        className="text-accent hover:text-primary">
-          {" "}Samples & Loops
-        </Link>
-        , or anything else?
-      </p>
-      <p>
-        You can use the form below to send me a message:
-      </p>
-      <ContactForm />
-
-      <div className="flex flex-col flex-wrap">
-        <div id="faq" className="pb-8">
-          <h1>FAQ</h1>
-          <h5>Answers to some frequently asked questions.</h5>
+      <Image
+        className="items-center"
+        src="/images/kevin_in_studio-1080x480.jpg"
+        alt="Kevin in Vintique Sound Studio"
+        width={1080}
+        height={480}
+      />
+      <div className="flex flex-wrap justify-center lg:flex-row lg:flex-nowrap lg:text-left">
+        {/* Location and Socials */}
+        <div className="flex flex-col p-8">
+          <div className="flex flex-col pb-8">
+            <h5 className="underline">Location</h5>
+            <p>Edmonton, AB, Canada</p>
+          </div>
+          <div className="flex flex-col">
+            <h5 className="underline">Socials</h5>
+            <Link href="https://www.youtube.com/c/vintiquesound" target="_blank"
+              className="text-accent hover:text-primary">
+              www.youtube.com/c/vintiquesound
+            </Link>
+            <Link href="https://www.soundcloud.com/vintiquesound" target="_blank"
+              className="text-accent hover:text-primary">
+              www.soundcloud.com/vintiquesound
+            </Link>
+            <Link href="https://www.facebook.com/vintiquesound" target="_blank"
+              className="text-accent hover:text-primary">
+              www.facebook.com/vintiquesound
+            </Link>
+            <Link href="https://www.instagram.com/vintiquesound" target="_blank"
+              className="text-accent hover:text-primary">
+              www.instagram.com/vintiquesound
+            </Link>
+            <Link href="https://www.linkedin.com/in/kevinulliac" target="_blank"
+              className="text-accent hover:text-primary">
+              www.linkedin.com/in/kevinulliac
+            </Link>
+          </div>
         </div>
-        <Accordion items={faqItems} className="max-w-4xl mx-auto" />
+        {/* Contact Me */}
+        <div className="p-8">
+          <p className="pb-4">
+            {/* Feel free to contact me with any questions you may have
+            about my services, or if you would like to discuss a project. */}
+            Have questions about
+            <Link href="/mixing-and-mastering"
+              className="text-accent hover:text-primary">
+              {" "}Mixing & Mastering Services
+            </Link>
+            ,
+            <Link href="/education"
+              className="text-accent hover:text-primary">
+              {" "}Educational Services
+            </Link>
+            ,
+            <Link href="/education/#cubase"
+              className="text-accent hover:text-primary">
+              {" "}Cubase
+            </Link>
+            ,
+            <Link href="/samples-and-loops"
+            className="text-accent hover:text-primary">
+              {" "}Samples & Loops
+            </Link>
+            , or anything else? Use the form below to send me a message:
+          </p>
+          <ContactForm className="p-4" />
+        </div>
       </div>
+      <div id="faq" className="pb-8">
+        <h1>FAQ</h1>
+        <h5>Answers to some frequently asked questions.</h5>
+      </div>
+      <Accordion items={faqItems} className="max-w-4xl mx-auto" />
     </div>
   )
 }
