@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col items-center pt-2 pb-2 bg-jet-black text-white">
+    <footer className="flex flex-col items-center mt-8 pt-2 pb-2 bg-jet-black text-white">
       <nav className="flex gap-1.5 p-1">
         <a href="https://www.youtube.com/c/vintiquesound" target="_blank">
           <Image
@@ -15,7 +15,7 @@ export default function Footer() {
             height={30}
           />
         </a>
-        <a href="https://soundcloud.com/vintiquesound" target="_blank">
+        <a href="https://www.soundcloud.com/vintiquesound" target="_blank">
           <Image
             className="hover:invert"
             src="/images/icons/socials/socials-icon-soundcloud.png"
