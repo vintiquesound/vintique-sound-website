@@ -18,7 +18,7 @@ export default function Header() {
           <Link href="/">
             <Image
               className="w-24 h-10 hover:opacity-80"
-              src="/images/logo/vintique_sound-logo_name_only(635x256).png"
+              src="/images/logo/vintique_sound-logo_name_only-635x256.png"
               alt="Vintique Sound Logo (name only)"
               width={127}
               height={51}
