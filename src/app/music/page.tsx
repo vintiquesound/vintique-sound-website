@@ -3,14 +3,21 @@ import Image from "next/image"
 
 export default function Music() {
   return (
-    <div id="page-music-main" className="flex flex-col p-5 text-center">
+    <div id="page-music-main" className="flex flex-col text-center">
       <h1 id="music-is-life">Music Is Life</h1>
-      <h4>
+      <h4 className="pb-4">
         From Deep House, to Chill Hip Hop, to Classic Dubstep, to Indie Rock.
+        <br></br>
         Kevin is always experimenting with new genres.
       </h4>
-      <button className="bg-primary p-2 m-2 cursor-pointer">Listen</button>
-      <button className="border-2 border-secondary p-2 m-2 cursor-pointer">Booking</button>
+      <div className="flex flex-row justify-center">
+        <Link href="/music#music-spotify-container">
+          <button className="w-[150px] border-2 p-2 m-2 border-secondary cursor-pointer">Booking</button>
+        </Link>
+        <Link href="/music#music-spotify-container">
+          <button className="w-[150px] p-2 m-2 bg-primary cursor-pointer">Listen</button>
+        </Link>
+      </div>
       <h2>My Music</h2>
       <div className="flex flex-row gap-6">
         <div id="music-antoku-card"
@@ -23,7 +30,7 @@ export default function Music() {
             <li>Nu Disco</li>
           </ul>
           <p className="text-muted">
-            Antoku is Kevin's latest venture into the Deep/Tech House and Nu
+            Antoku is Kevin&apos;s latest venture into the Deep/Tech House and Nu
             Disco scene, carefully curated grooves for your listening pleasure.
           </p>
         </div>

@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <Header />
         <main
-          className="flex flex-col max-w-[1080px] mx-auto pr-6 pl-6 text-center"
+          className="flex flex-col max-w-[1080px] mx-auto p-6"
         >
           {children}
         </main>

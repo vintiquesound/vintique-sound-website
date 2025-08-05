@@ -87,12 +87,12 @@ export default function Contact() {
       <h1 id="contact-me">Contact Me</h1>
       <Image
         className="items-center"
-        src="/images/kevin_in_studio-1080x480.jpg"
+        src="/images/page_content/contact/kevin_in_studio-1080x480.jpg"
         alt="Kevin in Vintique Sound Studio"
         width={1080}
         height={480}
       />
-      <div className="flex flex-wrap justify-center lg:flex-row lg:flex-nowrap lg:text-left">
+      <div className="flex flex-wrap justify-center text-center lg:flex-row lg:flex-nowrap lg:text-left">
         {/* Location and Socials */}
         <div className="flex flex-col p-8">
           <div className="flex flex-col pb-8">
@@ -153,7 +153,7 @@ export default function Contact() {
           <ContactForm className="p-4" />
         </div>
       </div>
-      <div id="faq" className="pb-8">
+      <div id="faq" className="pb-8 text-center">
         <h1>FAQ</h1>
         <h5>Answers to some frequently asked questions.</h5>
       </div>
