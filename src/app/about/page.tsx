@@ -42,21 +42,21 @@ export default function About() {
             strategically placed margarine containers and ice cream pales. The faux
             drum set was quickly replaced with a novice sized orange sparkle drum kit
             bought at a garage sale and an electric guitar & amp kit from Costco (and
-            thankfully I've upgraded all of that gear as the years went by).
+            thankfully I&apos;ve upgraded all of that gear as the years went by).
           </p>
           <p className="text-left">
-            My first band was called "Doofeye." We were a cover band and played our
-            first concert called "Doofest 2002." I switched out between drummer and
-            guitarist. I was the drummer in two other bands "Lacewing" & "The Equation"
+            My first band was called &quot;Doofeye.&quot; We were a cover band and played our
+            first concert called &quot;Doofest 2002.&quot; I switched out between drummer and
+            guitarist. I was the drummer in two other bands &quot;Lacewing&quot; & &quot;The Equation&quot;
             (all originals this time). And I even started my own 1-piece band called
-            "Sirloin Casket" which was my creative outlet to experiment with different
+            &quot;Sirloin Casket&quot; which was my creative outlet to experiment with different
             genres.
           </p>
           <p className="text-left">
             I was experimenting with Recording/Mixing/Mastering as of about 2002. My
             first DAW was Cool Edit Pro, then Adobe Audition once they bought them out
             in 2003. I bought myself a Korg D4 portable recorder, then later a Zoom R16.
-            It wasn't until about 2012 when I decide to get serious with Audio
+            It wasn&apos;t until about 2012 when I decide to get serious with Audio
             Engineering. I bought Cubase Pro 6.5 and an audio interface and some studio
             monitors. I started producing Electronic Music under the alias Phantom Limb
             (dubstep) & a few years later as Antoku (deep house/nu disco) and more
@@ -64,7 +64,7 @@ export default function About() {
             to bands and started a YouTube Channel.
           </p>
           <p className="text-left">
-            I've since had the pleasure of working with talented artists such as Ante
+            I&apos;ve since had the pleasure of working with talented artists such as Ante
             Svircic, Leonard, Gypsy Mobile, Stephanie Harpe, Manobra de Massa, Gernot
             Gabriel, Timmy James, Mindwiser, & Cataclysm. Some of my recordings and
             mixes have found their way to Howie Weinberg Mastering & various radio
@@ -73,7 +73,7 @@ export default function About() {
           <p className="text-left">
             Fun Fact: you might be surprised to learn that I have a Bachelor of Science
             in Computer Science, a Bachelor of Arts in Philosophy and Psychology, and
-            an Automotive Mechanic Certificate. Not only am I addicted to music, but I'm
+            an Automotive Mechanic Certificate. Not only am I addicted to music, but I&apos;m
             also proud of my technical and academic background.
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function About() {
           />
           <h4>studio nerd</h4>
           <p>
-            I'm addicted to music, so naturally I spend most of my spare time mixing and
+            I&apos;m addicted to music, so naturally I spend most of my spare time mixing and
             mastering music and fiddling around with gear.
           </p>
         </div>
@@ -104,7 +104,7 @@ export default function About() {
           />
           <h4>festival dancer</h4>
           <p>
-            If I'm not in the studio, I'm probably dancing up a storm in an astronaut
+            If I&apos;m not in the studio, I&apos;m probably dancing up a storm in an astronaut
             costume at a music festival.
           </p>
         </div>
@@ -118,7 +118,7 @@ export default function About() {
           />
           <h4>mountain dweller</h4>
           <p>
-            Or you'll catch me hiking in the summer or hittin that sweet pow at the
+            Or you&apos;ll catch me hiking in the summer or hittin that sweet pow at the
             tippy top of the mountain in the winter.
           </p>
         </div>
