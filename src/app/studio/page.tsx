@@ -190,7 +190,13 @@ export default function Studio() {
           </div>
         </div>
         <div className="flex flex-col">
-
+          <Image
+            src="/images/page_content/studio/vintage_gear-1280x720.jpg"
+            alt="Vintage Gear displayed at Vintique Sound"
+            width={853}
+            height={480}
+          >
+          </Image>
         </div>
       </div>
     </div>
