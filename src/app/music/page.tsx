@@ -88,7 +88,7 @@ export default function Music() {
         >
         </iframe>
       </div>
-      <div id="music-soundcloud-container">
+      <div id="music-soundcloud-container" className="pb-4">
         <h2>SoundCloud</h2>
         <iframe
           title="Vintique Sound SoundCloud playlist"
@@ -97,10 +97,10 @@ export default function Music() {
         >
         </iframe>
       </div>
-      <div id="music-other-links" className="flex flex-row flex-wrap">
+      <div id="music-other-links" className="flex flex-row flex-wrap justify-center">
         <Link href="https://open.spotify.com/artist/72BxrDX6O013U2kVJiwnkB">
           <Image
-            className=""
+            className="p-4"
             src="/images/page_content/music/spotify_logo-black-360x150.jpg"
             alt="Spotify Logo"
             width={300}
@@ -110,7 +110,7 @@ export default function Music() {
         </Link>
         <Link href="https://www.beatport.com/artist/antoku/741219">
           <Image
-            className=""
+            className="p-4"
             src="/images/page_content/music/beatport_logo-black-360x150.jpg"
             alt="Beatport Logo"
             width={300}
@@ -120,7 +120,7 @@ export default function Music() {
         </Link>
         <Link href="https://vintiquesound.bandcamp.com/">
           <Image
-            className=""
+            className="p-4"
             src="/images/page_content/music/bandcamp_logo-black-360x150.jpg"
             alt="Bandcamp Logo"
             width={300}
@@ -130,7 +130,7 @@ export default function Music() {
         </Link>
         <Link href="https://www.youtube.com/playlist?list=PL6TmWkJnI_sAJ-vvLaQ59-6ki2uty7GSG">
           <Image
-            className=""
+            className="p-4"
             src="/images/page_content/music/youtube_music_logo-black-360x150.jpg"
             alt="YouTube Music Logo"
             width={300}
@@ -140,7 +140,7 @@ export default function Music() {
         </Link>
         <Link href="https://soundcloud.com/vintiquesound">
           <Image
-            className=""
+            className="p-4"
             src="/images/page_content/music/soundcloud_logo-black-360x150.jpg"
             alt="SoundCloud Logo"
             width={300}
