@@ -1,8 +1,10 @@
 ---
 title: 'Markdown Style Guide'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
-pubDate: 'Jun 19 2024'
-heroImage: '../../assets/blog-placeholder-1.jpg'
+categories: [blog, example]
+year: 2025
+pubDate: 'Dec 19 2025'
+heroImage: '../../../assets/blog/2025/blog-placeholder-2025.jpg'
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.
@@ -39,7 +41,7 @@ Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sap
 
 ### Output
 
-![blog placeholder](../../assets/blog-placeholder-about.jpg)
+![blog placeholder](../../../assets/blog/2025/blog-placeholder-2025.jpg)
 
 ## Blockquotes
 

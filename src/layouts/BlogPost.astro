@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
@@ -8,7 +9,21 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, categories, year, pubDate, updatedDate, heroImage } = Astro.props;
+
+// Find related posts by category
+const allPosts = await getCollection('blog');
+const relatedPosts = allPosts.filter(
+	(p) =>
+		p.data.categories &&
+		categories &&
+		p.data.categories.some((cat) => categories.includes(cat))
+).slice(0, 3);
+
+// Find other posts from the same year
+const yearPosts = allPosts.filter(
+  (p) => p.data.year === year
+);
 ---
 
 <html lang="en">
@@ -52,6 +67,19 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
+			.categories {
+				text-align: center;
+				margin: 1em 0;
+			}
+			.category {
+				display: inline-block;
+				margin: 0 0.5em;
+				padding: 0.5em 1em;
+				background: rgb(var(--gray-lighter));
+				border-radius: 1em;
+				font-size: 0.875em;
+				color: rgb(var(--gray-dark));
+			}
 		</style>
 	</head>
 
@@ -60,24 +88,140 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 		<main>
 			<article>
 				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt="" />}
+					{heroImage && (
+						<Image width={1020} height={510} src={heroImage} alt="" />
+					)}
 				</div>
 				<div class="prose">
 					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Last updated on <FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
+						<div class="date" style="position:relative;display:inline-block;">
+							<button
+								id="year-toggle"
+								style="background:none;border:none;color:inherit;cursor:pointer;font:inherit;padding:0;"
+								onclick="window.toggleYearDropdown();event.stopPropagation();"
+								type="button"
+							>
+								<FormattedDate date={pubDate} />
+							</button>
+							{updatedDate && (
+								<div class="last-updated-on">
+									Last updated on <FormattedDate date={updatedDate} />
+								</div>
+							)}
+							{yearPosts.length > 0 && (
+								<div id="year-posts" style="display:none;position:absolute;left:0;top:2.2em;z-index:10;background:white;border:1px solid #ccc;padding:0.5em 1em;border-radius:0.5em;min-width:380px;max-width:520px;box-shadow:0 2px 12px rgba(0,0,0,0.12);text-align:left;">
+									<strong>Other posts from {year}:</strong>
+									<ul style="margin:0.5em 0 0 0;padding:0 0 0 1.2em;list-style:none;text-align:left;">
+										{yearPosts.slice(0, 3).map((post) => (
+											<li style="margin:0.25em 0;text-align:left;">- <a href={`/blog/${post.slug}`}>{post.data.title}</a></li>
+										))}
+									</ul>
+								</div>
+							)}
 						</div>
 						<h1>{title}</h1>
 						<hr />
 					</div>
+
+								{categories && categories.length > 0 && (
+									<>
+												<script is:inline>
+													// Dropdown logic: close all on outside click or when another is opened
+													document.addEventListener('click', function(e) {
+														const dropdowns = document.querySelectorAll('[id^="cat-posts-"]');
+														dropdowns.forEach((el) => {
+															if (!el.contains(e.target) && !el.previousElementSibling.contains(e.target)) {
+																el.style.display = 'none';
+															}
+														});
+														const yearDropdown = document.getElementById('year-posts');
+														const yearBtn = document.getElementById('year-toggle');
+														if (yearDropdown && yearBtn && !yearDropdown.contains(e.target) && !yearBtn.contains(e.target)) {
+															yearDropdown.style.display = 'none';
+														}
+													});
+													// Only allow one open at a time for categories
+													window.toggleCatDropdown = function(idx) {
+														const dropdowns = document.querySelectorAll('[id^="cat-posts-"]');
+														dropdowns.forEach((el, i) => {
+															if (i === idx) {
+																el.style.display = el.style.display === 'block' ? 'none' : 'block';
+															} else {
+																el.style.display = 'none';
+															}
+														});
+														// Close year dropdown if open
+														const yearDropdown = document.getElementById('year-posts');
+														if (yearDropdown) yearDropdown.style.display = 'none';
+													}
+													// Only allow one open at a time for year
+													window.toggleYearDropdown = function() {
+														const yearDropdown = document.getElementById('year-posts');
+														const dropdowns = document.querySelectorAll('[id^="cat-posts-"]');
+														if (yearDropdown) {
+															yearDropdown.style.display = yearDropdown.style.display === 'block' ? 'none' : 'block';
+														}
+														// Close all category dropdowns
+														dropdowns.forEach((el) => { el.style.display = 'none'; });
+													}
+												</script>
+										<div class="categories">
+											{categories.map((cat, idx) => {
+												// Find posts from the same category (excluding current post)
+												const catPosts = allPosts.filter(
+													(p) => p.data.categories && p.data.categories.includes(cat) && p.data.title !== title
+												).slice(0, 3);
+												return (
+													<span style="position:relative;text-align:left;">
+														<button
+															class="category"
+															style="cursor:pointer;"
+															type="button"
+															onclick={`window.toggleCatDropdown(${idx});event.stopPropagation();`}
+														>
+															{cat}
+														</button>
+																	{catPosts.length > 0 && (
+																			<div id={`cat-posts-${idx}`} style="display:none;position:absolute;left:0;top:2.2em;z-index:10;background:white;border:1px solid #ccc;padding:0.5em 1em;border-radius:0.5em;min-width:380px;max-width:520px;box-shadow:0 2px 12px rgba(0,0,0,0.12);text-align:left;">
+																				<strong>Other posts in {cat}:</strong>
+																				<ul style="margin:0.5em 0 0 0;padding:0 0 0 1.2em;list-style:none;text-align:left;">
+																					{catPosts.map((post) => (
+																						<li style="margin:0.25em 0;text-align:left;">- <a href={`/blog/${post.slug}`}>{post.data.title}</a></li>
+																					))}
+																				</ul>
+																			</div>
+																		)}
+													</span>
+												);
+											})}
+										</div>
+									</>
+								)}
+
+						{/* Year posts list, toggled by clicking the year */}
+						{yearPosts.length > 0 && (
+							<div id="year-posts" style="display:none;margin-bottom:1em;">
+								<h3>Other posts from {year}</h3>
+								<ul>
+									{yearPosts.map((post) => (
+										<li><a href={`/blog/${post.slug}`}>{post.data.title}</a></li>
+									))}
+								</ul>
+							</div>
+						)}
 					<slot />
+					{relatedPosts.length > 0 && (
+						<section>
+							<h3>Related Posts</h3>
+							<ul>
+								{relatedPosts.map((post) => (
+									<li>
+										<a href={`/blog/${post.slug}`}>{post.data.title}</a>
+									</li>
+								))}
+							</ul>
+						</section>
+					)}
 				</div>
 			</article>
 		</main>
