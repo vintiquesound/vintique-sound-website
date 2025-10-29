@@ -129,9 +129,7 @@ This EQ is both powerful and silky smooth which makes it excellent for mastering
 <strong>10) Limiter: <a href="https://www.fabfilter.com/products/pro-l-2-limiter-plug-in" target="_blank" rel="noopener">Fab Filter Pro-L</a> (now on version 2) [$199 solo/$98 Total Bundle cost]</strong>
 ![Fab Filter Pro-L Limiter Plugin](../../../assets/blog/2018/top-10-plugins-for-mixing-mastering/10-FabFilter-Pro-L.jpg)
 
-I used to use the Waves L2 and L3 limiters, and by all means they get the job done. The L2 has a very 90's loud rock tone to it and the L3 added more flexibility and control over the dynamic processing which allowed for a variety of tones and limiting styles. But when I first 
-
-tried the Pro-L limiter I was immediately blown away by how much loudness I could squeeze out of my masters without introducing any artifacts or distortion.
+I used to use the Waves L2 and L3 limiters, and by all means they get the job done. The L2 has a very 90's loud rock tone to it and the L3 added more flexibility and control over the dynamic processing which allowed for a variety of tones and limiting styles. But when I first tried the Pro-L limiter I was immediately blown away by how much loudness I could squeeze out of my masters without introducing any artifacts or distortion.
 
 This plugin is extremely easy to use given the large number of presets (suitable for many different genres and styles of music/audio). Each preset offers a preview of the plugins ability to preserve transient peaks, or to preserve dynamic range, or to prevent pumping effects, etc. Simply choose a preset that sounds good, adjust the attack/release/linking to taste, choose your favourite limiting algorithms, set the gain to a comfortable level and you have yourself a professional sounding master that is clean, loud, punchy, and ready to be played on the radio.
 

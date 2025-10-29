@@ -4,7 +4,7 @@ description: 'If you''re having trouble with no sound output in Cubase, then I p
 categories: [cubase, tutorial, media bay]
 year: 2019
 pubDate: 'Aug 24 2019'
-heroImage: '../../../assets/blog/2019/blog-placeholder-2019.jpg'
+heroImage: '../../../assets/blog/2019/fix-no-sound-in-cubase-media-bay/fix-no-sound-in-cubase-media-bay.jpg'
 ---
 
 If you're trying to audition samples and loops in Cubase's "Media Bay" but aren't getting any sound, then here's what you need to know:

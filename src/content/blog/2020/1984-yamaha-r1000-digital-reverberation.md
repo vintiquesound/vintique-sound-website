@@ -4,7 +4,7 @@ description: ''
 categories: [vintage, processor, digital]
 year: 2020
 pubDate: 'Jul 5 2020'
-heroImage: '../../../assets/blog/2020/blog-placeholder-2020.jpg'
+heroImage: '../../../assets/blog/2020/1984-yamaha-r1000-digital-reverberation/1984-yamaha-r1000-digital-reverberation.jpg'
 ---
 
 I love vintage analog and vintage digital gear. I would absolutely love to get my hands on an API-2500 compressor, some SSL EQ's, some Neve 1073 preamps, and you name it. There's no doubt that those pieces of gear have become renowned in the industry simply because they impart a special character to the resulting audio that is extremely pleasing and their quality of sound is unmatched... but of course, they come at a premium.

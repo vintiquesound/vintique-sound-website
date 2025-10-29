@@ -4,7 +4,7 @@ description: ''
 categories: [mixing, tutorial, philosophy]
 year: 2020
 pubDate: 'Oct 2020'
-heroImage: '../../../assets/blog/2020/blog-placeholder-2020.jpg'
+heroImage: '../../../assets/blog/2020/make-bold-and-meaningful-mixing-decisions/make-bold-and-meaningful-mixing-decisions.png'
 ---
 
 I remember when I first started mixing, I would use EQ and compression on almost every track. At the time I was still learning how to use EQ and compression, so maybe it was fresh in my mind and I wanted to use this knowledge, but I basically decided that EQ and compression were professional mixing tools so they must be good to use at any chance I could. In my mind it seemed that more frequency and dynamics processing would make the song sound better and more polished. The sad fact is that I paid very little attention to what the song actually needed and most of my attention went toward trying to solve a problem that wasn't even there. Furthermore, my attention went toward processing individual tracks of the song instead of the meaningful, creative, and emotional aspects of the song. The more mixing techniques I learned, the more I would throw on a set of plugins and use those particular techniques. But more is not always better. It’s almost as if I needed to convince myself that I was doing something substantial to the song and that the song was being incrementally upgraded with every added plugin or technique.

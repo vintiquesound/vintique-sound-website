@@ -4,7 +4,7 @@ description: ''
 categories: [vintage, sampler, repair]
 year: 2019
 pubDate: 'Aug 26 2019'
-heroImage: '../../../assets/blog/2019/blog-placeholder-2019.jpg'
+heroImage: '../../../assets/blog/2019/fix-akai-s3000xl-waiting-for-hard-disk-ready-skip/Akai-S3000XL-waiting-for-hard-disk-ready-SKIP.jpg'
 ---
 
 This post describes how to fix the following error message on an Akai S3000XL:

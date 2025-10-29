@@ -4,7 +4,7 @@ description: ''
 categories: [mixing, tutorial, tips]
 year: 2022
 pubDate: 'Aug 29 2022'
-heroImage: '../../../assets/blog/2022/blog-placeholder-2022.jpg'
+heroImage: '../../../assets/blog/2022/mixing-tip-subtractive-eq-first-additive-eq-second/mixing-tip-subtractive-eq-first-additive-eq-second.jpg'
 ---
 
 Most mixing engineers, from intermediates to professionals, know how to use EQing to great effect. Even novice mixing engineers know there way around an EQ, as it's commonly understood that EQing is what helps you balance the frequencies within a given mix and that you should remove what is not needed on a given track and boost the frequencies that you want to emphasize. But I want to elaborate on a memorable experience (one of several, in fact) from when I truly began to internalize the power of subtractive EQing.

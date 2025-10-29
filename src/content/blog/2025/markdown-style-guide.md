@@ -4,7 +4,7 @@ description: 'Here is a sample of some basic Markdown syntax that can be used wh
 categories: [blog, example]
 year: 2025
 pubDate: 'Dec 19 2025'
-heroImage: '../../../assets/blog/2025/blog-placeholder-2025.jpg'
+heroImage: '../../../assets/blog/mixing-mastering-tutorial.jpg'
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.

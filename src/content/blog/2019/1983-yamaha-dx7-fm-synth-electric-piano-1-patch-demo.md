@@ -4,7 +4,7 @@ description: 'A demo of the E.Piano 1 factory patch from the Master Group collec
 categories: [vintage, synthesizer, digital]
 year: 2019
 pubDate: 'Jul 26 2019'
-heroImage: '../../../assets/blog/2019/blog-placeholder-2019.jpg'
+heroImage: '../../../assets/blog/2019/1983-yamaha-dx7-fm-synth-electric-piano-1-patch-demo/Yamaha_DX7-EPiano1_patch_demo.jpg'
 ---
 
 A demo of the "E.Piano 1" factory patch from the "Master Group" collection. I play three different performances, with and without the  sustain pedal, and with and without stereo delay.

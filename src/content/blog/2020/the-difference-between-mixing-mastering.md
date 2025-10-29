@@ -4,7 +4,7 @@ description: ''
 categories: [mixing, mastering, history]
 year: 2020
 pubDate: 'Sep 20 2020'
-heroImage: '../../../assets/blog/2020/blog-placeholder-2020.jpg'
+heroImage: '../../../assets/blog/mixing-mastering-tutorial.jpg'
 ---
 
 Mixing and Mastering have a lot of similarities; they use the same basic set of tools (EQ, compression, limiting, and more) and they require the same basic set of skills. But they are different processes, and for good reason. Unfortunately, there is a lot of confusion as to what those differences are and why those differences matter. My aim with this blog post is to provide a detailed analysis of how Mixing and Mastering differ from one another. I'll begin with some historical context as it will provide some insight into their emergence in the music industry. Then I will provide a detailed description of a Mixing and Mastering Engineer, and finally I'll provide some concrete applied examples of what each engineer is trying to accomplish in the studio by describing several techniques and processes unique to their individual roles in the audio world.

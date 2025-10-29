@@ -4,7 +4,7 @@ description: ''
 categories: [mixing, tutorial, tips]
 year: 2020
 pubDate: 'Nov 20 2020'
-heroImage: '../../../assets/blog/2020/blog-placeholder-2020.jpg'
+heroImage: '../../../assets/blog/mixing-mastering-tutorial.jpg'
 ---
 
 I want to discuss a mixing technique that I first learned from Graham (The Recording Revolution); namely, “Mixing in Mono.” The suggestion is to monitor in mono while making volume, compression, and EQ decisions. To be more specific, once you've completed your initial adjustments in mono, flip back to stereo and see whether it made an improvement. By making critical decisions in mono, you are effectively going to make better decisions that will improve, not only mono compatibility (this is just a bonus) but you'll improve many aspects of your stereo mix.

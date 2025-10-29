@@ -4,7 +4,7 @@ description: ''
 categories: [mixing, mastering, plugins]
 year: 2020
 pubDate: 'Feb 9 2020'
-heroImage: '../../../assets/blog/2020/blog-placeholder-2020.jpg'
+heroImage: '../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/top-10-plugins-for-mixing-mastering-2020-update.jpg'
 ---
 
 I made a similar post in 2018 but my choice of mixing and mastering plugins has changed a bit. I've had more time to acquire new plugins as well as test competitor plugins (such as Native Instruments VC-2A versus Waves CLA-2A) and decided to revise my initial selection, although many of the plugins remain from my original list.
