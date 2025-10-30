@@ -7,30 +7,65 @@ pubDate: 'Aug 24 2019'
 heroImage: '../../../assets/blog/2019/fix-no-sound-in-cubase-media-bay/fix-no-sound-in-cubase-media-bay.jpg'
 ---
 
-If you're trying to audition samples and loops in Cubase's "Media Bay" but aren't getting any sound, then here's what you need to know:
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/embed/Li43lxV9frM" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
+
+#### If you're trying to audition samples and loops in Cubase's "Media Bay" but aren't getting any sound, then here's what you need to know:
 
 Most likely you have the "Control Room" enabled but don't have it set up properly. The quick fix is to go into your "Audio Connections" and disable the Control Room.
 
+![Cubase Studio, Audio Connections, Control Room](../../../assets/blog/2019/fix-no-sound-in-cubase-media-bay/Control_Room-enable_disable.jpg)
+<span style="display: block; text-align: center; font-size: 0.67em; margin-top: 0rem; font-weight: normal;">Go to "Studio" > "Audio Connections" > "Control Room" Tab (Keyboard Shortcut is F4)</span>
+
 Next you have to ensure your outputs are configured correctly in the "Outputs" tab by selecting your Main Monitor outputs from the dropdown menu.
+
+![Cubase Studio, Audio Connections, Outputs](../../../assets/blog/2019/fix-no-sound-in-cubase-media-bay/Control_Room-assign_main_outputs.jpg)
+<span style="display: block; text-align: center; font-size: 0.67em; margin-top: 0rem; font-weight: normal;">Go to the "Outputs" tab and set your Left & Right outputs</span>
 
 And lastly you need to ensure you assigned your Main Outputs as the "Main Mix" by right clicking on your Main Outputs and selecting "Set 'Main Outputs' as Main Mix".
 
-## I strongly suggest you learn how to configure Control Room properly
+![Cubase Studio, Audio Connections, Outputs, Main Mix](../../../assets/blog/2019/fix-no-sound-in-cubase-media-bay/Control_Room-set_main_mix.jpg)
+<span style="display: block; text-align: center; font-size: 0.67em; margin-top: 0rem; font-weight: normal;">Right click on your Main Outputs and set them as the "Main Mix"</span>
+
+#### I strongly suggest you learn how to configure Control Room properly
 
 Control Room is a very useful and powerful feature in Cubase. There's a bit of a learning curve but it's worth learning how to use it.
 
 You will have access to the Control Room Metering which displays RMS (average loudness) and Peak Max. You can seamlessly switch between multiple monitors (by clicking Monitor "A" or "B" at the bottom of the window). You can quickly switch from stereo mix monitoring to a mono down mix (which is great for ensuring your stereo mix translates well in mono). You can also use the "Dim" function to turn the monitoring volume down by a configurable decibel range (for example -12dB). These are just some of the highlight features.
 
+![Cubase Control Room, Main Monitors, Monitoring in Mono](../../../assets/blog/2019/fix-no-sound-in-cubase-media-bay/Control_Room-meter_monitor_downmix.jpg)
+<span style="display: block; text-align: center;  font-size: 0.67em; margin-top: 0rem; font-weight: normal;">I've selected Monitor A (my main monitors) and I'm monitoring my mix in Mono</span>
+
 You also have access to high quality loudness metering which measures Integrated Loudness and dynamic range (in LUFS). This is ever more important when mastering for streaming services like Spotify, YouTube Music, Apple Music, Google Play Music, etc.
 
-## How To Setup "Control Room"
+![Cubase Control Room, Main Monitors, Loudness Monitoring](../../../assets/blog/2019/fix-no-sound-in-cubase-media-bay/Control_Room-loudness_monitoring_meter_big.jpg)
+<span style="display: block; text-align: center;  font-size: 0.67em; margin-top: 0rem; font-weight: normal;">It's important to monitor Integrated Loudness in LUFS units when mastering for streaming services like Spotify, YouTube Music, Apple Music, Google Play Music, etc.</span>
+
+#### How To Setup "Control Room"
 
 First you need a Monitor Track. If you do not already have one select "Add Channel" then "Add Monitor".
 
+![Cubase Control Room, Add Monitor Output Bus](../../../assets/blog/2019/fix-no-sound-in-cubase-media-bay/Control_Room-add_monitor.jpg)
+<span style="display: block; text-align: center;  font-size: 0.67em; margin-top: 0rem; font-weight: normal;">Select "Add Channel" then "Add Monitor"</span>
+
 I've named mine "Yamaha HS5", and since I'm using a Stereo setup in my studio I've configured my monitor setup as "Stereo".
+
+![Cubase Control Room, Configure and Name Monitor Output Bus](../../../assets/blog/2019/fix-no-sound-in-cubase-media-bay/Control_Room-name_configuration.jpg)
+<span style="display: block; text-align: center;  font-size: 0.67em; margin-top: 0rem; font-weight: normal;">Name your monitor setup and choose a configuration (Mono, Stereo, 5.1, etc.)</span>
 
 And lastly you need to select the correct outputs from your Audio Interface. In my case "OUT 1" & "OUT 2" are my main Left & Right outputs going from my Audio Interface to my Studio Monitors via XLR and 1/4" TRS combo cables.
 
+![Cubase Control Room, Select Outputs for Monitor Setup](../../../assets/blog/2019/fix-no-sound-in-cubase-media-bay/Control_Room-configure_outputs.jpg)
+<span style="display: block; text-align: center; font-size: 0.67em; margin-top: 0rem; font-weight: normal;">Select the correct outputs from your Audio Interface</span>
+
 That's it. Control Room is now ready for use. The Control Room metering/functionality is accessible from the main project window in the Right Zone, as well as in the MixConsole in the Right Zone, or if you wish you can open up a separate floating window by going to "Studio" > "Control Room".
 
-If you'd like to learn more about Cubase, I offer personalized 1-on-1 training. I will put together a set of course topics and learning outcomes, chosen by you, such as Best Practices for Mixing & Mastering in Cubase, Groove Agent Deep Dive, Music Production Techniques for Cubase, Automation, and many more tips and tricks. Click here for more information.
+If you'd like to learn more about [Cubase](/education/), I offer personalized 1-on-1 training. I will put together a set of course topics and learning outcomes, chosen by you, such as Best Practices for Mixing & Mastering in Cubase, Groove Agent Deep Dive, Music Production Techniques for Cubase, Automation, and many more tips and tricks. [Click here](/education/) for more information.

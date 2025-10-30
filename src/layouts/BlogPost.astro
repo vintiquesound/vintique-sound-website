@@ -51,6 +51,48 @@ const yearPosts = allPosts.filter(
 				padding: 1em;
 				color: rgb(var(--gray-dark));
 			}
+      /* Center images inside Markdown paragraphs, regardless of captions */
+			body .prose p > img,
+			body .prose p > a > img {
+				display: block !important;
+				margin-left: auto !important;
+				margin-right: auto !important;
+			}
+      /* Progressive enhancement for browsers that support :has() */
+      @supports selector(p:has(img)) {
+        .prose p:has(> img),
+        .prose p:has(> a > img) {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+      /* Center caption spans that sit next to the image inside the same paragraph */
+      .prose p > img + span,
+      .prose p > a + span {
+        display: block;
+        text-align: center;
+        font-size: 0.67em;
+        margin-top: 0;
+        font-weight: normal;
+      }
+			/* Tighter spacing between a lead-in line and the following list */
+      body .prose p {
+        margin-bottom: 1.25em !important;
+      }
+      body .prose ul,
+      body .prose ol {
+        margin-top: 0 !important;
+        margin-bottom: 1.25em !important;
+        padding-left: 1.25em !important;
+      }
+			/* If supported, shrink the exact gap only when a paragraph is followed by a list */
+			@supports selector(p:has(+ ul)) {
+				.prose p:has(+ ul),
+				.prose p:has(+ ol) {
+					margin-bottom: 0.25em;
+				}
+			}
 			.title {
 				margin-bottom: 1em;
 				padding: 1em 0;
