@@ -20,7 +20,19 @@ I've also included the cost of each plugin, both the regular price if purchased 
 Without further ado, here are 10 plugins that I use in almost every project...
 
 
-1) EQ: Waves API 560 [$249 reg/$29 on sale]
+<strong>1) EQ: <a href="http://waves.alzt.net/7amDPO" target="_blank" rel="noopener">Waves API 560</a> [$249 reg/$59 on sale]</strong>
+![Waves API 560 EQ Plugin](../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/1-Waves-API-560.jpg)
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/embed/r73o1eutkSI" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
 
 This plugin is modeled after the classic API 560 10-band equalizer. What makes this EQ unique and especially musical is the "Proportional Q", which widens the filter bandwidth at lower boost/cut levels and progressively narrows at higher settings. This means that you can get quite surgical if you need a heavy boost/cut at certain frequencies or you can opt for a gentle boost/cut to preserve the natural tone of the instrument.
 
@@ -29,7 +41,7 @@ Furthermore, the 10 bands are divided into one-octave increments, which helps to
 I use this plugin on kicks, snares, guitars, vocals, pianos, synths, and more. It's my favourite EQ because it enables me to sculpt whatever sound I'm looking for with ease and precision.
 
 
-2) Compressor: Waves CLA-2A [$249 reg/$29 on sale]
+<strong>2) Compressor: <a href="http://waves.alzt.net/BnXG4B" target="_blank" rel="noopener">Waves CLA-2A</a> [$249 reg/$29 on sale]</strong> ![Waves CLA-2A Compressor Plugin](../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/2-Waves-CLA-2A.jpg)
 
 If you're looking for smooth natural sounding compression then consider reaching for a vintage LA-2A style compressor. It's incredibly easy to use given its limited parameters. Most notable is the gain knob (output gain adjustment) and peak reduction knob, which in essence controls the threshold and amount of compression (more technically speaking, it adjusts the amount of signal being sent to the sidechain, which determines the amount of compression).
 
@@ -42,7 +54,7 @@ The result is smooth and silky compression with a touch of vintage warmth. This 
 *(note: Originally I had chosen the Native Instruments VC 2A version of the plugin. I did some fairly extensive comparisons between it and the Waves CLA-2A. And I've got to say that the Native Instruments version is more likely to have pumping artifacts that can make it more difficult to achieve consistent "up front" compression. It's great that you can mix in the dry signal, thus giving you the ability to add parallel compression, but alas I've come to prefer the Waves plugin as I find it works better for compressing a lead vocals or similar instruments that needs a large reduction in dynamics and need to stay front and center in the mix. I'll make a video demonstrating my findings in the near future.)*
 
 
-3) Channel Strip: Waves SSL E-Channel [ $249 solo/$35 on sale]
+<strong>3) Channel Strip: <a href="http://waves.alzt.net/EEax4W" target="_blank" rel="noopener">Waves SSL E-Channel</a> [ $249 solo/$35 on sale]</strong> ![Waves SSL E-Channel Channel Strip Plugin](../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/3-Waves-SSL-E-Channel.jpg)
 
 This plugin has it all. It has a great analog modeled 4 band EQ, a powerful and effective dynamics processor section, and a pair of filters, but it also has some flexible routing capabilities. For instance, when you engage the "split" button in the filter section, the filters will be placed before the dynamics processors (a disengaged "split" button puts the filter after the dynamics section). This gives you the flexibility of choosing whether to remove some low or high frequencies that may cause unwanted pumping artifacts by triggering the compressor uncontrollably. You can also choose the position of the EQ section. So you can have one of 3 setups: Dyn > Fltr > EQ, or Fltr > EQ > Dyn, or Fltr > Dyn > EQ.
 
@@ -53,7 +65,8 @@ The compression is very smooth. That may be due in part from its auto-sensing at
 You can also enable the EQ to "Dyn S-C-" button which enables the filters and EQs into the dynamics sidechain, which allows for some simple de-essing. And there's also a handy phase reverse button, in case your DAW doesn't already have one for each channel. All in all this is a great all around channel plugin.
 
 
-4) Stereo Enhancer: Soundtoys Microshift [$129 reg/$49 on sale]
+<strong>4) Stereo Enhancer: <a href="http://www.soundtoys.com/product/microshift/" target="_blank" rel="noopener">Soundtoys Microshift</a> [ $129 reg/$49 on sale]</strong>
+![Soundtoys Microshift Stereo Enhancer Plugin](../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/4-Soundtoys-Microshift.png)
 
 This plugin is simple but very useful. It has pitch shifting and delay that varies over time, both of which help to provide a lot of depth and width to whatever you're processing.
 
@@ -62,7 +75,8 @@ The plugin is modeled after the classic Eventide H3000 hardware. You can choose 
 The engineering behind this technique is rather simple; use variable pitch shifting to create a bit of chorus/phasing, add some variable delay to create some width and movement, and you've just turned your bland sounding instrument into something far more interesting. Soundtoys have taken the aforementioned engineering trick and distilled it into an easy to use interface with precise controls. I use this plugin a lot to emphasize important parts of the song (like supporting leads or background vocals during the chorus, for example). A subtle amount of processing on an acoustic guitar or a lead vocal sounds great too.
 
 
-5) Delay: Native Instruments Replika XT [$99 solo/$49 for owners of Replika]
+<strong>5) Delay: <a href="https://www.native-instruments.com/en/products/komplete/effects/replika/" target="_blank" rel="noopener">Native Instruments Replika</a> [$99 solo/$49 for owners of Replika]</strong>
+![Native Instruments Replika Delay Plugin](../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/5-Native-Instruments-Replika-XT.jpg)
 
 This is the expanded version of the original Replika, with 2 additional delay modes, 5 additional modulation effects, and more in depth parameters to tweak like delay ducking, shuffle/feel/accent, and choosing between single delay, or dual serial, or dual parallel (which are all musically distinct). The controls are simple and intuitive but give you plenty of delay possibilities.
 
@@ -75,7 +89,8 @@ The low cut and high cut filters are essential for cleaning up your repeats, the
 I love this plugin, precisely for its flexibility and for its wide range of parameters that give you direct control over the nature of the repeats. I may decide to reach for a delay that specializes in a given characteristic sound, such as the Waves H-Delay to get a recognizable filtered analog slapback, but the Replika XT is equally capable. Moreover, it's not a one trick pony, and it is certainly not a jack of all trades and master of none. Each delay type is distinct and can be dialed in with precision, for a wide range of sounds that are all very musical.
 
 
-6) Reverb: Waves Abbey Road Reverb Plates [$199 reg/$29 on sale]
+<strong>6) Reverb: <a href="http://waves.alzt.net/DyVqoG" target="_blank" rel="noopener">Waves Abbey Road Reverb Plates</a> [$199 reg/$29 on sale]</strong>
+![Waves Abbey Road Reverb Plates Reverb Plugin](../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/6-Waves-Abbey-Road-Reverb-Plates.jpg)
 
 This is one of my favourite reverb plugins for drums, guitars, pianos, and vocals. Modeled after the EMT 140 plate reverb housed at Abbey Road Studios, this thing provides plenty character that's great for livening up a vocal or a drum bus, and the controls are both intuitive and powerful, which make it a breeze for dialing in a great sound.
 
@@ -84,7 +99,8 @@ You can choose between 4 different plates (A, B, C, D) which all have their own 
 This reverb has been used on countless recordings, many of which you would most certainly recognize (the Beatles, Pink Floyd, Radiohead and Adele). I spent many months trying to figure out if I was going to buy an Apollo just so I can get the EMT140 reverb plugin from UAD so it took me exactly zero time to get my hands on this plugin when Waves first released this plugin. I now find myself using it in nearly every project (typically used on drums and vocals, but occasionally on guitars and other stringed instruments).
 
 
-7) Saturation: Waves Kramer Tape [$249 reg/$29 on sale]
+<strong>7) Saturation: <a href="http://waves.alzt.net/195gx6" target="_blank" rel="noopener">Waves Kramer Tape</a> [$249 reg/$29 on sale]</strong>
+![Waves Kramer Tape Tape Emulation Plugin](../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/7-Waves-Kramer-Tape.jpg)
 
 Modeled after a rare vintage tube-powered reel-to-reel tape machine, this plugin offers plenty of character that leaves much to be desired.
 
@@ -95,7 +111,7 @@ Not to mention there's a dedicated delay section that is fantastic for achieving
 I find myself using this plugin a lot on my guitar bus, for adding character to vocals and bass, and for adding grit and spice to my kicks and snares. I also works great on a drum bus since it reacts very well to the transients of the kicks and snares, it tames any harshness in the cymbals and it rounds out the overall sound in a pleasant way.
 
 
-8) EQ: Native Instruments Passive EQ [$149 solo/$93 Premium Tube Series bundle cost]
+<strong>8) EQ: <a href="https://www.native-instruments.com/en/products/komplete/effects/passive-eq/" target="_blank" rel="noopener">Native Instruments Passive EQ</a> [$149 solo/$93 Premium Tube Series bundle cost]</strong> ![Native Instruments Passive EQ Plugin](../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/8-Native-Instruments-Passive-EQ.jpg)
 
 The Native Instruments Passive EQ is modeled after the Manley Massive Passive, which employs similar passive circuitry as the famous Pulteq passive EQ from the 50's & 60's. But the Massive Passive was more than a spin off of the Pultec. It took all the best features of the Pultec EQ, from select console EQ's, and of parametric and graphic equalizers.
 
@@ -110,7 +126,8 @@ This EQ is both powerful and silky smooth which makes it excellent for mastering
 *(note: Originally I had chosen the Plugin Alliance SPL Passeq EQ, which is a very similar style of EQ, given it's passive nature and wide array of frequency choices. However, over time I found myself wanting a bit more heavy handed coloration on a dry sounding drum bus, or sterile sounding piano. I found the Passeq EQ to be more surgical in nature, making it better for preserving the natural tone and characteristic of the originating audio source, and more useful as a final balancing tool during mastering. For that my preference has shifted to the Passive EQ, where I can impart some pleasant coloration, while still remaining subtle if needed. However, sometimes the originating audio source is already very colourful and will be easily overdone by even the slightest boosts and cuts with the Passive EQ. I've yet to try the Universal Audio version as well as the original hardware unit so perhaps that's simply a Native Instruments issue.)*
 
 
-9) Bus Compressor: Waves API 2500 [$299 reg/$29 on sale]
+<strong>9) Bus Compressor: <a href="http://waves.alzt.net/7amDYY" target="_blank" rel="noopener">Waves API 2500</a> [$299 reg/$29 on sale]</strong>
+![Waves API 2500 Compressor Plugin](../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/9-Waves-API-2500.jpg)
 
 The API 2500 is a world renowned compressor simply because of its versatility in helping you shape the punch and tone of a mix with precision and control. There's a few key aspects of this compressor that makes it perfect for mastering and bus processing.
 
@@ -121,7 +138,8 @@ Not to mention, the attack and release settings are incredibly fast on the 2500;
 All in all, this compressor is a total workhorse, primarily because there are unique features that give you a wide range of control over the punch and tone of your audio. I've been using this plugin since the day I bought it (likely around 2014), and it has served me well.
 
 
-10) Limiter: Fab Filter Pro-L (now on version 2) [$199 solo/$98 Total Bundle cost]
+<strong>10) Limiter: <a href="https://www.fabfilter.com/products/pro-l-2-limiter-plug-in" target="_blank" rel="noopener">Fab Filter Pro-L</a> (now on version 2) [$199 solo/$98 Total Bundle cost]</strong>
+![Fab Filter Pro-L Limiter Plugin](../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-update/10-FabFilter-Pro-L.jpg)
 
 I used to use the Waves L2 and L3 limiters, and by all means they get the job done. The L2 has a very 90's loud rock tone to it and the L3 added more flexibility and control over the dynamic processing which allowed for a variety of tones and limiting styles. But when I first tried the Pro-L limiter I was immediately blown away by how much loudness I could squeeze out of my masters without introducing any artifacts or distortion.
 
@@ -136,7 +154,7 @@ All in all, this plugin has been my limiter of choice since about 2014. The Pro-
 EDIT: I've upgraded to Pro-L version 2 since the original publishing of this blog post. Even though I joked about not spending the money, Fab Filter had a sale that made the upgrade that much more enticing. Version 2 has several new features (such as True Peak limiting, new limiting algorithms, new presets, and more). There are also improvements to the UI experience, so overall it's definitely worth the upgrade.
 
 
-## Conclusion:
+##### Conclusion:
 
 If I was lost at sea, shipwrecked onto a deserted island and was forced to use only 10 plugins for the rest of my life (forced by strict deserted island laws of course) I would be very comfortable and satisfied with the ones in this list. I know each plugin intimately and know that I can get the sound and character I so desire (which varies over time and depending on the project I'm working on). I may want an old 40's/50's vibe with slap delay, some saturation, and lots of dynamics. Or I might want a very tight and in-your-face mix for a metal/heavy rock song I'm working on. What's for certain is that each of these plugins are of high quality and purchasing them has proven to be a solid investment.
 
@@ -145,46 +163,27 @@ The list I've provided is but a fraction of what's available on the market but I
 Please feel free to comment below indicating your go-to plugins and explain whether you agree or disagree with some of my choices.
 
 
-If you'd like to learn more about Mixing and Mastering, I offer personalized 1-on-1 training. I will put together a set of course topics and learning outcomes, chosen by you, such as the fundamentals of EQ, Compression, FX processing, Automation, and all the things that go into making professional quality mixes and masters. Click here for more information.
+If you'd like to learn how to [Profesionally Mix and Master](/education/) music, I offer personalized 1-on-1 training. I will put together a set of course topics and learning outcomes, chosen by you, such as the fundamentals of EQ, Compression, FX processing, Automation, and all the things that go into making professional quality mixes and masters.
 
-I also offer Mixing and Mastering Services. My expertise is in Indie Rock, Classic Rock, Hard Rock, and House Music, but I've been known to mix many other genres. I also offer unlimited revisions so that you are 100% satisfied. Click here to learn more.
+I also offer [Mixing and Mastering Services](/mixing-mastering/). My expertise is in Indie Rock, Classic Rock, Hard Rock, and House Music, but I've been known to mix many other genres. I also offer unlimited revisions so that you are 100% satisfied.
 
-## Honourable mentions:
-
-Fab Filter Pro-Q3 [$179 solo/$88 Total Bundle cost] 
-
-Waves CLA-76 [$249 reg/$49 on sale]
-
-Waves dbx 160 [$149 reg/$49 on sale]
-
-Waves SSL G-Equalizer [$199 reg/$89 on sale]
-
-Waves Scheps 73 EQ [$199 reg/$59 on sale]
-
-Plugin Alliance SPL Passeq EQ [$249 reg/$149 on sale]
-
-Plugin Alliance Maag Audio EQ4 [$229 reg/$129 on sale]
-
-DMGAudio EQuilibrium [$270 reg/$ on sale]
-
-Waves Abbey Road Studio J37 Tape [$299 reg/$29 on sale]
-
-Waves H-Delay [$179 reg/$49 on sale]
-
-Waves Abbey Road Chambers [$199 reg/$29 on sale]
-
-Soundtoys Decapitator [$199 reg/$49 on sale]
-
-Soundtoys EchoBoy [$199 reg/$49 on sale]
-
-Soundtoys LittlePlate [$99 reg/$49 on sale]
-
-Soundtoys PanMan [ $129 solo/$49 on sale]
-
-Audio Thing Outer Space [$69 reg/$49 on sale]
-
-Eventide H910 Harmonizer [$249 reg/$99 Anthology XI bundle cost]
-
-Eventide H3000 Factory [$349 reg/$99 Anthology XI bundle cost]
-
-iZotope Ozone 9 & Neutron 3 Advanced Mastering Suite [$699 reg/$399 on sale/$250 with loyalty crossgrade]
+##### Honourable mentions:
+- Fab Filter Pro-Q3 [$179 solo/$88 Total Bundle cost] 
+- <a href="http://waves.alzt.net/VxyQG6" target="_blank" rel="noopener">Waves CLA-76</a> [$249 reg/$49 on sale]
+- <a href="http://waves.alzt.net/o4eG7o" target="_blank" rel="noopener">Waves dbx 160</a> [$149 reg/$49 on sale]
+- <a href="http://waves.alzt.net/nX1A7V" target="_blank" rel="noopener">Waves SSL G-Equalizer</a> [$199 reg/$89 on sale]
+- <a href="http://waves.alzt.net/09JnvY" target="_blank" rel="noopener">Waves Scheps 73 EQ</a> [$199 reg/$59 on sale]
+- Plugin Alliance SPL Passeq EQ [$249 reg/$149 on sale]
+- Plugin Alliance Maag Audio EQ4 [$229 reg/$129 on sale]
+- DMGAudio EQuilibrium [$270 reg/$ on sale]
+- <a href="http://waves.alzt.net/7amDvV" target="_blank" rel="noopener">Waves Abbey Road Studio J37 Tape</a> [$299 reg/$29 on sale]
+- <a href="http://waves.alzt.net/9LW97Y" target="_blank" rel="noopener">Waves H-Delay</a> [$179 reg/$49 on sale]
+- <a href="http://waves.alzt.net/2argA0" target="_blank" rel="noopener">Waves Abbey Road Chambers</a> [$199 reg/$29 on sale]
+- Soundtoys Decapitator [$199 reg/$49 on sale]
+- Soundtoys EchoBoy [$199 reg/$49 on sale]
+- Soundtoys LittlePlate [$99 reg/$49 on sale]
+- Soundtoys PanMan [ $129 solo/$49 on sale]
+- Audio Thing Outer Space [$69 reg/$49 on sale]
+- Eventide H910 Harmonizer [$249 reg/$99 Anthology XI bundle cost]
+- Eventide H3000 Factory [$349 reg/$99 Anthology XI bundle cost]
+- iZotope Ozone 9 & Neutron 3 Advanced Mastering Suite [$699 reg/$399 on sale/$250 with loyalty crossgrade]
