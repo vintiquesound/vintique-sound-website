@@ -20,30 +20,86 @@ When I say make bold mixing decisions I mean being experimental and to try some 
 
 Here are some great examples:
 
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/embed/27LLPANAgzw" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
+
 “Tom Waits – Going Out West.” The song is very simple, but every aspect of it adds something to the song. The clean guitar is twangy, some delay & reverb, the distorted guitar is all kinds of fuzzy and full, the vocal is raspy, the percussion is raw and dirty too. The music video is also incredibly simple. It’s just a black and white Tom Waits playing a guitar in a cloud of smoke while wearing a silly hat and some kind of goggles. It’s so simple but it suits the song incredibly well. It’s fucking incredible. All the creative elements of the song and the video are meaningful, and I absolutely love it.
 
 
 Talk about boldness. Here’s a song and music video that will knock you on your ass:
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/embed/aV7VNhzFLOQ" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
 
 “Tobacco – Streaker.” It’s so raw and intense. It’s bold as hell. It might be too crazy for some people, but not for me. It’s like a huge mixing pot of weirdness, animosity, horror film, acid trip, rock and roll, and you name it. It’s pretty badass if you ask me. The drums are over processed, the vocals have crazy distorted effects on it, the synth leads are huge and pushed to the absolute limit, and all of these feed off of one another creating a really memorable experience. And likewise, the music video absolutely suits the song and pushes it to a whole other level.
 
 
 Here’s another one:
 
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/embed/LnKUD_OztRE" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
+
 “Tame Impala – Elephant.” This song is a good demonstration of  being bold and doing it right. There’s a lot of character put into to the song writing, the recording, the mixing, and even the music video. The guitars are really fuzzy and the bass has a Black Sabbath vibe, the drums are processed quite like a 70's drum kit with some pumpiness on the room mics, the vocals are processed like the Beatles, and the synths add lots of vibe too. There's still plenty of subtlety but all the vibes are there and everything works great together.
 
 
 Here’s another example of being bold:
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/embed/En1llevuLQ4" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
 
 “Timber Timbre – Hot Dreams.” It has a lot of character, and there’s shameless commitment to this character. They’re not trying to sell a #1 top 40. This is all about delivering an experience to the listener. The aesthetic choices are all meaningful. The drums are soft, the guitar and keys are full but sit behind the vocal, which is quite naked with some tasteful delay and reverb. Every element helps to set the mood, and likewise, the music video accentuates what is already delivered in the music.
 
 
 Another example of boldness and creative choices that suit the project very well:
 
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/embed/OS6duOoxctw" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
+
 “Beach House – Wishes.” The music video is comical while the song itself is not, but yet the video still suits the song incredibly well, the creative choices in the production and mixing are meaningful and add character more than anything else. The vocals are soft but upfront, the guitars and drums are also soft but supportive. There's quite a bit of reverb on everything which give the whole song a lush spacious feeling, especially when the bigger vocal section and drum roll and organs come in.
 
 There is a high degree of boldness in all of these songs and the music videos merely amplify their existing boldness. But boldness is still only one part of the puzzle. There’s also a great deal of care and professional deliberation throughout. No doubt the musicians, the producers, the recording/mixing/mastering engineers all have put their best foot forward to create a great piece of music. My best guess is that there was a lot of deliberation all throughout, the goal was to achieve a very specific aesthetic and character that is seemingly sculpted from top to bottom. There is meaning behind the boldness. And that’s what I’m hoping to convey here. Be bold AND meaningful when mixing. In fact, I’m going to extend that statement: Be bold AND meaningful in all your creative outlets and in all aspects of your life in general. Although let’s get real, you don’t have to be bold in everything or at all times. Just don’t be afraid to push the creative envelope, and push it hard if you want. And remember to do it with style! That’s my creative philosophy.
 
-If you'd like to learn more about Mixing and Mastering, I offer personalized 1-on-1 training. I will put together a set of course topics and learning outcomes, chosen by you, such as the fundamentals of EQ, Compression, FX processing, Automation, and all the things that go into making professional quality mixes and masters. Click here for more information.
 
-I also offer Mixing and Mastering Services. My expertise is in Indie Rock, Classic Rock, Hard Rock, and House Music, but I've been known to mix many other genres. I also offer unlimited revisions so that you are 100% satisfied. Click here to learn more.
+If you'd like to learn how to [Profesionally Mix and Master](/education/) music, I offer personalized 1-on-1 training. I will put together a set of course topics and learning outcomes, chosen by you, such as the fundamentals of EQ, Compression, FX processing, Automation, and all the things that go into making professional quality mixes and masters.
+
+I also offer [Mixing and Mastering Services](/mixing-mastering/). My expertise is in Indie Rock, Classic Rock, Hard Rock, and House Music, but I've been known to mix many other genres. I also offer unlimited revisions so that you are 100% satisfied.
