@@ -38,6 +38,7 @@ The tools and parts needed for the project are shown below.
 ![The tools and parts to make the repair](../../../assets/blog/2019/fix-akai-s3000xl-waiting-for-hard-disk-ready-skip/akai_S3000XL_fix-Tools.jpg)
 <span style="display: block; text-align: center;  font-size: 0.67em; margin-top: 0rem; font-weight: normal;">Not shown in the picture is the Glass Inline Fuse Holder and the 30 cm (1 foot) of wire (they were already installed when this picture was taken)</span>
 
+<!-- #TODO fix the list item formatting!!! -->
 Tools:
 - Soldering Iron
 - Solder
