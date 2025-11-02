@@ -21,7 +21,18 @@ Now, I'm not going to claim that Subtractive EQing is all you need to achieve pr
 
 Here's a video I made on Subtractive EQ. I demonstrate how I use Subtractive EQ to remove unwanted sub frequencies as well as low to low-mid frequencies to reduce muddiness. I also describe why it's important to remove high frequencies from tracks that should be further back in the mix:
 
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; margin: 2rem 0;">
+  <iframe 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+    src="https://www.youtube.com/embed/OFNTRYBfNJM" 
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+    allowfullscreen>
+  </iframe>
+</div>
 
-If you'd like to learn more about Mixing and Mastering, I offer personalized 1-on-1 training. I will put together a set of course topics and learning outcomes, chosen by you, such as the fundamentals of EQ, Compression, FX processing, Automation, and all the things that go into making professional quality mixes and masters. Click here for more information.
 
-I also offer Mixing and Mastering Services. My expertise is in Indie Rock, Classic Rock, Hard Rock, and House Music, but I've been known to mix many other genres. I also offer unlimited revisions so that you are 100% satisfied. Click here to learn more.
+If you'd like to learn how to [Profesionally Mix and Master](/education/) music, I offer personalized 1-on-1 training. I will put together a set of course topics and learning outcomes, chosen by you, such as the fundamentals of EQ, Compression, FX processing, Automation, and all the things that go into making professional quality mixes and masters.
+
+I also offer [Mixing and Mastering Services](/mixing-mastering/). My expertise is in Indie Rock, Classic Rock, Hard Rock, and House Music, but I've been known to mix many other genres. I also offer unlimited revisions so that you are 100% satisfied.
