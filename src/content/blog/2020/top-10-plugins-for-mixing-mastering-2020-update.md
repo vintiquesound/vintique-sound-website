@@ -9,6 +9,8 @@ heroImage: '../../../assets/blog/2020/top-10-plugins-for-mixing-mastering-2020-u
 
 I made a similar post in 2018 but my choice of mixing and mastering plugins has changed a bit. I've had more time to acquire new plugins as well as test competitor plugins (such as Native Instruments VC-2A versus Waves CLA-2A) and decided to revise my initial selection, although many of the plugins remain from my original list.
 
+> “This is one of my favourite reverb plugins for drums, guitars, pianos, and vocals. Modeled after the EMT 140 plate reverb housed at Abbey Road Studios, this thing provides plenty character that's great for livening up a vocal or a drum bus, and the controls are both intuitive and powerful, which make it a breeze for dialing in a great sound.”
+
 The plugins I've chosen reflect what I currently own. I would have liked to include, for instance, some Universal Audio plugins but since I don't own an Apollo or a Satellite, I have opted not to include them in this list [I've not included any plugins that require hardware to run]. As mentioned in the intro, there are several plugin companies that model the same hardware unit (for example, the LA-2A vintage compressor), and I have chosen what I believe to be the higher quality manufacture of that modeled plugin.
 
 Just like my previous post, this list will not include any type of editing or repair plugins, such as a vocal tuner, or a click/noise reduction plugin, or a sample replacement tool. I want to give a rundown of my favourite plugins that add character and polish to my mixes as opposed to providing a list of technical tools.
