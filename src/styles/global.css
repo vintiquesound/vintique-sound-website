@@ -5,17 +5,60 @@
  */
 
 :root {
-	--accent: #2337ff;
-	--accent-dark: #000d8a;
-	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
-	--gray-light: 229, 233, 240;
-	--gray-dark: 34, 41, 57;
-	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
-	--box-shadow:
-		0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px
-		rgba(var(--gray), 33%);
+  --background: #fff;
+  --text: #111;
+  --muted: rgb(var(--gray));
+
+  /* surfaces used by header/footer/menus */
+  --surface: #ffffff;
+  --surface-2: #f4f6fb;
+  --border: rgba(0, 0, 0, 0.12);
+  --shadow-1: 0 2px 8px rgba(0, 0, 0, 0.10);
+
+  --accent: #2337ff;
+  --accent-dark: #000d8a;
+  --black: 15, 18, 25;
+  --gray: 96, 115, 159;
+  --gray-light: 229, 233, 240;
+  --gray-dark: 34, 41, 57;
+  --gray-gradient: rgba(var(--gray-light), 50%), #fff;
+  --box-shadow:
+    0 2px 6px rgba(var(--gray), 25%), 0 8px 24px rgba(var(--gray), 33%), 0 16px 32px
+    rgba(var(--gray), 33%);
 }
+
+/* Explicit user choice */
+:root[data-theme="dark"] {
+  --background: #0f1115;
+  --text: #e9eef5;
+  --muted: rgba(233, 238, 245, 0.75);
+
+  --surface: #141823;
+  --surface-2: #1b2130;
+  --border: rgba(255, 255, 255, 0.14);
+  --shadow-1: 0 2px 10px rgba(0, 0, 0, 0.55);
+
+  --accent: #79b8ff;
+  --black: 238, 238, 238;
+}
+
+/* System mode (no data-theme attribute): follow OS */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    --background: #0f1115;
+    --text: #e9eef5;
+    --muted: rgba(233, 238, 245, 0.75);
+
+    --surface: #141823;
+    --surface-2: #1b2130;
+    --border: rgba(255, 255, 255, 0.14);
+    --shadow-1: 0 2px 10px rgba(0, 0, 0, 0.55);
+
+    --accent: #79b8ff;
+    --black: 238, 238, 238;
+  }
+}
+
 @font-face {
 	font-family: "Atkinson";
 	src: url("/fonts/atkinson-regular.woff") format("woff");
@@ -35,11 +78,13 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
+	/* background: linear-gradient(var(--gray-gradient)) no-repeat; */
+	background: var(--background);
 	background-size: 100% 600px;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
+	/* color: rgb(var(--gray-dark)); */
+	color: var(--text);
 	font-size: 20px;
 	line-height: 1.7;
 }

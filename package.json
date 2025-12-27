@@ -14,12 +14,15 @@
     "@astrojs/sitemap": "^3.5.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "astro-icon": "^1.1.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "sharp": "^0.34.2"
   },
   "devDependencies": {
     "@astrojs/mdx": "^4.3.4",
+    "@iconify-json/lucide": "^1.2.82",
+    "@iconify-json/simple-icons": "^1.2.63",
     "astro": "^5.15.2"
   }
 }

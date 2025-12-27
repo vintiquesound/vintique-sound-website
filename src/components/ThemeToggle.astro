@@ -1,0 +1,162 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<div class="theme-toggle">
+  <button type="button" class="theme-toggle__btn" aria-haspopup="menu" aria-expanded="false" aria-label="Theme">
+    <span class="theme-toggle__btn-icon theme-toggle__btn-icon--light" aria-hidden="true">
+      <Icon name="lucide:sun" size={18} />
+    </span>
+    <span class="theme-toggle__btn-icon theme-toggle__btn-icon--dark" aria-hidden="true">
+      <Icon name="lucide:moon" size={18} />
+    </span>
+    <span class="theme-toggle__btn-icon theme-toggle__btn-icon--system" aria-hidden="true">
+      <Icon name="lucide:monitor" size={18} />
+    </span>
+  </button>
+
+  <div class="theme-toggle__menu" role="menu" hidden>
+    <button type="button" class="theme-toggle__item" role="menuitem" data-mode="light">
+      <span class="theme-toggle__item-icon" aria-hidden="true"><Icon name="lucide:sun" size={18} /></span>
+      <span>Light</span>
+    </button>
+    <button type="button" class="theme-toggle__item" role="menuitem" data-mode="dark">
+      <span class="theme-toggle__item-icon" aria-hidden="true"><Icon name="lucide:moon" size={18} /></span>
+      <span>Dark</span>
+    </button>
+    <button type="button" class="theme-toggle__item" role="menuitem" data-mode="system">
+      <span class="theme-toggle__item-icon" aria-hidden="true"><Icon name="lucide:monitor" size={18} /></span>
+      <span>System</span>
+    </button>
+  </div>
+</div>
+
+<script type="module">
+  const STORAGE_KEY = "theme-mode";
+
+  const applyMode = (mode) => {
+    // used for the toggle icon state
+    document.documentElement.dataset.themeMode = mode;
+
+    // used for actual theming overrides
+    if (mode === "light" || mode === "dark") {
+      document.documentElement.dataset.theme = mode;
+    } else {
+      delete document.documentElement.dataset.theme; // system => let CSS media query decide
+    }
+  };
+
+  const getSavedMode = () => localStorage.getItem(STORAGE_KEY) || "system";
+
+  document.querySelectorAll(".theme-toggle").forEach((root) => {
+    const btn = root.querySelector(".theme-toggle__btn");
+    const menu = root.querySelector(".theme-toggle__menu");
+
+    const openMenu = () => {
+      menu.hidden = false;
+      btn.setAttribute("aria-expanded", "true");
+    };
+    const closeMenu = () => {
+      menu.hidden = true;
+      btn.setAttribute("aria-expanded", "false");
+    };
+
+    // init
+    applyMode(getSavedMode());
+
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      menu.hidden ? openMenu() : closeMenu();
+    });
+
+    menu.addEventListener("click", (e) => {
+      const item = e.target.closest("[data-mode]");
+      if (!item) return;
+
+      const mode = item.dataset.mode;
+      localStorage.setItem(STORAGE_KEY, mode);
+      applyMode(mode);
+      closeMenu();
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!root.contains(e.target)) closeMenu();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeMenu();
+    });
+  });
+</script>
+
+<style>
+  .theme-toggle {
+    position: relative;
+  }
+
+  .theme-toggle__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1em 0.5em;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text);
+    border-bottom: 4px solid transparent;
+  }
+
+  .theme-toggle__btn-icon {
+    display: none;
+    line-height: 0;
+  }
+
+  :global(:root[data-theme-mode="light"]) .theme-toggle__btn-icon--light {
+    display: inline-flex;
+  }
+  :global(:root[data-theme-mode="dark"]) .theme-toggle__btn-icon--dark {
+    display: inline-flex;
+  }
+  :global(:root[data-theme-mode="system"]) .theme-toggle__btn-icon--system {
+    display: inline-flex;
+  }
+
+  .theme-toggle__menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    min-width: 160px;
+    padding: 0.25rem;
+    border-radius: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-1);
+    z-index: 30;
+  }
+
+  .theme-toggle__item {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.6rem 0.75rem;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .theme-toggle__item:hover,
+  .theme-toggle__item:focus-visible {
+    background: var(--surface-2);
+    outline: none;
+  }
+
+  .theme-toggle__item-icon {
+    display: inline-flex;
+    line-height: 0;
+  }
+</style>
