@@ -1,18 +1,18 @@
 ---
-import { Image } from 'astro:assets';
-import type { CollectionEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import Header from '../components/Header.astro';
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Header from "../components/Header.astro";
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = CollectionEntry<"blog">["data"];
 
 const { title, description, categories, year, pubDate, updatedDate, heroImage } = Astro.props;
 
 // Find related posts by category
-const allPosts = await getCollection('blog');
+const allPosts = await getCollection("blog");
 const relatedPosts = allPosts.filter(
 	(p) =>
 		p.data.categories &&
@@ -169,42 +169,42 @@ const yearPosts = allPosts.filter(
 									<>
 												<script is:inline>
 													// Dropdown logic: close all on outside click or when another is opened
-													document.addEventListener('click', function(e) {
-														const dropdowns = document.querySelectorAll('[id^="cat-posts-"]');
+													document.addEventListener("click", function(e) {
+														const dropdowns = document.querySelectorAll("[id^="cat-posts-"]");
 														dropdowns.forEach((el) => {
 															if (!el.contains(e.target) && !el.previousElementSibling.contains(e.target)) {
-																el.style.display = 'none';
+																el.style.display = "none";
 															}
 														});
-														const yearDropdown = document.getElementById('year-posts');
-														const yearBtn = document.getElementById('year-toggle');
+														const yearDropdown = document.getElementById("year-posts");
+														const yearBtn = document.getElementById("year-toggle");
 														if (yearDropdown && yearBtn && !yearDropdown.contains(e.target) && !yearBtn.contains(e.target)) {
-															yearDropdown.style.display = 'none';
+															yearDropdown.style.display = "none";
 														}
 													});
 													// Only allow one open at a time for categories
 													window.toggleCatDropdown = function(idx) {
-														const dropdowns = document.querySelectorAll('[id^="cat-posts-"]');
+														const dropdowns = document.querySelectorAll("[id^="cat-posts-"]");
 														dropdowns.forEach((el, i) => {
 															if (i === idx) {
-																el.style.display = el.style.display === 'block' ? 'none' : 'block';
+																el.style.display = el.style.display === "block" ? "none" : "block";
 															} else {
-																el.style.display = 'none';
+																el.style.display = "none";
 															}
 														});
 														// Close year dropdown if open
-														const yearDropdown = document.getElementById('year-posts');
-														if (yearDropdown) yearDropdown.style.display = 'none';
+														const yearDropdown = document.getElementById("year-posts");
+														if (yearDropdown) yearDropdown.style.display = "none";
 													}
 													// Only allow one open at a time for year
 													window.toggleYearDropdown = function() {
-														const yearDropdown = document.getElementById('year-posts');
-														const dropdowns = document.querySelectorAll('[id^="cat-posts-"]');
+														const yearDropdown = document.getElementById("year-posts");
+														const dropdowns = document.querySelectorAll("[id^="cat-posts-"]");
 														if (yearDropdown) {
-															yearDropdown.style.display = yearDropdown.style.display === 'block' ? 'none' : 'block';
+															yearDropdown.style.display = yearDropdown.style.display === "block" ? "none" : "block";
 														}
 														// Close all category dropdowns
-														dropdowns.forEach((el) => { el.style.display = 'none'; });
+														dropdowns.forEach((el) => { el.style.display = "none"; });
 													}
 												</script>
 										<div class="categories">
