@@ -1,63 +1,226 @@
 ---
-import AboutHeroImage from "../assets/blog/2025/blog-placeholder-2025.jpg";
-import Layout from "../layouts/BlogPost.astro";
+import Layout from "../layouts/Page.astro";
+
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  // CardFooter,
+} from "../components/ui/card";
+
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
+import { Separator } from "../components/ui/separator";
 ---
 
 <Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date("August 08 2021")}
-	heroImage={AboutHeroImage}
+  title="About"
+  description="Learn about Vintique Sound—mixing/mastering, Cubase training, and the story behind the channel."
 >
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+  <div class="space-y-10">
+    <!-- Hero -->
+    <header class="space-y-4">
+      <h1 class="text-3xl font-semibold tracking-tight">About</h1>
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+      <Card>
+        <CardContent className="space-y-5">
+          <p class="text-base leading-relaxed">
+            I help Bands &amp; Electronic Music Producers turn their raw recordings into professional quality
+            Mixes &amp; Masters. I also teach fundamentals of Mixing &amp; Mastering, and provide Cubase specific
+            training.
+          </p>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+          <div class="flex flex-wrap gap-3">
+            <Button asChild>
+              <a href="/contact">Contact</a>
+            </Button>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+            <Button variant="outline" asChild>
+              <a
+                href="https://www.youtube.com/c/vintiquesound"
+                target="_blank"
+                rel="noreferrer"
+              >
+                YouTube Channel
+              </a>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </header>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
+    <!-- What I do -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">What I do</h2>
+
+      <Card>
+        <CardContent className="space-y-4">
+          <p class="leading-relaxed">
+            The primary focus of Vintique Sound is to help Rock &amp; Indie Bands and Electronic Music Producers turn
+            their raw recordings into professional quality Mixes &amp; Masters. I also provide Cubase specific training
+            &amp; teach the fundamentals of Mixing &amp; Mastering.
+          </p>
+
+          <p class="leading-relaxed">
+            The goal of my YouTube Channel is to help you learn more about your DAW, to provide you with insightful
+            Mixing and Mastering tutorials, and tips &amp; tricks that will help elevate your music productions skills.
+          </p>
+        </CardContent>
+      </Card>
+    </section>
+
+    <Separator />
+
+    <!-- Story -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">My story</h2>
+
+      <div class="grid gap-4">
+        <Card>
+          <CardHeader>
+            <CardTitle>Early years</CardTitle>
+            <CardDescription>Where the music obsession started</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p class="leading-relaxed">
+              Music has always been an important part of my life. I remember when I was a tiny human and used to bang away
+              on a homemade drum kit made out of strategically placed margarine containers and ice cream pales. The faux drum
+              set was quickly replaced with a novice sized orange sparkle drum kit bought at a garage sale and an electric guitar
+              &amp; amp kit from Costco (and thankfully I've upgraded all of that gear as the years went by).
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Bands &amp; creative outlets</CardTitle>
+            <CardDescription>From covers to originals to genre experiments</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p class="leading-relaxed">
+              My first band was called "Doofeye." We were a cover band and played our first concert called "Doofest 2002."
+              I switched out between drummer and guitarist. I was the drummer in two other bands "Lacewing" &amp;
+              "The Equation" (all originals this time). And I even started my own 1-piece band called "Sirloin Casket"
+              which was my creative outlet to experiment with different genres.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Recording / Mixing / Mastering</CardTitle>
+            <CardDescription>The path to Cubase, services, and YouTube</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p class="leading-relaxed">
+              I was experimenting with Recording/Mixing/Mastering as of about 2002. My first DAW was Cool Edit Pro,
+              then Adobe Audition once they bought them out in 2003. I bought myself a Korg D4 portable recorder,
+              then later a Zoom R16. It wasn't until about 2012 when I decide to get serious with Audio Engineering.
+            </p>
+            <p class="leading-relaxed">
+              I bought Cubase Pro 6.5 and an audio interface and some studio monitors. I started producing Electronic Music
+              under the alias Phantom Limb (dubstep) &amp; a few years later as Antoku (deep house/nu disco) and more
+              recently as Rhythm Ace (chill hip hop). I also started providing services to bands and started a YouTube Channel.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </section>
+
+    <!-- Credits -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">Artists &amp; credits</h2>
+
+      <Card>
+        <CardContent className="space-y-4">
+          <p class="leading-relaxed">
+            I've since had the pleasure of working with talented artists such as Ante Svircic, Leonard, Gypsy Mobile,
+            Stephanie Harpe, Manobra de Massa, Gernot Gabriel, Timmy James, Mindwiser, &amp; Cataclysm. Some of my recordings
+            and mixes have found their way to Howie Weinberg Mastering &amp; various radio stations.
+          </p>
+
+          <div class="flex flex-wrap gap-2">
+            <Badge variant="secondary">Ante Svircic</Badge>
+            <Badge variant="secondary">Leonard</Badge>
+            <Badge variant="secondary">Gypsy Mobile</Badge>
+            <Badge variant="secondary">Stephanie Harpe</Badge>
+            <Badge variant="secondary">Manobra de Massa</Badge>
+            <Badge variant="secondary">Gernot Gabriel</Badge>
+            <Badge variant="secondary">Timmy James</Badge>
+            <Badge variant="secondary">Mindwiser</Badge>
+            <Badge variant="secondary">Cataclysm</Badge>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Fun fact</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p class="leading-relaxed">
+            You might be surprised to learn that I have an Automotive Mechanic Certificate and a Bachelor of Arts in Philosophy
+            and Psychology. Not only am I addicted to music, but I'm also proud of my technical and academic background.
+          </p>
+        </CardContent>
+      </Card>
+    </section>
+
+    <Separator />
+
+    <!-- Outside the studio -->
+    <section class="space-y-4">
+      <h2 class="text-xl font-semibold">Outside the studio</h2>
+
+      <div class="grid gap-4 md:grid-cols-3">
+        <Card className="overflow-hidden">
+          <img
+            src="/images/about/studio-nerd.jpg"
+            alt="Studio nerd"
+            class="h-44 w-full object-cover"
+            loading="lazy"
+          />
+          <CardContent className="space-y-2">
+            <CardTitle className="text-base">Studio nerd</CardTitle>
+            <p class="text-sm leading-relaxed">
+              I'm addicted to music, so naturally I spend every spare minute making music and fiddling around with gear.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="overflow-hidden">
+          <img
+            src="/images/about/festival-dancer.jpg"
+            alt="Festival dancer"
+            class="h-44 w-full object-cover"
+            loading="lazy"
+          />
+          <CardContent className="space-y-2">
+            <CardTitle className="text-base">Festival dancer</CardTitle>
+            <p class="text-sm leading-relaxed">
+              If I'm not in the studio, I'm probably dancing up a storm in an astronaut costume at a music festival.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="overflow-hidden">
+          <img
+            src="/images/about/mountain-dweller.jpg"
+            alt="Mountain dweller"
+            class="h-44 w-full object-cover"
+            loading="lazy"
+          />
+          <CardContent className="space-y-2">
+            <CardTitle className="text-base">Mountain dweller</CardTitle>
+            <p class="text-sm leading-relaxed">
+              Or you'll catch me hiking in the summer or hittin that sweet pow at the tippy top of the mountain in the winter.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+    </section>
+  </div>
 </Layout>

@@ -3,9 +3,9 @@ import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
-import Header from "../components/Header.astro";
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -170,7 +170,7 @@ const yearPosts = allPosts.filter(
 												<script is:inline>
 													// Dropdown logic: close all on outside click or when another is opened
 													document.addEventListener("click", function(e) {
-														const dropdowns = document.querySelectorAll("[id^="cat-posts-"]");
+														const dropdowns = document.querySelectorAll('[id^="cat-posts-"]');
 														dropdowns.forEach((el) => {
 															if (!el.contains(e.target) && !el.previousElementSibling.contains(e.target)) {
 																el.style.display = "none";
@@ -184,7 +184,7 @@ const yearPosts = allPosts.filter(
 													});
 													// Only allow one open at a time for categories
 													window.toggleCatDropdown = function(idx) {
-														const dropdowns = document.querySelectorAll("[id^="cat-posts-"]");
+														const dropdowns = document.querySelectorAll('[id^="cat-posts-"]');
 														dropdowns.forEach((el, i) => {
 															if (i === idx) {
 																el.style.display = el.style.display === "block" ? "none" : "block";
@@ -199,7 +199,7 @@ const yearPosts = allPosts.filter(
 													// Only allow one open at a time for year
 													window.toggleYearDropdown = function() {
 														const yearDropdown = document.getElementById("year-posts");
-														const dropdowns = document.querySelectorAll("[id^="cat-posts-"]");
+														const dropdowns = document.querySelectorAll('[id^="cat-posts-"]');
 														if (yearDropdown) {
 															yearDropdown.style.display = yearDropdown.style.display === "block" ? "none" : "block";
 														}
