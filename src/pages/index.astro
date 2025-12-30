@@ -1,49 +1,183 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import Layout from "../layouts/WebPage.astro";
+import { Image } from "astro:assets";
+import { ArrowRight, Headphones, CheckCircle, GraduationCap, Package } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+
+import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<Layout >
+	<div class="flex flex-col">
+    {/* Hero Section */}
+    <section class="relative py-20 md:py-32 overflow-hidden">
+      <div class="absolute inset-0 bg-linear-to-br from-primary/10 via-secondary/5 to-accent/10" />
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              Professional Audio Services for Your Sound
+            </h1>
+            <p class="text-lg md:text-xl text-muted-foreground mb-8">
+              From mixing and mastering to education and premium plugins, we help you create professional-quality audio.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <Button size="lg" className="bg-primary hover:bg-primary/90">
+                Explore Services
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button size="lg" variant="outline">
+                View Tutorials
+              </Button>
+            </div>
+          </div>
+          <div class="relative h-100 lg:h-125 rounded-2xl overflow-hidden shadow-2xl">
+            <Image
+              src={HeroMixerImage}
+              alt="Music Studio Audio Mixer"
+              width={500}
+              height={500}
+              class="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Services Preview */}
+    <section class="py-20 bg-muted/50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Professional audio services tailored to your needs
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <Card className="border-2 hover:border-primary transition-all duration-300">
+            <CardHeader>
+              <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                <Headphones className="h-6 w-6 text-primary" />
+              </div>
+              <CardTitle>Mixing & Mastering</CardTitle>
+              <CardDescription>
+                Professional mixing and mastering services to make your tracks shine
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul class="space-y-2 mb-6">
+                <li class="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-secondary" />
+                  <span>Industry-standard quality</span>
+                </li>
+                <li class="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-secondary" />
+                  <span>Fast turnaround times</span>
+                </li>
+                <li class="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-secondary" />
+                  <span>Unlimited revisions</span>
+                </li>
+              </ul>
+              <a href="/services">
+                <Button className="w-full bg-primary hover:bg-primary/90">
+                  Learn More
+                </Button>
+              </a>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2 hover:border-secondary transition-all duration-300">
+            <CardHeader>
+              <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-4">
+                <GraduationCap className="h-6 w-6 text-secondary" />
+              </div>
+              <CardTitle>Education & Tutorials</CardTitle>
+              <CardDescription>
+                Learn from industry professionals with our comprehensive tutorials
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul class="space-y-2 mb-6">
+                <li class="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-secondary" />
+                  <span>Step-by-step courses</span>
+                </li>
+                <li class="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-secondary" />
+                  <span>Expert instructors</span>
+                </li>
+                <li class="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-secondary" />
+                  <span>Lifetime access</span>
+                </li>
+              </ul>
+              <a href="/education">
+                <Button className="w-full bg-secondary hover:bg-secondary/90">
+                  Browse Courses
+                </Button>
+              </a>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2 hover:border-accent transition-all duration-300">
+            <CardHeader>
+              <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                <Package className="h-6 w-6 text-accent" />
+              </div>
+              <CardTitle>Digital Products</CardTitle>
+              <CardDescription>
+                Premium plugins, samples, and loops for your productions
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ul class="space-y-2 mb-6">
+                <li class="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-secondary" />
+                  <span>Professional quality</span>
+                </li>
+                <li class="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-secondary" />
+                  <span>Royalty-free content</span>
+                </li>
+                <li class="flex items-center gap-2 text-sm">
+                  <CheckCircle className="h-4 w-4 text-secondary" />
+                  <span>Instant download</span>
+                </li>
+              </ul>
+              <a href="/products">
+                <Button className="w-full bg-accent hover:bg-accent/90">
+                  Shop Now
+                </Button>
+              </a>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </section>
+
+    {/* CTA Section */}
+    <section class="py-20 relative overflow-hidden">
+      <div class="absolute inset-0 bg-linear-to-br from-primary via-primary/80 to-secondary" />
+      <div class="container mx-auto px-4 relative z-10 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+          Ready to Elevate Your Sound?
+        </h2>
+        <p class="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
+          Join thousands of producers and engineers who trust SoundForge for their audio needs
+        </p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <Button size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
+            Get Started Today
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
+          <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+            Contact Us
+          </Button>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
