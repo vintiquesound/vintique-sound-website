@@ -1,0 +1,68 @@
+---
+import type { ImageMetadata } from "astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+type Props = {
+    title?: string;
+    description?: string;
+    image?: ImageMetadata;
+};
+
+const { title, description, image } = Astro.props;
+const fullTitle = title ? `${title} | ${SITE_TITLE}` : SITE_TITLE;
+const fullDescription = description ?? SITE_DESCRIPTION;
+const baseHeadImageProps = image ? { image } : {};
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={fullTitle} description={fullDescription} {...baseHeadImageProps} />
+    </head>
+    <body>
+        <Header />
+        <main class="page">
+            <slot />
+        </main>
+        <Footer />
+    </body>
+</html>
+
+<style>
+    .page {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    /* Standard responsive container widths (similar to Tailwind's defaults) */
+    @media (min-width: 640px) {
+        .page {
+            max-width: 640px;
+        }
+    }
+    @media (min-width: 768px) {
+        .page {
+            max-width: 768px;
+        }
+    }
+    @media (min-width: 1024px) {
+        .page {
+            max-width: 1024px;
+        }
+    }
+    @media (min-width: 1280px) {
+        .page {
+            max-width: 1280px;
+        }
+    }
+    @media (min-width: 1536px) {
+        .page {
+            max-width: 1536px;
+        }
+    }
+</style>
