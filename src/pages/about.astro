@@ -1,5 +1,6 @@
 ---
-import Layout from "../layouts/Page.astro";
+import { ABOUT_TITLE, ABOUT_DESCRIPTION } from "@/consts";
+import Layout from "../layouts/WebPage.astro";
 
 import {
   Card,
@@ -15,10 +16,7 @@ import { Badge } from "../components/ui/badge";
 import { Separator } from "../components/ui/separator";
 ---
 
-<Layout
-  title="About"
-  description="Learn about Vintique Sound—mixing/mastering, Cubase training, and the story behind the channel."
->
+<Layout title={ABOUT_TITLE} description={ABOUT_DESCRIPTION}>
   <div class="space-y-10">
     <!-- Hero -->
     <header class="space-y-4">
