@@ -4,49 +4,24 @@ const today = new Date();
 ---
 
 
-<footer>
-	&copy; 2011 - {today.getFullYear()} Vintique Sound. All rights reserved.
-	<div class="social-links">
-		<a href="https://www.youtube.com/c/vintiquesound" target="_blank">
-			<span class="sr-only">Follow Vintique Sound on YouTube</span>
-			<Icon name={"simple-icons:youtube"} size={32} />
-		</a>
-		<a href="https://soundcloud.com/vintiquesound" target="_blank">
-			<span class="sr-only">Follow Vintique Sound on SoundCloud</span>
-			<Icon name={"simple-icons:soundcloud"} size={32} />
-		</a>
-		<a href="https://www.instagram.com/vintiquesound/" target="_blank">
-			<span class="sr-only">Follow Vintique Sound on Instagram</span>
-			<Icon name={"simple-icons:instagram"} size={32} />
-		</a>
-		<a href="https://www.facebook.com/vintiquesound/" target="_blank">
-			<span class="sr-only">Follow Vintique Sound on Facebook</span>
-			<Icon name={"simple-icons:facebook"} size={32} />
-		</a>
-	</div>
+<footer class="py-8 px-4 bg-[var(--surface)] border-t border-[var(--border)] text-[var(--text)] text-center">
+  &copy; 2011 - {today.getFullYear()} Vintique Sound. All rights reserved.
+  <div class="flex justify-center gap-4 mt-4 text-[var(--accent)]">
+    <a href="https://www.youtube.com/c/vintiquesound" target="_blank" class="no-underline text-[var(--accent)] hover:text-[var(--accent)]">
+      <span class="sr-only">Follow Vintique Sound on YouTube</span>
+      <Icon name={"simple-icons:youtube"} size={32} />
+    </a>
+    <a href="https://soundcloud.com/vintiquesound" target="_blank" class="no-underline text-[var(--accent)] hover:text-[var(--accent)]">
+      <span class="sr-only">Follow Vintique Sound on SoundCloud</span>
+      <Icon name={"simple-icons:soundcloud"} size={32} />
+    </a>
+    <a href="https://www.instagram.com/vintiquesound/" target="_blank" class="no-underline text-[var(--accent)] hover:text-[var(--accent)]">
+      <span class="sr-only">Follow Vintique Sound on Instagram</span>
+      <Icon name={"simple-icons:instagram"} size={32} />
+    </a>
+    <a href="https://www.facebook.com/vintiquesound/" target="_blank" class="no-underline text-[var(--accent)] hover:text-[var(--accent)]">
+      <span class="sr-only">Follow Vintique Sound on Facebook</span>
+      <Icon name={"simple-icons:facebook"} size={32} />
+    </a>
+  </div>
 </footer>
-<style>
-  footer {
-    padding: 2em 1em;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-    text-align: center;
-  }
-
-  .social-links {
-    display: flex;
-    justify-content: center;
-    gap: 1em;
-    margin-top: 1em;
-  }
-
-  .social-links a {
-    text-decoration: none;
-    color: var(--muted);
-  }
-
-  .social-links a:hover {
-    color: var(--text);
-  }
-</style>

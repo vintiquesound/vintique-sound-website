@@ -2,30 +2,70 @@
 import { Icon } from "astro-icon/components";
 ---
 
-<div class="theme-toggle">
-  <button type="button" class="theme-toggle__btn" aria-haspopup="menu" aria-expanded="false" aria-label="Theme">
-    <span class="theme-toggle__btn-icon theme-toggle__btn-icon--light" aria-hidden="true">
+<div class="theme-toggle relative">
+  <button
+    type="button"
+    class="theme-toggle__btn inline-flex items-center justify-center py-4 px-2 bg-transparent border-0 cursor-pointer text-[var(--text)] border-b-4 border-transparent focus-visible:outline-none"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-label="Theme"
+  >
+    <span
+      class="theme-toggle__btn-icon hidden leading-none [[data-theme-mode=light]_&]:inline-flex"
+      aria-hidden="true"
+    >
       <Icon name="lucide:sun" size={18} />
     </span>
-    <span class="theme-toggle__btn-icon theme-toggle__btn-icon--dark" aria-hidden="true">
+    <span
+      class="theme-toggle__btn-icon hidden leading-none [[data-theme-mode=dark]_&]:inline-flex"
+      aria-hidden="true"
+    >
       <Icon name="lucide:moon" size={18} />
     </span>
-    <span class="theme-toggle__btn-icon theme-toggle__btn-icon--system" aria-hidden="true">
+    <span
+      class="theme-toggle__btn-icon hidden leading-none [[data-theme-mode=system]_&]:inline-flex"
+      aria-hidden="true"
+    >
       <Icon name="lucide:monitor" size={18} />
     </span>
   </button>
 
-  <div class="theme-toggle__menu" role="menu" hidden>
-    <button type="button" class="theme-toggle__item" role="menuitem" data-mode="light">
-      <span class="theme-toggle__item-icon" aria-hidden="true"><Icon name="lucide:sun" size={18} /></span>
+  <div
+    class="theme-toggle__menu absolute right-0 top-full min-w-[160px] p-1 rounded-[10px] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-1)] z-30"
+    role="menu"
+    hidden
+  >
+    <button
+      type="button"
+      class="theme-toggle__item w-full grid grid-cols-[22px_1fr] gap-2 items-center py-[0.6rem] px-[0.75rem] border-0 rounded-lg bg-transparent text-[var(--text)] cursor-pointer text-left hover:bg-[var(--surface-2)] focus-visible:bg-[var(--surface-2)] focus-visible:outline-none"
+      role="menuitem"
+      data-mode="light"
+    >
+      <span class="theme-toggle__item-icon inline-flex leading-none" aria-hidden="true">
+        <Icon name="lucide:sun" size={18} />
+      </span>
       <span>Light</span>
     </button>
-    <button type="button" class="theme-toggle__item" role="menuitem" data-mode="dark">
-      <span class="theme-toggle__item-icon" aria-hidden="true"><Icon name="lucide:moon" size={18} /></span>
+    <button
+      type="button"
+      class="theme-toggle__item w-full grid grid-cols-[22px_1fr] gap-2 items-center py-[0.6rem] px-[0.75rem] border-0 rounded-lg bg-transparent text-[var(--text)] cursor-pointer text-left hover:bg-[var(--surface-2)] focus-visible:bg-[var(--surface-2)] focus-visible:outline-none"
+      role="menuitem"
+      data-mode="dark"
+    >
+      <span class="theme-toggle__item-icon inline-flex leading-none" aria-hidden="true">
+        <Icon name="lucide:moon" size={18} />
+      </span>
       <span>Dark</span>
     </button>
-    <button type="button" class="theme-toggle__item" role="menuitem" data-mode="system">
-      <span class="theme-toggle__item-icon" aria-hidden="true"><Icon name="lucide:monitor" size={18} /></span>
+    <button
+      type="button"
+      class="theme-toggle__item w-full grid grid-cols-[22px_1fr] gap-2 items-center py-[0.6rem] px-[0.75rem] border-0 rounded-lg bg-transparent text-[var(--text)] cursor-pointer text-left hover:bg-[var(--surface-2)] focus-visible:bg-[var(--surface-2)] focus-visible:outline-none"
+      role="menuitem"
+      data-mode="system"
+    >
+      <span class="theme-toggle__item-icon inline-flex leading-none" aria-hidden="true">
+        <Icon name="lucide:monitor" size={18} />
+      </span>
       <span>System</span>
     </button>
   </div>
@@ -88,75 +128,3 @@ import { Icon } from "astro-icon/components";
     });
   });
 </script>
-
-<style>
-  .theme-toggle {
-    position: relative;
-  }
-
-  .theme-toggle__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1em 0.5em;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--text);
-    border-bottom: 4px solid transparent;
-  }
-
-  .theme-toggle__btn-icon {
-    display: none;
-    line-height: 0;
-  }
-
-  :global(:root[data-theme-mode="light"]) .theme-toggle__btn-icon--light {
-    display: inline-flex;
-  }
-  :global(:root[data-theme-mode="dark"]) .theme-toggle__btn-icon--dark {
-    display: inline-flex;
-  }
-  :global(:root[data-theme-mode="system"]) .theme-toggle__btn-icon--system {
-    display: inline-flex;
-  }
-
-  .theme-toggle__menu {
-    position: absolute;
-    right: 0;
-    top: 100%;
-    min-width: 160px;
-    padding: 0.25rem;
-    border-radius: 10px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-1);
-    z-index: 30;
-  }
-
-  .theme-toggle__item {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 22px 1fr;
-    gap: 0.5rem;
-    align-items: center;
-    padding: 0.6rem 0.75rem;
-    border: 0;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--text);
-    cursor: pointer;
-    text-align: left;
-  }
-
-  .theme-toggle__item:hover,
-  .theme-toggle__item:focus-visible {
-    background: var(--surface-2);
-    outline: none;
-  }
-
-  .theme-toggle__item-icon {
-    display: inline-flex;
-    line-height: 0;
-  }
-</style>
