@@ -1,130 +1,19 @@
 ---
-import { Icon } from "astro-icon/components";
+import ThemeToggleMenu from "./ThemeToggleMenu";
 ---
 
-<div class="theme-toggle relative">
-  <button
-    type="button"
-    class="theme-toggle__btn inline-flex items-center justify-center py-4 px-2 bg-transparent border-0 cursor-pointer text-[var(--text)] border-b-4 border-transparent focus-visible:outline-none"
-    aria-haspopup="menu"
-    aria-expanded="false"
-    aria-label="Theme"
-  >
-    <span
-      class="theme-toggle__btn-icon hidden leading-none [[data-theme-mode=light]_&]:inline-flex"
-      aria-hidden="true"
-    >
-      <Icon name="lucide:sun" size={18} />
-    </span>
-    <span
-      class="theme-toggle__btn-icon hidden leading-none [[data-theme-mode=dark]_&]:inline-flex"
-      aria-hidden="true"
-    >
-      <Icon name="lucide:moon" size={18} />
-    </span>
-    <span
-      class="theme-toggle__btn-icon hidden leading-none [[data-theme-mode=system]_&]:inline-flex"
-      aria-hidden="true"
-    >
-      <Icon name="lucide:monitor" size={18} />
-    </span>
-  </button>
-
-  <div
-    class="theme-toggle__menu absolute right-0 top-full min-w-[160px] p-1 rounded-[10px] bg-[var(--surface)] border border-[var(--border)] shadow-[var(--shadow-1)] z-30"
-    role="menu"
-    hidden
-  >
-    <button
-      type="button"
-      class="theme-toggle__item w-full grid grid-cols-[22px_1fr] gap-2 items-center py-[0.6rem] px-[0.75rem] border-0 rounded-lg bg-transparent text-[var(--text)] cursor-pointer text-left hover:bg-[var(--surface-2)] focus-visible:bg-[var(--surface-2)] focus-visible:outline-none"
-      role="menuitem"
-      data-mode="light"
-    >
-      <span class="theme-toggle__item-icon inline-flex leading-none" aria-hidden="true">
-        <Icon name="lucide:sun" size={18} />
-      </span>
-      <span>Light</span>
-    </button>
-    <button
-      type="button"
-      class="theme-toggle__item w-full grid grid-cols-[22px_1fr] gap-2 items-center py-[0.6rem] px-[0.75rem] border-0 rounded-lg bg-transparent text-[var(--text)] cursor-pointer text-left hover:bg-[var(--surface-2)] focus-visible:bg-[var(--surface-2)] focus-visible:outline-none"
-      role="menuitem"
-      data-mode="dark"
-    >
-      <span class="theme-toggle__item-icon inline-flex leading-none" aria-hidden="true">
-        <Icon name="lucide:moon" size={18} />
-      </span>
-      <span>Dark</span>
-    </button>
-    <button
-      type="button"
-      class="theme-toggle__item w-full grid grid-cols-[22px_1fr] gap-2 items-center py-[0.6rem] px-[0.75rem] border-0 rounded-lg bg-transparent text-[var(--text)] cursor-pointer text-left hover:bg-[var(--surface-2)] focus-visible:bg-[var(--surface-2)] focus-visible:outline-none"
-      role="menuitem"
-      data-mode="system"
-    >
-      <span class="theme-toggle__item-icon inline-flex leading-none" aria-hidden="true">
-        <Icon name="lucide:monitor" size={18} />
-      </span>
-      <span>System</span>
-    </button>
-  </div>
-</div>
-
-<script type="module">
-  const STORAGE_KEY = "theme-mode";
-
-  const applyMode = (mode) => {
-    // used for the toggle icon state
+<!-- Ensure the correct icon mode is set ASAP (before React hydrates) -->
+<script is:inline>
+  (() => {
+    const STORAGE_KEY = "theme-mode";
+    const mode = localStorage.getItem(STORAGE_KEY) || "system";
     document.documentElement.dataset.themeMode = mode;
-
-    // used for actual theming overrides
     if (mode === "light" || mode === "dark") {
       document.documentElement.dataset.theme = mode;
     } else {
-      delete document.documentElement.dataset.theme; // system => let CSS media query decide
+      delete document.documentElement.dataset.theme;
     }
-  };
-
-  const getSavedMode = () => localStorage.getItem(STORAGE_KEY) || "system";
-
-  document.querySelectorAll(".theme-toggle").forEach((root) => {
-    const btn = root.querySelector(".theme-toggle__btn");
-    const menu = root.querySelector(".theme-toggle__menu");
-
-    const openMenu = () => {
-      menu.hidden = false;
-      btn.setAttribute("aria-expanded", "true");
-    };
-    const closeMenu = () => {
-      menu.hidden = true;
-      btn.setAttribute("aria-expanded", "false");
-    };
-
-    // init
-    applyMode(getSavedMode());
-
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      menu.hidden ? openMenu() : closeMenu();
-    });
-
-    menu.addEventListener("click", (e) => {
-      const item = e.target.closest("[data-mode]");
-      if (!item) return;
-
-      const mode = item.dataset.mode;
-      localStorage.setItem(STORAGE_KEY, mode);
-      applyMode(mode);
-      closeMenu();
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!root.contains(e.target)) closeMenu();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeMenu();
-    });
-  });
+  })();
 </script>
+
+<ThemeToggleMenu client:load />
