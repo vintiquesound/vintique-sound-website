@@ -4,6 +4,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import "../styles/global.css";
 
 type Props = {
     title?: string;
@@ -24,44 +25,9 @@ const baseHeadImageProps = image ? { image } : {};
     </head>
     <body>
         <Header />
-        <main class="page">
+        <main class="w-full max-w-full m-0">
             <slot />
         </main>
         <Footer />
     </body>
 </html>
-
-<style>
-    .page {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto;
-    }
-
-    /* Standard responsive container widths (similar to Tailwind's defaults) */
-    @media (min-width: 640px) {
-        .page {
-            max-width: 640px;
-        }
-    }
-    @media (min-width: 768px) {
-        .page {
-            max-width: 768px;
-        }
-    }
-    @media (min-width: 1024px) {
-        .page {
-            max-width: 1024px;
-        }
-    }
-    @media (min-width: 1280px) {
-        .page {
-            max-width: 1280px;
-        }
-    }
-    @media (min-width: 1536px) {
-        .page {
-            max-width: 1536px;
-        }
-    }
-</style>
