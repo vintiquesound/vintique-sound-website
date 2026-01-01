@@ -12,29 +12,34 @@ type ThemeMode = "light" | "dark" | "system"
 
 const STORAGE_KEY = "theme-mode"
 
-function applyMode(mode: ThemeMode) {
-  document.documentElement.dataset.themeMode = mode
-
-  if (mode === "light" || mode === "dark") {
-    document.documentElement.dataset.theme = mode
-  } else {
-    delete document.documentElement.dataset.theme
-  }
-}
-
 export default function ThemeToggleMenu() {
   const [mode, setMode] = React.useState<ThemeMode>("system")
 
   React.useEffect(() => {
     const saved = (localStorage.getItem(STORAGE_KEY) as ThemeMode | null) || "system"
     setMode(saved)
-    applyMode(saved)
   }, [])
+
+  React.useEffect(() => {
+    document.documentElement.dataset.themeMode = mode
+
+    const mql = window.matchMedia("(prefers-color-scheme: dark)")
+    const apply = () => {
+      const isDark = mode === "dark" || (mode === "system" && mql.matches)
+      document.documentElement.classList.toggle("dark", isDark)
+    }
+
+    apply()
+
+    if (mode !== "system") return
+
+    mql.addEventListener("change", apply)
+    return () => mql.removeEventListener("change", apply)
+  }, [mode])
 
   const setThemeMode = React.useCallback((next: ThemeMode) => {
     localStorage.setItem(STORAGE_KEY, next)
     setMode(next)
-    applyMode(next)
   }, [])
 
   return (
