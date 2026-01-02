@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 import { ArrowRight, Headphones, CheckCircle, GraduationCap, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import TwoColumnSection from "@/layouts/TwoColumnSection.astro";
+import DualColumnSection from "@/layouts/DualColumnSection.astro";
 
 import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 ---
@@ -12,7 +12,7 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 <Layout >
 	<div class="flex flex-col">
     {/* Hero Section */}
-    <TwoColumnSection>
+    <DualColumnSection>
       <Fragment slot="left">
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
           Professional Audio Services & More!
@@ -42,7 +42,7 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
           />
         </div>
       </Fragment>
-    </TwoColumnSection>
+    </DualColumnSection>
 
     {/* Services Preview */}
     <section class="w-full py-20 bg-muted/50">

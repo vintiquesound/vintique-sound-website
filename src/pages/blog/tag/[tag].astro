@@ -1,0 +1,112 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../../layouts/WebPageLayout.astro";
+import SingleColumnSection from "../../../layouts/SingleColumnSection.astro";
+import FormattedDate from "../../../components/FormattedDate.astro";
+import { slugifyTag } from "../../../lib/utils";
+
+function stripMarkup(input: string) {
+	let text = input;
+
+	// Remove import statements (Astro/MDX/JSX)
+	text = text.replace(/^import\s+.*;?$/gm, " ");
+	// Remove fenced code blocks
+	text = text.replace(/```[\s\S]*?```/g, " ");
+	// Remove inline code
+	text = text.replace(/`[^`]*`/g, " ");
+	// Remove images ![alt](url)
+	text = text.replace(/!\[[^\]]*\]\([^)]*\)/g, " ");
+	// Replace links [text](url) -> text
+	text = text.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1");
+	// Remove HTML/JSX tags
+	text = text.replace(/<[^>]+>/g, " ");
+	// Remove MD headings/blockquote/list markers
+	text = text.replace(/^\s{0,3}(#{1,6}|>|\*|-|\d+\.)\s+/gm, "");
+	// Remove emphasis markers
+	text = text.replace(/[\*_~]+/g, "");
+
+	// Collapse whitespace
+	text = text.replace(/\s+/g, " ").trim();
+	return text;
+}
+
+function wordPreview(input: string, words = 250) {
+	const tokens = input.split(/\s+/).filter(Boolean);
+	if (tokens.length <= words) return input;
+	return tokens.slice(0, words).join(" ") + "…";
+}
+
+export async function getStaticPaths() {
+	const posts = await getCollection("blog");
+	const tags = new Set<string>();
+
+	for (const post of posts) {
+		for (const cat of post.data.categories ?? []) tags.add(cat);
+	}
+
+	return Array.from(tags)
+		.sort((a, b) => a.localeCompare(b))
+		.map((tag) => ({
+			params: { tag: slugifyTag(tag) },
+			props: { tag },
+		}));
+}
+const { tag } = Astro.props;
+
+const allPosts = (await getCollection("blog"))
+	.filter((p) => (p.data.categories ?? []).includes(tag))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const count = allPosts.length;
+---
+
+<Layout title={tag} description={`Posts tagged ${tag}`}>
+	<SingleColumnSection class="py-10 sm:py-12">
+		<h1 class="m-0 text-center text-foreground">{tag}</h1>
+		<p class="mt-2 mb-0 text-center text-muted-foreground">
+			{count} blog post{count === 1 ? "" : "s"} use this tag
+		</p>
+		<hr class="my-4 border-border" />
+
+		{count === 0 ? (
+			<p class="text-muted-foreground">No posts found for this tag yet.</p>
+		) : (
+			<div>
+				{allPosts.map((post) => {
+					const previewText = wordPreview(stripMarkup(post.body ?? ""), 80);
+					const hasPreview = previewText.replace(/\s+/g, "").length > 0;
+
+					return (
+						<div>
+							<h2 class="m-0">
+                <a
+                  href={`/blog/${post.slug}/`}
+                  class="inline-flex items-center gap-2 text-foreground hover:text-accent"
+                >
+                  {post.data.title}
+                </a>
+              </h2>
+							<p class="mt-1 mb-0 text-muted-foreground">
+								<FormattedDate date={post.data.pubDate} />
+							</p>
+							<p class="mt-3 mb-0 text-foreground">
+								{hasPreview && !/^This post doesn’t include/.test(previewText)
+									? previewText
+									: "This post doesn’t include readable text content for a preview (it may be mostly media). Use the link below to open the full post."}
+							</p>
+							<p class="mt-3 mb-0">
+								<a
+									href={`/blog/${post.slug}/`}
+									class="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-accent"
+								>
+									Read more <span aria-hidden="true">→</span>
+								</a>
+							</p>
+							<hr class="my-6 border-border" />
+						</div>
+					);
+				})}
+			</div>
+		)}
+	</SingleColumnSection>
+</Layout>
