@@ -1,6 +1,6 @@
 ---
 import { ABOUT_TITLE, ABOUT_DESCRIPTION } from "@/consts";
-import Layout from "../layouts/WebPageLayout.astro";
+import WebPageLayout from "../layouts/WebPageLayout.astro";
 
 import {
   Card,
@@ -16,7 +16,7 @@ import { Badge } from "../components/ui/badge";
 import { Separator } from "../components/ui/separator";
 ---
 
-<Layout title={ABOUT_TITLE} description={ABOUT_DESCRIPTION}>
+<WebPageLayout title={ABOUT_TITLE} description={ABOUT_DESCRIPTION}>
   <div class="space-y-10">
     <!-- Hero -->
     <header class="space-y-4">
@@ -221,4 +221,4 @@ import { Separator } from "../components/ui/separator";
 
     </section>
   </div>
-</Layout>
+</WebPageLayout>

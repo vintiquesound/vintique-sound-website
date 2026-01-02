@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import { BLOG_TITLE, BLOG_DESCRIPTION } from "@/consts";
-import Layout from "../../layouts/WebPageLayout.astro";
+import WebPageLayout from "../../layouts/WebPageLayout.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 
 const posts = (await getCollection("blog"))
@@ -11,7 +11,7 @@ const posts = (await getCollection("blog"))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<Layout title={BLOG_TITLE} description={BLOG_DESCRIPTION}>
+<WebPageLayout title={BLOG_TITLE} description={BLOG_DESCRIPTION}>
 	<section class="w-full">
 		<div class="my-8 mx-auto w-full max-w-200 px-4 sm:px-6 lg:px-8">
 			<ul class="grid list-none grid-cols-1 gap-2 p-0 md:grid-cols-2 md:gap-8">
@@ -38,21 +38,21 @@ const posts = (await getCollection("blog"))
 							)}
 							<h4
 								class:list={{
-									"m-0 font-semibold leading-none text-foreground transition-colors duration-200 ease-out group-hover:text-accent": true,
+									"m-0 font-semibold leading-none text-foreground transition-colors duration-200 ease-out group-hover:text-accent uppercase": true,
 									"text-2xl md:text-4xl": idx === 0,
 									"text-xl": idx !== 0,
 								}}
 							>
 								{post.data.title}
 							</h4>
-							<p class="m-0 text-muted-foreground transition-colors duration-200 ease-out group-hover:text-accent">
-								<FormattedDate date={post.data.pubDate} />
-							</p>
 						</a>
+            <div class="m-0">
+              <FormattedDate date={post.data.pubDate} />
+            </div>
 					</li>
 				))
 			}
 			</ul>
 		</div>
 	</section>
-</Layout>
+</WebPageLayout>

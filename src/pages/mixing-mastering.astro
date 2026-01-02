@@ -1,10 +1,10 @@
 ---
 import { MIX_MASTER_TITLE, MIX_MASTER_DESCRIPTION } from "@/consts";
-import Layout from "../layouts/WebPageLayout.astro";
+import WebPageLayout from "../layouts/WebPageLayout.astro";
 import ContactForm from "../components/ui/ContactForm";
 ---
 
-<Layout title={MIX_MASTER_TITLE} description={MIX_MASTER_DESCRIPTION}>
+<WebPageLayout title={MIX_MASTER_TITLE} description={MIX_MASTER_DESCRIPTION}>
   <h1>Mixing and Mastering Services</h1>
 
   <p>Unlock the full potential of your music with professional mixing and mastering tailored to your genre and vision.</p>
@@ -43,4 +43,4 @@ import ContactForm from "../components/ui/ContactForm";
   <hr />
 
   <p><em>Have questions? Check out the <a href="/faq/">FAQ</a> or reach out directly.</em></p>
-</Layout>
+</WebPageLayout>

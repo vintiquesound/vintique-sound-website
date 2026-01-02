@@ -193,7 +193,7 @@
   overflow-wrap: break-word;
   /* color: rgb(var(--gray-dark)); */
   color: var(--text);
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.7;
   }
 
@@ -210,24 +210,31 @@
   h4,
   h5,
   h6 {
+  /* font-family: "Saira", sans-serif; */
   margin: 0 0 0.5rem 0;
   color: rgb(var(--black));
   line-height: 1.2;
   }
   h1 {
-  font-size: 3.052em;
+  font-size: 2.986rem;
+  font-weight: 700;
   }
   h2 {
-  font-size: 2.441em;
+  font-size: 2.488rem;
+  font-weight: 700;
   }
   h3 {
-  font-size: 1.953em;
+  font-size: 2.074rem;
+  font-weight: 700;
   }
   h4 {
-  font-size: 1.563em;
+  font-size: 1.728rem;
   }
   h5 {
-  font-size: 1.25em;
+  font-size: 1.44rem;
+  }
+  h6 {
+    font-size: 1.2rem;
   }
   strong,
   b {

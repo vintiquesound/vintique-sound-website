@@ -2,24 +2,25 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
+import { slugifyTag } from "../lib/utils";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
-import { slugifyTag } from "../lib/utils";
+import Tag from "../components/ui/Tag.astro";
 import "../styles/global.css";
 
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, categories, pubDate, revisedDate, heroImage } = Astro.props;
+const { heroImage, title, description, pubDate, revisedDate, tags, quote } = Astro.props;
 
-// Find related posts by category
+// Find related posts by tag
 const allPosts = await getCollection("blog");
 const relatedPosts = allPosts.filter(
 	(p) =>
-		p.data.categories &&
-		categories &&
-		p.data.categories.some((cat) => categories.includes(cat))
+		p.data.tags &&
+		tags &&
+		p.data.tags.some((tag) => tags.includes(tag))
 ).slice(0, 3);
 
 ---
@@ -85,27 +86,28 @@ const relatedPosts = allPosts.filter(
 					</div>
 				)}
 				<div class="prose w-full max-w-none py-6 text-foreground">
-					<h1 class="mt-0">{title}</h1>
+					<h1 class="mt-0 uppercase">{title}</h1>
 					<div class="mt-2 mb-4 not-prose">
-						<div class="text-muted-foreground">
+            <div>
 							<FormattedDate date={pubDate} />
 							{revisedDate && (
-								<div class="mt-1 italic">
+                <div class="mt-1">
 									Revised <FormattedDate date={revisedDate} />
 								</div>
 							)}
 						</div>
-						{categories && categories.length > 0 && (
-							<div class="mt-3 flex flex-wrap gap-2">
-								{categories.map((cat) => (
-									<a
-										href={`/blog/tag/${slugifyTag(cat)}/`}
-										class="inline-flex items-center rounded-sm bg-muted px-4 py-2 text-sm text-foreground hover:bg-muted/80 hover:text-accent"
-									>
-										{cat}
-									</a>
-								))}
-							</div>
+						{tags && tags.length > 0 && (
+							<>
+								<div class="mt-3 flex flex-wrap gap-2">
+									{tags.map((tag) => (
+										<Tag label={tag} href={`/blog/tag/${slugifyTag(tag)}/`} />
+									))}
+								</div>
+								<hr class="my-6 border-0 h-1 w-full bg-accent rounded-full" />
+							</>
+						)}
+						{quote && (
+							<p class="mt-0 mb-6 text-base">{quote}</p>
 						)}
 					</div>
 					<hr />

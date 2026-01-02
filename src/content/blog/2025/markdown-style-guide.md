@@ -1,12 +1,13 @@
 ---
-title: "Markdown Style Guide"
-description: "Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro."
-categories: [blog, example]
-year: 2025
-pubDate: "2025-12-19"
 draft: false
 published: false
 heroImage: "../../../assets/blog/mixing-mastering-tutorial.jpg"
+title: "Markdown Style Guide"
+description: "Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro."
+year: 2025
+pubDate: "2025-12-19"
+revisedDate: ""
+tags: [blog, example]
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.

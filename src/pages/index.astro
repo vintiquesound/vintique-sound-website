@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/WebPageLayout.astro";
+import WebPageLayout from "../layouts/WebPageLayout.astro";
 import { Headphones, CheckCircle, GraduationCap, Package, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
@@ -8,7 +8,7 @@ import HeroSection from "@/layouts/sections/HeroSection.astro";
 import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 ---
 
-<Layout >
+<WebPageLayout >
 	<div class="flex flex-col">
     {/* Hero Section */}
 		<HeroSection
@@ -156,4 +156,4 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
       </div>
     </section>
   </div>
-</Layout>
+</WebPageLayout>
