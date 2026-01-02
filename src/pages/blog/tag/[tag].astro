@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../../layouts/WebPageLayout.astro";
-import SingleColumnSection from "../../../layouts/SingleColumnSection.astro";
+import SingleColumnContainer from "../../../layouts/SingleColumnContainer.astro";
 import FormattedDate from "../../../components/FormattedDate.astro";
 import { slugifyTag } from "../../../lib/utils";
 
@@ -66,7 +66,7 @@ const count = allPosts.length;
 ---
 
 <Layout title={tag} description={`Posts tagged ${tag}`}>
-	<SingleColumnSection class="py-10 sm:py-12">
+	<SingleColumnContainer class="py-10 sm:py-12">
 		<h1 class="m-0 text-center text-foreground">{tag}</h1>
 		<p class="mt-2 mb-0 text-center text-muted-foreground">
 			{count} blog post{count === 1 ? "" : "s"} use this tag
@@ -113,5 +113,5 @@ const count = allPosts.length;
 				})}
 			</div>
 		)}
-	</SingleColumnSection>
+	</SingleColumnContainer>
 </Layout>

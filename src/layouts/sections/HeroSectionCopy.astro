@@ -1,0 +1,45 @@
+---
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import type { CtaButton } from "@/types/cta";
+
+type HeroSectionCopyProps = {
+	title: string;
+	subtitle?: string;
+	primary: CtaButton;
+	secondary?: CtaButton;
+};
+
+const { title, subtitle, primary, secondary } = Astro.props as HeroSectionCopyProps;
+---
+
+<div>
+	<h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+		{title}
+	</h1>
+	{subtitle && (
+		<p class="text-lg md:text-xl text-muted-foreground mb-8">{subtitle}</p>
+	)}
+	<div class="flex flex-wrap gap-4">
+		<a
+			href={primary.href}
+			data-slot="button"
+			data-variant="default"
+			data-size="lg"
+			class={cn(buttonVariants({ variant: "default", size: "lg" }))}
+		>
+			{primary.label}
+		</a>
+		{secondary && (
+			<a
+				href={secondary.href}
+				data-slot="button"
+				data-variant="secondary"
+				data-size="lg"
+				class={cn(buttonVariants({ variant: "secondary", size: "lg" }))}
+			>
+				{secondary.label}
+			</a>
+		)}
+	</div>
+</div>

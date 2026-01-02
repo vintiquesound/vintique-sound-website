@@ -1,10 +1,9 @@
 ---
 import Layout from "../layouts/WebPageLayout.astro";
-import { Image } from "astro:assets";
-import { ArrowRight, Headphones, CheckCircle, GraduationCap, Package } from "lucide-react";
+import { Headphones, CheckCircle, GraduationCap, Package, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import DualColumnSection from "@/layouts/DualColumnSection.astro";
+import HeroSection from "@/layouts/sections/HeroSection.astro";
 
 import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 ---
@@ -12,37 +11,15 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 <Layout >
 	<div class="flex flex-col">
     {/* Hero Section */}
-    <DualColumnSection>
-      <Fragment slot="left">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-          Professional Audio Services & More!
-        </h1>
-        <p class="text-lg md:text-xl text-muted-foreground mb-8">
-          From mixing & mastering, to educational content, to premium plugins, Vintique Sound helps you get professional quality music.
-        </p>
-        <div class="flex flex-wrap gap-4">
-          <Button size="lg" className="bg-primary hover:bg-primary/90">
-            Explore Services
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-          <Button size="lg" variant="outline">
-            View Tutorials
-          </Button>
-        </div>
-      </Fragment>
-
-      <Fragment slot="right">
-        <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl">
-          <Image
-            src={HeroMixerImage}
-            alt="Music Studio Audio Mixer"
-            width={500}
-            height={500}
-            class="block h-full w-full object-cover"
-          />
-        </div>
-      </Fragment>
-    </DualColumnSection>
+		<HeroSection
+			title="Professional Audio Services & More!"
+			subtitle="From mixing & mastering, to educational content, to premium plugins, Vintique Sound helps you get professional quality music."
+			primary={{ label: "Explore Services", href: "/mixing-mastering" }}
+			secondary={{ label: "View Tutorials", href: "/education", variant: "outline" }}
+			image={HeroMixerImage}
+			imageAlt="Music Studio Audio Mixer"
+			imagePosition="right"
+		/>
 
     {/* Services Preview */}
     <section class="w-full py-20 bg-muted/50">
