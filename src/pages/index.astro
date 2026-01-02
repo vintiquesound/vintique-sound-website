@@ -1,10 +1,9 @@
 ---
-import WebPageLayout from "../layouts/WebPageLayout.astro";
 import { Headphones, CheckCircle, GraduationCap, Package, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import WebPageLayout from "../layouts/WebPageLayout.astro";
 import HeroSection from "@/layouts/sections/HeroSection.astro";
-
+import ThreeCardsSection from "@/layouts/sections/ThreeCardsSection.astro";
 import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 ---
 
@@ -15,124 +14,105 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 			title="Professional Audio Services & More!"
 			subtitle="From mixing & mastering, to educational content, to premium plugins, Vintique Sound helps you get professional quality music."
       primary={{ label: "Explore Services", href: "/mixing-mastering", icon: ArrowRight, iconPosition: "right" }}
-      secondary={{ label: "View Tutorials", href: "/education" }}
+      outline={{ label: "View Tutorials", href: "/education" }}
 			image={HeroMixerImage}
 			imageAlt="Music Studio Audio Mixer"
 			imagePosition="right"
 		/>
 
+
     {/* Services Preview */}
-    <section class="w-full py-20 bg-muted/50">
-      <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Professional audio services tailored to your needs
-          </p>
-        </div>
+    <ThreeCardsSection
+      class="bg-muted/50"
+      title="Our Services"
+      subtitle="Professional audio services tailored to your needs"
+      cards={[
+        {
+          title: "Mixing & Mastering",
+          subtitle: "Professional mixing and mastering services to make your tracks shine",
+          icon: Headphones,
+          accent: "primary",
+        },
+        {
+          title: "Education & Tutorials",
+          subtitle: "Learn from industry professionals with our comprehensive tutorials",
+          icon: GraduationCap,
+          accent: "secondary",
+        },
+        {
+          title: "Digital Products",
+          subtitle: "Premium plugins, samples, and loops for your productions",
+          icon: Package,
+          accent: "accent",
+        },
+      ]}
+    >
+      <Fragment slot="card1Content">
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Industry-standard quality</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Fast turnaround times</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Unlimited revisions</span>
+          </li>
+        </ul>
+      </Fragment>
+      <Fragment slot="card1Footer">
+        <a href="/services" class="block">
+          <Button fullWidth variant="default">Learn More</Button>
+        </a>
+      </Fragment>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="border-2 hover:border-primary transition-all duration-300">
-            <CardHeader>
-              <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                <Headphones className="h-6 w-6 text-primary" />
-              </div>
-              <CardTitle>Mixing & Mastering</CardTitle>
-              <CardDescription>
-                Professional mixing and mastering services to make your tracks shine
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul class="space-y-2 mb-6">
-                <li class="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-secondary" />
-                  <span>Industry-standard quality</span>
-                </li>
-                <li class="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-secondary" />
-                  <span>Fast turnaround times</span>
-                </li>
-                <li class="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-secondary" />
-                  <span>Unlimited revisions</span>
-                </li>
-              </ul>
-              <a href="/services" class="block">
-                <Button fullWidth variant="default">
-                  Learn More
-                </Button>
-              </a>
-            </CardContent>
-          </Card>
+      <Fragment slot="card2Content">
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Step-by-step courses</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Expert instructors</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Lifetime access</span>
+          </li>
+        </ul>
+      </Fragment>
+      <Fragment slot="card2Footer">
+        <a href="/education" class="block">
+          <Button fullWidth variant="secondary">Browse Courses</Button>
+        </a>
+      </Fragment>
 
-          <Card className="border-2 hover:border-secondary transition-all duration-300">
-            <CardHeader>
-              <div class="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-4">
-                <GraduationCap className="h-6 w-6 text-secondary" />
-              </div>
-              <CardTitle>Education & Tutorials</CardTitle>
-              <CardDescription>
-                Learn from industry professionals with our comprehensive tutorials
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul class="space-y-2 mb-6">
-                <li class="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-secondary" />
-                  <span>Step-by-step courses</span>
-                </li>
-                <li class="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-secondary" />
-                  <span>Expert instructors</span>
-                </li>
-                <li class="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-secondary" />
-                  <span>Lifetime access</span>
-                </li>
-              </ul>
-              <a href="/education" class="block">
-                <Button fullWidth variant="secondary">
-                  Browse Courses
-                </Button>
-              </a>
-            </CardContent>
-          </Card>
-
-          <Card className="border-2 hover:border-accent transition-all duration-300">
-            <CardHeader>
-              <div class="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
-                <Package className="h-6 w-6 text-accent" />
-              </div>
-              <CardTitle>Digital Products</CardTitle>
-              <CardDescription>
-                Premium plugins, samples, and loops for your productions
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul class="space-y-2 mb-6">
-                <li class="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-secondary" />
-                  <span>Professional quality</span>
-                </li>
-                <li class="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-secondary" />
-                  <span>Royalty-free content</span>
-                </li>
-                <li class="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-secondary" />
-                  <span>Instant download</span>
-                </li>
-              </ul>
-              <a href="/products" class="block">
-                <Button fullWidth variant="accent">
-                  Shop Now
-                </Button>
-              </a>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </section>
+      <Fragment slot="card3Content">
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Professional quality</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Royalty-free content</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Instant download</span>
+          </li>
+        </ul>
+      </Fragment>
+      <Fragment slot="card3Footer">
+        <a href="/products" class="block">
+          <Button fullWidth variant="accent">Shop Now</Button>
+        </a>
+      </Fragment>
+    </ThreeCardsSection>
 
     {/* CTA Section */}
     <section class="w-full py-20 relative overflow-hidden">

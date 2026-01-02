@@ -11,7 +11,7 @@ type HeroSectionProps = {
 	title: string;
 	subtitle?: string;
   primary: CtaButton;
-  secondary?: CtaButton;
+  outline?: CtaButton;
 	image: ImageMetadata;
 	imageAlt: string;
 };
@@ -21,7 +21,7 @@ const {
 	title,
 	subtitle,
 	primary,
-	secondary,
+	outline,
 	image,
 	imageAlt,
 } = Astro.props as HeroSectionProps;
@@ -29,9 +29,10 @@ const {
 const isImageLeft = imagePosition === "left";
 ---
 
-<section class="w-full">
-  <DualColumnContainer>
-    <div slot="left">
+<section class="w-full relative overflow-hidden">
+	<div class="absolute inset-0 bg-linear-to-br from-primary/15 via-secondary/10 to-accent/15" />
+	<DualColumnContainer>
+		<div slot="left">
 			{isImageLeft ? (
 				<HeroSectionImage image={image} imageAlt={imageAlt} />
 			) : (
@@ -39,22 +40,22 @@ const isImageLeft = imagePosition === "left";
 					title={title}
 					subtitle={subtitle}
 					primary={primary}
-					secondary={secondary}
+					outline={outline}
 				/>
 			)}
-    </div>
+		</div>
 
-    <div slot="right">
+		<div slot="right">
 			{isImageLeft ? (
 				<HeroSectionCopy
 					title={title}
 					subtitle={subtitle}
 					primary={primary}
-					secondary={secondary}
+					outline={outline}
 				/>
 			) : (
 				<HeroSectionImage image={image} imageAlt={imageAlt} />
 			)}
-    </div>
-  </DualColumnContainer>
+		</div>
+	</DualColumnContainer>
 </section>

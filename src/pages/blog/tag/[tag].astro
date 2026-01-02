@@ -66,7 +66,7 @@ const count = allPosts.length;
 ---
 
 <WebPageLayout title={tag} description={`Posts tagged ${tag}`}>
-	<SingleColumnContainer class="py-10 sm:py-12">
+	<SingleColumnContainer outerClass="py-10 sm:py-12">
 		<h1 class="m-0 text-center text-accent">{tag}</h1>
 		<p class="mt-2 mb-0 text-center text-muted-foreground">
 			{count} blog post{count === 1 ? "" : "s"} use this tag

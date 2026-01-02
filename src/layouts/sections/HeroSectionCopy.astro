@@ -7,13 +7,13 @@ type HeroSectionCopyProps = {
 	title: string;
 	subtitle?: string;
 	primary: CtaButton;
-	secondary?: CtaButton;
+	outline?: CtaButton;
 };
 
-const { title, subtitle, primary, secondary } = Astro.props as HeroSectionCopyProps;
+const { title, subtitle, primary, outline } = Astro.props as HeroSectionCopyProps;
 
 const PrimaryIcon = primary.icon;
-const SecondaryIcon = secondary?.icon;
+const OutlineIcon = outline?.icon;
 ---
 
 <div>
@@ -39,20 +39,20 @@ const SecondaryIcon = secondary?.icon;
 				<PrimaryIcon className="h-5 w-5" />
 			)}
 		</a>
-		{secondary && (
+		{outline && (
 			<a
-				href={secondary.href}
+				href={outline.href}
 				data-slot="button"
 				data-variant="secondary"
 				data-size="lg"
-				class={cn(buttonVariants({ variant: "secondary", size: "lg" }))}
+				class={cn(buttonVariants({ variant: "outline", size: "lg" }))}
 			>
-				{SecondaryIcon && (secondary.iconPosition ?? "left") === "left" && (
-					<SecondaryIcon className="h-5 w-5" />
+				{OutlineIcon && (outline.iconPosition ?? "left") === "left" && (
+					<OutlineIcon className="h-5 w-5" />
 				)}
-				<span>{secondary.label}</span>
-				{SecondaryIcon && (secondary.iconPosition ?? "left") === "right" && (
-					<SecondaryIcon className="h-5 w-5" />
+				<span>{outline.label}</span>
+				{OutlineIcon && (outline.iconPosition ?? "left") === "right" && (
+					<OutlineIcon className="h-5 w-5" />
 				)}
 			</a>
 		)}

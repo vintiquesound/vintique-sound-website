@@ -1,16 +1,35 @@
 ---
 type Props = {
-	/** Extra classes applied to the full-bleed outer container */
-	class?: string;
+	/** Outer padding/spacing classes (default: py-20) */
+	outerClass?: string;
+	/** Extra classes appended to the outer wrapper */
+	extraOuterClass?: string;
+	/** Inner max-width/padding classes (default: max-w-200 + responsive padding) */
+	innerClass?: string;
+	/** Extra classes appended to the inner wrapper */
+	extraInnerClass?: string;
 };
 
-const { class: outerClass = "" } = Astro.props as Props;
+const defaultOuter = "py-20";
+const defaultExtraOuter = "";
+const defaultInner = "mx-auto max-w-200 px-4 sm:px-6 lg:px-8";
+const defaultExtraInner = "";
 
-const inner = "mx-auto w-full max-w-200 px-4 sm:px-6 lg:px-8";
+const {
+	outerClass,
+	extraOuterClass,
+	innerClass,
+  extraInnerClass
+} = Astro.props as Props;
+
+const outer = outerClass ?? defaultOuter;
+const extraOuter = extraOuterClass ?? defaultExtraOuter;
+const inner = innerClass ?? defaultInner;
+const extraInner = extraInnerClass ?? defaultExtraInner;
 ---
 
-<div class={`relative w-full ${outerClass}`.trim()}>
-	<div class={inner}>
+<div class={`relative w-full ${outer} ${extraOuter}`.trim()}>
+	<div class={`w-full ${inner} ${extraInner}`.trim()}>
 		<slot />
 	</div>
 </div>
