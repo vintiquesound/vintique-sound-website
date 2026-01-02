@@ -9,8 +9,16 @@ const blog = defineCollection({
 			description: z.string(),
       categories: z.array(z.string()),
       year: z.number(),
+			// Visibility
+			// - draft: work-in-progress (never rendered or listed)
+			// - published: when false, the post is hidden entirely (not rendered or listed)
+			draft: z.boolean().optional().default(false),
+			published: z.boolean().optional().default(true),
+
+			// Dates
+			// Accepts YYYY-MM-DD or other Date-coercible strings
 			pubDate: z.coerce.date(), // Transform string to Date object
-			updatedDate: z.coerce.date().optional(),
+			revisedDate: z.coerce.date().optional(),
 			heroImage: image().optional(),
 		}),
 });

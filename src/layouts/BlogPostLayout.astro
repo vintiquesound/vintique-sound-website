@@ -11,7 +11,7 @@ import "../styles/global.css";
 
 type Props = CollectionEntry<"blog">["data"];
 
-const { title, description, categories, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, categories, pubDate, revisedDate, heroImage } = Astro.props;
 
 // Find related posts by category
 const allPosts = await getCollection("blog");
@@ -89,9 +89,9 @@ const relatedPosts = allPosts.filter(
 					<div class="mt-2 mb-4 not-prose">
 						<div class="text-muted-foreground">
 							<FormattedDate date={pubDate} />
-							{updatedDate && (
+							{revisedDate && (
 								<div class="mt-1 italic">
-									Revised <FormattedDate date={updatedDate} />
+									Revised <FormattedDate date={revisedDate} />
 								</div>
 							)}
 						</div>
