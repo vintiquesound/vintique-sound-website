@@ -11,6 +11,9 @@ type HeroSectionCopyProps = {
 };
 
 const { title, subtitle, primary, secondary } = Astro.props as HeroSectionCopyProps;
+
+const PrimaryIcon = primary.icon;
+const SecondaryIcon = secondary?.icon;
 ---
 
 <div>
@@ -28,7 +31,13 @@ const { title, subtitle, primary, secondary } = Astro.props as HeroSectionCopyPr
 			data-size="lg"
 			class={cn(buttonVariants({ variant: "default", size: "lg" }))}
 		>
-			{primary.label}
+			{PrimaryIcon && (primary.iconPosition ?? "left") === "left" && (
+				<PrimaryIcon className="h-5 w-5" />
+			)}
+			<span>{primary.label}</span>
+			{PrimaryIcon && (primary.iconPosition ?? "left") === "right" && (
+				<PrimaryIcon className="h-5 w-5" />
+			)}
 		</a>
 		{secondary && (
 			<a
@@ -38,7 +47,13 @@ const { title, subtitle, primary, secondary } = Astro.props as HeroSectionCopyPr
 				data-size="lg"
 				class={cn(buttonVariants({ variant: "secondary", size: "lg" }))}
 			>
-				{secondary.label}
+				{SecondaryIcon && (secondary.iconPosition ?? "left") === "left" && (
+					<SecondaryIcon className="h-5 w-5" />
+				)}
+				<span>{secondary.label}</span>
+				{SecondaryIcon && (secondary.iconPosition ?? "left") === "right" && (
+					<SecondaryIcon className="h-5 w-5" />
+				)}
 			</a>
 		)}
 	</div>

@@ -9,16 +9,20 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        default:
+          "bg-primary text-primary-foreground hover:bg-primary/90",
         destructive:
           "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
         outline:
           "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        accent:
+          "bg-accent text-accent-foreground hover:bg-accent/90",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-        link: "text-primary underline-offset-4 hover:underline",
+        link:
+          "text-primary underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
@@ -40,22 +44,47 @@ function Button({
   className,
   variant = "default",
   size = "default",
+  fullWidth = false,
+  icon,
+  iconPosition = "left",
   asChild = false,
+  children,
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
+    fullWidth?: boolean
+    icon?: React.ReactNode
+    iconPosition?: "left" | "right"
   }) {
   const Comp = asChild ? Slot : "button"
+
+  const content = icon ? (
+    iconPosition === "left" ? (
+      <>
+        {icon}
+        <span>{children}</span>
+      </>
+    ) : (
+      <>
+        <span>{children}</span>
+        {icon}
+      </>
+    )
+  ) : (
+    children
+  )
 
   return (
     <Comp
       data-slot="button"
       data-variant={variant}
       data-size={size}
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size, className }), fullWidth && "w-full")}
       {...props}
-    />
+    >
+      {content}
+    </Comp>
   )
 }
 

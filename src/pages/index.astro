@@ -14,8 +14,8 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 		<HeroSection
 			title="Professional Audio Services & More!"
 			subtitle="From mixing & mastering, to educational content, to premium plugins, Vintique Sound helps you get professional quality music."
-			primary={{ label: "Explore Services", href: "/mixing-mastering" }}
-			secondary={{ label: "View Tutorials", href: "/education", variant: "outline" }}
+      primary={{ label: "Explore Services", href: "/mixing-mastering", icon: ArrowRight, iconPosition: "right" }}
+      secondary={{ label: "View Tutorials", href: "/education" }}
 			image={HeroMixerImage}
 			imageAlt="Music Studio Audio Mixer"
 			imagePosition="right"
@@ -57,8 +57,8 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
                   <span>Unlimited revisions</span>
                 </li>
               </ul>
-              <a href="/services">
-                <Button className="w-full bg-primary hover:bg-primary/90">
+              <a href="/services" class="block">
+                <Button fullWidth variant="default">
                   Learn More
                 </Button>
               </a>
@@ -90,8 +90,8 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
                   <span>Lifetime access</span>
                 </li>
               </ul>
-              <a href="/education">
-                <Button className="w-full bg-secondary hover:bg-secondary/90">
+              <a href="/education" class="block">
+                <Button fullWidth variant="secondary">
                   Browse Courses
                 </Button>
               </a>
@@ -123,8 +123,8 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
                   <span>Instant download</span>
                 </li>
               </ul>
-              <a href="/products">
-                <Button className="w-full bg-accent hover:bg-accent/90">
+              <a href="/products" class="block">
+                <Button fullWidth variant="accent">
                   Shop Now
                 </Button>
               </a>
@@ -149,7 +149,7 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
             Get Started Today
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
-          <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+          <Button size="lg" variant="outline" className="border-white text-black hover:bg-white/10">
             Contact Us
           </Button>
         </div>
