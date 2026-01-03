@@ -29,7 +29,8 @@ const OutlineIcon = outline?.icon;
 			data-slot="button"
 			data-variant="default"
 			data-size="lg"
-			class={cn(buttonVariants({ variant: "default", size: "lg" }))}
+			class={cn(
+        buttonVariants({ variant: "default", size: "lg" }))}
 		>
 			{PrimaryIcon && (primary.iconPosition ?? "left") === "left" && (
 				<PrimaryIcon className="h-5 w-5" />
@@ -45,7 +46,8 @@ const OutlineIcon = outline?.icon;
 				data-slot="button"
 				data-variant="secondary"
 				data-size="lg"
-				class={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+				class={cn(
+          buttonVariants({ variant: "outline", size: "lg" }))}
 			>
 				{OutlineIcon && (outline.iconPosition ?? "left") === "left" && (
 					<OutlineIcon className="h-5 w-5" />

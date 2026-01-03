@@ -3,18 +3,18 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { CtaButton } from "@/types/cta";
 
-type Props = {
+type CtaSectionCopyProps = {
   title: string;
   subtitle?: string;
-  primary?: CtaButton;
-  secondary?: CtaButton;
+  primary: CtaButton;
+  outline?: CtaButton;
   align?: "center" | "left";
 };
 
-const { title, subtitle, primary, secondary, align = "center" } = Astro.props as Props;
+const { title, subtitle, primary, outline, align = "center" } = Astro.props as CtaSectionCopyProps;
 
-const PrimaryIcon = primary?.icon;
-const SecondaryIcon = secondary?.icon;
+const PrimaryIcon = primary.icon;
+const OutlineIcon = outline?.icon;
 
 const alignment = align === "center" ? "items-center text-center" : "items-start text-left";
 const actionsJustify = align === "center" ? "justify-center" : "justify-start";
@@ -27,48 +27,40 @@ const actionsJustify = align === "center" ? "justify-center" : "justify-start";
       <p class="text-lg text-white/90 max-w-3xl">{subtitle}</p>
     )}
   </div>
-  {(primary || secondary) && (
-    <div class={`flex flex-wrap gap-4 ${actionsJustify}`}>
-      {primary && (
+  <div class={`flex flex-wrap gap-4 ${actionsJustify}`}>
+      <a
+        href={primary.href}
+        data-slot="button"
+        data-variant="default"
+        data-size="lg"
+        class={cn(
+          buttonVariants({ variant: "default", size: "lg" }), primary.className)}
+      >
+        {PrimaryIcon && (primary.iconPosition ?? "left") === "left" && (
+          <PrimaryIcon className="h-5 w-5" />
+        )}
+        <span>{primary.label}</span>
+        {PrimaryIcon && (primary.iconPosition ?? "left") === "right" && (
+          <PrimaryIcon className="h-5 w-5" />
+        )}
+      </a>
+      {outline && (
         <a
-          href={primary.href}
+          href={outline.href}
           data-slot="button"
-          data-variant={primary.variant ?? "default"}
+          data-variant="outline"
           data-size="lg"
           class={cn(
-            buttonVariants({ variant: primary.variant ?? "default", size: "lg" }),
-            primary.className
-          )}
+            buttonVariants({ variant: "outline", size: "lg" }), outline.className)}
         >
-          {PrimaryIcon && (primary.iconPosition ?? "left") === "left" && (
-            <PrimaryIcon className="h-5 w-5" />
+          {OutlineIcon && (outline.iconPosition ?? "left") === "left" && (
+            <OutlineIcon className="h-5 w-5" />
           )}
-          <span>{primary.label}</span>
-          {PrimaryIcon && (primary.iconPosition ?? "left") === "right" && (
-            <PrimaryIcon className="h-5 w-5" />
-          )}
-        </a>
-      )}
-      {secondary && (
-        <a
-          href={secondary.href}
-          data-slot="button"
-          data-variant={secondary.variant ?? "outline"}
-          data-size="lg"
-          class={cn(
-            buttonVariants({ variant: secondary.variant ?? "outline", size: "lg" }),
-            secondary.className
-          )}
-        >
-          {SecondaryIcon && (secondary.iconPosition ?? "left") === "left" && (
-            <SecondaryIcon className="h-5 w-5" />
-          )}
-          <span>{secondary.label}</span>
-          {SecondaryIcon && (secondary.iconPosition ?? "left") === "right" && (
-            <SecondaryIcon className="h-5 w-5" />
+          <span>{outline.label}</span>
+          {OutlineIcon && (outline.iconPosition ?? "left") === "right" && (
+            <OutlineIcon className="h-5 w-5" />
           )}
         </a>
       )}
     </div>
-  )}
 </div>
