@@ -2,8 +2,7 @@
 import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
 import CtaSectionCopy from "@/layouts/sections/CtaSectionCopy.astro";
 import type { CtaButton } from "@/types/cta";
-
-export type CtaSectionColors = [string] | [string, string] | [string, string, string];
+import { buildBackgroundStyle, type BgColorToken } from "@/lib/backgrounds";
 
 type Props = {
   title: string;
@@ -11,7 +10,7 @@ type Props = {
   primary?: CtaButton;
   secondary?: CtaButton;
   align?: "center" | "left";
-  colors?: CtaSectionColors;
+  bgColors?: BgColorToken[];
   class?: string;
 };
 
@@ -21,20 +20,15 @@ const {
   primary,
   secondary,
   align = "center",
-  colors = ["bg-primary"],
+  bgColors,
   class: outerClass = "",
 } = Astro.props as Props;
 
-const gradientClass = (() => {
-  if (!colors?.length) return "bg-primary";
-  if (colors.length === 1) return colors[0];
-  if (colors.length === 2) return `bg-linear-to-br from-${colors[0]} to-${colors[1]}`;
-  return `bg-linear-to-br from-${colors[0]} via-${colors[1]} to-${colors[2]}`;
-})();
+const backgroundStyle = buildBackgroundStyle(bgColors);
 ---
 
 <section class={`w-full relative overflow-hidden ${outerClass}`.trim()}>
-  <div class={`absolute inset-0 ${gradientClass}`} />
+  <div class="absolute inset-0" style={backgroundStyle} />
   <SingleColumnContainer innerClass="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12" extraInnerClass="relative z-10">
     <CtaSectionCopy
       title={title}
