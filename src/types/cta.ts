@@ -9,4 +9,5 @@ export type CtaButton = {
 	variant?: ButtonVariant;
 	icon?: CtaIcon;
 	iconPosition?: "left" | "right";
+	className?: string;
 };

@@ -1,0 +1,74 @@
+---
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import type { CtaButton } from "@/types/cta";
+
+type Props = {
+  title: string;
+  subtitle?: string;
+  primary?: CtaButton;
+  secondary?: CtaButton;
+  align?: "center" | "left";
+};
+
+const { title, subtitle, primary, secondary, align = "center" } = Astro.props as Props;
+
+const PrimaryIcon = primary?.icon;
+const SecondaryIcon = secondary?.icon;
+
+const alignment = align === "center" ? "items-center text-center" : "items-start text-left";
+const actionsJustify = align === "center" ? "justify-center" : "justify-start";
+---
+
+<div class={`flex flex-col gap-6 ${alignment}`}>
+  <div class="space-y-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-white">{title}</h2>
+    {subtitle && (
+      <p class="text-lg text-white/90 max-w-3xl">{subtitle}</p>
+    )}
+  </div>
+  {(primary || secondary) && (
+    <div class={`flex flex-wrap gap-4 ${actionsJustify}`}>
+      {primary && (
+        <a
+          href={primary.href}
+          data-slot="button"
+          data-variant={primary.variant ?? "default"}
+          data-size="lg"
+          class={cn(
+            buttonVariants({ variant: primary.variant ?? "default", size: "lg" }),
+            primary.className
+          )}
+        >
+          {PrimaryIcon && (primary.iconPosition ?? "left") === "left" && (
+            <PrimaryIcon className="h-5 w-5" />
+          )}
+          <span>{primary.label}</span>
+          {PrimaryIcon && (primary.iconPosition ?? "left") === "right" && (
+            <PrimaryIcon className="h-5 w-5" />
+          )}
+        </a>
+      )}
+      {secondary && (
+        <a
+          href={secondary.href}
+          data-slot="button"
+          data-variant={secondary.variant ?? "outline"}
+          data-size="lg"
+          class={cn(
+            buttonVariants({ variant: secondary.variant ?? "outline", size: "lg" }),
+            secondary.className
+          )}
+        >
+          {SecondaryIcon && (secondary.iconPosition ?? "left") === "left" && (
+            <SecondaryIcon className="h-5 w-5" />
+          )}
+          <span>{secondary.label}</span>
+          {SecondaryIcon && (secondary.iconPosition ?? "left") === "right" && (
+            <SecondaryIcon className="h-5 w-5" />
+          )}
+        </a>
+      )}
+    </div>
+  )}
+</div>
