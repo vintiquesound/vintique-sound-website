@@ -13,7 +13,7 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
     {/* Hero Section */}
 		<HeroSection
 			title="Professional Audio Services & More!"
-			subtitle="From mixing & mastering, to educational content, to premium plugins, Vintique Sound helps you get professional quality music."
+			subtitle="From mixing & mastering, to educational content, to premium plugins, Vintique Sound helps you create professional quality audio."
       primary={{ label: "Explore Services", href: "/mixing-mastering", icon: ArrowRight, iconPosition: "right" }}
       outline={{ label: "View Tutorials", href: "/education" }}
 			image={HeroMixerImage}
@@ -33,19 +33,19 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
           title: "Mixing & Mastering",
           subtitle: "Professional mixing and mastering services to make your tracks shine",
           icon: Headphones,
-          accent: "primary",
+          colorStyle: "primary",
         },
         {
           title: "Education & Tutorials",
           subtitle: "Learn from industry professionals with our comprehensive tutorials",
           icon: GraduationCap,
-          accent: "secondary",
+          colorStyle: "secondary",
         },
         {
           title: "Digital Products",
           subtitle: "Premium plugins, samples, and loops for your productions",
           icon: Package,
-          accent: "accent",
+          colorStyle: "accent",
         },
       ]}
     >
@@ -67,7 +67,7 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
       </Fragment>
       <Fragment slot="card1Footer">
         <a href="/services" class="block">
-          <Button fullWidth variant="default">Learn More</Button>
+          <Button fullWidth variant="solid" className="bg-primary text-primary-foreground hover:bg-primary/90">Learn More</Button>
         </a>
       </Fragment>
 
@@ -89,7 +89,7 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
       </Fragment>
       <Fragment slot="card2Footer">
         <a href="/education" class="block">
-          <Button fullWidth variant="secondary">Browse Courses</Button>
+          <Button fullWidth variant="solid" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">Browse Courses</Button>
         </a>
       </Fragment>
 
@@ -111,7 +111,7 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
       </Fragment>
       <Fragment slot="card3Footer">
         <a href="/products" class="block">
-          <Button fullWidth variant="accent">Shop Now</Button>
+          <Button fullWidth variant="solid" className="bg-accent text-accent-foreground hover:bg-accent/90">Shop Now</Button>
         </a>
       </Fragment>
     </ThreeCardsSection>
@@ -120,21 +120,22 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
     <CtaSection
       title="Ready to Elevate Your Sound?"
       subtitle="Join hundreds of producers and engineers who trust Vintique Sound for their audio needs"
-      bgColors={["primary", "primary/80", "secondary"]}
-      primary={{
-        label: "Get Started Today",
-        href: "#",
-        variant: "secondary",
-        icon: ArrowRight,
-        iconPosition: "right",
-        className: "bg-white text-primary hover:bg-white/90",
-      }}
-      secondary={{
-        label: "Contact Us",
-        href: "#",
-        variant: "outline",
-        className: "border-white text-black hover:bg-white/10 hover:text-primary",
-      }}
-    />
+        bgColors={["primary", "primary/80", "secondary"]}
+        primary={{
+          label: "Get Started Today",
+          href: "#",
+          variant: "solid",
+          icon: ArrowRight,
+          iconPosition: "right",
+          className: "bg-white text-primary hover:bg-white/90",
+        }}
+        secondary={{
+          label: "Contact Us",
+          href: "#",
+          variant: "outline",
+          className: "border-white text-black hover:bg-white/10 hover:text-primary",
+        }}
+      />
+
   </div>
 </WebPageLayout>

@@ -4,16 +4,16 @@ import TripleColumnContainer from "@/layouts/TripleColumnContainer.astro";
 import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
-type Accent = "primary" | "secondary" | "accent";
+type ColorStyle = "primary" | "secondary" | "accent";
 
 type CardDef = {
 	title: string;
 	subtitle?: string;
 	icon?: (props: ComponentProps<"svg">) => any;
-	accent?: Accent;
+	colorStyle?: ColorStyle;
 };
 
-type Props = {
+type ThreeCardsSectionProps = {
 	/** Extra classes applied to the full section */
 	class?: string;
 	title: string;
@@ -21,7 +21,7 @@ type Props = {
 	cards: [CardDef, CardDef, CardDef] | CardDef[];
 };
 
-const { class: outerClass = "", title, subtitle, cards } = Astro.props as Props;
+const { class: outerClass = "", title, subtitle, cards } = Astro.props as ThreeCardsSectionProps;
 
 const inner = "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12";
 
@@ -37,12 +37,12 @@ const Icon1 = card1?.icon;
 const Icon2 = card2?.icon;
 const Icon3 = card3?.icon;
 
-const classes1 = accentClasses(card1?.accent);
-const classes2 = accentClasses(card2?.accent);
-const classes3 = accentClasses(card3?.accent);
+const classes1 = colorClasses(card1?.colorStyle);
+const classes2 = colorClasses(card2?.colorStyle);
+const classes3 = colorClasses(card3?.colorStyle);
 
-function accentClasses(accent: Accent | undefined) {
-	switch (accent) {
+function colorClasses(colorStyle: ColorStyle | undefined) {
+	switch (colorStyle) {
 		case "secondary":
 			return {
 				hoverBorder: "hover:border-secondary",
