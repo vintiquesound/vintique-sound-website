@@ -14,14 +14,36 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 		<HeroSection
 			title="Professional Audio Services & More!"
 			subtitle="From mixing & mastering, to educational content, to premium plugins, Vintique Sound helps you create professional quality audio."
-      primary={{ label: "Explore Services", href: "/mixing-mastering", icon: ArrowRight, iconPosition: "right" }}
-      outline={{ label: "View Tutorials", href: "/education" }}
+      primary={{
+        label: "Explore Services",
+        href: "/mixing-mastering",
+        icon: ArrowRight,
+        iconPosition: "right",
+        variant: "solid",
+        bgColor: "primary",
+        hoverBgColor: "primary/90",
+        textColor: "primary-foreground",
+        hoverTextColor: "primary-foreground",
+        hoverScale: true,
+      }}
+      outline={{
+        label: "View Tutorials",
+        href: "/education",
+        variant: "outline",
+        bgColor: "transparent",
+        hoverBgColor: "white",
+        textColor: "foreground",
+        hoverTextColor: "primary",
+        borderAlways: true,
+        borderColor: "foreground",
+        hoverBorderColor: "primary",
+        hoverScale: true,
+      }}
 			image={HeroMixerImage}
 			imageAlt="Music Studio Audio Mixer"
 			imagePosition="right"
       bgColors={["primary/15", "secondary/10", "accent/15"]}
 		/>
-
 
     {/* Services Preview */}
     <ThreeCardsSection
@@ -66,9 +88,16 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
         </ul>
       </Fragment>
       <Fragment slot="card1Footer">
-        <a href="/services" class="block">
-          <Button fullWidth variant="solid" className="bg-primary text-primary-foreground hover:bg-primary/90">Learn More</Button>
-        </a>
+        <Button
+          href="/services"
+          fullWidth
+          variant="solid"
+          bgColor="primary"
+          textColor="primary-foreground"
+          hoverBgColor="primary/90"
+        >
+          Learn More
+        </Button>
       </Fragment>
 
       <Fragment slot="card2Content">
@@ -88,9 +117,16 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
         </ul>
       </Fragment>
       <Fragment slot="card2Footer">
-        <a href="/education" class="block">
-          <Button fullWidth variant="solid" className="bg-secondary text-secondary-foreground hover:bg-secondary/90">Browse Courses</Button>
-        </a>
+        <Button
+          href="/education"
+          fullWidth
+          variant="solid"
+          bgColor="secondary"
+          textColor="secondary-foreground"
+          hoverBgColor="secondary/90"
+        >
+          Browse Courses
+        </Button>
       </Fragment>
 
       <Fragment slot="card3Content">
@@ -110,9 +146,16 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
         </ul>
       </Fragment>
       <Fragment slot="card3Footer">
-        <a href="/products" class="block">
-          <Button fullWidth variant="solid" className="bg-accent text-accent-foreground hover:bg-accent/90">Shop Now</Button>
-        </a>
+        <Button
+          href="/products"
+          fullWidth
+          variant="solid"
+          bgColor="accent"
+          textColor="accent-foreground"
+          hoverBgColor="accent/90"
+        >
+          Shop Now
+        </Button>
       </Fragment>
     </ThreeCardsSection>
 
@@ -127,13 +170,23 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
           variant: "solid",
           icon: ArrowRight,
           iconPosition: "right",
-          className: "bg-white text-primary hover:bg-white/90",
+          bgColor: "white",
+          hoverBgColor: "white/90",
+          textColor: "primary",
+          hoverTextColor: "primary",
+          hoverScale: true
         }}
         secondary={{
           label: "Contact Us",
           href: "#",
           variant: "outline",
-          className: "border-white text-black hover:bg-white/10 hover:text-primary",
+          borderAlways: true,
+          borderColor: "white",
+          hoverBorderColor: "white",
+          hoverBgColor: "secondary/50",
+          textColor: "white",
+          hoverTextColor: "white",
+          hoverScale: true
         }}
       />
 

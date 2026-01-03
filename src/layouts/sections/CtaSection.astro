@@ -4,7 +4,7 @@ import CtaSectionCopy from "@/layouts/sections/CtaSectionCopy.astro";
 import type { CtaButton } from "@/types/cta";
 import { buildBackgroundStyle, type BgColorToken } from "@/lib/backgrounds";
 
-type Props = {
+type CtaSectionProps = {
   title: string;
   subtitle?: string;
   primary?: CtaButton;
@@ -22,7 +22,7 @@ const {
   align = "center",
   bgColors,
   class: outerClass = "",
-} = Astro.props as Props;
+} = Astro.props as CtaSectionProps;
 
 const backgroundStyle = buildBackgroundStyle(bgColors);
 ---

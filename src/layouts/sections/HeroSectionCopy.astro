@@ -1,6 +1,5 @@
 ---
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import type { CtaButton } from "@/types/cta";
 
 type HeroSectionCopyProps = {
@@ -12,8 +11,10 @@ type HeroSectionCopyProps = {
 
 const { title, subtitle, primary, outline } = Astro.props as HeroSectionCopyProps;
 
-const PrimaryIcon = primary.icon;
-const OutlineIcon = outline?.icon;
+const primaryVariant = primary.variant ?? "solid";
+const primarySize = primary.size ?? "lg";
+const outlineVariant = outline?.variant ?? "outline";
+const outlineSize = outline?.size ?? "lg";
 ---
 
 <div>
@@ -24,39 +25,55 @@ const OutlineIcon = outline?.icon;
 		<p class="text-lg md:text-xl text-muted-foreground mb-8">{subtitle}</p>
 	)}
 	<div class="flex flex-wrap gap-4">
-		<a
+		<Button
 			href={primary.href}
-			data-slot="button"
-			data-variant="default"
-			data-size="lg"
-			class={cn(
-        buttonVariants({ variant: "default", size: "lg" }))}
+			variant={primaryVariant}
+			size={primarySize}
+			fullWidth={primary.fullWidth}
+			icon={primary.icon}
+			iconPosition={primary.iconPosition}
+			iconClassName={primary.iconClassName}
+			bgColor={primary.bgColor}
+			hoverBgColor={primary.hoverBgColor}
+			textColor={primary.textColor}
+			hoverTextColor={primary.hoverTextColor}
+			borderColor={primary.borderColor}
+			hoverBorderColor={primary.hoverBorderColor}
+			borderMode={primary.borderMode}
+			borderNone={primary.borderNone}
+			borderHover={primary.borderHover}
+			borderAlways={primary.borderAlways}
+			hoverScale={primary.hoverScale}
+			pointerCursor={primary.pointerCursor}
+			className={primary.className}
 		>
-			{PrimaryIcon && (primary.iconPosition ?? "left") === "left" && (
-				<PrimaryIcon className="h-5 w-5" />
-			)}
-			<span>{primary.label}</span>
-			{PrimaryIcon && (primary.iconPosition ?? "left") === "right" && (
-				<PrimaryIcon className="h-5 w-5" />
-			)}
-		</a>
+			{primary.label}
+		</Button>
 		{outline && (
-			<a
+			<Button
 				href={outline.href}
-				data-slot="button"
-				data-variant="secondary"
-				data-size="lg"
-				class={cn(
-          buttonVariants({ variant: "outline", size: "lg" }))}
+				variant={outlineVariant}
+				size={outlineSize}
+				fullWidth={outline.fullWidth}
+				icon={outline.icon}
+				iconPosition={outline.iconPosition}
+				iconClassName={outline.iconClassName}
+				bgColor={outline.bgColor}
+				hoverBgColor={outline.hoverBgColor}
+				textColor={outline.textColor}
+				hoverTextColor={outline.hoverTextColor}
+				borderColor={outline.borderColor}
+				hoverBorderColor={outline.hoverBorderColor}
+				borderMode={outline.borderMode}
+				borderNone={outline.borderNone}
+				borderHover={outline.borderHover}
+				borderAlways={outline.borderAlways}
+				hoverScale={outline.hoverScale}
+				pointerCursor={outline.pointerCursor}
+				className={outline.className}
 			>
-				{OutlineIcon && (outline.iconPosition ?? "left") === "left" && (
-					<OutlineIcon className="h-5 w-5" />
-				)}
-				<span>{outline.label}</span>
-				{OutlineIcon && (outline.iconPosition ?? "left") === "right" && (
-					<OutlineIcon className="h-5 w-5" />
-				)}
-			</a>
+				{outline.label}
+			</Button>
 		)}
 	</div>
 </div>
