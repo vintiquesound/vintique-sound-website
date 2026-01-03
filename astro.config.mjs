@@ -10,6 +10,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 import icon from "astro-icon";
 
+import favicons from "astro-favicons";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.vintiquesound.com",
@@ -18,6 +20,7 @@ export default defineConfig({
     react(),
     mdx(),
     icon(),
+    favicons()
   ],
   vite: {
     plugins: [
