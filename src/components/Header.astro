@@ -1,18 +1,20 @@
 ---
-import { SITE_TITLE } from "../consts";
-import { Image } from "astro:assets";
+import { SITE_TITLE } from "../consts"
+import { Image } from "astro:assets"
 
-import ThemeToggle from "./ThemeToggle.astro";
-import HeaderLink from "./HeaderLink.astro";
+import { navMenuGroups } from "@/lib/navigation"
 
-import HeaderNavMenu from "./HeaderNavMenu";
+import ThemeToggle from "./ThemeToggle.astro"
+import HeaderLink from "./HeaderLink.astro"
 
-import logo from "../assets/vintique_sound_logo-letters_only.png";
+import HeaderNavMenu from "./HeaderNavMenu"
 
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "");
+import logo from "../assets/vintique_sound_logo-letters_only.png"
+
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "")
 
 const mobileLinkBase =
-  "block w-full py-3 px-4 text-base text-(--text) hover:text-accent no-underline transition-colors";
+  "block w-full py-3 px-4 text-base text-(--text) hover:text-accent no-underline transition-colors"
 ---
 
 <header class="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-lg supports-backdrop-filter:bg-background/80">
@@ -60,26 +62,20 @@ const mobileLinkBase =
     <!-- Mobile nav menu, when hamburger menu is open -->
     <div id="mobile-nav" class="md:hidden border-t border-border" hidden>
       <nav class="flex flex-col py-2">
-        <div class="px-4 pt-2 pb-1 text-sm text-muted-foreground">Services</div>
-        <HeaderLink href="/mixing-mastering" class={mobileLinkBase}>Mixing & Mastering</HeaderLink>
-        <HeaderLink href="/editing-repairs" class={mobileLinkBase}>Audio Editing</HeaderLink>
-        <HeaderLink href="/editing-repairs" class={mobileLinkBase}>Audio Restoration</HeaderLink>
-
-        <div class="px-4 pt-4 pb-1 text-sm text-muted-foreground">Education</div>
-        <HeaderLink href="/blog" class={mobileLinkBase}>Blog</HeaderLink>
-        <HeaderLink href="/youtube-videos" class={mobileLinkBase}>YouTube Videos</HeaderLink>
-        <HeaderLink href="/tutorial-videos" class={mobileLinkBase}>Tutorial Videos</HeaderLink>
-
-        <div class="px-4 pt-4 pb-1 text-sm text-muted-foreground">Digital Products</div>
-        <HeaderLink href="/audio-tools" class={mobileLinkBase}>Audio Tools</HeaderLink>
-        <HeaderLink href="/plugins" class={mobileLinkBase}>Plugins</HeaderLink>
-        <HeaderLink href="/samples-loops" class={mobileLinkBase}>Samples & Loops</HeaderLink>
-
-        <div class="px-4 pt-4 pb-1 text-sm text-muted-foreground">Company</div>
-        <HeaderLink href="/studio" class={mobileLinkBase}>Studio</HeaderLink>
-        <HeaderLink href="/about" class={mobileLinkBase}>About</HeaderLink>
-        <HeaderLink href="/faqs" class={mobileLinkBase}>FAQs</HeaderLink>
-        <HeaderLink href="/contact" class={mobileLinkBase}>Contact</HeaderLink>
+        {navMenuGroups.map((group, idx) => (
+          <div class="contents" data-nav-group={group.title}>
+            <div
+              class={`px-4 ${idx === 0 ? "pt-2" : "pt-4"} pb-1 text-sm text-muted-foreground`}
+            >
+              {group.title}
+            </div>
+            {group.children.map((item) => (
+              <HeaderLink href={item.href} class={mobileLinkBase}>
+                {item.label}
+              </HeaderLink>
+            ))}
+          </div>
+        ))}
       </nav>
     </div>
   </div>
