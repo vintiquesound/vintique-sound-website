@@ -24,15 +24,15 @@ export default function HeaderNavMenu({ pathname }: HeaderNavMenuProps) {
   const servicesLinks = React.useMemo(
     () => [
       { href: "/mixing-mastering", label: "Mixing & Mastering" },
-      { href: "/editing-repairs", label: "Audio Editing" },
-      { href: "/editing-repairs", label: "Audio Restoration" },
+      { href: "/audio-editing", label: "Audio Editing" },
+      { href: "/audio-restoration", label: "Audio Restoration" },
     ],
     []
   )
 
   const educationLinks = React.useMemo(
     () => [
-      { href: "/tutorial-videos", label: "YouTube Videos" },
+      { href: "/youtube-videos", label: "YouTube Videos" },
       { href: "/tutorial-videos", label: "Tutorial Videos" },
     ],
     []
@@ -40,6 +40,7 @@ export default function HeaderNavMenu({ pathname }: HeaderNavMenuProps) {
 
   const digitalProductsLinks = React.useMemo(
     () => [
+      { href: "/audio-tools", label: "Audio Tools" },
       { href: "/plugins", label: "Plugins" },
       { href: "/samples-loops", label: "Samples & Loops" },
     ],

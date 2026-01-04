@@ -1,0 +1,46 @@
+---
+import { MIX_MASTER_TITLE, MIX_MASTER_DESCRIPTION } from "@/consts";
+import WebPageLayout from "../layouts/WebPageLayout.astro";
+import ContactForm from "../components/ui/ContactForm";
+---
+
+<WebPageLayout title={MIX_MASTER_TITLE} description={MIX_MASTER_DESCRIPTION}>
+  <h1>Mixing and Mastering Services</h1>
+
+  <p>Unlock the full potential of your music with professional mixing and mastering tailored to your genre and vision.</p>
+
+  <h2>What I Offer</h2>
+  <ul>
+    <li><strong>Mixing</strong>: Balancing, EQ, compression, effects, automation, and creative enhancements.</li>
+    <li><strong>Mastering</strong>: Final polish, loudness optimization, stereo imaging, and format delivery.</li>
+    <li><strong>Unlimited revisions</strong>: I work with you until you are 100% satisfied.</li>
+    <li><strong>Personalized service</strong>: Every project is unique—get direct communication and feedback.</li>
+  </ul>
+
+  <h2>Genres Specialized In</h2>
+  <ul>
+    <li>Indie Rock</li>
+    <li>Classic Rock</li>
+    <li>Hard Rock</li>
+    <li>House Music</li>
+    <li>...and many more!</li>
+  </ul>
+
+  <h2>How It Works</h2>
+  <ol>
+    <li><strong>Contact me</strong> with your project details and goals.</li>
+    <li><strong>Send your tracks</strong> (stems or stereo mix).</li>
+    <li><strong>Mixing/mastering process</strong> with regular updates and previews.</li>
+    <li><strong>Revisions</strong> until you are completely happy.</li>
+    <li><strong>Final delivery</strong> in your preferred formats.</li>
+  </ol>
+
+  <h2>Get Started</h2>
+  <p>Ready to take your music to the next level? Fill out the form below or <a href="/contact/">contact me</a> for a quote or to discuss your project!</p>
+
+  <ContactForm />
+
+  <hr />
+
+  <p><em>Have questions? Check out the <a href="/faq/">FAQ</a> or reach out directly.</em></p>
+</WebPageLayout>
