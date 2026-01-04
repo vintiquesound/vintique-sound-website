@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "astro:content";
 
 export const contactSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
