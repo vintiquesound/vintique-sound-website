@@ -1,0 +1,76 @@
+---
+import Card from "@/components/ui/card.astro";
+import { Mail, MapPin, Youtube, Instagram, Facebook } from "lucide-astro";
+import { SiSoundcloud } from "astro-icons/si";
+
+const contactInfo = [
+  {
+    icon: Mail,
+    label: "Email",
+    value: "info@soundforge.com",
+    href: "mailto:info@soundforge.com",
+  },
+  {
+    icon: MapPin,
+    label: "Address",
+    value: "1234 Studio Lane, Los Angeles, CA 90028",
+    href: "https://maps.google.com",
+  },
+];
+
+const socials = [
+  { icon: Youtube, name: "YouTube", url: "#", color: "hover:text-red-500" },
+  { icon: SiSoundcloud, name: "SoundCloud", url: "#", color: "hover:text-orange-500" },
+  { icon: Instagram, name: "Instagram", url: "#", color: "hover:text-pink-500" },
+  { icon: Facebook, name: "Facebook", url: "#", color: "hover:text-blue-600" },
+];
+---
+
+<div class="space-y-6">
+
+  <Card>
+    <div class="p-6 border-b">
+      <h3 class="font-semibold">Contact Information</h3>
+    </div>
+
+    <div class="p-6 space-y-4">
+      {contactInfo.map(({ icon: Icon, label, value, href }) => (
+        <a
+          href={href}
+          target="_blank"
+          class="flex gap-3 p-3 rounded-lg hover:bg-muted transition"
+        >
+          <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Icon class="w-5 h-5 text-primary" />
+          </div>
+
+          <div>
+            <div class="text-sm text-muted-foreground">{label}</div>
+            <div class="font-medium">{value}</div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </Card>
+
+  <Card>
+    <div class="p-6 border-b">
+      <h3 class="font-semibold">Follow Us</h3>
+      <p class="text-sm text-muted-foreground">Stay connected</p>
+    </div>
+
+    <div class="p-6 space-y-3">
+      {socials.map(({ icon: Icon, name, url, color }) => (
+        <a
+          href={url}
+          target="_blank"
+          class={`flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition ${color}`}
+        >
+          <Icon class="w-5 h-5" />
+          <span class="font-medium">{name}</span>
+        </a>
+      ))}
+    </div>
+  </Card>
+
+</div>
