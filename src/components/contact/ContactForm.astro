@@ -11,16 +11,16 @@ import { submitContact } from "@/actions/contact";
   <form
     method="POST"
     action={submitContact}
-    class="p-6 space-y-6"
+    class="py-6 space-y-6"
   >
-    <div>
-      <h2 class="text-xl font-semibold">Send us a Message</h2>
+    <div class="px-6 border-b">
+      <h4 class="font-semibold">Send us a Message</h4>
       <p class="text-sm text-muted-foreground">
-        We'll get back to you within 24 hours
+        We'll get back to you as soon as possible
       </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-6">
       <div class="space-y-2">
         <Label>First Name *</Label>
         <Input name="firstName" placeholder="John" required />
@@ -32,16 +32,17 @@ import { submitContact } from "@/actions/contact";
       </div>
     </div>
 
-    <div class="space-y-2">
+    <div class="px-6 space-y-2">
       <Label>Email *</Label>
       <Input name="email" type="email" placeholder="john@example.com" required />
     </div>
 
-    <div class="space-y-2">
-      <Label>Service</Label>
+    <div class="px-6 space-y-2">
+      <Label>Service *</Label>
       <select
         name="service"
-        class="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
+        required
+        class="flex h-10 w-full rounded-md border border-input bg-input-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
       >
         <option value="">Select a service</option>
         <option>Mixing & Mastering</option>
@@ -55,13 +56,15 @@ import { submitContact } from "@/actions/contact";
       </select>
     </div>
 
-    <div class="space-y-2">
+    <div class="px-6 space-y-2">
       <Label>Message *</Label>
       <Textarea name="message" placeholder="Tell us about your project..." required />
     </div>
 
-    <Button type="submit" class="w-full h-12">
-      Send Message
-    </Button>
+    <div class="px-6 space-y-2">
+      <Button type="submit" class="w-full h-12 bg-primary">
+        Send Message
+      </Button>
+    </div>
   </form>
 </Card>
