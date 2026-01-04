@@ -1,4 +1,4 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, z } from "astro:content";
 
 // Blog Content Collections setup
 const blog = defineCollection({
@@ -35,4 +35,7 @@ const blog = defineCollection({
 		}),
 });
 
-export const collections = { blog };
+// Partials Content Collection (no schema needed)
+const partials = defineCollection({});
+
+export const collections = { blog, partials };
