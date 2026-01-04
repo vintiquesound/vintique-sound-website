@@ -1,29 +1,25 @@
 ---
 import Card from "@/components/ui/card.astro";
-import { Mail, MapPin, Youtube, Instagram, Facebook } from "lucide-astro";
-import { SiSoundcloud } from "astro-icons/si";
+import { Mail, MapPin } from "lucide-astro";
+import { Icon } from "astro-icon/components";
+import { socials } from "@/lib/socials";
 
 const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "info@soundforge.com",
-    href: "mailto:info@soundforge.com",
+    value: "info@vintiquesound.com",
+    href: "mailto:info@vintiquesound.com",
   },
   {
     icon: MapPin,
     label: "Address",
-    value: "1234 Studio Lane, Los Angeles, CA 90028",
+    value: "Edmonton AB",
     href: "https://maps.google.com",
   },
 ];
 
-const socials = [
-  { icon: Youtube, name: "YouTube", url: "#", color: "hover:text-red-500" },
-  { icon: SiSoundcloud, name: "SoundCloud", url: "#", color: "hover:text-orange-500" },
-  { icon: Instagram, name: "Instagram", url: "#", color: "hover:text-pink-500" },
-  { icon: Facebook, name: "Facebook", url: "#", color: "hover:text-blue-600" },
-];
+
 ---
 
 <div class="space-y-6">
@@ -60,13 +56,14 @@ const socials = [
     </div>
 
     <div class="p-6 space-y-3">
-      {socials.map(({ icon: Icon, name, url, color }) => (
+      {socials.map(({ iconName, name, url }) => (
         <a
           href={url}
           target="_blank"
-          class={`flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition ${color}`}
+          class="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition text-accent hover:text-secondary"
+          aria-label={name}
         >
-          <Icon class="w-5 h-5" />
+          <Icon name={iconName} size={20} />
           <span class="font-medium">{name}</span>
         </a>
       ))}

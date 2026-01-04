@@ -4,6 +4,7 @@ import { Icon } from "astro-icon/components"
 import { Image } from "astro:assets"
 
 import { navMenuGroups } from "@/lib/navigation"
+import { socials } from "@/lib/socials"
 
 import logo from "../assets/vintique_sound_logo-letters_only.png"
 
@@ -11,7 +12,7 @@ const today = new Date()
 ---
 
 
-<footer class="py-8 px-4 bg-[var(--surface)] border-t border-[var(--border)] text-[var(--text)]">
+<footer class="py-8 px-4 bg-(--surface) border-t border-border text-(--text)">
 
   <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
     <div class="grid gap-10 items-start md:grid-rows-2 md:grid-cols-4 lg:grid-rows-1 lg:grid-cols-5">
@@ -36,11 +37,10 @@ const today = new Date()
       </div>
 
       {/* Nav menu groups: 1 col on mobile, 4 cols on md, 4 cols on lg */}
-      {navMenuGroups.map((group, i) => (
+      {navMenuGroups.map((group) => (
         <div
           class="flex flex-col gap-3 items-start text-left md:col-span-1 md:row-start-2 lg:row-auto lg:col-span-1"
           data-nav-group={group.title}
-          key={group.title}
         >
           <div class="font-semibold text-sm text-foreground tracking-wide">
             {group.title}
@@ -49,9 +49,8 @@ const today = new Date()
             {group.children.map((item) => (
               <a
                 href={item.href}
-                class="no-underline text-muted-foreground hover:text-[var(--accent)] text-sm transition-colors"
+                class="no-underline text-muted-foreground hover:text-accent text-sm transition-colors"
                 data-nav-item={item.href}
-                key={item.href}
               >
                 {item.label}
               </a>
@@ -68,23 +67,18 @@ const today = new Date()
 
   <div class="text-center">
     &copy; 2011 - {today.getFullYear()} Vintique Sound. All rights reserved.
-    <div class="flex justify-center gap-4 mt-4 text-[var(--accent)]">
-      <a href="https://www.youtube.com/c/vintiquesound" target="_blank" class="no-underline text-[var(--accent)] hover:text-[var(--secondary)]">
-        <span class="sr-only">Follow Vintique Sound on YouTube</span>
-        <Icon name={"simple-icons:youtube"} size={32} />
-      </a>
-      <a href="https://soundcloud.com/vintiquesound" target="_blank" class="no-underline text-[var(--accent)] hover:text-[var(--secondary)]">
-        <span class="sr-only">Follow Vintique Sound on SoundCloud</span>
-        <Icon name={"simple-icons:soundcloud"} size={32} />
-      </a>
-      <a href="https://www.instagram.com/vintiquesound/" target="_blank" class="no-underline text-[var(--accent)] hover:text-[var(--secondary)]">
-        <span class="sr-only">Follow Vintique Sound on Instagram</span>
-        <Icon name={"simple-icons:instagram"} size={32} />
-      </a>
-      <a href="https://www.facebook.com/vintiquesound/" target="_blank" class="no-underline text-[var(--accent)] hover:text-[var(--secondary)]">
-        <span class="sr-only">Follow Vintique Sound on Facebook</span>
-        <Icon name={"simple-icons:facebook"} size={32} />
-      </a>
+    <div class="flex justify-center gap-4 mt-4 text-accent">
+      {socials.map(({ name, url, iconName, label }) => (
+        <a
+          href={url}
+          target="_blank"
+          class="no-underline text-accent hover:text-secondary"
+          aria-label={name}
+        >
+          <span class="sr-only">{label}</span>
+          <Icon name={iconName} size={32} />
+        </a>
+      ))}
     </div>
   </div>
 </footer>
