@@ -60,25 +60,26 @@ const mobileLinkBase =
     <!-- Mobile nav menu, when hamburger menu is open -->
     <div id="mobile-nav" class="md:hidden border-t border-border" hidden>
       <nav class="flex flex-col py-2">
-        <div class="px-4 pt-2 pb-1 text-sm text-muted">Services</div>
+        <div class="px-4 pt-2 pb-1 text-sm text-muted-foreground">Services</div>
         <HeaderLink href="/mixing-mastering" class={mobileLinkBase}>Mixing & Mastering</HeaderLink>
         <HeaderLink href="/editing-repairs" class={mobileLinkBase}>Audio Editing</HeaderLink>
         <HeaderLink href="/editing-repairs" class={mobileLinkBase}>Audio Restoration</HeaderLink>
 
-        <div class="px-4 pt-4 pb-1 text-sm text-muted">Education</div>
-        <HeaderLink href="/tutorial-videos" class={mobileLinkBase}>YouTube Videos</HeaderLink>
+        <div class="px-4 pt-4 pb-1 text-sm text-muted-foreground">Education</div>
+        <HeaderLink href="/blog" class={mobileLinkBase}>Blog</HeaderLink>
+        <HeaderLink href="/youtube-videos" class={mobileLinkBase}>YouTube Videos</HeaderLink>
         <HeaderLink href="/tutorial-videos" class={mobileLinkBase}>Tutorial Videos</HeaderLink>
 
-        <div class="px-4 pt-4 pb-1 text-sm text-muted">Digital Products</div>
+        <div class="px-4 pt-4 pb-1 text-sm text-muted-foreground">Digital Products</div>
+        <HeaderLink href="/audio-tools" class={mobileLinkBase}>Audio Tools</HeaderLink>
         <HeaderLink href="/plugins" class={mobileLinkBase}>Plugins</HeaderLink>
         <HeaderLink href="/samples-loops" class={mobileLinkBase}>Samples & Loops</HeaderLink>
 
-        <div class="mt-2">
-          <HeaderLink href="/studio" class={mobileLinkBase}>Studio</HeaderLink>
-          <HeaderLink href="/blog" class={mobileLinkBase}>Blog</HeaderLink>
-          <HeaderLink href="/about" class={mobileLinkBase}>About</HeaderLink>
-          <HeaderLink href="/contact" class={mobileLinkBase}>Contact</HeaderLink>
-        </div>
+        <div class="px-4 pt-4 pb-1 text-sm text-muted-foreground">Company</div>
+        <HeaderLink href="/studio" class={mobileLinkBase}>Studio</HeaderLink>
+        <HeaderLink href="/about" class={mobileLinkBase}>About</HeaderLink>
+        <HeaderLink href="/faqs" class={mobileLinkBase}>FAQs</HeaderLink>
+        <HeaderLink href="/contact" class={mobileLinkBase}>Contact</HeaderLink>
       </nav>
     </div>
   </div>

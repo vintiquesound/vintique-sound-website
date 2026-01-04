@@ -32,6 +32,7 @@ export default function HeaderNavMenu({ pathname }: HeaderNavMenuProps) {
 
   const educationLinks = React.useMemo(
     () => [
+      { href: "/blog", label: "Blog" },
       { href: "/youtube-videos", label: "YouTube Videos" },
       { href: "/tutorial-videos", label: "Tutorial Videos" },
     ],
@@ -47,6 +48,16 @@ export default function HeaderNavMenu({ pathname }: HeaderNavMenuProps) {
     []
   )
 
+  const companyLinks = React.useMemo(
+    () => [
+      { href: "/studio", label: "Studio" },
+      { href: "/about", label: "About" },
+      { href: "/faqs", label: "FAQs" },
+      { href: "/contact", label: "Contact" },
+    ],
+    []
+  )
+
   const servicesActive = React.useMemo(
     () => servicesLinks.some((l) => isActive(l.href)),
     [servicesLinks, isActive]
@@ -58,6 +69,10 @@ export default function HeaderNavMenu({ pathname }: HeaderNavMenuProps) {
   const digitalProductsActive = React.useMemo(
     () => digitalProductsLinks.some((l) => isActive(l.href)),
     [digitalProductsLinks, isActive]
+  )
+  const companyActive = React.useMemo(
+    () => companyLinks.some((l) => isActive(l.href)),
+    [companyLinks, isActive]
   )
 
   const topLinkBase =
@@ -134,40 +149,27 @@ export default function HeaderNavMenu({ pathname }: HeaderNavMenuProps) {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuLink
-            href="/studio"
-            className={`${topLinkBase} ${isActive("/studio") ? "border-accent" : ""}`}
+          <NavigationMenuTrigger
+            className={`${topTriggerBase} ${companyActive ? "border-accent" : ""}`}
           >
-            Studio
-          </NavigationMenuLink>
+            Company
+          </NavigationMenuTrigger>
+          <NavigationMenuContent className="md:min-w-55">
+            <div className="flex flex-col">
+              {companyLinks.map((l) => (
+                <NavigationMenuLink
+                  key={l.label}
+                  href={l.href}
+                  className={`${dropdownLinkBase} ${isActive(l.href) ? "font-bold underline" : ""}`}
+                >
+                  {l.label}
+                </NavigationMenuLink>
+              ))}
+            </div>
+          </NavigationMenuContent>
         </NavigationMenuItem>
 
-        <NavigationMenuItem>
-          <NavigationMenuLink
-            href="/blog"
-            className={`${topLinkBase} ${isActive("/blog") ? "border-accent" : ""}`}
-          >
-            Blog
-          </NavigationMenuLink>
-        </NavigationMenuItem>
 
-        <NavigationMenuItem>
-          <NavigationMenuLink
-            href="/about"
-            className={`${topLinkBase} ${isActive("/about") ? "border-accent" : ""}`}
-          >
-            About
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <NavigationMenuLink
-            href="/contact"
-            className={`${topLinkBase} ${isActive("/contact") ? "border-accent" : ""}`}
-          >
-            Contact
-          </NavigationMenuLink>
-        </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   )
