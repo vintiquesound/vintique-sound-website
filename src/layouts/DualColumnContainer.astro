@@ -1,0 +1,42 @@
+---
+type Props = {
+	/** Outer padding/spacing classes (default: py-20 md:py-32) */
+	outerClass?: string;
+	/** Extra classes appended to the outer wrapper */
+	extraOuterClass?: string;
+	/** Inner max-width/padding classes (default: max-w-6xl + responsive padding) */
+	innerClass?: string;
+	/** Extra classes appended to the inner wrapper */
+	extraInnerClass?: string;
+};
+
+const defaultOuter = "py-20 md:py-32";
+const defaultExtraOuter = "";
+const defaultInner = "mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12";
+const defaultExtraInner = "";
+
+const {
+	outerClass,
+	extraOuterClass,
+	innerClass,
+	extraInnerClass
+} = Astro.props as Props;
+
+const outer = outerClass ?? defaultOuter;
+const extraOuter = extraOuterClass ?? defaultExtraOuter;
+const inner = innerClass ?? defaultInner;
+const extraInner = extraInnerClass ?? defaultExtraInner;
+---
+
+<div class={`relative w-full overflow-hidden ${outer} ${extraOuter}`.trim()}>
+	<div class={`w-full ${inner} ${extraInner} relative z-10`.trim()}>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+			<div>
+				<slot name="left" />
+			</div>
+			<div>
+				<slot name="right" />
+			</div>
+		</div>
+	</div>
+</div>

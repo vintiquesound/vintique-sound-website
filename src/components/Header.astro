@@ -1,0 +1,104 @@
+---
+import { SITE_TITLE } from "../consts"
+import { Image } from "astro:assets"
+
+import { navMenuGroups } from "@/lib/navigation"
+
+import ThemeToggle from "./ThemeToggle.astro"
+import HeaderLink from "./HeaderLink.astro"
+
+import HeaderNavMenu from "./HeaderNavMenu"
+
+import logo from "../assets/vintique_sound_logo-letters_only.png"
+
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "")
+
+const mobileLinkBase =
+  "block w-full py-3 px-4 text-base text-(--text) hover:text-accent no-underline transition-colors"
+---
+
+<header class="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-lg supports-backdrop-filter:bg-background/80">
+  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <nav class="flex items-center justify-between">
+      <a href="/" aria-label={SITE_TITLE} class="inline-block shrink-0 no-underline text-(--text)">
+        <Image src={logo} alt={SITE_TITLE + " logo"} width={91} height={40} class="block h-10 w-auto shrink-0" />
+      </a>
+
+      <!-- Desktop nav menu -->
+      <div class="hidden md:flex flex-1 items-center justify-center">
+        <HeaderNavMenu client:load pathname={pathname} />
+      </div>
+
+      <!-- Hamburger menu, only shown on mobile -->
+      <div class="flex items-center gap-2 shrink-0">
+        <button
+          type="button"
+          class="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-md border border-border text-(--text) hover:text-accent transition-colors"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="mobile-nav"
+          data-mobile-menu-button
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="h-5 w-5"
+            aria-hidden="true"
+          >
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="18" x2="20" y2="18" />
+          </svg>
+        </button>
+
+        <ThemeToggle />
+      </div>
+    </nav>
+
+    <!-- Mobile nav menu, when hamburger menu is open -->
+    <div id="mobile-nav" class="md:hidden border-t border-border" hidden>
+      <nav class="flex flex-col py-2">
+        {navMenuGroups.map((group, idx) => (
+          <div class="contents" data-nav-group={group.title}>
+            <div
+              class={`px-4 ${idx === 0 ? "pt-2" : "pt-4"} pb-1 text-sm text-muted-foreground`}
+            >
+              {group.title}
+            </div>
+            {group.children.map((item) => (
+              <HeaderLink href={item.href} class={mobileLinkBase}>
+                {item.label}
+              </HeaderLink>
+            ))}
+          </div>
+        ))}
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script type="module">
+  const button = document.querySelector("[data-mobile-menu-button]");
+  const panel = document.getElementById("mobile-nav");
+
+  if (button instanceof HTMLButtonElement && panel) {
+    const setOpen = (open) => {
+      panel.hidden = !open;
+      button.setAttribute("aria-expanded", String(open));
+    };
+
+    setOpen(false);
+
+    button.addEventListener("click", () => {
+      setOpen(panel.hidden);
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.matchMedia("(min-width: 768px)").matches) setOpen(false);
+    });
+  }
+</script>

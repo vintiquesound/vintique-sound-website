@@ -1,0 +1,85 @@
+---
+import DualColumnContainer from "@/layouts/DualColumnContainer.astro";
+import Image from "astro/components/Image.astro";
+
+type Props = {
+  /** Title text for the section */
+  title: string;
+  /** Subtitle/description text */
+  subtitle?: string;
+  /** Image component or URL for construction image */
+  image?: { src: string; alt: string };
+  /** Whether to show image on the left or right (default: left) */
+  imagePosition?: "left" | "right";
+  /** Extra classes for the section */
+  class?: string;
+};
+
+const { title, subtitle, image, imagePosition = "left", class: outerClass = "" } = Astro.props as Props;
+
+const hasImage = !!image;
+const leftSlot = hasImage && imagePosition === "left" ? "image" : "text";
+const rightSlot = hasImage && imagePosition === "right" ? "image" : "text";
+---
+
+<section class={`relative overflow-hidden w-full bg-gradient-to-br from-accent/30 via-secondary/30 to-primary/30 dark:from-neutral-900 dark:via-zinc-900 dark:to-neutral-900 ${outerClass}`.trim()}>
+  <DualColumnContainer>
+    <Fragment slot={leftSlot === "image" ? "left" : "right"}>
+      {hasImage && image && (
+        <figure class="relative flex items-center justify-center mt-6 md:mt-0 px-2 py-4 md:p-0">
+          <Image
+            src={image.src}
+            alt={image.alt}
+            width={512}
+            height={512}
+            class="rounded-2xl shadow-2xl w-full h-full object-contain bg-cover"
+            loading="eager"
+          />
+          <figcaption class="absolute right-2 bottom-2 text-xs text-zinc-500/70 italic hidden md:block">
+            Illustration by <a href="https://unsplash.com/@publicdomainvectors?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Public domain vectors</a> on <a href="https://unsplash.com/illustrations/construction-site-with-hazard-barrier-and-unfinished-building-V7D6s4B-LP4?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+          </figcaption>
+        </figure>
+      )}
+    </Fragment>
+
+    <Fragment slot={rightSlot === "text" ? "right" : "left"}>
+      <div class="relative z-10 text-center md:text-left space-y-7 md:space-y-10 px-1 md:px-0 animate-fade-in">
+        <div class="inline-block" aria-label="Section status: Under construction">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-yellow-400/80 text-base font-black text-yellow-900 rounded-full shadow border-2 border-yellow-300 uppercase tracking-wider md:text-lg">
+            <span class="relative flex h-3 w-3">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-80"></span>
+              <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-600"></span>
+            </span>
+            Under Construction
+          </div>
+        </div>
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter text-amber-900 dark:text-yellow-300 drop-shadow-xl">
+          {title}
+        </h1>
+        {subtitle && (
+          <div class="text-lg md:text-2xl text-yellow-800/90 dark:text-yellow-100/80 max-w-xl mx-auto md:mx-0 prose dark:prose-invert [&>a]:underline underline-offset-2">
+            {subtitle}
+          </div>
+        )}
+      </div>
+    </Fragment>
+  </DualColumnContainer>
+</section>
+
+<style>
+@keyframes float-in {
+  0% { opacity: 0; transform: translateY(40px) scale(0.92); }
+  65% { opacity: 1; transform: translateY(-8px) scale(1.04); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-float-in {
+  animation: float-in 1.38s cubic-bezier(.22,1,.36,1) backwards;
+}
+@keyframes fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 1.36s cubic-bezier(.18,.93,.34,.98) backward;
+}
+</style>

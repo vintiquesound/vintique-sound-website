@@ -1,0 +1,77 @@
+---
+import Button from "@/components/ui/button.astro";
+import Input from "@/components/ui/input.astro";
+import Textarea from "@/components/ui/text-area.astro";
+import Label from "@/components/ui/label.astro";
+import Card from "@/components/ui/card.astro";
+import { submitContact } from "@/actions/contact";
+---
+
+<Card>
+  <form
+    method="POST"
+    action={submitContact}
+    class="py-6 space-y-6"
+  >
+    <div class="px-6 border-b">
+      <h4 class="font-semibold">Send us a Message</h4>
+      <p class="text-sm text-muted-foreground">
+        We'll get back to you as soon as possible
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-6">
+      <div class="space-y-2">
+        <Label>First Name *</Label>
+        <Input name="firstName" placeholder="John" required />
+      </div>
+
+      <div class="space-y-2">
+        <Label>Last Name *</Label>
+        <Input name="lastName" placeholder="Doe" required />
+      </div>
+    </div>
+
+    <div class="px-6 space-y-2">
+      <Label>Email *</Label>
+      <Input name="email" type="email" placeholder="john@example.com" required />
+    </div>
+
+    <div class="px-6 space-y-2">
+      <Label>Service *</Label>
+      <select
+        name="service"
+        required
+        class="flex h-10 w-full rounded-md border border-input bg-input-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        <option value="">Select a service</option>
+        <option>Mixing & Mastering</option>
+        <option>Audio Editing</option>
+        <option>Audio Restoration</option>
+        <option>Tutorial Videos</option>
+        <option>Audio Tools</option>
+        <option>Plugins</option>
+        <option>Samples & Loops</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="px-6 space-y-2">
+      <Label>Message *</Label>
+      <Textarea name="message" placeholder="Tell us about your project..." required />
+    </div>
+
+    <div class="px-6 space-y-2">
+      <Button
+        type="submit"
+        variant="solid"
+        bgColor="primary"
+        hoverBgColor="primary"
+        fullWidth
+        hoverScale="103"
+      >
+        Send Message
+      </Button>
+    </div>
+  </form>
+</Card>

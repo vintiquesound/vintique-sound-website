@@ -1,0 +1,29 @@
+---
+interface Props {
+  lat: number;
+  lon: number;
+  offset?: number;
+}
+
+const {
+  lat,
+  lon,
+  offset = 0.02, // controls zoom level
+} = Astro.props;
+
+const minLon = lon - offset;
+const minLat = lat - offset;
+const maxLon = lon + offset;
+const maxLat = lat + offset;
+
+const src = `https://www.openstreetmap.org/export/embed.html?bbox=${minLon}%2C${minLat}%2C${maxLon}%2C${maxLat}&layer=mapnik&marker=${lat}%2C${lon}`;
+---
+<div class="w-full h-100 overflow-hidden rounded-xl border">
+  <iframe
+    src={src}
+    class="h-full w-full border-0"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+    title="Map location"
+  />
+</div>

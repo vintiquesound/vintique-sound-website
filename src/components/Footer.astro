@@ -1,0 +1,84 @@
+---
+import { SITE_TITLE } from "../consts"
+import { Icon } from "astro-icon/components"
+import { Image } from "astro:assets"
+
+import { navMenuGroups } from "@/lib/navigation"
+import { socials } from "@/lib/socials"
+
+import logo from "../assets/vintique_sound_logo-letters_only.png"
+
+const today = new Date()
+---
+
+
+<footer class="py-8 px-4 bg-(--surface) border-t border-border text-(--text)">
+
+  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+    <div class="grid gap-10 md:gap-2 lg:gap-10 items-start md:grid-rows-2 md:grid-cols-4 lg:grid-rows-1 lg:grid-cols-5">
+      {/* Logo and text: full width on md, first col on lg */}
+      <div class="flex flex-col gap-4 items-start text-left md:col-span-4 md:text-center lg:textleft lg:col-span-1 md:row-start-1 lg:row-auto">
+        <a
+          href="/"
+          aria-label={SITE_TITLE}
+          class="inline-block shrink-0 no-underline text-(--text)"
+        >
+          <Image
+            src={logo}
+            alt={SITE_TITLE + " logo"}
+            width={91}
+            height={40}
+            class="block h-10 w-auto shrink-0"
+          />
+        </a>
+        <p class="m-0 text-left text-muted-foreground text-sm max-w-72">
+          Professional audio services and education for producers and engineers worldwide.
+        </p>
+      </div>
+
+      {/* Nav menu groups: 1 col on mobile, 4 cols on md, 4 cols on lg */}
+      {navMenuGroups.map((group) => (
+        <div
+          class="flex flex-col gap-3 items-start text-left md:col-span-1 md:row-start-2 lg:row-auto lg:col-span-1"
+          data-nav-group={group.title}
+        >
+          <div class="font-semibold text-sm text-foreground tracking-wide">
+            {group.title}
+          </div>
+          <div class="flex flex-col gap-2">
+            {group.children.map((item) => (
+              <a
+                href={item.href}
+                class="no-underline text-muted-foreground hover:text-accent text-sm transition-colors"
+                data-nav-item={item.href}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="flex justify-center mb-2">
+    <hr class="w-11/12 rounded-full border border-muted my-4" />
+  </div>
+
+  <div class="text-center">
+    &copy; 2011 - {today.getFullYear()} Vintique Sound. All rights reserved.
+    <div class="flex justify-center gap-4 mt-4 text-accent">
+      {socials.map(({ name, url, iconName, label }) => (
+        <a
+          href={url}
+          target="_blank"
+          class="no-underline text-accent hover:text-secondary"
+          aria-label={name}
+        >
+          <span class="sr-only">{label}</span>
+          <Icon name={iconName} size={32} />
+        </a>
+      ))}
+    </div>
+  </div>
+</footer>

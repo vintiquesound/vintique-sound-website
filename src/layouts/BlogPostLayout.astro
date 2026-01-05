@@ -1,0 +1,132 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import { slugifyTag } from "../lib/utils";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Tag from "../components/blog/Tag.astro";
+import "../styles/global.css";
+
+type Props = CollectionEntry<"blog">["data"];
+
+const { heroImage, title, description, pubDate, revisedDate, tags, quote } = Astro.props;
+
+// Find related posts by tag
+const allPosts = await getCollection("blog");
+const relatedPosts = allPosts.filter(
+	(p) =>
+		p.data.tags &&
+		tags &&
+		p.data.tags.some((tag) => tags.includes(tag))
+).slice(0, 3);
+
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<style>
+			/* Tailwind handles layout/spacing; keeping only content selectors as inline styles since Tailwind can't express well. */
+			body .prose p > img,
+			body .prose p > a > img {
+				display: block !important;
+				margin-left: auto !important;
+				margin-right: auto !important;
+			}
+			@supports selector(p:has(img)) {
+				.prose p:has(> img),
+				.prose p:has(> a > img) {
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+				}
+			}
+			.prose p > img + span,
+			.prose p > a + span {
+				display: block;
+				text-align: center;
+				font-size: 0.67em;
+				margin-top: 0;
+				font-weight: normal;
+			}
+			body .prose p {
+				margin-bottom: 1.25em !important;
+			}
+			body .prose ul,
+			body .prose ol {
+				margin-top: 0 !important;
+				margin-bottom: 1.25em !important;
+				padding-left: 1.25em !important;
+			}
+			@supports selector(p:has(+ ul)) {
+				.prose p:has(+ ul),
+				.prose p:has(+ ol) {
+					margin-bottom: 0.25em;
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		<Header />
+		<main class="w-full m-0">
+			<article class="mx-auto w-full max-w-200 px-4 sm:px-6 lg:px-8">
+				{heroImage && (
+					<div class="mt-8 mb-4">
+						<Image
+							width={720}
+							height={360}
+							src={heroImage}
+							alt=""
+							class="block w-full h-auto rounded-xl transition-shadow duration-200 ease-out shadow-(--shadow-1)"
+						/>
+					</div>
+				)}
+				<div class="prose w-full max-w-none py-6 text-foreground">
+					<h1 class="mt-0 uppercase">{title}</h1>
+					<div class="mt-2 mb-4 not-prose">
+            <div>
+							<FormattedDate date={pubDate} />
+							{revisedDate && (
+                <div class="mt-1">
+									Revised <FormattedDate date={revisedDate} />
+								</div>
+							)}
+						</div>
+						{tags && tags.length > 0 && (
+							<>
+								<div class="mt-3 flex flex-wrap gap-2">
+									{tags.map((tag) => (
+										<Tag label={tag} href={`/blog/tag/${slugifyTag(tag)}/`} />
+									))}
+								</div>
+								<hr class="my-6 border-0 h-1 w-full bg-accent rounded-full" />
+							</>
+						)}
+						{quote && (
+							<p class="mt-0 mb-6 text-base">{quote}</p>
+						)}
+					</div>
+					<hr />
+					<slot />
+					{relatedPosts.length > 0 && (
+						<section>
+							<h3>Related Posts</h3>
+							<ul>
+								{relatedPosts.map((post) => (
+									<li>
+										<a href={`/blog/${post.slug}`}>{post.data.title}</a>
+									</li>
+								))}
+							</ul>
+						</section>
+					)}
+				</div>
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>

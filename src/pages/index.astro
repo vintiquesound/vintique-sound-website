@@ -1,0 +1,194 @@
+---
+import { Headphones, CheckCircle, GraduationCap, Package, ArrowRight } from "lucide-astro";
+import { Button } from "@/components/ui/button";
+import WebPageLayout from "@/layouts/WebPageLayout.astro";
+import HeroSection from "@/layouts/sections/HeroSection.astro";
+import ThreeCardsSection from "@/layouts/sections/ThreeCardsSection.astro";
+import CtaSection from "@/layouts/sections/CtaSection.astro";
+import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
+---
+
+<WebPageLayout >
+	<div class="flex flex-col">
+    {/* Hero Section */}
+		<HeroSection
+        title="Professional Mixing and Mastering & Audio Tools"
+			subtitle="Mixing, mastering, audio restoration, tutorials, and premium plugins — everything you need to create professional-level audio."
+      primary={{
+        label: "Explore Services",
+        href: "/mixing-mastering",
+        icon: ArrowRight,
+        iconPosition: "right",
+        variant: "solid",
+        bgColor: "primary",
+        hoverBgColor: "primary/90",
+        textColor: "primary-foreground",
+        hoverTextColor: "primary-foreground",
+        hoverScale: true,
+      }}
+      outline={{
+        label: "View Tutorials",
+        href: "/education",
+        variant: "outline",
+        bgColor: "transparent",
+        hoverBgColor: "white",
+        textColor: "foreground",
+        hoverTextColor: "primary",
+        borderAlways: true,
+        borderColor: "foreground",
+        hoverBorderColor: "primary",
+        hoverScale: true,
+      }}
+			image={HeroMixerImage}
+			imageAlt="Music Studio Audio Mixer"
+			imagePosition="right"
+      bgColors={["primary/20", "secondary/15", "accent/20"]}
+		/>
+
+    {/* Services Preview */}
+    <ThreeCardsSection
+      class="bg-muted/50"
+      title="Our Services"
+      subtitle="Professional audio services tailored to your needs"
+      cards={[
+        {
+          title: "Mixing & Mastering",
+          subtitle: "Professional mixing and mastering services to make your tracks shine",
+          icon: Headphones,
+          colorStyle: "primary",
+        },
+        {
+          title: "Education & Tutorials",
+          subtitle: "Learn from industry professionals with our comprehensive tutorials",
+          icon: GraduationCap,
+          colorStyle: "secondary",
+        },
+        {
+          title: "Digital Products",
+          subtitle: "Premium plugins, samples, and loops for your productions",
+          icon: Package,
+          colorStyle: "accent",
+        },
+      ]}
+    >
+      <Fragment slot="card1Content">
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Industry-standard quality</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Fast turnaround times</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Unlimited revisions</span>
+          </li>
+        </ul>
+      </Fragment>
+      <Fragment slot="card1Footer">
+        <Button
+          href="/services"
+          fullWidth
+          variant="solid"
+          bgColor="primary"
+          textColor="primary-foreground"
+          hoverBgColor="primary/90"
+        >
+          Learn More
+        </Button>
+      </Fragment>
+
+      <Fragment slot="card2Content">
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Step-by-step courses</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Expert instructors</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Lifetime access</span>
+          </li>
+        </ul>
+      </Fragment>
+      <Fragment slot="card2Footer">
+        <Button
+          href="/education"
+          fullWidth
+          variant="solid"
+          bgColor="secondary"
+          textColor="secondary-foreground"
+          hoverBgColor="secondary/90"
+        >
+          Browse Courses
+        </Button>
+      </Fragment>
+
+      <Fragment slot="card3Content">
+        <ul class="space-y-2 mb-6">
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Professional quality</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Royalty-free content</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm">
+            <CheckCircle className="h-4 w-4 text-secondary" />
+            <span>Instant download</span>
+          </li>
+        </ul>
+      </Fragment>
+      <Fragment slot="card3Footer">
+        <Button
+          href="/products"
+          fullWidth
+          variant="solid"
+          bgColor="accent"
+          textColor="accent-foreground"
+          hoverBgColor="accent/90"
+        >
+          Shop Now
+        </Button>
+      </Fragment>
+    </ThreeCardsSection>
+
+    {/* CTA Section */}
+    <CtaSection
+      title="Ready to Elevate Your Sound?"
+      subtitle="Join hundreds of producers and engineers who trust Vintique Sound for their audio needs"
+        bgColors={["primary", "primary/75", "secondary"]}
+        primary={{
+          label: "Get Started Today",
+          href: "#",
+          variant: "solid",
+          icon: ArrowRight,
+          iconPosition: "right",
+          bgColor: "white",
+          hoverBgColor: "white/90",
+          textColor: "primary",
+          hoverTextColor: "primary",
+          hoverScale: true
+        }}
+        secondary={{
+          label: "Contact Us",
+          href: "/contact",
+          variant: "outline",
+          borderAlways: true,
+          borderColor: "white",
+          hoverBorderColor: "white",
+          hoverBgColor: "secondary/50",
+          textColor: "white",
+          hoverTextColor: "white",
+          hoverScale: true
+        }}
+      />
+
+  </div>
+</WebPageLayout>
