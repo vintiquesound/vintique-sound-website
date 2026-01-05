@@ -1,0 +1,79 @@
+---
+import Button from "@/components/ui/button.astro";
+import type { CtaButton } from "@/types/cta";
+
+type HeroSectionCopyProps = {
+	title: string;
+	subtitle?: string;
+	primary: CtaButton;
+	outline?: CtaButton;
+};
+
+const { title, subtitle, primary, outline } = Astro.props as HeroSectionCopyProps;
+
+const primaryVariant = primary.variant ?? "solid";
+const primarySize = primary.size ?? "lg";
+const outlineVariant = outline?.variant ?? "outline";
+const outlineSize = outline?.size ?? "lg";
+---
+
+<div>
+	<h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+		{title}
+	</h1>
+	{subtitle && (
+		<p class="text-lg md:text-xl text-muted-foreground mb-8">{subtitle}</p>
+	)}
+	<div class="flex flex-wrap gap-4">
+		<Button
+			href={primary.href}
+			variant={primaryVariant}
+			size={primarySize}
+			fullWidth={primary.fullWidth}
+			icon={primary.icon}
+			iconPosition={primary.iconPosition}
+			iconClassName={primary.iconClassName}
+			bgColor={primary.bgColor}
+			hoverBgColor={primary.hoverBgColor}
+			textColor={primary.textColor}
+			hoverTextColor={primary.hoverTextColor}
+			borderColor={primary.borderColor}
+			hoverBorderColor={primary.hoverBorderColor}
+			borderMode={primary.borderMode}
+			borderNone={primary.borderNone}
+			borderHover={primary.borderHover}
+			borderAlways={primary.borderAlways}
+			hoverScale={primary.hoverScale}
+			pointerCursor={primary.pointerCursor}
+			className={primary.className}
+		>
+			{primary.label}
+		</Button>
+		{outline && (
+			<Button
+				href={outline.href}
+				variant={outlineVariant}
+				size={outlineSize}
+				fullWidth={outline.fullWidth}
+				icon={outline.icon}
+				iconPosition={outline.iconPosition}
+				iconClassName={outline.iconClassName}
+				bgColor={outline.bgColor}
+				hoverBgColor={outline.hoverBgColor}
+				textColor={outline.textColor}
+				hoverTextColor={outline.hoverTextColor}
+				borderColor={outline.borderColor}
+				hoverBorderColor={outline.hoverBorderColor}
+				borderMode={outline.borderMode}
+				borderNone={outline.borderNone}
+				borderHover={outline.borderHover}
+				borderAlways={outline.borderAlways}
+				hoverScale={outline.hoverScale}
+				pointerCursor={outline.pointerCursor}
+				className={outline.className}
+			>
+				{outline.label}
+			</Button>
+		)}
+	</div>
+</div>

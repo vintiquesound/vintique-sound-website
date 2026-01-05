@@ -1,0 +1,27 @@
+---
+import { cn } from "@/lib/utils";
+
+type TagProps = {
+	label: string;
+	href?: string;
+	class?: string;
+};
+
+const { label, href, class: className } = Astro.props as TagProps;
+
+const baseClass = cn(
+	"inline-flex items-center rounded-sm px-2 py-1 text-sm font-medium uppercase",
+	"bg-foreground text-background",
+	"transition-colors hover:bg-secondary hover:text-secondary-foreground",
+	"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+	className
+);
+---
+
+{href ? (
+	<a href={href} class={baseClass}>
+		{label}
+	</a>
+) : (
+	<span class={baseClass}>{label}</span>
+)}

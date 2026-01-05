@@ -1,0 +1,25 @@
+---
+import ThemeToggleMenu from "./ThemeToggleMenu";
+---
+
+<!-- Ensure the correct icon mode is set ASAP (before React hydrates) -->
+<script is:inline>
+  (() => {
+    const STORAGE_KEY = "theme-mode";
+    const mode = localStorage.getItem(STORAGE_KEY) || "system";
+    document.documentElement.dataset.themeMode = mode;
+
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const apply = () => {
+      const isDark = mode === "dark" || (mode === "system" && mql.matches);
+      document.documentElement.classList.toggle("dark", isDark);
+    };
+
+    apply();
+    if (mode === "system") {
+      mql.addEventListener("change", apply);
+    }
+  })();
+</script>
+
+<ThemeToggleMenu client:idle />
