@@ -10,22 +10,22 @@ type HeroSectionProps = {
 	imagePosition?: "left" | "right";
 	title: string;
 	subtitle?: string;
-  primary: CtaButton;
-  outline?: CtaButton;
+	bgColors?: BgColorToken[];
+  solidButton: CtaButton;
+  outlineButton?: CtaButton;
 	image: ImageMetadata;
 	imageAlt: string;
-	bgColors?: BgColorToken[];
 };
 
 const {
 	imagePosition = "right",
 	title,
 	subtitle,
-	primary,
-	outline,
+	bgColors,
+	solidButton,
+	outlineButton,
 	image,
 	imageAlt,
-	bgColors,
 } = Astro.props as HeroSectionProps;
 
 const isImageLeft = imagePosition === "left";
@@ -42,8 +42,8 @@ const backgroundStyle = buildBackgroundStyle(bgColors);
 				<HeroSectionCopy
 					title={title}
 					subtitle={subtitle}
-					primary={primary}
-					outline={outline}
+					solidButton={solidButton}
+					outlineButton={outlineButton}
 				/>
 			)}
 		</div>
@@ -53,8 +53,8 @@ const backgroundStyle = buildBackgroundStyle(bgColors);
 				<HeroSectionCopy
 					title={title}
 					subtitle={subtitle}
-					primary={primary}
-					outline={outline}
+					solidButton={solidButton}
+					outlineButton={outlineButton}
 				/>
 			) : (
 				<HeroSectionImage image={image} imageAlt={imageAlt} />

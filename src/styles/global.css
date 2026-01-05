@@ -33,57 +33,58 @@
   --black: oklch(0.1824 0.0152 266.74);
   --graphite: oklch(0.354 0.0122 353.05);
 
-  /* Generated via Harmonizer: https://harmonizer.evilmartians.com/#W1siMTAwIiwxMDAsMC4wNiwiMjAwIiw5MCwwLjA5LCIzMDAiLDc3LDAuMTIsIjQwMCIsNjAsMC4xNSwiNTAwIiw1MCwwLjE4LCI2MDAiLDYwLDAuMTgsIjcwMCIsNzAsMC4xNSwiODAwIiw4MCwwLjEyLCI5MDAiLDkwLDAuMDksIjEwMDAiLDEwMCwwLjA2XSxbIkNvcmFsIiwyNSwiT3JhbmdlIiw3MCwiVHVycXVvaXNlIiwxODIsIkF6dXJlIiwyNTAsIkZ1Y2hzaWEiLDMyMF0sWyJhcGNhIiwiZmdUb0JnIiwibWF4IiwiI2ZmZiIsIiMxMTEiLDUsInAzIl1d */
-  /* --coral-100: oklch(0.97 0.02 25);
+  /* Brand and System colors */
+  /* Generated via Harmonizer: https://harmonizer.evilmartians.com/#W1siMTAwIiwxMDAsMC4wNiwiMjAwIiw5MCwwLjA5LCIzMDAiLDc3LDAuMTIsIjQwMCIsNjAsMC4xNSwiNTAwIiw1MCwwLjE4LCI2MDAiLDYwLDAuMiwiNzAwIiw3MCwwLjE3LCI4MDAiLDgwLDAuMTUsIjkwMCIsOTAsMC4xLCIxMDAwIiwxMDAsMC4wOV0sWyJDb3JhbCIsMjUsIk9yYW5nZSIsNzAsIlR1cnF1b2lzZSIsMTgyLCJBenVyZSIsMjUwLCJGdWNoc2lhIiwzMjBdLFsiYXBjYSIsImZnVG9CZyIsIm1heCIsIiNmZmYiLCIjMTExIiw1LCJwMyJdXQ */
+  --coral-100: oklch(0.97 0.02 25);
   --coral-200: oklch(0.93 0.05 25);
   --coral-300: oklch(0.87 0.09 25);
   --coral-400: oklch(0.78 0.15 25);
-  --coral-500: oklch(0.72 0.18 25); */
-  --coral-600: oklch(0.66 0.18 25);
-  /* --coral-700: oklch(0.59 0.15 25);
-  --coral-800: oklch(0.51 0.12 25);
-  --coral-900: oklch(0.42 0.09 25);
-  --coral-1000: oklch(0.31 0.06 25); */
-  /* --turquoise-100: oklch(0.96 0.06 182);
-  --turquoise-200: oklch(0.91 0.09 182);
-  --turquoise-300: oklch(0.84 0.12 182);
-  --turquoise-400: oklch(0.74 0.15 182); */
-  --turquoise-500: oklch(0.68 0.16 182);
-  /* --turquoise-600: oklch(0.62 0.15 182);
-  --turquoise-700: oklch(0.56 0.13 182);
-  --turquoise-800: oklch(0.48 0.12 182);
-  --turquoise-900: oklch(0.4 0.09 182);
-  --turquoise-1000: oklch(0.29 0.06 182); */
-  /* --orange-100: oklch(0.97 0.03 70);
+  --coral-500: oklch(0.72 0.18 25);
+  --coral-600: oklch(0.67 0.2 25);
+  --coral-700: oklch(0.59 0.17 25);
+  --coral-800: oklch(0.51 0.15 25);
+  --coral-900: oklch(0.42 0.1 25);
+  --coral-1000: oklch(0.31 0.09 25);
+  --orange-100: oklch(0.97 0.03 70);
   --orange-200: oklch(0.92 0.07 70);
-  --orange-300: oklch(0.86 0.12 70); */
+  --orange-300: oklch(0.86 0.12 70);
   --orange-400: oklch(0.77 0.15 70);
-  /* --orange-500: oklch(0.71 0.18 70);
+  --orange-500: oklch(0.71 0.18 70);
   --orange-600: oklch(0.65 0.16 70);
   --orange-700: oklch(0.58 0.14 70);
-  --orange-800: oklch(0.5 0.12 70);
-  --orange-900: oklch(0.41 0.09 70);
-  --orange-1000: oklch(0.3 0.06 70); */
-  /* --azure-100: oklch(0.97 0.02 250);
+  --orange-800: oklch(0.5 0.13 70);
+  --orange-900: oklch(0.41 0.1 70);
+  --orange-1000: oklch(0.3 0.07 70);
+  --turquoise-100: oklch(0.96 0.06 182);
+  --turquoise-200: oklch(0.91 0.09 182);
+  --turquoise-300: oklch(0.84 0.12 182);
+  --turquoise-400: oklch(0.74 0.15 182);
+  --turquoise-500: oklch(0.68 0.16 182);
+  --turquoise-600: oklch(0.62 0.15 182);
+  --turquoise-700: oklch(0.56 0.13 182);
+  --turquoise-800: oklch(0.48 0.12 182);
+  --turquoise-900: oklch(0.39 0.1 182);
+  --turquoise-1000: oklch(0.29 0.07 182);
+  --azure-100: oklch(0.97 0.02 250);
   --azure-200: oklch(0.92 0.04 250);
   --azure-300: oklch(0.85 0.08 250);
   --azure-400: oklch(0.76 0.14 250);
   --azure-500: oklch(0.7 0.18 250);
-  --azure-600: oklch(0.64 0.18 250);
-  --azure-700: oklch(0.57 0.15 250);
-  --azure-800: oklch(0.5 0.12 250);
-  --azure-900: oklch(0.41 0.09 250);
-  --azure-1000: oklch(0.3 0.06 250); */
-  /* --fuchsia-100: oklch(0.97 0.03 320);
+  --azure-600: oklch(0.64 0.2 250);
+  --azure-700: oklch(0.57 0.17 250);
+  --azure-800: oklch(0.5 0.15 250);
+  --azure-900: oklch(0.41 0.1 250);
+  --azure-1000: oklch(0.3 0.09 250);
+  --fuchsia-100: oklch(0.97 0.03 320);
   --fuchsia-200: oklch(0.93 0.06 320);
   --fuchsia-300: oklch(0.87 0.12 320);
   --fuchsia-400: oklch(0.78 0.15 320);
   --fuchsia-500: oklch(0.72 0.18 320);
-  --fuchsia-600: oklch(0.67 0.18 320);
-  --fuchsia-700: oklch(0.59 0.15 320);
-  --fuchsia-800: oklch(0.51 0.12 320);
-  --fuchsia-900: oklch(0.42 0.09 320);
-  --fuchsia-1000: oklch(0.31 0.06 320); */
+  --fuchsia-600: oklch(0.67 0.2 320);
+  --fuchsia-700: oklch(0.6 0.17 320);
+  --fuchsia-800: oklch(0.52 0.15 320);
+  --fuchsia-900: oklch(0.42 0.1 320);
+  --fuchsia-1000: oklch(0.31 0.09 320);
 
   /* Standard colors */
   --background: var(--white);
