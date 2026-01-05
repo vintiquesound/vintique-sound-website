@@ -69,7 +69,7 @@
   --shadow-1: 0 2px 8px oklch(0 0 0 / 10%);
 
   /* Border colors */
-  --border: rgba(0, 0, 0, 0.1);
+  --border: rgba(0, 0, 0, 0.2);
 
   /* Input colors */
   --input: oklch(0.9442 0.0053 286.3);
@@ -88,35 +88,48 @@
 }
 
 .dark {
+  /* Standard colors */
   --background: oklch(0.1773 0.0089 264.32);
   --foreground: oklch(0.985 0 0);
 
-  --surface: oklch(0.2103 0.0227 268.93);
-  --surface-2: oklch(0.2491 0.03 267.4);
-  --shadow-1: 0 2px 10px oklch(0 0 0 / 55%);
-
-  --card: oklch(0.2178 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
+  /* Extended colors */
   --muted: rgba(78, 76, 74, 0.929);
   --muted-foreground: oklch(0.708 0 0);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(44.226% 0.00005 271.152);
-  --input: oklch(0.439 0 0);
-  --ring: oklch(0.439 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+
+  /* Surface colors */
+  --surface: oklch(0.2103 0.0227 268.93);
+  --surface-2: oklch(0.2491 0.03 267.4);
+  --card: oklch(0.2178 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+
+  /* Sidebar colors */
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.439 0 0);
+
+  /* Shadow colors */
+  --shadow-1: 0 2px 10px oklch(0 0 0 / 55%);
+
+  /* Border colors */
+  --border: oklch(44.226% 0.00005 271.152);
+
+  /* Input colors */
+  --input: oklch(0.439 0 0);
+  --ring: oklch(0.439 0 0);
+
+  /* Chart colors */
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
 }
 
 @theme inline {
