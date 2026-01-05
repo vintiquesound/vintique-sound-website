@@ -1,7 +1,10 @@
 /*
-  The CSS in this style tag is based off of Bear Blog's default CSS.
-  https://github.com/HermanMartinus/bearblog/blob/297026a877bc2ab2b3bdfbd6b9f7961c350917dd/templates/styles/blog/default.css
-  License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
+  Ignore the following CSS linting warning messages:
+  - Unknown at rule @custom-variant
+  - Unknown at rule @theme
+  - Unknown at rule @apply
+
+  These are Tailwind custom directives that are not recognized by the CSS linter
  */
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -36,9 +39,9 @@
   /* Brand colors */
   --primary: oklch(0.64 0.2 25.33);
   --primary-foreground: var(--white);
-  --secondary: oklch(0.7038 0.123 182.5);
+  --secondary: oklch(0.7 0.123 182.5);
   --secondary-foreground: var(--white);
-  --accent: oklch(0.7686 0.1647 70.08);
+  --accent: oklch(0.76 0.16 70.08);
   --accent-foreground: var(--white);
 
   /* Extended colors */
