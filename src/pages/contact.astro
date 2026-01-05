@@ -2,6 +2,7 @@
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import ContactForm from "@/components/contact/ContactForm.astro";
 import ContactInfoCard from "@/components/contact/ContactInfoCard.astro";
+import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
 import { MapPin } from "lucide-astro";
 ---
 
@@ -35,9 +36,10 @@ import { MapPin } from "lucide-astro";
         <p class="text-lg text-muted-foreground mb-8">
           Located in the heart of Edmonton AB
         </p>
-        <div class="h-100 rounded-2xl border bg-muted flex items-center justify-center">
+        <!-- <div class="h-100 rounded-2xl border bg-muted flex items-center justify-center">
           <MapPin class="w-12 h-12 text-muted-foreground" />
-        </div>
+        </div> -->
+        <OpenStreetMapEmbed lat={53.54601} lon={-113.49143} offset={0.02} />
       </div>
     </section>
   </div>
