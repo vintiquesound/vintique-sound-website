@@ -1,8 +1,7 @@
 ---
+import type { CtaButton } from "@/types/cta";
 import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
 import CtaSectionCopy from "@/layouts/sections/CtaSectionCopy.astro";
-import type { CtaButton } from "@/types/cta";
-import { buildBackgroundStyle, type BgColorToken } from "@/lib/backgrounds";
 
 type CtaSectionProps = {
   title: string;
@@ -10,8 +9,8 @@ type CtaSectionProps = {
   primary?: CtaButton;
   secondary?: CtaButton;
   align?: "center" | "left";
-  bgColors?: BgColorToken[];
-  class?: string;
+  bgColors?: string;
+  outerClass?: string;
 };
 
 const {
@@ -21,14 +20,12 @@ const {
   secondary,
   align = "center",
   bgColors,
-  class: outerClass = "",
+  outerClass,
 } = Astro.props as CtaSectionProps;
-
-const backgroundStyle = buildBackgroundStyle(bgColors);
 ---
 
 <section class={`w-full relative overflow-hidden ${outerClass}`.trim()}>
-  <div class="absolute inset-0" style={backgroundStyle} />
+  <div class={`absolute inset-0 ${bgColors}`.trim()} />
   <SingleColumnContainer innerClass="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12" extraInnerClass="relative z-10">
     <CtaSectionCopy
       title={title}

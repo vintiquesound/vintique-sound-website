@@ -15,9 +15,9 @@ import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
       badgeColor="bg-primary text-primary-foreground"
       title="Let's Create Something<br/>Awesome"
       subtitle="Have a project in mind? Want to learn more about our services?<br/>We'd love to hear from you."
-      bgColors={["primary/10", "accent/10"]}
+			bgColors="bg-linear-to-br from-primary/10 to-accent/10"
       align="center"
-      class="py-20 md:py-32"
+      outerClass="py-20 md:py-32"
     />
     <section class="py-20">
       <div class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -36,9 +36,6 @@ import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
         <p class="text-lg text-muted-foreground mb-8">
           Located in the heart of Edmonton AB
         </p>
-        <!-- <div class="h-100 rounded-2xl border bg-muted flex items-center justify-center">
-          <MapPin class="w-12 h-12 text-muted-foreground" />
-        </div> -->
         <OpenStreetMapEmbed lat={53.54601} lon={-113.49143} offset={0.02} />
       </div>
     </section>

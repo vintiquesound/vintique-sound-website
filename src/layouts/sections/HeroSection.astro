@@ -4,13 +4,12 @@ import type { CtaButton } from "@/types/cta";
 import DualColumnContainer from "@/layouts/DualColumnContainer.astro";
 import HeroSectionCopy from "@/layouts/sections/HeroSectionCopy.astro";
 import HeroSectionImage from "@/layouts/sections/HeroSectionImage.astro";
-import { buildBackgroundStyle, type BgColorToken } from "@/lib/backgrounds";
 
 type HeroSectionProps = {
 	imagePosition?: "left" | "right";
 	title: string;
 	subtitle?: string;
-	bgColors?: BgColorToken[];
+	bgColors?: string;
   solidButton: CtaButton;
   outlineButton?: CtaButton;
 	image: ImageMetadata;
@@ -29,11 +28,10 @@ const {
 } = Astro.props as HeroSectionProps;
 
 const isImageLeft = imagePosition === "left";
-const backgroundStyle = buildBackgroundStyle(bgColors);
 ---
 
 <section class="w-full relative overflow-hidden">
-	<div class="absolute inset-0" style={backgroundStyle} />
+	<div class={`absolute inset-0 ${bgColors}`.trim()} />
 	<DualColumnContainer>
 		<div slot="left">
 			{isImageLeft ? (

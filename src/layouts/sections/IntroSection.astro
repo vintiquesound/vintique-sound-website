@@ -1,13 +1,10 @@
 ---
-import type { BgColorToken } from "@/lib/backgrounds";
-import { buildBackgroundStyle } from "@/lib/backgrounds";
-
 // IntroSectionProps: a simple, reusable hero-like section with badge, title, subtitle, and background colors
 // - badge: text for the badge
 // - badgeColor: Tailwind classes for badge background/text
 // - title: main heading
 // - subtitle: optional subheading
-// - bgColors: background gradient tokens
+// - bgColors: Tailwind background classes (string)
 // - align: "center" or "left" (default center)
 
 export type IntroSectionProps = {
@@ -15,9 +12,9 @@ export type IntroSectionProps = {
   badgeColor?: string;
   title: string;
   subtitle?: string;
-  bgColors?: BgColorToken[];
+  bgColors?: string;
   align?: "center" | "left";
-  class?: string;
+  outerClass?: string;
 };
 
 const {
@@ -27,15 +24,14 @@ const {
   subtitle,
   bgColors,
   align = "center",
-  class: outerClass = "",
+  outerClass,
 } = Astro.props as IntroSectionProps;
 
-const backgroundStyle = buildBackgroundStyle(bgColors);
 const alignment = align === "center" ? "text-center items-center" : "text-left items-start";
 ---
 
 <section class={`w-full relative overflow-hidden ${outerClass}`.trim()}>
-  <div class="absolute inset-0" style={backgroundStyle} />
+  <div class={`absolute inset-0 ${bgColors}`.trim()} />
   <div class={`container mx-auto px-4 relative z-10 max-w-3xl flex flex-col gap-4 ${alignment}`.trim()}>
     {badge && (
       <span class={`inline-block mb-4 rounded-md px-4 py-1 text-sm font-medium ${badgeColor}`}>{badge}</span>
