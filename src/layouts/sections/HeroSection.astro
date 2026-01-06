@@ -6,24 +6,24 @@ import HeroSectionCopy from "@/layouts/sections/HeroSectionCopy.astro";
 import HeroSectionImage from "@/layouts/sections/HeroSectionImage.astro";
 
 type HeroSectionProps = {
-	imagePosition?: "left" | "right";
+	bgColors?: string;
 	title: string;
 	subtitle?: string;
-	bgColors?: string;
   solidButton: CtaButton;
   outlineButton?: CtaButton;
 	image: ImageMetadata;
+	imagePosition?: "left" | "right";
 	imageAlt: string;
 };
 
 const {
-	imagePosition = "right",
+	bgColors,
 	title,
 	subtitle,
-	bgColors,
 	solidButton,
 	outlineButton,
 	image,
+	imagePosition = "right",
 	imageAlt,
 } = Astro.props as HeroSectionProps;
 

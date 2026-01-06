@@ -102,13 +102,12 @@ const faqs = {
 
     {/* Generic Section */}
     <IntroSection
+      bgColors="bg-linear-to-br from-secondary/15 to-accent/15"
       badge="FAQ"
       badgeColor="bg-primary text-primary-foreground"
       title="Frequently Asked Questions"
       subtitle="Find answers to common questions about our services, courses, and products."
-			bgColors="bg-linear-to-br from-secondary/15 to-accent/15"
       align="center"
-      outerClass="py-20 md:py-32"
     />
 
     {/* FAQ Section */}
@@ -154,22 +153,22 @@ const faqs = {
 
     {/* CTA Section */}
     <CtaSection
+      bgColors="bg-linear-to-br from-secondary via-secondary/80 to-primary"
       title="Still have questions?"
       subtitle="Can't find the answer you're looking for? Our team is here to help."
-			bgColors="bg-linear-to-br from-secondary via-secondary/80 to-primary"
-        primary={{
-          label: "Contact Us",
-          href: "/contact",
-          variant: "solid",
-          icon: ArrowRight,
-          iconPosition: "right",
-          bgColor: "white",
-          hoverBgColor: "white/90",
-          textColor: "primary",
-          hoverTextColor: "primary",
-          hoverScale: true
-        }}
-      />
+      primary={{
+        label: "Contact Us",
+        href: "/contact",
+        variant: "solid",
+        icon: ArrowRight,
+        iconPosition: "right",
+        bgColor: "white",
+        hoverBgColor: "white/90",
+        textColor: "primary",
+        hoverTextColor: "primary",
+        useHoverScale: true
+      }}
+    />
 
   </div>
 </WebPageLayout>

@@ -4,34 +4,34 @@ import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
 import CtaSectionCopy from "@/layouts/sections/CtaSectionCopy.astro";
 
 type CtaSectionProps = {
+  bgColors?: string;
   title: string;
   subtitle?: string;
-  primary?: CtaButton;
-  secondary?: CtaButton;
-  align?: "center" | "left";
-  bgColors?: string;
+  solid?: CtaButton;
+  outline?: CtaButton;
+  align?: "center" | "left" | "right";
   outerClass?: string;
 };
 
 const {
+  bgColors,
   title,
   subtitle,
-  primary,
-  secondary,
+  solid,
+  outline,
   align = "center",
-  bgColors,
   outerClass,
 } = Astro.props as CtaSectionProps;
 ---
 
 <section class={`w-full relative overflow-hidden ${outerClass}`.trim()}>
   <div class={`absolute inset-0 ${bgColors}`.trim()} />
-  <SingleColumnContainer innerClass="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12" extraInnerClass="relative z-10">
+  <SingleColumnContainer innerClass="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
     <CtaSectionCopy
       title={title}
       subtitle={subtitle}
-      primary={primary}
-      outline={secondary}
+      solid={solid}
+      outline={outline}
       align={align}
     />
   </SingleColumnContainer>

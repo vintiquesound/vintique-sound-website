@@ -1,20 +1,18 @@
 ---
-import Button from "@/components/ui/button.astro";
 import type { CtaButton } from "@/types/cta";
+import Button from "@/components/ui/Button.astro";
 
 type CtaSectionCopyProps = {
   title: string;
   subtitle?: string;
-  primary: CtaButton;
+  solid?: CtaButton;
   outline?: CtaButton;
-  align?: "center" | "left";
+  align?: "center" | "left" | "right";
 };
 
-const { title, subtitle, primary, outline, align = "center" } = Astro.props as CtaSectionCopyProps;
+const { title, subtitle, solid, outline, align = "center" } = Astro.props as CtaSectionCopyProps;
 
-const primaryVariant = primary.variant ?? "solid";
-const primarySize = primary.size ?? "lg";
-const outlineVariant = outline?.variant ?? "outline";
+const solidSize = solid?.size ?? "lg";
 const outlineSize = outline?.size ?? "lg";
 
 const alignment = align === "center" ? "items-center text-center" : "items-start text-left";
@@ -29,55 +27,57 @@ const actionsJustify = align === "center" ? "justify-center" : "justify-start";
     )}
   </div>
   <div class={`flex flex-wrap gap-4 ${actionsJustify}`}>
+    {solid && (
       <Button
-        href={primary.href}
-        variant={primaryVariant}
-        size={primarySize}
-        fullWidth={primary.fullWidth}
-        icon={primary.icon}
-        iconPosition={primary.iconPosition}
-        iconClassName={primary.iconClassName}
-        bgColor={primary.bgColor}
-        hoverBgColor={primary.hoverBgColor}
-        textColor={primary.textColor}
-        hoverTextColor={primary.hoverTextColor}
-        borderColor={primary.borderColor}
-        hoverBorderColor={primary.hoverBorderColor}
-        borderMode={primary.borderMode}
-        borderNone={primary.borderNone}
-        borderHover={primary.borderHover}
-        borderAlways={primary.borderAlways}
-        hoverScale={primary.hoverScale}
-        pointerCursor={primary.pointerCursor}
-        className={primary.className}
+        href={solid.href}
+        variant="solid"
+        size={solidSize}
+        fullWidth={solid.fullWidth}
+        icon={solid.icon}
+        iconPosition={solid.iconPosition}
+        iconClassName={solid.iconClassName}
+        bgColor={solid.bgColor}
+        hoverBgColor={solid.hoverBgColor}
+        textColor={solid.textColor}
+        hoverTextColor={solid.hoverTextColor}
+        borderColor={solid.borderColor}
+        hoverBorderColor={solid.hoverBorderColor}
+        borderMode={solid.borderMode}
+        borderNone={solid.borderNone}
+        borderHover={solid.borderHover}
+        borderAlways={solid.borderAlways}
+        hoverScale={solid.hoverScale}
+        pointerCursor={solid.pointerCursor}
+        className={solid.className}
       >
-        {primary.label}
+        {solid.label}
       </Button>
-      {outline && (
-        <Button
-          href={outline.href}
-          variant={outlineVariant}
-          size={outlineSize}
-          fullWidth={outline.fullWidth}
-          icon={outline.icon}
-          iconPosition={outline.iconPosition}
-          iconClassName={outline.iconClassName}
-          bgColor={outline.bgColor}
-          hoverBgColor={outline.hoverBgColor}
-          textColor={outline.textColor}
-          hoverTextColor={outline.hoverTextColor}
-          borderColor={outline.borderColor}
-          hoverBorderColor={outline.hoverBorderColor}
-          borderMode={outline.borderMode}
-          borderNone={outline.borderNone}
-          borderHover={outline.borderHover}
-          borderAlways={outline.borderAlways}
-          hoverScale={outline.hoverScale}
-          pointerCursor={outline.pointerCursor}
-          className={outline.className}
-        >
-          {outline.label}
-        </Button>
-      )}
-    </div>
+    )}
+    {outline && (
+      <Button
+        href={outline.href}
+        variant="outline"
+        size={outlineSize}
+        fullWidth={outline.fullWidth}
+        icon={outline.icon}
+        iconPosition={outline.iconPosition}
+        iconClassName={outline.iconClassName}
+        bgColor={outline.bgColor}
+        hoverBgColor={outline.hoverBgColor}
+        textColor={outline.textColor}
+        hoverTextColor={outline.hoverTextColor}
+        borderColor={outline.borderColor}
+        hoverBorderColor={outline.hoverBorderColor}
+        borderMode={outline.borderMode}
+        borderNone={outline.borderNone}
+        borderHover={outline.borderHover}
+        borderAlways={outline.borderAlways}
+        hoverScale={outline.hoverScale}
+        pointerCursor={outline.pointerCursor}
+        className={outline.className}
+      >
+        {outline.label}
+      </Button>
+    )}
+  </div>
 </div>

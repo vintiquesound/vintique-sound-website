@@ -124,7 +124,7 @@ function resolveColorToken(value: string | undefined): string | undefined {
   return `color-mix(in srgb, ${baseColor} ${clamped}%, transparent)`
 }
 
-type Props = Omit<HTMLAttributes<"button">, "class" | "style" | "type"> &
+type ButtonProps = Omit<HTMLAttributes<"button">, "class" | "style" | "type"> &
   Omit<HTMLAttributes<"a">, "class" | "style"> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
@@ -144,7 +144,7 @@ type Props = Omit<HTMLAttributes<"button">, "class" | "style" | "type"> &
      * - "hover:scale-110" -> hover:scale-110
      * - "1.03" -> hover:scale-[1.03]
      */
-    hoverScale?: boolean | string
+    hoverScale?: string
 
     icon?: unknown
     iconPosition?: "left" | "right"
@@ -208,7 +208,7 @@ const {
   asChild: _asChild,
 
   ...props
-} = Astro.props as Props
+} = Astro.props as ButtonProps
 
 const Element = href ? "a" : "button"
 

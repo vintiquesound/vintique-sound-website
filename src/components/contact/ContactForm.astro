@@ -1,10 +1,10 @@
 ---
-import Button from "@/components/ui/button.astro";
+import { submitContact } from "@/actions/contact";
+import Button from "@/components/ui/Button.astro";
 import Input from "@/components/ui/input.astro";
 import Textarea from "@/components/ui/text-area.astro";
 import Label from "@/components/ui/label.astro";
 import Card from "@/components/ui/card.astro";
-import { submitContact } from "@/actions/contact";
 ---
 
 <Card>
@@ -67,7 +67,7 @@ import { submitContact } from "@/actions/contact";
         variant="solid"
         bgColor="primary"
         hoverBgColor="primary"
-        fullWidth
+        fullWidth={true}
         hoverScale="103"
       >
         Send Message
