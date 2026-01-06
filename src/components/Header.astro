@@ -60,7 +60,12 @@ const mobileLinkBase =
     </nav>
 
     <!-- Mobile nav menu, when hamburger menu is open -->
-    <div id="mobile-nav" class="md:hidden border-t border-border" hidden>
+    <div
+      id="mobile-nav"
+      class="md:hidden border-t border-border"
+      hidden
+      style="max-height: 60vh; overflow-y: auto;"
+    >
       <nav class="flex flex-col py-2">
         {navMenuGroups.map((group, idx) => (
           <div class="contents" data-nav-group={group.title}>
