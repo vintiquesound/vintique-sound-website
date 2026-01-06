@@ -7,7 +7,7 @@ const { class: className = "" } = Astro.props;
 
 <div
   data-slot="card"
-  class={`bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm ${className}`}
+  class={`flex flex-col py-6 bg-card text-card-foreground gap-6 rounded-xl border shadow-sm ${className}`}
 >
   <slot />
 </div>

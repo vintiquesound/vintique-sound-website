@@ -18,7 +18,7 @@ const maxLat = lat + offset;
 
 const src = `https://www.openstreetmap.org/export/embed.html?bbox=${minLon}%2C${minLat}%2C${maxLon}%2C${maxLat}&layer=mapnik&marker=${lat}%2C${lon}`;
 ---
-<div class="w-full h-100 overflow-hidden rounded-xl border">
+<div class="w-full h-100 overflow-hidden rounded-xl border shadow-sm">
   <iframe
     src={src}
     class="h-full w-full border-0"
