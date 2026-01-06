@@ -9,6 +9,7 @@ import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
   <div class="flex flex-col">
+
     {/* Intro Section */}
     <IntroSection
       bgColors="bg-linear-to-br from-primary/10 to-accent/10"
@@ -18,7 +19,9 @@ import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
       subtitle="Have a project in mind? Want to learn more about our services?<br/>We'd love to hear from you."
       align="center"
     />
-    <section class="py-20">
+
+    {/* Contact Section */}
+    <section class="py-20 bg-muted">
       <div class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div class="col-span-2">
           <ContactForm />
@@ -29,7 +32,9 @@ import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
         </div>
       </div>
     </section>
-    <section class="py-20 bg-muted">
+
+    {/* Map Section */}
+    <section class="py-20 bg-background">
       <div class="container mx-auto px-4 max-w-4xl text-center">
         <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Location</h2>
         <p class="text-lg text-muted-foreground mb-8">
@@ -38,5 +43,6 @@ import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
         <OpenStreetMapEmbed lat={53.54601} lon={-113.49143} offset={0.02} />
       </div>
     </section>
+
   </div>
 </WebPageLayout>

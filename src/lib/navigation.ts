@@ -37,8 +37,8 @@ export const navMenuGroups = [
     title: "Company",
     children: [
       { label: "Studio", href: "/studio" },
-      { label: "About", href: "/about" },
       { label: "FAQ", href: "/faq" },
+      { label: "About", href: "/about" },
       { label: "Contact", href: "/contact" },
     ],
   },

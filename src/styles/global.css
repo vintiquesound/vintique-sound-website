@@ -134,15 +134,16 @@
 
   /* Surface colors */
   --surface: var(--color-white);
+  --surface-foreground: var(--color-neutral-950);
   --surface-2: var(--color-gray-100);
   --card: var(--surface);
-  --card-foreground: var(--color-neutral-950);
+  --card-foreground: var(--surface-foreground);
   --popover: var(--surface);
-  --popover-foreground: var(--color-neutral-950);
+  --popover-foreground: var(--surface-foreground);
 
   /* Sidebar colors */
   --sidebar: var(--color-neutral-50);
-  --sidebar-foreground: var(--color-neutral-950);
+  --sidebar-foreground: var(--surface-foreground);
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--color-neutral-50);
   --sidebar-accent: var(--color-neutral-100);
@@ -183,17 +184,18 @@
 
   /* Surface colors */
   --surface: var(--color-neutral-900);
+  --surface-foreground: var(--foreground);
   --surface-2: var(--color-zinc-900);
   --card: var(--surface);
-  --card-foreground: var(--color-neutral-50);
-  --popover: var(--color-neutral-950);
-  --popover-foreground: var(--color-neutral-50);
+  --card-foreground: var(--surface-foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--surface-foreground);
 
   /* Sidebar colors */
-  --sidebar: var(--color-neutral-900);
-  --sidebar-foreground: var(--color-neutral-50);
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--surface-foreground);
   --sidebar-accent: var(--color-neutral-800);
-  --sidebar-accent-foreground: var(--color-neutral-50);
+  --sidebar-accent-foreground: var(--surface-foreground);
   --sidebar-border: var(--color-neutral-800);
   --sidebar-ring: var(--color-neutral-600);
 
