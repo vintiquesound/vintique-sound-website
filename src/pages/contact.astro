@@ -2,6 +2,7 @@
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import ContactForm from "@/components/contact/ContactForm.astro";
 import ContactInfoCard from "@/components/contact/ContactInfoCard.astro";
+import ContactSocialsCard from "@/components/contact/ContactSocialsCard.astro";
 import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
 ---
 
@@ -23,13 +24,16 @@ import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
     </section>
     <section class="py-20">
       <div class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-12">
-        <div class="lg:col-span-2">
+        <div class="col-span-2">
           <ContactForm />
         </div>
-        <ContactInfoCard />
+        <div class="flex flex-col col-span-1 w-full gap-y-12">
+          <ContactInfoCard />
+          <ContactSocialsCard />
+        </div>
       </div>
     </section>
-    <section class="py-20 bg-muted/50">
+    <section class="py-20 bg-muted">
       <div class="container mx-auto px-4 max-w-4xl text-center">
         <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Location</h2>
         <p class="text-lg text-muted-foreground mb-8">

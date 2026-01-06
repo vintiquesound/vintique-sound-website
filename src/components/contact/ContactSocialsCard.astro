@@ -1,0 +1,25 @@
+---
+import Card from "@/components/ui/card.astro";
+import { Icon } from "astro-icon/components";
+import { socials } from "@/lib/socials";
+---
+
+<Card>
+  <div class="p-6 border-b">
+    <h5 class="m-0 font-semibold">Follow Us</h5>
+  </div>
+
+  <div class="p-6 space-y-3">
+    {socials.map(({ iconName, name, url }) => (
+      <a
+        href={url}
+        target="_blank"
+        class="flex items-center gap-3 p-3 rounded-lg hover:bg-muted text-accent hover:text-secondary transition"
+        aria-label={name}
+      >
+        <Icon name={iconName} size={20} />
+        <span class="font-medium">{name}</span>
+      </a>
+    ))}
+  </div>
+</Card>
