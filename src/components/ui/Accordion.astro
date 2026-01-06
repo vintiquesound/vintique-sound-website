@@ -1,0 +1,181 @@
+---
+import { ChevronDown } from "lucide-astro";
+
+interface AccordionItem {
+  question: string;
+  answer: string;
+}
+
+interface AccordionProps {
+  title: string;
+  accentColor: "primary" | "secondary" | "accent";
+  items: AccordionItem[];
+  singleOpen?: boolean;
+}
+
+const {
+  title,
+  accentColor,
+  items,
+  singleOpen = false,
+} = Astro.props as AccordionProps;
+
+const accentMap = {
+  primary: {
+    line: "bg-primary",
+    border: "open:border-primary",
+  },
+  secondary: {
+    line: "bg-secondary",
+    border: "open:border-secondary",
+  },
+  accent: {
+    line: "bg-accent",
+    border: "open:border-accent",
+  },
+};
+
+const accent = accentMap[accentColor];
+---
+
+<section data-accordion-root>
+  <!-- Title -->
+  <h2 class="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-3">
+    <div class={`w-8 h-1 rounded ${accent.line}`}></div>
+    {title}
+  </h2>
+
+  <!-- Accordion -->
+  <div class="space-y-4" data-accordion>
+    {items.map((item) => (
+      <details class={`bg-card group border-2 rounded-lg px-6 overflow-hidden ${accent.border}`}>
+        <summary class="cursor-pointer py-4 font-medium list-none flex justify-between items-center select-none">
+          <span>{item.question}</span>
+          <ChevronDown class="h-5 w-5 transition-transform duration-200 group-open:rotate-180" />
+        </summary>
+        <div data-accordion-content class="overflow-hidden h-0 opacity-0 transition-[height,opacity] duration-300 ease-in-out">
+          <div class="pb-4 pt-2">
+            <p class="text-muted-foreground">{item.answer}</p>
+          </div>
+        </div>
+      </details>
+    ))}
+  </div>
+
+  <script is:inline define:vars={{ singleOpen }}>
+    (() => {
+      const root = document.currentScript?.closest("[data-accordion-root]");
+      if (!root) return;
+
+      const detailsEls = Array.from(root.querySelectorAll("details"));
+
+      let queuedOpenTimer = 0;
+
+      const getContentEl = (detailsEl) => detailsEl.querySelector("[data-accordion-content]");
+
+      const animateOpen = (detailsEl) => {
+        const contentEl = getContentEl(detailsEl);
+        if (!contentEl) return;
+
+        // Ensure it's open so the content has a measurable height.
+        detailsEl.open = true;
+
+        contentEl.style.transition = "none";
+        contentEl.style.height = "0px";
+        contentEl.style.opacity = "0";
+
+        // Force a reflow so the browser applies the starting styles.
+        void contentEl.offsetHeight;
+
+        const targetHeight = contentEl.scrollHeight;
+        contentEl.style.transition = "height 300ms ease-in-out, opacity 300ms ease-in-out";
+        contentEl.style.height = `${targetHeight}px`;
+        contentEl.style.opacity = "1";
+
+        const onEnd = (e) => {
+          if (e.target !== contentEl || e.propertyName !== "height") return;
+          contentEl.removeEventListener("transitionend", onEnd);
+          // Let it grow/shrink naturally after opening.
+          contentEl.style.height = "auto";
+        };
+        contentEl.addEventListener("transitionend", onEnd);
+      };
+
+      const animateClose = (detailsEl) => {
+        const contentEl = getContentEl(detailsEl);
+        if (!contentEl) {
+          detailsEl.open = false;
+          return;
+        }
+
+        // If it was left as auto, lock it to the current pixel height first.
+        const currentHeight = contentEl.getBoundingClientRect().height;
+        contentEl.style.transition = "none";
+        contentEl.style.height = `${currentHeight}px`;
+        contentEl.style.opacity = "1";
+
+        void contentEl.offsetHeight;
+
+        contentEl.style.transition = "height 300ms ease-in-out, opacity 300ms ease-in-out";
+        contentEl.style.height = "0px";
+        contentEl.style.opacity = "0";
+
+        const onEnd = (e) => {
+          if (e.target !== contentEl || e.propertyName !== "height") return;
+          contentEl.removeEventListener("transitionend", onEnd);
+          detailsEl.open = false;
+        };
+        contentEl.addEventListener("transitionend", onEnd);
+      };
+
+      // Initialize any pre-open details (e.g., if author sets open attribute).
+      detailsEls.forEach((detailsEl) => {
+        if (!(detailsEl instanceof HTMLDetailsElement)) return;
+        if (!detailsEl.open) return;
+        const contentEl = getContentEl(detailsEl);
+        if (!contentEl) return;
+        contentEl.style.height = "auto";
+        contentEl.style.opacity = "1";
+      });
+
+      // Intercept summary clicks so we can sequence close->open when singleOpen is true.
+      root.addEventListener(
+        "click",
+        (event) => {
+          const summary = event.target instanceof Element ? event.target.closest("summary") : null;
+          if (!summary) return;
+          const detailsEl = summary.closest("details");
+          if (!(detailsEl instanceof HTMLDetailsElement)) return;
+
+          event.preventDefault();
+          window.clearTimeout(queuedOpenTimer);
+
+          // Clicking an open item closes it.
+          if (detailsEl.open) {
+            animateClose(detailsEl);
+            return;
+          }
+
+          if (!singleOpen) {
+            animateOpen(detailsEl);
+            return;
+          }
+
+          const currentlyOpen = detailsEls.find((d) => d instanceof HTMLDetailsElement && d.open);
+
+          // If something else is open, close it first, then open the new one after 300ms.
+          if (currentlyOpen && currentlyOpen !== detailsEl) {
+            animateClose(currentlyOpen);
+            queuedOpenTimer = window.setTimeout(() => {
+              animateOpen(detailsEl);
+            }, 300);
+            return;
+          }
+
+          animateOpen(detailsEl);
+        },
+        true
+      );
+    })();
+  </script>
+</section>

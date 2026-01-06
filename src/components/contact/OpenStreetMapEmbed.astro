@@ -1,5 +1,5 @@
 ---
-interface Props {
+interface OpenStreeMapsProps {
   lat: number;
   lon: number;
   offset?: number;
@@ -9,7 +9,7 @@ const {
   lat,
   lon,
   offset = 0.02, // controls zoom level
-} = Astro.props;
+} = Astro.props as OpenStreeMapsProps;
 
 const minLon = lon - offset;
 const minLat = lat - offset;
