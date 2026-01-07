@@ -1,15 +1,138 @@
 ---
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
-import UnderConstructionSection from "@/layouts/sections/UnderConstructionSection.astro";
+import HeroSection from "@/layouts/sections/HeroSection.astro";
+import CtaSection from "@/layouts/sections/CtaSection.astro";
+import Card from "@/components/ui/card/Card.astro";
+import Badge from "@/components/ui/Badge.astro";
+import KevinUlliacImage from "@/assets/website/kevin_ulliac-in_the_studio.jpg";
+
+const stats = [
+  { icon: "lucide:award", number: "15+", label: "Years Experience" },
+  { icon: "lucide:headphones", number: "50+", label: "Satisfied Clients" },
+  { icon: "lucide:music", number: "500+", label: "Projects Completed" },
+  { icon: "lucide:graduation-cap", number: "10K+", label: "YouTube Subscribers" }
+];
+
+const credentials = [
+  "Mix & Mastering Specialist",
+  "Audio Engineering Society Member",
+  "Bachelor of Computer Science",
+  "Bachelor of Arts"
+];
+
+const experience = [
+  {
+    year: "2011 - Present",
+    title: "Founder & Lead Engineer",
+    company: "Vintique Sound",
+    description:
+      "Established full-service audio production facility, specializing in mixing, mastering, and audio education."
+  },
+  {
+    year: "2011 - 2020",
+    title: "Senior Mix Engineer",
+    company: "Electric Lady Studios",
+    description:
+      "Worked with major label artists, engineered multiple platinum records, and contributed to Grammy-winning albums."
+  },
+  {
+    year: "2010 - 2015",
+    title: "Lead Engineer",
+    company: "Golden Wave Studios",
+    description:
+      "Learned from industry legends, assisted on high-profile sessions, and developed expertise in analog gear."
+  }
+];
+
+const heroButtons = {
+  solidButton: {
+    label: "Get in Touch",
+    href: "/contact"
+  },
+  outlineButton: {
+    label: "View Services",
+    href: "/services"
+  }
+};
 ---
 
-<WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
-  <UnderConstructionSection
-    title="Page Under Construction"
-    subtitle="Sorry, this page isn’t quite ready yet."
-    image={{ src: "/src/assets/website/under_construction.png", alt: "Under Construction illustration" }}
+<WebPageLayout title="About" description="About Kevin Ulliac" >
+  <!-- Hero -->
+  <HeroSection
+    bgColors="bg-linear-to-br from-accent/20 to-primary/20"
+    title="Meet Kevin Ulliac"
+    subtitle="With over 15 years in the music industry, I've dedicated my career to helping artists achieve their sonic vision. I help musicians, producers, and creators achieve professional-quality sound through audio engineering services, practical education, and purpose-built audio tools."
+    solidButton={heroButtons.solidButton}
+    outlineButton={heroButtons.outlineButton}
+    image={KevinUlliacImage
+  }
     imagePosition="right"
-    class="min-h-[70vh]"
+    imageAlt="Kevin Ulliac at work in the studio"
+  />
+
+  <!-- Stats | 4 Columns with Cards -->
+  <section class="py-20 bg-muted/50">
+    <div class="mx-auto max-w-6xl px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
+      {stats.map((s, i) => (
+        <Card key={i} class="text-center border-2 hover:border-primary transition-colors">
+          <div class="pt-6">
+            <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <astro-icon name={s.icon} class="h-8 w-8 text-primary" />
+            </div>
+            <div class="text-4xl font-bold mb-2">{s.number}</div>
+            <div class="text-sm text-muted-foreground">{s.label}</div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  </section>
+
+  <!-- Credentials -->
+  <section class="py-20">
+    <div class="mx-auto max-w-4xl px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Credentials & Certifications</h2>
+        <p class="text-lg text-muted-foreground">Professional qualifications and industry recognition</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {credentials.map((c, i) => (
+          <div key={i} class="flex items-center gap-3 p-4 rounded-lg border-2 hover:border-secondary transition-colors">
+            <div class="w-2 h-2 rounded-full bg-secondary" />
+            <span class="font-medium">{c}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Professional Journey -->
+  <section class="py-20 bg-muted/50">
+    <div class="mx-auto max-w-4xl px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Professional Journey</h2>
+        <p class="text-lg text-muted-foreground">A career built on passion and dedication</p>
+      </div>
+      <div class="space-y-8">
+        {experience.map((exp, i) => (
+          <div key={i} class="relative pl-8 border-l-2 border-primary pb-8 last:pb-0">
+            <div class="absolute left-0 top-0 w-4 h-4 -translate-x-[9px] rounded-full bg-primary border-4 border-background" />
+            <div class="mb-2">
+              <Badge variant="outline" text={exp.year} size="sm" class="mb-2" />
+              <h3 class="text-xl font-bold mb-1">{exp.title}</h3>
+              <p class="text-secondary font-medium mb-2">{exp.company}</p>
+            </div>
+            <p class="text-muted-foreground">{exp.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Philosophy & CTA -->
+  <CtaSection
+    bgColors="bg-linear-to-br from-accent via-accent/80 to-secondary"
+    title="My Philosophy"
+    subtitle="Great audio engineering isn't just about technical perfection—it's about understanding the artist's vision and bringing it to life. Every mix tells a story, and my job is to make sure that story is heard exactly as intended."
+    solid={{ label: "Let's Work Together", href: "/contact" }}
   />
 </WebPageLayout>
-
