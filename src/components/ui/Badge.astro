@@ -1,0 +1,23 @@
+---
+// Props: text (string), bgColor (string, Tailwind classes), size ("sm" | "md" | "lg")
+export interface BadgeProps {
+  text: string;
+  bgColor?: string;
+  size?: "sm" | "md" | "lg";
+}
+
+const {
+  text,
+  bgColor,
+  size
+} = Astro.props as BadgeProps;
+
+const finalBgColor = bgColor ?? "bg-primary text-primary-foreground";
+const finalSize = size ?? "md";
+const sizeClasses = {
+  sm: "px-2 py-0.5 text-xs",
+  md: "px-4 py-1 text-sm",
+  lg: "px-6 py-2 text-base",
+}[finalSize] ?? "px-4 py-1 text-sm";
+---
+<span class={`inline-block rounded-md font-medium mb-4 ${sizeClasses} ${finalBgColor}`.trim()}>{text}</span>

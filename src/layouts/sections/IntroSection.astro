@@ -1,5 +1,6 @@
 ---
 import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
+import Badge from "@/components/ui/Badge.astro";
 // IntroSectionProps: a simple, reusable hero-like section with badge, title, subtitle, and background colors
 // - badge: text for the badge
 // - badgeColor: Tailwind classes for badge background/text
@@ -10,8 +11,9 @@ import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
 
 export type IntroSectionProps = {
   bgColors?: string;
-  badge: string;
+  badgeText: string;
   badgeColor?: string;
+  badgeSize?: "sm" | "md" | "lg";
   title: string;
   subtitle?: string;
   align?: "center" | "left" | "right";
@@ -20,8 +22,9 @@ export type IntroSectionProps = {
 
 const {
   bgColors,
-  badge,
+  badgeText,
   badgeColor = "bg-primary text-primary-foreground",
+  badgeSize = "md",
   title,
   subtitle,
   align = "center",
@@ -38,8 +41,8 @@ const alignment = align === "center" ? "text-center items-center" : "text-left i
     innerClass="flex flex-col max-w-3xl mx-auto px-4 gap-4"
     extraInnerClass={alignment}
   >
-    {badge && (
-      <span class={`inline-block mb-4 rounded-md px-4 py-1 text-sm font-medium ${badgeColor}`}>{badge}</span>
+    {badgeText && (
+      <Badge text={badgeText} bgColor={badgeColor} size={badgeSize} />
     )}
     <h1 class="mb-6 text-4xl md:text-5xl font-bold" set:html={title}></h1>
     {subtitle && (
