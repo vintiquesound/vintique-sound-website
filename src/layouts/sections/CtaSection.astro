@@ -1,7 +1,7 @@
 ---
 import type { CtaButton } from "@/types/cta";
 import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
-import CtaSectionCopy from "@/layouts/sections/CtaSectionCopy.astro";
+import Button from "@/components/ui/Button.astro";
 
 type CtaSectionProps = {
   bgColors?: string;
@@ -22,17 +22,85 @@ const {
   align = "center",
   outerClass,
 } = Astro.props as CtaSectionProps;
+
+const solidSize = solid?.size ?? "lg";
+const outlineSize = outline?.size ?? "lg";
+const alignment = align === "center" ? "items-center text-center" : "items-start text-left";
+const actionsJustify = align === "center" ? "justify-center" : "justify-start";
 ---
 
 <section class={`w-full relative overflow-hidden ${outerClass}`.trim()}>
   <div class={`absolute inset-0 ${bgColors}`.trim()} />
+
   <SingleColumnContainer innerClass="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
-    <CtaSectionCopy
-      title={title}
-      subtitle={subtitle}
-      solid={solid}
-      outline={outline}
-      align={align}
-    />
+
+    <div class={`flex flex-col gap-6 ${alignment}`}>
+      <div class="space-y-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-white">{title}</h2>
+        {subtitle && (
+          <p class="text-lg text-white/90 max-w-3xl">{subtitle}</p>
+        )}
+      </div>
+
+      {(solid || outline) && (
+        <div class={`flex flex-wrap gap-4 ${actionsJustify}`}>
+          {solid && (
+            <Button
+              href={solid.href}
+              variant="solid"
+              size={solidSize}
+              fullWidth={solid.fullWidth}
+              icon={solid.icon}
+              iconPosition={solid.iconPosition}
+              iconClassName={solid.iconClassName}
+              bgColor={solid.bgColor}
+              hoverBgColor={solid.hoverBgColor}
+              textColor={solid.textColor}
+              hoverTextColor={solid.hoverTextColor}
+              borderColor={solid.borderColor}
+              hoverBorderColor={solid.hoverBorderColor}
+              borderMode={solid.borderMode}
+              borderNone={solid.borderNone}
+              borderHover={solid.borderHover}
+              borderAlways={solid.borderAlways}
+              hoverScale={solid.hoverScale}
+              pointerCursor={solid.pointerCursor}
+              className={solid.className}
+            >
+              {solid.label}
+            </Button>
+          )}
+          {outline && (
+            <Button
+              href={outline.href}
+              variant="outline"
+              size={outlineSize}
+              fullWidth={outline.fullWidth}
+              icon={outline.icon}
+              iconPosition={outline.iconPosition}
+              iconClassName={outline.iconClassName}
+              bgColor={outline.bgColor}
+              hoverBgColor={outline.hoverBgColor}
+              textColor={outline.textColor}
+              hoverTextColor={outline.hoverTextColor}
+              borderColor={outline.borderColor}
+              hoverBorderColor={outline.hoverBorderColor}
+              borderMode={outline.borderMode}
+              borderNone={outline.borderNone}
+              borderHover={outline.borderHover}
+              borderAlways={outline.borderAlways}
+              hoverScale={outline.hoverScale}
+              pointerCursor={outline.pointerCursor}
+              className={outline.className}
+            >
+              {outline.label}
+            </Button>
+          )}
+        </div>
+      )}
+
+    </div>
+
   </SingleColumnContainer>
+
 </section>

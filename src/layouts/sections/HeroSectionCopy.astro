@@ -11,9 +11,7 @@ type HeroSectionCopyProps = {
 
 const { title, subtitle, solidButton, outlineButton } = Astro.props as HeroSectionCopyProps;
 
-const solidButtonVariant = solidButton.variant ?? "solid";
 const solidButtonSize = solidButton.size ?? "lg";
-const outlineButtonVariant = outlineButton?.variant ?? "outline";
 const outlineButtonSize = outlineButton?.size ?? "lg";
 ---
 
@@ -27,7 +25,7 @@ const outlineButtonSize = outlineButton?.size ?? "lg";
 	<div class="flex flex-wrap gap-4">
 		<Button
 			href={solidButton.href}
-			variant={solidButtonVariant}
+			variant={"solid"}
 			size={solidButtonSize}
 			fullWidth={solidButton.fullWidth}
 			icon={solidButton.icon}
@@ -52,7 +50,7 @@ const outlineButtonSize = outlineButton?.size ?? "lg";
 		{outlineButton && (
 			<Button
 				href={outlineButton.href}
-				variant={outlineButtonVariant}
+				variant={"outline"}
 				size={outlineButtonSize}
 				fullWidth={outlineButton.fullWidth}
 				icon={outlineButton.icon}
