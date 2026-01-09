@@ -1,4 +1,5 @@
 ---
+import { ArrowRight } from "lucide-astro";
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import HeroSection from "@/layouts/sections/HeroSection.astro";
 import CtaSection from "@/layouts/sections/CtaSection.astro";
@@ -8,14 +9,14 @@ import KevinUlliacImage from "@/assets/website/kevin_ulliac-in_the_studio.jpg";
 
 const stats = [
   { icon: "lucide:award", number: "15+", label: "Years Experience" },
-  { icon: "lucide:headphones", number: "50+", label: "Satisfied Clients" },
-  { icon: "lucide:music", number: "500+", label: "Projects Completed" },
+  { icon: "lucide:headphones", number: "40+", label: "Satisfied Clients" },
+  { icon: "lucide:music", number: "250+", label: "Projects Completed" },
   { icon: "lucide:graduation-cap", number: "10K+", label: "YouTube Subscribers" }
 ];
 
 const credentials = [
   "Mix & Mastering Specialist",
-  "Audio Engineering Society Member",
+  "Proficient Software Engineer",
   "Bachelor of Computer Science",
   "Bachelor of Arts"
 ];
@@ -29,31 +30,28 @@ const experience = [
       "Established full-service audio production facility, specializing in mixing, mastering, and audio education."
   },
   {
-    year: "2011 - 2020",
-    title: "Senior Mix Engineer",
-    company: "Electric Lady Studios",
+    year: "2022 - 2025",
+    title: "Bachelor of Computer Science",
+    company: "MacEwan Univeristy",
     description:
-      "Worked with major label artists, engineered multiple platinum records, and contributed to Grammy-winning albums."
+      "Studied AI & Machine Learning, operating systems & systems level coding, web development, and trained in higher level linear algebra and calculus."
   },
+
   {
-    year: "2010 - 2015",
-    title: "Lead Engineer",
+    year: "2012 - 2018",
+    title: "Recording/Mixing/Mastering Engineer",
     company: "Golden Wave Studios",
     description:
       "Learned from industry legends, assisted on high-profile sessions, and developed expertise in analog gear."
+  },
+  {
+    year: "2011 - 2017",
+    title: "Bachelor of Arts",
+    company: "MacEwan Univeristy",
+    description:
+      "Majored in Philosophy, Minored in Psychology. Gained "
   }
 ];
-
-const heroButtons = {
-  solidButton: {
-    label: "Get in Touch",
-    href: "/contact"
-  },
-  outlineButton: {
-    label: "View Services",
-    href: "/services"
-  }
-};
 ---
 
 <WebPageLayout title="About" description="About Kevin Ulliac" >
@@ -63,8 +61,19 @@ const heroButtons = {
     bgColors="bg-linear-to-br from-accent/20 to-primary/20"
     title="Meet Kevin Ulliac"
     subtitle="With over 15 years in the music industry, I've dedicated my career to helping artists achieve their sonic vision. I help musicians, producers, and creators achieve professional-quality sound through audio engineering services, practical education, and purpose-built audio tools."
-    solidButton={heroButtons.solidButton}
-    outlineButton={heroButtons.outlineButton}
+    solidButton={{
+      label: "Get in Touch",
+      href: "/contact",
+      icon: ArrowRight,
+      iconPosition: "right"
+    }}
+    outlineButton={{
+      label: "View Services",
+      href: "/services",
+      hoverBgColor: "white",
+      textColor: "foreground",
+      borderColor: "foreground"
+    }}
     image={KevinUlliacImage
   }
     imagePosition="right"
@@ -134,7 +143,17 @@ const heroButtons = {
     bgColors="bg-linear-to-br from-accent via-accent/80 to-secondary"
     title="My Philosophy"
     subtitle="Great audio engineering isn't just about technical perfection—it's about understanding the artist's vision and bringing it to life. Every mix tells a story, and my job is to make sure that story is heard exactly as intended."
-    solid={{ label: "Let's Work Together", href: "/contact" }}
+    solid={{
+        label: "Let's Work Together",
+        href: "/contact",
+        icon: ArrowRight,
+        iconPosition: "right",
+        bgColor: "primary",
+        hoverBgColor: "primary/90",
+        textColor: "primary-foreground",
+        hoverTextColor: "primary-foreground",
+        useHoverScale: true
+      }}
   />
 
 </WebPageLayout>

@@ -9,7 +9,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
 
-    {/* Generic Section */}
+    {/* INTRO SECTION */}
     <IntroSection
       bgColors="bg-linear-to-br from-secondary/20 to-accent/20"
       badgeText="FAQ"
@@ -19,12 +19,12 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
       align="center"
     />
 
-    {/* FAQ Section */}
+    {/* FAQ SECTION */}
     <section class="py-20 bg-muted">
       <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto space-y-12">
 
-          <!-- Services -->
+          <!-- SERVICES -->
           <Accordion
             title="Services"
             accentColor="primary"
@@ -32,7 +32,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
             singleOpen={true}
           />
 
-          <!-- Education -->
+          <!-- EDUCATION -->
            <Accordion
             title="Education"
             accentColor="secondary"
@@ -40,7 +40,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
             singleOpen={true}
           />
 
-          <!-- Digital Products -->
+          <!-- DIGITAL PRODUCTS -->
           <Accordion
             title="Digital Products"
             accentColor="accent"
@@ -48,7 +48,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
             singleOpen={true}
           />
 
-          <!-- Technical -->
+          <!-- TECHNICAL -->
           <Accordion
             title="Technical Details"
             accentColor="primary"
@@ -60,7 +60,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
       </div>
     </section>
 
-    {/* CTA Section */}
+    {/* CTA SECTION */}
     <CtaSection
       bgColors="bg-linear-to-br from-secondary via-secondary/80 to-primary"
       title="Still have questions?"
@@ -68,7 +68,6 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
       solid={{
         label: "Contact Me",
         href: "/contact",
-        variant: "solid",
         icon: ArrowRight,
         iconPosition: "right",
         bgColor: "white",
