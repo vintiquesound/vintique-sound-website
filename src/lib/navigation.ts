@@ -15,6 +15,7 @@ export const navMenuGroups = [
       { label: "Mixing & Mastering", href: "/mixing-mastering" },
       { label: "Audio Editing", href: "/audio-editing" },
       { label: "Audio Restoration", href: "/audio-restoration" },
+      { label: "Build Your Package", href: "/build-your-package" },
     ],
   },
   {

@@ -1,0 +1,26 @@
+---
+import WebPageLayout from "@/layouts/WebPageLayout.astro";
+import IntroSection from "@/layouts/sections/IntroSection.astro";
+import PackageBuilderIsland from "@/components/PackageBuilder.tsx";
+---
+
+<WebPageLayout title="Build Your Package" description="Build your own customized audio service, from mixing and mastering to editing and repairing.">
+
+  {/* INTRO SECTION */}
+  <IntroSection
+    bgColors="bg-linear-to-br from-primary/20 to-secondary/20"
+    badgeText="Build Your Package"
+    badgeColor="bg-primary text-primary-foreground"
+    title="Build Your Custom Package"
+    subtitle="Customize exactly what your project needs — no unnecessary extras."
+    align="center"
+  />
+
+  <section class="py-20">
+    <div class="container mx-auto px-4 max-w-6xl">
+      <!-- React Island -->
+      <PackageBuilderIsland client:load />
+    </div>
+  </section>
+
+</WebPageLayout>
