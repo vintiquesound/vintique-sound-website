@@ -1,4 +1,4 @@
-export const faqs = {
+export const faqData = {
   services: [
     {
       question: "What's the difference between mixing and mastering?",
@@ -6,7 +6,7 @@ export const faqs = {
     },
     {
       question: "How long does a typical mix or master take?",
-      answer: "Mixing typically takes 2-5 days depending on track complexity and revision rounds. Mastering is usually completed within 1-3 days. Rush services for urgent projects are available at an additional fee. Standard packages include turnaround times and revision policies to ensure you get exactly what you need."
+      answer: "Mixing typically takes 4-8 days depending on track complexity and revision rounds. Mastering is usually completed within 3-5 days. Rush services for urgent projects are available at an additional fee. Standard packages include turnaround times and revision policies to ensure you get exactly what you need."
     },
     {
       question: "What file formats do you accept and deliver?",
@@ -14,7 +14,7 @@ export const faqs = {
     },
     {
       question: "How many revisions are included?",
-      answer: "All audio engineering services (including mixing, mastering, editing, and so on) include unlimited revisions. I want you to be completely satisfied with the final result."
+      answer: "All audio engineering services (including mixing, mastering, editing, and so on) include up to 3 revisions. Unlimited revisions are available at an additional feeI want you to be completely satisfied with the final result."
     },
     {
       question: "Do you work remotely or do I need to come to the studio?",
@@ -22,7 +22,7 @@ export const faqs = {
     },
     {
       question: "What's your refund policy for audio related services?",
-      answer: "All audio engineering service purchases require a non-refundable deposit equal to 25% of the total project price to secure booking seelection and confirm a project start date. The remaining 75% of the project price is covered by a 30-day money-back guarantee. If the service does not meet expectations, a refund of the remaining 75% may be requested within 30 days of delivery. Feedback outlining why the service did not meet expectations is required in order to process the refund."
+      answer: "All audio engineering service purchases are paid up front and in full to secure and confirm a project start date. If the service does not meet your full expectations, a refund of the full amount may be requested within 30 days of the project start date. Feedback outlining why the service did not meet expectations is required in order to process the refund."
     }
   ],
   education: [

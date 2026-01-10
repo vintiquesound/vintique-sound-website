@@ -79,7 +79,7 @@ const STEM_MASTERING_SONG_LENGTH_TIERS = [
 
 const PRICING = {
   mixing: {
-    base: 190,
+    base: 200,
     trackTiers: MIXING_TRACK_TIERS,
     songLengthTiers: MIXING_SONG_LENGTH_TIERS,
   },
@@ -97,7 +97,7 @@ const PRICING = {
   },
 
   stemMastering: {
-    base: 70,
+    base: 80,
     trackTiers: STEM_MASTERING_TRACK_TIERS,
     songLengthTiers: STEM_MASTERING_SONG_LENGTH_TIERS,
   },

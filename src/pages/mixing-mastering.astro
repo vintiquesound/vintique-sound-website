@@ -24,9 +24,9 @@ const services = [
       "Dynamic processing (compression, limiting)",
       "Spatial placement and depth",
       "Creative effects and automation",
-      "Up to 3 revision rounds",
+      "Detailed mix referencing and quality checks",
     ],
-    price: "from $190",
+    price: "from $200",
     color: "primary",
   },
   {
@@ -47,14 +47,14 @@ const services = [
   {
     title: "Mix + Master Package",
     description:
-      "Complete audio production from raw tracks to release-ready masters.",
+      "Complete audio production from raw tracks to release-ready masters. You get everything that's included in the mixing and mastering packages.",
     features: [
       "Everything in Mixing",
       "Everything in Mastering",
-      "Unlimited revisions",
-      "Priority turnaround",
-      "Stems delivery option",
-      "Direct communication throughout",
+      "3 mix revisions and 3 mastering revisions included",
+      "Mix decisions made with final master in mind",
+      "Fewer revisions due to end-to-end consistency",
+      "Best overall value for full production",
     ],
     price: "from $220",
     color: "accent",
@@ -63,16 +63,16 @@ const services = [
   {
     title: "Stem Mastering",
     description:
-      "Master your song using individual stems for more control while maintaining cohesion.",
+      "Master your song using individual stems for more control while maintaining cohesion from an existing mix.",
     features: [
       "Enhanced control over mix elements",
       "Targeted processing per stem",
       "Maintains mix cohesion",
+      "Greater flexibility than stereo mastering",
       "Ideal for EDM and hip-hop",
-      "Up to 6 stems included",
-      "Additional stems available",
+      "Available for up to 12 stems",
     ],
-    price: "from $70",
+    price: "from $80",
     color: "primary",
   },
 ];
@@ -113,33 +113,33 @@ const idealClients = [
 const processSteps = [
   {
     icon: "lucide:upload",
-    title: "File Submission",
+    title: "Project Upload",
     description:
-      "Upload your files through our secure transfer system.",
+      "Upload your Cubase, Ableton, or Bitwig project — or consolidated audio files — through my secure transfer system.",
   },
   {
     icon: "lucide:search",
     title: "Initial Review",
     description:
-      "We review your files and reference tracks.",
+      "I carefully review your files, reference tracks, and notes to fully understand your sound and goals.",
   },
   {
     icon: "lucide:settings",
-    title: "Processing",
+    title: "Mixing & Mastering",
     description:
-      "Your tracks are mixed and/or mastered using professional tools.",
+      "Your tracks are mixed and/or mastered using professional tools. A high-quality preview is uploaded for feedback.",
   },
   {
     icon: "lucide:rotate-ccw",
-    title: "Revisions",
+    title: "Revisions & Feedback",
     description:
-      "Request changes until you're completely satisfied.",
+      "You request adjustments, and I refine the mix and/or master until it feels right to you.",
   },
   {
     icon: "lucide:download",
     title: "Final Delivery",
     description:
-      "Download your finished files in multiple formats.",
+      "Download your finished files in multiple formats, ready for release.",
   },
 ];
 ---
@@ -170,8 +170,20 @@ const processSteps = [
     />
 
     {/* SERVICES SECTION */}
-    <section class="py-20 bg-muted/50">
+    <section class="py-20 bg-muted">
       <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Mixing & Mastering Services
+          </h2>
+          <p class="pb-0 mb-0 text-lg text-muted-foreground">
+            Clear pricing, flexible options, and professional results
+          </p>
+          <i class="pt-0 mt-0 text-sm text-muted-foreground">
+            *All packages include up to 3 revisions. Unlimited revisions are available as an optional add-on.
+          </i>
+        </div>
+
         <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {services.map((service) => (
             <Card class="border-2 hover:border-primary transition-all relative">
@@ -183,11 +195,11 @@ const processSteps = [
                 </CardAction>
               )}
               <CardHeader>
-                <CardTitle class="text-2xl">{service.title}</CardTitle>
-                <p class="text-3xl font-bold text-primary">{service.price}</p>
+                <CardTitle class="text-3xl">{service.title}</CardTitle>
+                <p class="mb-0 text-2xl font-bold text-primary">{service.price}</p>
               </CardHeader>
               <CardContent>
-                <CardDescription class="mt-2">{service.description}</CardDescription>
+                <CardDescription>{service.description}</CardDescription>
                 <ul class="mt-4 space-y-3">
                   {service.features.map((feature) => (
                     <li class="flex gap-2">
@@ -203,9 +215,50 @@ const processSteps = [
       </div>
     </section>
 
+    {/* GENRE SPECIALIZATION SECTION */}
+    <section class="py-20 bg-linear-to-br from-secondary/20 to-accent/20">
+      <div class="container mx-auto px-4 max-w-4xl">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Genres I Specialize In
+          </h2>
+          <p class="text-lg text-muted-foreground">
+            Experience working across a range of styles while respecting the
+            identity of each genre
+          </p>
+        </div>
+
+        <ul class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {[
+            "Indie Rock",
+            "Classic Rock",
+            "Hard Rock",
+            "House Music",
+          ].map((genre) => (
+            <li class="p-6 border rounded-lg font-semibold bg-card">
+              {genre}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
     {/* AUDIO COMPARISON SECTION */}
-    <section class="py-20">
-      <div class="max-w-4xl mx-auto space-y-6">
+    <section class="py-20 bg-muted">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Hear The Difference
+          </h2>
+          <p class="pb-0 mb-0 text-lg text-muted-foreground">
+            Before and after examples from real mixing and mastering projects
+          </p>
+          <i class="pt-0 mt-0 text-sm text-muted-foreground">
+            *All examples are level-matched for accurate comparison
+          </i>
+        </div>
+
+        <div class="flex flex-col gap-6 max-w-4xl mx-auto">
           <AudioComparison client:load
             title="Rock / Alternative Mix"
             samples={{
@@ -230,66 +283,61 @@ const processSteps = [
               after: "/audio/comparisons/scot_helman-21_days-mixed_and_mastered.mp3"
             }}
           />
-      </div>
-    </section>
-
-    {/* WHO ITS FOR SECTION */}
-    <section class="py-20 bg-muted/50">
-      <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-        {idealClients.map((client) => (
-          <Card class="border-2">
-            <CardHeader class="flex flex-col items-center">
-              <Icon name={client.icon} class="h-6 w-6 text-primary mb-3" />
-              <CardTitle class="font-bold text-center">{client.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription class="text-center">{client.description}</CardDescription>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </section>
-
-    {/* GENRE SPECIALIZATION SECTION */}
-    <section class="py-20">
-      <div class="container mx-auto px-4 max-w-4xl">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            Genres I Specialize In
-          </h2>
-          <p class="text-lg text-muted-foreground">
-            Experience working across a range of styles while respecting the
-            identity of each genre
-          </p>
         </div>
-
-        <ul class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {[
-            "Indie Rock",
-            "Classic Rock",
-            "Hard Rock",
-            "House Music",
-          ].map((genre) => (
-            <li class="p-6 border rounded-lg font-semibold bg-muted/50">
-              {genre}
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
 
     {/* PROCESS SECTION */}
     <section class="py-20">
-      <div class="grid md:grid-cols-5 gap-8 max-w-6xl mx-auto">
-        {processSteps.map((step, _i) => (
-          <div class="text-center">
-            <div class="w-16 h-16 rounded-full bg-linear-to-br from-primary to-secondary flex items-center justify-center mx-auto mb-4">
-                <Icon name={step.icon} class="h-7 w-7 text-white" />
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            How It Works
+          </h2>
+          <p class="text-lg text-muted-foreground">
+            A simple, collaborative process from upload to final delivery
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-5 gap-8 max-w-6xl mx-auto">
+          {processSteps.map((step, _i) => (
+            <div class="text-center">
+              <div class="w-16 h-16 rounded-full bg-linear-to-br from-primary to-secondary flex items-center justify-center mx-auto mb-4">
+                  <Icon name={step.icon} class="h-7 w-7 text-white" />
+              </div>
+              <h3 class="font-bold">{step.title}</h3>
+              <p class="text-sm text-muted-foreground">{step.description}</p>
             </div>
-            <h3 class="font-bold">{step.title}</h3>
-            <p class="text-sm text-muted-foreground">{step.description}</p>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* WHO ITS FOR SECTION */}
+    <section class="py-20 bg-muted">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Is This Right for You?
+          </h2>
+          <p class="text-lg text-muted-foreground">
+            These services are designed for artists who care about their sound
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {idealClients.map((client) => (
+            <Card class="border-2">
+              <CardHeader class="flex flex-col items-center">
+                <Icon name={client.icon} class="h-6 w-6 text-primary mb-3" />
+                <CardTitle class="font-bold text-center">{client.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription class="text-center">{client.description}</CardDescription>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </section>
 

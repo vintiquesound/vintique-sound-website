@@ -1,6 +1,6 @@
 ---
 import { ArrowRight } from "lucide-astro";
-import { faqs } from "@/content/faq-data";
+import { faqData } from "@/content/faq-data";
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import IntroSection from "@/layouts/sections/IntroSection.astro";
 import Accordion from "@/components/ui/Accordion.astro"
@@ -28,7 +28,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
           <Accordion
             title="Services"
             accentColor="primary"
-            items={faqs.services}
+            items={faqData.services}
             singleOpen={true}
           />
 
@@ -36,7 +36,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
            <Accordion
             title="Education"
             accentColor="secondary"
-            items={faqs.education}
+            items={faqData.education}
             singleOpen={true}
           />
 
@@ -44,7 +44,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
           <Accordion
             title="Digital Products"
             accentColor="accent"
-            items={faqs.products}
+            items={faqData.products}
             singleOpen={true}
           />
 
@@ -52,7 +52,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
           <Accordion
             title="Technical Details"
             accentColor="primary"
-            items={faqs.products}
+            items={faqData.products}
             singleOpen={true}
           />
 
