@@ -5,7 +5,6 @@ import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import IntroSection from "@/layouts/sections/IntroSection.astro";
 import CtaSection from "@/layouts/sections/CtaSection.astro";
 import Badge from "@/components/ui/Badge.astro";
-import Button from "@/components/ui/Button.astro";
 import Card from "@/components/ui/card/Card.astro";
 import CardHeader from "@/components/ui/card/CardHeader.astro";
 import CardTitle from "@/components/ui/card/CardTitle.astro";
@@ -153,10 +152,10 @@ const processSteps = [
       badgeText="Mixing & Mastering"
       badgeColor="bg-primary text-primary-foreground"
       title="Professional Mixing & Mastering"
-      subtitle="Transform your recordings into polished, release-ready music."
+      subtitle="Unlock the full potential of your music with professional mixing and mastering tailored to your genre and vision."
       solidButton={{
-        label: "Start A Project",
-        href: "/contact",
+        label: "Build Your Package",
+        href: "/build-your-package",
         icon: ArrowRight,
         iconPosition: "right"
       }}
@@ -282,7 +281,7 @@ const processSteps = [
     {/* PROCESS SECTION */}
     <section class="py-20">
       <div class="grid md:grid-cols-5 gap-8 max-w-6xl mx-auto">
-        {processSteps.map((step, i) => (
+        {processSteps.map((step, _i) => (
           <div class="text-center">
             <div class="w-16 h-16 rounded-full bg-linear-to-br from-primary to-secondary flex items-center justify-center mx-auto mb-4">
                 <Icon name={step.icon} class="h-7 w-7 text-white" />
@@ -300,8 +299,8 @@ const processSteps = [
       title="Ready to Take Your Music to the Next Level?"
       subtitle="Professional mixing and mastering that competes with industry releases."
       solid={{
-        label: "Start a Project",
-        href: "/contact",
+        label: "Build Your Package",
+        href: "/build-your-package",
         icon: ArrowRight,
         bgColor: "white",
         hoverBgColor: "white",
