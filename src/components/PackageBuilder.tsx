@@ -4,16 +4,19 @@ import { Button } from "@/components/ui/button";
 
 type ProjectType = "single" | "album";
 type BuilderStep = "project" | "songs";
-type SongStep = "details" | "alignment" | "extras";
+type SongStep = "details" | "base" | "alignment" | "exports" | "addons";
 
 type MixService = "mix" | "master" | "mixAndMaster" | "stemMaster";
 type ServiceSelection = MixService | "";
 type AdditionalMixVersion = "instrumental" | "acapella" | "radioEdit" | "cleanVersion";
 
+type TrackCountTier = { max: number; surcharge: number };
+
 type SongConfig = {
   name: string;
   service: ServiceSelection;
-  trackCount: number;
+  trackCount: number | null;
+  lengthMinutes: number | null;
   timeAlignment: { enabled: boolean; trackCount: number };
   vocalTuning: { enabled: boolean; trackCount: number };
   multitrackExport: boolean;
@@ -22,49 +25,159 @@ type SongConfig = {
   unlimitedRevisions1Month: boolean;
 };
 
-const PRICING = {
-  serviceBase: {
-    mix: 220,
-    master: 50,
-    mixAndMaster: 250,
-    stemMaster: 90,
-  } satisfies Record<MixService, number>,
+const MIXING_TRACK_TIERS: TrackCountTier[] = [
+  { max: 1, surcharge: 0 },
+  { max: 4, surcharge: 5 },
+  { max: 8, surcharge: 10 },
+  { max: 12, surcharge: 15 },
+  { max: 16, surcharge: 20 },
+  { max: 24, surcharge: 30 },
+  { max: 32, surcharge: 40 },
+  { max: 40, surcharge: 50 },
+  { max: 48, surcharge: 60 },
+  { max: 64, surcharge: 80 },
+  { max: 72, surcharge: 90 },
+];
 
-  trackCountSurcharge: {
-    tiers: [
-      // Tiered pricing for "number of tracks" (stems). Fill in add values.
-      // Rules requested:
-      // 1 is cheapest, up to 5 second cheapest, up to 10 next, up to 24, then 48, 72, max 96.
-      { upTo: 3, add: 0 },
-      { upTo: 6, add: 10 },
-      { upTo: 12, add: 20 },
-      { upTo: 24, add: 30 },
-      { upTo: 32, add: 40 },
-      { upTo: 48, add: 50 },
-      { upTo: 72, add: 75 },
-      { upTo: 96, add: 100 },
-      { upTo: Number.POSITIVE_INFINITY, add: 0 },
-    ],
+const STEM_MASTERING_TRACK_TIERS: TrackCountTier[] = [
+  { max: 4, surcharge: 0 },
+  { max: 6, surcharge: 10 },
+  { max: 8, surcharge: 20 },
+  { max: 10, surcharge: 30 },
+  { max: 12, surcharge: 40 },
+];
+
+const MIXING_SONG_LENGTH_TIERS = [
+  { max: 1, surcharge: 0 },
+  { max: 2, surcharge: 10 },
+  { max: 4, surcharge: 20 },
+  { max: 6, surcharge: 30 },
+  { max: 8, surcharge: 40 },
+  { max: 12, surcharge: 60 },
+  { max: 16, surcharge: 80 },
+];
+
+const MASTERING_SONG_LENGTH_TIERS = [
+  { max: 1, surcharge: 0 },
+  { max: 2, surcharge: 10 },
+  { max: 4, surcharge: 20 },
+  { max: 6, surcharge: 25 },
+  { max: 8, surcharge: 30 },
+  { max: 12, surcharge: 40 },
+  { max: 16, surcharge: 50 },
+];
+
+const STEM_MASTERING_SONG_LENGTH_TIERS = [
+  { max: 1, surcharge: 0 },
+  { max: 2, surcharge: 5 },
+  { max: 4, surcharge: 10 },
+  { max: 6, surcharge: 15 },
+  { max: 8, surcharge: 20 },
+  { max: 12, surcharge: 30 },
+  { max: 16, surcharge: 40 },
+];
+
+const PRICING = {
+  mixing: {
+    base: 190,
+    trackTiers: MIXING_TRACK_TIERS,
+    songLengthTiers: MIXING_SONG_LENGTH_TIERS,
+  },
+
+  mastering: {
+    base: 30,
+    trackTiers: [{ max: 1, surcharge: 0 }],
+    songLengthTiers: MASTERING_SONG_LENGTH_TIERS,
+  },
+
+  mixingAndMastering: {
+    base: 220,
+    trackTiers: MIXING_TRACK_TIERS,
+    songLengthTiers: MIXING_SONG_LENGTH_TIERS,
+  },
+
+  stemMastering: {
+    base: 70,
+    trackTiers: STEM_MASTERING_TRACK_TIERS,
+    songLengthTiers: STEM_MASTERING_SONG_LENGTH_TIERS,
   },
 
   timeAlignment: {
     perTrack: 10,
   },
+
   vocalTuning: {
     perTrack: 10,
   },
+
   multitrackExport: {
     flat: 80,
   },
+
   additionalExports: {
     instrumental: 30,
     acapella: 30,
     radioEdit: 80,
-    cleanVersion: 90,
+    cleanVersion: 80,
   },
+
   rushService2Days: 100,
-  unlimitedRevisions1Month: 100,
+  unlimitedRevisions1Month: 80,
 } as const;
+
+function getSongLengthSurcharge(lengthMinutes: number | null, service?: ServiceSelection): number {
+  if (lengthMinutes == null) return 0;
+  let tiers = MIXING_SONG_LENGTH_TIERS;
+  if (service) {
+    const pricing = getServicePricing(service as MixService);
+    if (pricing && Array.isArray((pricing as any).songLengthTiers)) {
+      tiers = (pricing as any).songLengthTiers;
+    }
+  }
+  for (const interval of tiers) {
+    if (lengthMinutes <= interval.max) return interval.surcharge;
+  }
+  const last = tiers.at(-1);
+  return last?.surcharge ?? 0;
+}
+
+type ServicePricing = {
+  base: number;
+  trackTiers: readonly TrackCountTier[];
+};
+
+function getServicePricing(service: MixService): ServicePricing {
+  switch (service) {
+    case "mix":
+      return PRICING.mixing;
+    case "master":
+      return PRICING.mastering;
+    case "mixAndMaster":
+      return PRICING.mixingAndMastering;
+    case "stemMaster":
+      return PRICING.stemMastering;
+  }
+}
+
+function normalizeTrackCountForService(service: ServiceSelection, trackCount: number | null) {
+  if (!service) return trackCount;
+  if (service === "master") return 1;
+  if (trackCount == null) return null;
+
+  const tiers = getServicePricing(service).trackTiers;
+  const matched = tiers.find((t) => trackCount <= t.max);
+  return (matched ?? tiers.at(-1))?.max ?? null;
+}
+
+function getTrackCountSurcharge(service: ServiceSelection, trackCount: number | null) {
+  if (!service) return 0;
+  if (service === "master") return 0;
+  if (trackCount == null) return 0;
+
+  const tiers = getServicePricing(service).trackTiers;
+  const matched = tiers.find((t) => trackCount <= t.max);
+  return (matched ?? tiers.at(-1))?.surcharge ?? 0;
+}
 
 function clampInt(value: number, min: number, max: number) {
   if (!Number.isFinite(value)) return min;
@@ -84,7 +197,8 @@ function createEmptySong(): SongConfig {
   return {
     name: "",
     service: "",
-    trackCount: 1,
+    trackCount: null,
+    lengthMinutes: null,
     timeAlignment: { enabled: false, trackCount: 1 },
     vocalTuning: { enabled: false, trackCount: 1 },
     multitrackExport: false,
@@ -105,16 +219,6 @@ function ensureSongCount(songs: SongConfig[], desiredCount: number) {
   return next;
 }
 
-function trackCountTierSurcharge(trackCount: number) {
-  const safe = clampInt(trackCount, 1, 999);
-  for (const tier of PRICING.trackCountSurcharge.tiers) {
-    if (safe <= tier.upTo) return tier.add;
-  }
-  return 0;
-}
-
-
-
 function getAdditionalExportsPrice(versions: Record<AdditionalMixVersion, boolean>) {
   let total = 0;
   if (versions.instrumental) total += PRICING.additionalExports.instrumental;
@@ -132,15 +236,19 @@ function getAdditionalEditsPrice(versions: Record<AdditionalMixVersion, boolean>
 function computeSongPrice(song: SongConfig) {
   if (!song.service) return 0;
 
-  const base = PRICING.serviceBase[song.service];
-  const trackSurcharge = trackCountTierSurcharge(song.trackCount);
+  const pricing = getServicePricing(song.service);
+  const base = pricing.base;
+  const trackSurcharge = getTrackCountSurcharge(song.service, song.trackCount);
+  const lengthSurcharge = getSongLengthSurcharge(song.lengthMinutes, song.service);
+
+  const effectiveTrackCount = song.service === "master" ? 1 : song.trackCount ?? 1;
 
   const timeAlignPrice = song.timeAlignment.enabled
-    ? PRICING.timeAlignment.perTrack * clampInt(song.timeAlignment.trackCount, 1, song.trackCount)
+    ? PRICING.timeAlignment.perTrack * clampInt(song.timeAlignment.trackCount, 1, effectiveTrackCount)
     : 0;
 
   const vocalTuningPrice = song.vocalTuning.enabled
-    ? PRICING.vocalTuning.perTrack * clampInt(song.vocalTuning.trackCount, 1, song.trackCount)
+    ? PRICING.vocalTuning.perTrack * clampInt(song.vocalTuning.trackCount, 1, effectiveTrackCount)
     : 0;
 
   const multitrackExportPrice = song.multitrackExport ? PRICING.multitrackExport.flat : 0;
@@ -152,6 +260,7 @@ function computeSongPrice(song: SongConfig) {
   return (
     base +
     trackSurcharge +
+    lengthSurcharge +
     timeAlignPrice +
     vocalTuningPrice +
     multitrackExportPrice +
@@ -160,6 +269,61 @@ function computeSongPrice(song: SongConfig) {
     rushPrice +
     revisionsPrice
   );
+}
+
+function isSongConfigured(song: SongConfig) {
+  const songNameOk = song.name.trim().length > 0;
+  const serviceSelected = Boolean(song.service);
+  const lengthSelected = song.lengthMinutes != null;
+  const trackCountSelected = song.service === "master" ? true : song.trackCount != null;
+  return songNameOk && serviceSelected && trackCountSelected && lengthSelected;
+}
+
+function computeSongBreakdown(song: SongConfig) {
+  if (!song.service) {
+    return {
+      detailsSubtotal: 0,
+      alignmentSubtotal: 0,
+      exportsSubtotal: 0,
+      addonsSubtotal: 0,
+      songTotal: 0,
+    };
+  }
+
+  const pricing = getServicePricing(song.service);
+  const base = pricing.base;
+  const trackSurcharge = getTrackCountSurcharge(song.service, song.trackCount);
+  const lengthSurcharge = getSongLengthSurcharge(song.lengthMinutes, song.service);
+
+  const effectiveTrackCount = song.service === "master" ? 1 : song.trackCount ?? 1;
+
+  const timeAlignPrice = song.timeAlignment.enabled
+    ? PRICING.timeAlignment.perTrack * clampInt(song.timeAlignment.trackCount, 1, effectiveTrackCount)
+    : 0;
+
+  const vocalTuningPrice = song.vocalTuning.enabled
+    ? PRICING.vocalTuning.perTrack * clampInt(song.vocalTuning.trackCount, 1, effectiveTrackCount)
+    : 0;
+
+  const multitrackExportPrice = song.multitrackExport ? PRICING.multitrackExport.flat : 0;
+  const additionalExportsPrice = getAdditionalExportsPrice(song.additionalMixVersions);
+  const additionalEditsPrice = getAdditionalEditsPrice(song.additionalMixVersions);
+  const rushPrice = song.rushService2Days ? PRICING.rushService2Days : 0;
+  const revisionsPrice = song.unlimitedRevisions1Month ? PRICING.unlimitedRevisions1Month : 0;
+
+  const detailsSubtotal = base + trackSurcharge + lengthSurcharge;
+  const alignmentSubtotal = timeAlignPrice + vocalTuningPrice;
+  const exportsSubtotal = multitrackExportPrice + additionalExportsPrice;
+  const addonsSubtotal = additionalEditsPrice + rushPrice + revisionsPrice;
+  const songTotal = detailsSubtotal + alignmentSubtotal + exportsSubtotal + addonsSubtotal;
+
+  return {
+    detailsSubtotal,
+    alignmentSubtotal,
+    exportsSubtotal,
+    addonsSubtotal,
+    songTotal,
+  };
 }
 
 export default function PackageBuilder() {
@@ -211,26 +375,23 @@ export default function PackageBuilder() {
   }, [artistName, albumName, projectType]);
 
   const activeSong = songs[activeSongIndex];
+  const activeSongTrackCount = activeSong?.service === "master" ? 1 : activeSong?.trackCount ?? 1;
   const canGoNextFromSongDetails = React.useMemo(() => {
     const songNameOk = (activeSong?.name ?? "").trim().length > 0;
-    const serviceSelected = Boolean(activeSong?.service);
-    return songNameOk && serviceSelected;
+    return songNameOk;
   }, [activeSong]);
 
-  const songTotal = activeSong ? computeSongPrice(activeSong) : 0;
+  const canGoNextFromBase = React.useMemo(() => {
+    const serviceSelected = Boolean(activeSong?.service);
+    const lengthSelected = activeSong?.lengthMinutes != null;
+    const trackCountSelected = activeSong?.service === "master" ? true : activeSong?.trackCount != null;
+    return serviceSelected && trackCountSelected && lengthSelected;
+  }, [activeSong]);
 
-  function clampTrackCountForService(trackCount: number, service: ServiceSelection) {
-    if (service === "master") return 1;
-    if (service === "stemMaster") return clampInt(trackCount, 2, 24);
-    return clampInt(trackCount, 1, 96);
-  }
-
-  function commitActiveSongTrackCount() {
-    if (!activeSong) return;
-    updateActiveSong({
-      trackCount: clampTrackCountForService(activeSong.trackCount, activeSong.service),
-    });
-  }
+  const activeSongBreakdown = React.useMemo(
+    () => (activeSong ? computeSongBreakdown(activeSong) : null),
+    [activeSong]
+  );
 
   function updateActiveSong(patch: Partial<SongConfig>) {
     setSongs((prev) => {
@@ -238,26 +399,16 @@ export default function PackageBuilder() {
       const current = next[activeSongIndex] ?? createEmptySong();
       let merged = { ...current, ...patch };
 
-      // Best-practice UX: don't clamp minimums on every keystroke.
-      // - Master: always pinned to 1.
-      // - Stem Master: allow typing (including transient "1"), but keep a hard max of 24.
-      //   The min of 2 is enforced on blur / Next via commitActiveSongTrackCount().
-      // - Other services: keep a hard max of 96.
-      if (merged.service === "master") {
-        merged.trackCount = 1;
-      } else if (merged.service === "stemMaster") {
-        merged.trackCount = clampInt(merged.trackCount, 1, 24);
-      } else {
-        merged.trackCount = clampInt(merged.trackCount, 1, 96);
-      }
+      merged.trackCount = normalizeTrackCountForService(merged.service, merged.trackCount);
+      const effectiveTrackCount = merged.service === "master" ? 1 : merged.trackCount ?? 1;
 
       merged.timeAlignment = {
         ...merged.timeAlignment,
-        trackCount: clampInt(merged.timeAlignment.trackCount, 1, merged.trackCount),
+        trackCount: clampInt(merged.timeAlignment.trackCount, 1, effectiveTrackCount),
       };
       merged.vocalTuning = {
         ...merged.vocalTuning,
-        trackCount: clampInt(merged.vocalTuning.trackCount, 1, merged.trackCount),
+        trackCount: clampInt(merged.vocalTuning.trackCount, 1, effectiveTrackCount),
       };
 
       next[activeSongIndex] = merged;
@@ -277,6 +428,7 @@ export default function PackageBuilder() {
           ...target,
           service: current.service,
           trackCount: current.trackCount,
+          lengthMinutes: current.lengthMinutes,
           timeAlignment: { ...current.timeAlignment },
           vocalTuning: { ...current.vocalTuning },
           multitrackExport: current.multitrackExport,
@@ -375,16 +527,20 @@ export default function PackageBuilder() {
 
         {step === "songs" && activeSong && (
           <>
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div className="space-y-0.5">
                 <h2 className="text-xl font-semibold">
                   {songStep === "details"
                     ? "Song Details"
+                    : songStep === "base"
+                      ? "Base Services"
                     : songStep === "alignment"
-                      ? "Time Alignment & Vocal Tuning"
-                      : "Exports & Extras"}
+                      ? "Addon Services"
+                      : songStep === "exports"
+                        ? "Exports"
+                        : "Edits & Extras"}
                 </h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground mb-1">
                   Song {activeSongIndex + 1} of {songs.length}
                   {activeSong?.name ? `: ${activeSong.name}` : ""}
                 </p>
@@ -411,7 +567,7 @@ export default function PackageBuilder() {
               )}
             </div>
 
-            <section className="space-y-6">
+            <section className="space-y-5">
               {songStep === "details" && (
                 <>
                   <div className="space-y-2">
@@ -424,112 +580,146 @@ export default function PackageBuilder() {
                       required
                     />
                   </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm text-muted-foreground self-end">
+                      Page 1 of 5
+                    </p>
+                    <div className="flex items-center justify-end gap-2 mt-0">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => setStep("project")}
+                      >
+                        Back
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={() => setSongStep("base")}
+                        disabled={!canGoNextFromSongDetails}
+                      >
+                        Next
+                      </Button>
+                    </div>
+                  </div>
+                </>
+              )}
 
+              {songStep === "base" && (
+                <>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Service <span className="text-destructive">*</span></label>
                     <select
                       value={activeSong.service}
                       onChange={(e) => {
                         const nextService = e.target.value as ServiceSelection;
-
                         if (nextService === "") {
-                          updateActiveSong({ service: "" });
+                          updateActiveSong({ service: "", trackCount: null, lengthMinutes: null });
                           return;
                         }
-                        // If they pick master, pin immediately.
                         if (nextService === "master") {
                           updateActiveSong({ service: nextService, trackCount: 1 });
                           return;
                         }
-
-                        // If they pick stem master, clamp to max 24 immediately (min is enforced on blur/Next).
-                        if (nextService === "stemMaster") {
-                          updateActiveSong({
-                            service: nextService,
-                            trackCount: clampInt(activeSong.trackCount, 1, 24),
-                          });
-                          return;
-                        }
-
-                        // Other services: clamp to max 96.
                         updateActiveSong({
                           service: nextService,
-                          trackCount: clampInt(activeSong.trackCount, 1, 96),
+                          trackCount: normalizeTrackCountForService(nextService, activeSong.trackCount),
                         });
                       }}
                       className={inputClassName}
                       required
                     >
                       <option value="">Please select a service</option>
-                      <option value="mix">Mix ({formatCurrency(PRICING.serviceBase.mix)})</option>
-                      <option value="master">Master ({formatCurrency(PRICING.serviceBase.master)})</option>
-                      <option value="mixAndMaster">Mix + Master ({formatCurrency(PRICING.serviceBase.mixAndMaster)})</option>
-                      <option value="stemMaster">Stem Master ({formatCurrency(PRICING.serviceBase.stemMaster)})</option>
+                      <option value="mix">Mix ({formatCurrency(PRICING.mixing.base)})</option>
+                      <option value="master">Master ({formatCurrency(PRICING.mastering.base)})</option>
+                      <option value="mixAndMaster">Mix + Master ({formatCurrency(PRICING.mixingAndMastering.base)})</option>
+                      <option value="stemMaster">Stem Master ({formatCurrency(PRICING.stemMastering.base)})</option>
                     </select>
                   </div>
-
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Number of Tracks in the Song <span className="text-destructive">*</span></label>
-                    <input
-                      type="number"
-                      min={activeSong.service === "stemMaster" ? 2 : 1}
-                      max={activeSong.service === "stemMaster" ? 24 : 96}
-                      value={activeSong.trackCount}
-                      onChange={(e) =>
+                    <select
+                      value={
+                        activeSong.service === "master"
+                          ? "1"
+                          : activeSong.trackCount == null
+                            ? ""
+                            : String(activeSong.trackCount)
+                      }
+                      onChange={(e) => {
+                        const nextValue = e.target.value === "" ? null : Number(e.target.value);
                         updateActiveSong({
-                          trackCount: Number(e.target.value),
+                          trackCount: nextValue,
                           timeAlignment: {
                             ...activeSong.timeAlignment,
-                            trackCount: Math.min(
-                              Number(e.target.value) || (activeSong.service === "stemMaster" ? 2 : 1),
-                              activeSong.timeAlignment.trackCount
-                            ),
+                            trackCount: clampInt(activeSong.timeAlignment.trackCount, 1, nextValue ?? 1),
                           },
                           vocalTuning: {
                             ...activeSong.vocalTuning,
-                            trackCount: Math.min(
-                              Number(e.target.value) || (activeSong.service === "stemMaster" ? 2 : 1),
-                              activeSong.vocalTuning.trackCount
-                            ),
+                            trackCount: clampInt(activeSong.vocalTuning.trackCount, 1, nextValue ?? 1),
                           },
-                        })
-                      }
-                      onBlur={commitActiveSongTrackCount}
-                      className={narrowInputClassName}
+                        });
+                      }}
+                      className={inputClassName}
                       required
-                      disabled={activeSong.service === "master"}
-                    />
-                    <p className="text-sm text-muted-foreground">
-                      Track-count surcharge: {formatCurrency(trackCountTierSurcharge(activeSong.trackCount))}
-                    </p>
+                      disabled={!activeSong.service || activeSong.service === "master"}
+                    >
+                      {activeSong.service !== "master" && <option value="">Select track count</option>}
+                      {(activeSong.service ? getServicePricing(activeSong.service as MixService).trackTiers : []).map(
+                        (tier) => (
+                          <option key={tier.max} value={tier.max}>
+                            Up to {tier.max} track{tier.max === 1 ? "" : "s"}
+                            {tier.surcharge > 0
+                              ? ` (+${formatCurrency(tier.surcharge)})`
+                              : " (no surcharge)"}
+                          </option>
+                        )
+                      )}
+                    </select>
                   </div>
-
-                  <div className="flex items-center justify-end gap-2">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={() => {
-                        if (songStep === "details") {
-                          setStep("project");
-                        } else if (songStep === "alignment") {
-                          setSongStep("details");
-                        } else {
-                          setSongStep("alignment");
-                        }
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Song Length <span className="text-destructive">*</span></label>
+                    <select
+                      value={activeSong.lengthMinutes == null ? "" : String(activeSong.lengthMinutes)}
+                      onChange={e => {
+                        const val = e.target.value === "" ? null : Number(e.target.value);
+                        updateActiveSong({ lengthMinutes: val });
                       }}
+                      className={inputClassName}
+                      required
+                      disabled={!activeSong.service}
                     >
-                      Back
-                    </Button>
-                    <Button
-                      type="button"
-                      onClick={() => {
-                        commitActiveSongTrackCount();
-                        setSongStep("alignment");
-                      }}
-                      disabled={!canGoNextFromSongDetails}
-                    >
-                      Next
-                    </Button>
+                      <option value="">Select song length</option>
+                      {(activeSong.service
+                        ? (getServicePricing(activeSong.service as MixService) as any).songLengthTiers
+                        : MIXING_SONG_LENGTH_TIERS
+                      ).map((interval: { max: number; surcharge: number }) => (
+                        <option key={interval.max} value={interval.max}>
+                          Up to {interval.max} min{interval.max > 1 ? "s" : ""}
+                          {interval.surcharge > 0 ? ` (+${formatCurrency(interval.surcharge)})` : " (no surcharge)"}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm text-muted-foreground self-end">
+                      Page 2 of 5
+                    </p>
+                    <div className="flex items-center justify-end gap-2 mt-0">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => setSongStep("details")}
+                      >
+                        Back
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={() => setSongStep("alignment")}
+                        disabled={!canGoNextFromBase}
+                      >
+                        Next
+                      </Button>
+                    </div>
                   </div>
                 </>
               )}
@@ -549,7 +739,7 @@ export default function PackageBuilder() {
                               trackCount: clampInt(
                                 activeSong.timeAlignment.trackCount,
                                 1,
-                                activeSong.trackCount
+                                activeSongTrackCount
                               ),
                             },
                           })
@@ -563,13 +753,13 @@ export default function PackageBuilder() {
                         <input
                           type="number"
                           min={1}
-                          max={activeSong.trackCount}
+                          max={activeSongTrackCount}
                           value={activeSong.timeAlignment.trackCount}
                           onChange={(e) =>
                             updateActiveSong({
                               timeAlignment: {
                                 ...activeSong.timeAlignment,
-                                trackCount: clampInt(Number(e.target.value), 1, activeSong.trackCount),
+                                trackCount: clampInt(Number(e.target.value), 1, activeSongTrackCount),
                               },
                             })
                           }
@@ -587,7 +777,7 @@ export default function PackageBuilder() {
                             vocalTuning: {
                               ...activeSong.vocalTuning,
                               enabled: e.target.checked,
-                              trackCount: clampInt(activeSong.vocalTuning.trackCount, 1, activeSong.trackCount),
+                              trackCount: clampInt(activeSong.vocalTuning.trackCount, 1, activeSongTrackCount),
                             },
                           })
                         }
@@ -600,13 +790,13 @@ export default function PackageBuilder() {
                         <input
                           type="number"
                           min={1}
-                          max={activeSong.trackCount}
+                          max={activeSongTrackCount}
                           value={activeSong.vocalTuning.trackCount}
                           onChange={(e) =>
                             updateActiveSong({
                               vocalTuning: {
                                 ...activeSong.vocalTuning,
-                                trackCount: clampInt(Number(e.target.value), 1, activeSong.trackCount),
+                                trackCount: clampInt(Number(e.target.value), 1, activeSongTrackCount),
                               },
                             })
                           }
@@ -616,23 +806,28 @@ export default function PackageBuilder() {
                     )}
                   </div>
 
-                  <div className="flex items-center justify-end gap-2">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={() => setSongStep("details")}
-                    >
-                      Back
-                    </Button>
-                    <Button type="button" onClick={() => setSongStep("extras")}
-                    >
-                      Next
-                    </Button>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm text-muted-foreground self-end">
+                      Page 3 of 5
+                    </p>
+                    <div className="flex items-center justify-end gap-2 mt-0">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => setSongStep("base")}
+                      >
+                        Back
+                      </Button>
+                      <Button type="button" onClick={() => setSongStep("exports")}
+                      >
+                        Next
+                      </Button>
+                    </div>
                   </div>
                 </>
               )}
 
-              {songStep === "extras" && (
+              {songStep === "exports" && (
                 <>
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Multitrack Export</label>
@@ -646,80 +841,114 @@ export default function PackageBuilder() {
                     </select>
                   </div>
 
-                    <div className="space-y-3">
-                      <div className="text-sm font-medium">Additional Exports</div>
-                      <label className="flex items-center gap-3 text-sm">
-                        <input
-                          type="checkbox"
-                          checked={activeSong.additionalMixVersions.instrumental}
-                          onChange={(e) =>
-                            updateActiveSong({
-                              additionalMixVersions: {
-                                ...activeSong.additionalMixVersions,
-                                instrumental: e.target.checked,
-                              },
-                            })
-                          }
-                        />
-                        Instrumental
-                        <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(PRICING.additionalExports.instrumental)})</span>
-                      </label>
-                      <label className="flex items-center gap-3 text-sm">
-                        <input
-                          type="checkbox"
-                          checked={activeSong.additionalMixVersions.acapella}
-                          onChange={(e) =>
-                            updateActiveSong({
-                              additionalMixVersions: {
-                                ...activeSong.additionalMixVersions,
-                                acapella: e.target.checked,
-                              },
-                            })
-                          }
-                        />
-                        Acapella
-                        <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(PRICING.additionalExports.acapella)})</span>
-                      </label>
-                    </div>
+                  <div className="space-y-3">
+                    <div className="text-sm font-medium">Additional Exports</div>
+                    <label className="flex items-center gap-3 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={activeSong.additionalMixVersions.instrumental}
+                        onChange={(e) =>
+                          updateActiveSong({
+                            additionalMixVersions: {
+                              ...activeSong.additionalMixVersions,
+                              instrumental: e.target.checked,
+                            },
+                          })
+                        }
+                      />
+                      Instrumental
+                      <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(PRICING.additionalExports.instrumental)})</span>
+                    </label>
+                    <label className="flex items-center gap-3 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={activeSong.additionalMixVersions.acapella}
+                        onChange={(e) =>
+                          updateActiveSong({
+                            additionalMixVersions: {
+                              ...activeSong.additionalMixVersions,
+                              acapella: e.target.checked,
+                            },
+                          })
+                        }
+                      />
+                      Acapella
+                      <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(PRICING.additionalExports.acapella)})</span>
+                    </label>
+                  </div>
 
-                    <div className="space-y-3">
-                      <div className="text-sm font-medium">Additional Edits</div>
-                      <label className="flex items-center gap-3 text-sm">
-                        <input
-                          type="checkbox"
-                          checked={activeSong.additionalMixVersions.radioEdit}
-                          onChange={(e) =>
-                            updateActiveSong({
-                              additionalMixVersions: {
-                                ...activeSong.additionalMixVersions,
-                                radioEdit: e.target.checked,
-                              },
-                            })
-                          }
-                        />
-                        Radio Edit
-                        <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(PRICING.additionalExports.radioEdit)})</span>
-                      </label>
-                      <label className="flex items-center gap-3 text-sm">
-                        <input
-                          type="checkbox"
-                          checked={activeSong.additionalMixVersions.cleanVersion}
-                          onChange={(e) =>
-                            updateActiveSong({
-                              additionalMixVersions: {
-                                ...activeSong.additionalMixVersions,
-                                cleanVersion: e.target.checked,
-                              },
-                            })
-                          }
-                        />
-                        Clean Edit
-                        <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(PRICING.additionalExports.cleanVersion)})</span>
-                      </label>
+                  {songs.length > 1 && activeSongIndex < songs.length - 1 && (
+                    <label className="flex items-center gap-3 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={duplicateToNextSong}
+                        onChange={(e) => setDuplicateToNextSong(e.target.checked)}
+                      />
+                      Duplicate these options to next song
+                    </label>
+                  )}
+
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm text-muted-foreground self-end">
+                      Page 4 of 5
+                    </p>
+                    <div className="flex items-center justify-end gap-2 mt-0">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => setSongStep("alignment")}
+                      >
+                        Back
+                      </Button>
+                      <Button type="button" onClick={() => setSongStep("addons")}
+                      >
+                        Next
+                      </Button>
                     </div>
+                  </div>
+                </>
+              )}
+
+              {songStep === "addons" && (
+                <>
+                  <div className="space-y-3">
+                    <div className="text-sm font-medium">Additional Edits</div>
+                    <label className="flex items-center gap-3 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={activeSong.additionalMixVersions.radioEdit}
+                        onChange={(e) =>
+                          updateActiveSong({
+                            additionalMixVersions: {
+                              ...activeSong.additionalMixVersions,
+                              radioEdit: e.target.checked,
+                            },
+                          })
+                        }
+                      />
+                      Radio Edit
+                      <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(PRICING.additionalExports.radioEdit)})</span>
+                    </label>
+                    <label className="flex items-center gap-3 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={activeSong.additionalMixVersions.cleanVersion}
+                        onChange={(e) =>
+                          updateActiveSong({
+                            additionalMixVersions: {
+                              ...activeSong.additionalMixVersions,
+                              cleanVersion: e.target.checked,
+                            },
+                          })
+                        }
+                      />
+                      Clean Edit
+                      <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(PRICING.additionalExports.cleanVersion)})</span>
+                    </label>
+                  </div>
 
                   <div className="space-y-3">
-                    <div className="text-sm font-medium">Other Addons</div>
+                    <div className="text-sm font-medium">Extras</div>
                     <label className="flex items-center gap-3 text-sm">
                       <input
                         type="checkbox"
@@ -740,34 +969,28 @@ export default function PackageBuilder() {
                     </label>
                   </div>
 
-                  {songs.length > 1 && activeSongIndex < songs.length - 1 && (
-                    <label className="flex items-center gap-3 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={duplicateToNextSong}
-                        onChange={(e) => setDuplicateToNextSong(e.target.checked)}
-                      />
-                      Duplicate these options to next song
-                    </label>
-                  )}
-
-                  <div className="flex items-center justify-end gap-2 mt-6">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      onClick={() => setSongStep("alignment")}
-                    >
-                      Back
-                    </Button>
-                    {projectType === "album" && activeSongIndex < songs.length - 1 ? (
-                      <Button type="button" onClick={goToNextSong}>
-                        Next Song
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm text-muted-foreground self-end">
+                      Page 5 of 5
+                    </p>
+                    <div className="flex items-center justify-end gap-2 mt-0">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        onClick={() => setSongStep("exports")}
+                      >
+                        Back
                       </Button>
-                    ) : (
-                      <Button type="button" disabled>
-                        Done
-                      </Button>
-                    )}
+                      {projectType === "album" && activeSongIndex < songs.length - 1 ? (
+                        <Button type="button" onClick={goToNextSong}>
+                          Next Song
+                        </Button>
+                      ) : (
+                        <Button type="button" disabled>
+                          Done
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </>
               )}
@@ -782,17 +1005,61 @@ export default function PackageBuilder() {
           Package Summary
         </h3>
 
-        <ul className="text-sm space-y-2 mb-4">
+        <ul className="text-sm space-y-2 mb-5">
           <li>Type: {projectType}</li>
           <li>Artist: {artistName.trim() || "—"}</li>
           {projectType === "album" && <li>Album: {albumName.trim() || "—"}</li>}
           <li>Songs: {projectType === "album" ? Math.max(2, songCount) : 1}</li>
-          {step === "songs" && (
-            <li>
-              Current song total: <span className="font-medium">{formatCurrency(songTotal)}</span>
-            </li>
-          )}
         </ul>
+
+        {projectType === "album" && songs.length > 1 && step === "songs" && activeSongIndex > 0 && (
+          <div className="mb-5">
+            <div className="text-sm font-semibold mb-2">Finished songs</div>
+            <div className="space-y-2">
+              {songs.slice(0, activeSongIndex).map((song, idx) => {
+                if (!isSongConfigured(song)) return null;
+                const finishedSongTotal = computeSongPrice(song);
+                return (
+                  <div key={idx} className="flex items-center justify-between text-sm">
+                    <span className="truncate pr-3">{song.name}</span>
+                    <span className="tabular-nums">{formatCurrency(finishedSongTotal)}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {step === "songs" && activeSong && activeSongBreakdown && (
+          <div className="mb-5">
+            <div className="text-sm font-semibold mb-2">Current song</div>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center justify-between">
+                <span className="truncate pr-3">Base Service</span>
+                <span className="tabular-nums">{formatCurrency(activeSongBreakdown.detailsSubtotal)}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="truncate pr-3">Addon Services</span>
+                <span className="tabular-nums">{formatCurrency(activeSongBreakdown.alignmentSubtotal)}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="truncate pr-3">Exports</span>
+                <span className="tabular-nums">{formatCurrency(activeSongBreakdown.exportsSubtotal)}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="truncate pr-3">Edits & Extras</span>
+                <span className="tabular-nums">{formatCurrency(activeSongBreakdown.addonsSubtotal)}</span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-3 mt-3 border-t text-sm">
+              <span className="font-semibold truncate pr-3">
+                {activeSong.name.trim() ? activeSong.name.trim() : "Current song total"}
+              </span>
+              <span className="font-semibold tabular-nums">{formatCurrency(activeSongBreakdown.songTotal)}</span>
+            </div>
+          </div>
+        )}
 
         <div className="font-bold text-xl mb-6">
           Total: {formatCurrency(total)}
@@ -802,9 +1069,6 @@ export default function PackageBuilder() {
           Add to Cart
         </Button>
 
-        <p className="text-sm text-muted-foreground mt-4">
-          Track-count tier add-ons (1/5/10/24/48/72/96) are configurable in this component.
-        </p>
       </aside>
     </div>
   );
