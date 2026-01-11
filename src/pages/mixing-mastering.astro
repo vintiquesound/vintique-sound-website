@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
 import { ArrowRight } from "lucide-astro";
+import { services, genreExperience, processSteps, idealClients } from "@/content/webpage/mixing-mastering-data";
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import IntroSection from "@/layouts/sections/IntroSection.astro";
 import CtaSection from "@/layouts/sections/CtaSection.astro";
@@ -12,136 +13,6 @@ import CardContent from "@/components/ui/card/CardContent.astro";
 import CardDescription from "@/components/ui/card/CardDescription.astro";
 import CardAction from "@/components/ui/card/CardAction.astro";
 import AudioComparison from "@/components/audio/AudioComparison.tsx";
-
-const services = [
-  {
-    title: "Mixing",
-    description:
-      "Transform your individual tracks into a cohesive, balanced, and polished song. Mixing involves level balancing, EQ, compression, spatial placement, and creative effects.",
-    features: [
-      "Multi-track level balancing",
-      "EQ and frequency management",
-      "Dynamic processing (compression, limiting)",
-      "Spatial placement and depth",
-      "Creative effects and automation",
-      "Detailed mix referencing and quality checks",
-    ],
-    price: "from $200",
-    color: "primary",
-  },
-  {
-    title: "Mastering",
-    description:
-      "The final polish that ensures your mixed track sounds professional across all playback systems.",
-    features: [
-      "Final EQ and tonal balance",
-      "Compression and limiting",
-      "Loudness optimization (LUFS)",
-      "Stereo width enhancement",
-      "Multiple format delivery",
-      "Platform-specific masters available",
-    ],
-    price: "from $30",
-    color: "secondary",
-  },
-  {
-    title: "Mix + Master Package",
-    description:
-      "Complete audio production from raw tracks to release-ready masters. You get everything that's included in the mixing and mastering packages.",
-    features: [
-      "Everything in Mixing",
-      "Everything in Mastering",
-      "3 mix revisions and 3 mastering revisions included",
-      "Mix decisions made with final master in mind",
-      "Fewer revisions due to end-to-end consistency",
-      "Best overall value for full production",
-    ],
-    price: "from $220",
-    color: "accent",
-    badge: "Best Value",
-  },
-  {
-    title: "Stem Mastering",
-    description:
-      "Master your song using individual stems for more control while maintaining cohesion from an existing mix.",
-    features: [
-      "Enhanced control over mix elements",
-      "Targeted processing per stem",
-      "Maintains mix cohesion",
-      "Greater flexibility than stereo mastering",
-      "Ideal for EDM and hip-hop",
-      "Available for up to 12 stems",
-    ],
-    price: "from $80",
-    color: "primary",
-  },
-];
-
-const idealClients = [
-  {
-    icon: "lucide:user",
-    title: "Independent Artists",
-    description:
-      "Musicians releasing their own music who want professional-quality results without a label budget",
-  },
-  {
-    icon: "lucide:headphones",
-    title: "Music Producers",
-    description:
-      "Producers who want an experienced engineer's perspective on their productions",
-  },
-  {
-    icon: "lucide:users",
-    title: "Bands",
-    description:
-      "Groups working on EPs, albums, or singles who need consistent, professional sound",
-  },
-  {
-    icon: "lucide:briefcase",
-    title: "Studios & Engineers",
-    description:
-      "Other studios outsourcing mastering or seeking a second opinion on mixes",
-  },
-  {
-    icon: "lucide:video",
-    title: "Content Creators",
-    description:
-      "Podcasters, YouTubers, and media creators who need audio post-production",
-  },
-];
-
-const processSteps = [
-  {
-    icon: "lucide:upload",
-    title: "Project Upload",
-    description:
-      "Upload your Cubase, Ableton, or Bitwig project — or consolidated audio files — through my secure transfer system.",
-  },
-  {
-    icon: "lucide:search",
-    title: "Initial Review",
-    description:
-      "I carefully review your files, reference tracks, and notes to fully understand your sound and goals.",
-  },
-  {
-    icon: "lucide:settings",
-    title: "Mixing & Mastering",
-    description:
-      "Your tracks are mixed and/or mastered using professional tools. A high-quality preview is uploaded for feedback.",
-  },
-  {
-    icon: "lucide:rotate-ccw",
-    title: "Revisions & Feedback",
-    description:
-      "You request adjustments, and I refine the mix and/or master until it feels right to you.",
-  },
-  {
-    icon: "lucide:download",
-    title: "Final Delivery",
-    description:
-      "Download your finished files in multiple formats, ready for release.",
-  },
-];
 ---
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
@@ -177,7 +48,7 @@ const processSteps = [
             Mixing & Mastering Services
           </h2>
           <p class="pb-0 mb-0 text-lg text-muted-foreground">
-            Clear pricing, flexible options, and professional results
+            Clear pricing, flexible options, and professional results.
           </p>
           <i class="pt-0 mt-0 text-sm text-muted-foreground">
             *All packages include up to 3 revisions. Unlimited revisions are available as an optional add-on.
@@ -186,7 +57,7 @@ const processSteps = [
 
         <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {services.map((service) => (
-            <Card class="border-2 hover:border-primary transition-all relative">
+            <Card class="border-2 hover:border-primary transition-all">
               {service.badge && (
                 <CardAction class="absolute -top-3 right-4">
                   <Badge
@@ -215,31 +86,36 @@ const processSteps = [
       </div>
     </section>
 
-    {/* GENRE SPECIALIZATION SECTION */}
+    {/* GENRE EXPERIENCE SECTION */}
     <section class="py-20 bg-linear-to-br from-secondary/20 to-accent/20">
-      <div class="container mx-auto px-4 max-w-4xl">
+      <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            Genres I Specialize In
+            Genres Experience
           </h2>
-          <p class="text-lg text-muted-foreground">
-            Experience working across a range of styles while respecting the
-            identity of each genre
+          <p class="pb-0 mb-0 text-lg text-muted-foreground">
+            I work across a focused range of genres, with attention to the sonic details that define each style.
           </p>
+          <i class="py-0 my-0 text-sm text-muted-foreground">
+            *If your genre isn’t listed, that doesn’t mean it’s not a fit — feel free to reach out with references.
+          </i>
         </div>
 
-        <ul class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-          {[
-            "Indie Rock",
-            "Classic Rock",
-            "Hard Rock",
-            "House Music",
-          ].map((genre) => (
-            <li class="p-6 border rounded-lg font-semibold bg-card">
-              {genre}
-            </li>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {genreExperience.map((experience) => (
+            <Card class="border-2 hover:border-primary transition-all">
+              <CardHeader class="text-center text-xl border-b-2">
+                <CardTitle>{experience.genre}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>
+                  <p class="text-lg">{experience.description}</p>
+                  <p>{experience.subgenres}</p>
+                </CardDescription>
+              </CardContent>
+            </Card>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
 
@@ -327,7 +203,7 @@ const processSteps = [
 
         <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {idealClients.map((client) => (
-            <Card class="border-2">
+            <Card class="border-2 hover:border-primary transition-all">
               <CardHeader class="flex flex-col items-center">
                 <Icon name={client.icon} class="h-6 w-6 text-primary mb-3" />
                 <CardTitle class="font-bold text-center">{client.title}</CardTitle>
