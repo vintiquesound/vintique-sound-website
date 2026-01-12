@@ -4,7 +4,8 @@ import IntroSection from "@/layouts/sections/IntroSection.astro";
 import ContactFormCard from "@/components/contact/ContactFormCard.astro";
 import ContactInfoCard from "@/components/contact/ContactInfoCard.astro";
 import ContactSocialsCard from "@/components/contact/ContactSocialsCard.astro";
-import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
+// import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
+import OpenStreetMapLeaflet from "@/components/contact/OpenStreetMapLeaflet.astro";
 ---
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
@@ -40,7 +41,8 @@ import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
         <p class="text-lg text-muted-foreground mb-8">
           Located in the heart of Edmonton AB
         </p>
-        <OpenStreetMapEmbed lat={53.54601} lon={-113.49143} offset={0.02} />
+        <!-- <OpenStreetMapEmbed lat={53.54601} lon={-113.49143} offset={0.02} /> -->
+        <OpenStreetMapLeaflet lat={53.543623} lon={-113.517814} zoom={13} />
       </div>
     </section>
 
