@@ -74,7 +74,7 @@ export const genreExperience = [
     subgenres: "Acoustic, singer-songwriter, minimal arrangements.",
   },
   {
-    genre: "Hip Hop",
+    genre: "Hip Hop & Rap",
     description: "Hard-hitting low end, vocal presence, and translation.",
     subgenres: "Boom bap, 90s/2000s-inspired, modern hybrid styles.",
   },
