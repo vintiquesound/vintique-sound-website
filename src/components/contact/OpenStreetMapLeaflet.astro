@@ -25,7 +25,7 @@ const mapId = `leaflet-map-${randomUUID()}`;
 />
 
 <div class="w-full overflow-hidden rounded-xl border shadow-sm" style={`height: ${height}`}>
-  <div id={mapId} style="height: 100%; width: 100%"></div>
+  <div id={mapId} style="height: 100%; width: 100%; cursor: default"></div>
 </div>
 
 <script
@@ -45,11 +45,23 @@ const mapId = `leaflet-map-${randomUUID()}`;
       center: [lat, lon],
       zoom,
       zoomControl: false,
+      dragging: false,
       scrollWheelZoom: false,
       doubleClickZoom: false,
       touchZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      tap: false,
       attributionControl: true,
     });
+
+    // Belt-and-suspenders: ensure interaction handlers stay disabled.
+    map.dragging.disable();
+    map.scrollWheelZoom.disable();
+    map.doubleClickZoom.disable();
+    map.touchZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
 
     window.L
       .tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
