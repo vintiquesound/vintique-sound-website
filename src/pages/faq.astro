@@ -1,10 +1,15 @@
 ---
-import { ArrowRight } from "lucide-astro";
-import { faqData } from "@/content/webpage/faq-data";
+// Astro layout and section components
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import IntroSection from "@/layouts/sections/IntroSection.astro";
 import Accordion from "@/components/ui/Accordion.astro"
 import CtaSection from "@/layouts/sections/CtaSection.astro";
+
+// Third party libraries
+import { ArrowRight } from "lucide-astro";
+
+// Local content and assets
+import { faqData } from "@/content/webpage/faq-data";
 ---
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">

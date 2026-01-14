@@ -1,12 +1,19 @@
 ---
-import { ArrowRight } from "lucide-astro";
-import { Icon } from "astro-icon/components";
-import { stats, credentials, resume, philosophy } from "@/content/webpage/about-data";
+// Astro layout and section components
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import HeroSection from "@/layouts/sections/HeroSection.astro";
 import CtaSection from "@/layouts/sections/CtaSection.astro";
+
+// Third party libraries
+import { Icon } from "astro-icon/components";
+import { ArrowRight } from "lucide-astro";
+
+// Local UI components
 import Card from "@/components/ui/card/Card.astro";
 import Badge from "@/components/ui/Badge.astro";
+
+// Local content and assets
+import { stats, credentials, resume, philosophy } from "@/content/webpage/about-data";
 import KevinUlliacImage from "@/assets/website/kevin_ulliac-in_the_studio.jpg";
 ---
 

@@ -1,18 +1,25 @@
 ---
-import { Icon } from "astro-icon/components"
-import { ArrowRight } from "lucide-astro";
-import { services, genreExperience, processSteps, idealClients } from "@/content/webpage/mixing-mastering-data";
+// Astro layout and section components
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import IntroSection from "@/layouts/sections/IntroSection.astro";
 import CtaSection from "@/layouts/sections/CtaSection.astro";
-import Badge from "@/components/ui/Badge.astro";
+
+// Third party libraries
+import { Icon } from "astro-icon/components"
+import { ArrowRight } from "lucide-astro";
+
+// Local UI components
 import Card from "@/components/ui/card/Card.astro";
 import CardHeader from "@/components/ui/card/CardHeader.astro";
 import CardTitle from "@/components/ui/card/CardTitle.astro";
 import CardContent from "@/components/ui/card/CardContent.astro";
 import CardDescription from "@/components/ui/card/CardDescription.astro";
 import CardAction from "@/components/ui/card/CardAction.astro";
+import Badge from "@/components/ui/Badge.astro";
 import AudioComparison from "@/components/audio/AudioComparison.tsx";
+
+// Local content and assets
+import { services, genreExperience, processSteps, idealClients } from "@/content/webpage/mixing-mastering-data";
 ---
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
