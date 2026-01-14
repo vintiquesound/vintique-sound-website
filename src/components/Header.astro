@@ -1,18 +1,19 @@
 ---
-import { SITE_TITLE } from "../consts"
-import { Image } from "astro:assets"
+// Local components
+import HeaderNavMenu from "./HeaderNavMenu";
+import ThemeToggle from "./ThemeToggle.astro";
+import HeaderLink from "./HeaderLink.astro";
 
-import { navMenuGroups } from "@/lib/navigation"
+// Third party libraries
+import { Image } from "astro:assets";
 
-import ThemeToggle from "./ThemeToggle.astro"
-import HeaderLink from "./HeaderLink.astro"
+// Local content and assets
+import { SITE_TITLE } from "@/consts";
+import { navMenuGroups } from "@/lib/navigation";
+import logo from "@/assets/vintique_sound_logo-letters_only.png";
 
-import HeaderNavMenu from "./HeaderNavMenu"
-
-import logo from "../assets/vintique_sound_logo-letters_only.png"
-
+// Const definitions
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "")
-
 const mobileLinkBase =
   "block w-full py-3 px-4 text-base text-(--text) hover:text-accent no-underline transition-colors"
 ---

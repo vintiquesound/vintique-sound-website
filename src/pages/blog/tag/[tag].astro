@@ -1,9 +1,16 @@
 ---
-import { getCollection } from "astro:content";
-import { slugifyTag } from "../../../lib/utils";
+// Astro layout and section components
 import WebPageLayout from "../../../layouts/WebPageLayout.astro";
 import SingleColumnContainer from "../../../layouts/SingleColumnContainer.astro";
+
+// Third party libraries
+import { getCollection } from "astro:content";
+
+// Local UI components
 import FormattedDate from "../../../components/FormattedDate.astro";
+
+// Types and utilities
+import { slugifyTag } from "../../../lib/utils";
 
 function stripMarkup(input: string) {
 	let text = input;
