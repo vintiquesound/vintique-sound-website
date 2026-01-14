@@ -95,13 +95,13 @@ export const processSteps = [
     icon: "lucide:upload",
     title: "Project Upload",
     description:
-      "Upload your Cubase, Ableton, or Bitwig project — or consolidated audio files — through my secure transfer system.",
+      "Upload your Cubase, Ableton, or Bitwig project (or consolidated audio files) through my secure transfer system.",
   },
   {
     icon: "lucide:list-music",
     title: "Initial Review",
     description:
-      "I carefully review your files, reference tracks, and notes to fully understand your sound and goals.",
+      "I carefully review your files, reference tracks, and notes to fully understand your sound and goals with the project.",
   },
   {
     icon: "lucide:audio-lines",
@@ -113,13 +113,13 @@ export const processSteps = [
     icon: "lucide:rotate-ccw",
     title: "Revisions & Feedback",
     description:
-      "You request adjustments, and I refine the mix and/or master until it feels right to you.",
+      "If you're not completely satisfied, you can request adjustments, and I refine the mix and/or master until it feels right to you.",
   },
   {
     icon: "lucide:download",
     title: "Final Delivery",
     description:
-      "Download your finished files in multiple formats, ready for release.",
+      "Download your finished files in whatever formats you specify in your package. All finished files are ready for release.",
   },
 ];
 

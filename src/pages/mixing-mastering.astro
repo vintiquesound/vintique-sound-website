@@ -24,7 +24,7 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
 
-    {/* INTRO SECTION */}
+    {/* INTRO */}
     <IntroSection
       bgColors="bg-linear-to-br from-primary/20 to-secondary/20"
       badgeText="Mixing & Mastering"
@@ -47,7 +47,7 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
       align="center"
     />
 
-    {/* SERVICES SECTION */}
+    {/* SERVICES */}
     <section class="py-20 bg-muted">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
@@ -93,7 +93,7 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
       </div>
     </section>
 
-    {/* GENRE EXPERIENCE SECTION */}
+    {/* GENRE EXPERIENCE */}
     <section class="py-20 bg-linear-to-br from-secondary/20 to-accent/20">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
@@ -132,7 +132,7 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
       </div>
     </section>
 
-    {/* AUDIO COMPARISON SECTION */}
+    {/* AUDIO COMPARISON */}
     <section class="py-20 bg-muted">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
@@ -176,8 +176,8 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
       </div>
     </section>
 
-    {/* PROCESS SECTION */}
-    <section class="py-20">
+    {/* HOW IT WORKS */}
+    <section class="py-20 bg-linear-to-br from-accent/20 to-primary/20">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold mb-4">
@@ -188,21 +188,30 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
           </p>
         </div>
 
-        <div class="grid md:grid-cols-5 gap-8 max-w-6xl mx-auto">
-          {processSteps.map((step, _i) => (
-            <div class="text-center">
-              <div class="w-16 h-16 rounded-full bg-linear-to-br from-primary to-secondary flex items-center justify-center mx-auto mb-4">
-                  <Icon name={step.icon} class="h-7 w-7 text-white" />
-              </div>
-              <h3 class="font-bold">{step.title}</h3>
-              <p class="text-sm text-muted-foreground">{step.description}</p>
-            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
+          {processSteps.map((step, i) => (
+            <Card class="border-2 hover:border-primary transition-all h-full min-w-60">
+              <CardHeader class="flex flex-col items-center text-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-linear-to-br from-primary to-secondary flex items-center justify-center">
+                  <Icon name={step.icon} class="h-6 w-6 text-white" />
+                </div>
+                <div class="space-y-1">
+                  <p class="text-xs uppercase tracking-wider text-muted-foreground">Step {i + 1}</p>
+                  <CardTitle class="text-lg">{step.title}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <CardDescription class="text-sm text-center leading-relaxed">
+                  {step.description}
+                </CardDescription>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>
     </section>
 
-    {/* WHO ITS FOR SECTION */}
+    {/* WHO ITS FOR */}
     <section class="py-20 bg-muted">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
@@ -230,7 +239,7 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
       </div>
     </section>
 
-    {/* CTA SECTION */}
+    {/* CTA */}
     <CtaSection
       bgColors="bg-linear-to-br from-primary via-primary/80 to-accent"
       title="Ready to Take Your Music to the Next Level?"
