@@ -111,13 +111,19 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
         <div class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {genreExperience.map((experience) => (
             <Card class="border-2 hover:border-primary transition-all">
-              <CardHeader class="text-center text-xl border-b-2">
-                <CardTitle>{experience.genre}</CardTitle>
+              <CardHeader class="text-center border-b-2 pb-4">
+                <Icon name="lucide:music-2" class="text-secondary h-8 w-8 mx-auto mb-2" />
+                <CardTitle class="text-xl">{experience.genre}</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent class="space-y-4">
                 <CardDescription>
-                  <p class="text-lg">{experience.description}</p>
-                  <p>{experience.subgenres}</p>
+                  <p class="text-lg text-muted-foreground text-center leading-relaxed">
+                    {experience.description}
+                  </p>
+                  <div class="flex items-start gap-2 pt-3 border-t border-border/50">
+                    <Icon name="lucide:list-music" class="text-primary h-4 w-4 shrink-0" />
+                    <p class="m-0 text-xs text-muted-foreground leading-relaxed">{experience.subgenres}</p>
+                  </div>
                 </CardDescription>
               </CardContent>
             </Card>
