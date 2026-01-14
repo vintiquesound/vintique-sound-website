@@ -1,10 +1,10 @@
 ---
 import { Headphones, CheckCircle, GraduationCap, Package, ArrowRight } from "lucide-astro";
-import Button from "@/components/ui/Button.astro";
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import HeroSection from "@/layouts/sections/HeroSection.astro";
 import ThreeCardsSection from "@/layouts/sections/ThreeCardsSection.astro";
 import CtaSection from "@/layouts/sections/CtaSection.astro";
+
 import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
 ---
 
@@ -43,111 +43,65 @@ import HeroMixerImage from "../assets/website/audio_mixer-unsplash.jpg";
       cards={[
         {
           title: "Mixing & Mastering",
-          subtitle: "Professional mixing and mastering that brings clarity, balance, and impact to your music.",
+          subtitle:
+            "Professional mixing and mastering that brings clarity, balance, and impact to your music.",
           icon: Headphones,
           colorStyle: "primary",
+          bullets: [
+            { text: "Industry-standard quality", icon: CheckCircle },
+            { text: "Fast turnaround times", icon: CheckCircle },
+            { text: "30 day money back guarantee", icon: CheckCircle },
+          ],
+          button: {
+            label: "Learn More",
+            href: "/mixing-mastering",
+            variant: "solid",
+            bgColor: "primary",
+            textColor: "primary-foreground",
+            hoverBgColor: "primary/90",
+          },
         },
         {
-          title: "Education & Tutorials",
-          subtitle: "Practical tutorials designed to help you improve your production and mixing skills.",
+          title: "Educational Blog",
+          subtitle:
+            "Practical tutorials designed to help you improve your production, mixing, and mastering skills.",
           icon: GraduationCap,
           colorStyle: "secondary",
+          bullets: [
+            { text: "Step-by-step courses", icon: CheckCircle },
+            { text: "Clear, real-world workflows", icon: CheckCircle },
+            { text: "Lifetime access", icon: CheckCircle },
+          ],
+          button: {
+            label: "View Blog",
+            href: "/blog",
+            variant: "solid",
+            bgColor: "secondary",
+            textColor: "secondary-foreground",
+            hoverBgColor: "secondary/90",
+          },
         },
         {
           title: "Digital Products",
           subtitle: "Premium audio tools, plugins, samples, and loops for your productions.",
           icon: Package,
           colorStyle: "accent",
+          bullets: [
+            { text: "Professional-quality tools", icon: CheckCircle },
+            { text: "Royalty-free content", icon: CheckCircle },
+            { text: "Instant download", icon: CheckCircle },
+          ],
+          button: {
+            label: "View Tools",
+            href: "/audio-tools",
+            variant: "solid",
+            bgColor: "accent",
+            textColor: "accent-foreground",
+            hoverBgColor: "accent/90",
+          },
         },
       ]}
-    >
-      <Fragment slot="card1Content">
-        <ul class="space-y-2 mb-6">
-          <li class="flex items-center gap-2 text-sm">
-            <CheckCircle className="h-4 w-4 text-secondary" />
-            <span>Industry-standard quality</span>
-          </li>
-          <li class="flex items-center gap-2 text-sm">
-            <CheckCircle className="h-4 w-4 text-secondary" />
-            <span>Fast turnaround times</span>
-          </li>
-          <li class="flex items-center gap-2 text-sm">
-            <CheckCircle className="h-4 w-4 text-secondary" />
-            <span>30 day money back guarantee</span>
-          </li>
-        </ul>
-      </Fragment>
-      <Fragment slot="card1Footer">
-        <Button
-          href="/mixing-mastering"
-          fullWidth
-          variant="solid"
-          bgColor="primary"
-          textColor="primary-foreground"
-          hoverBgColor="primary/90"
-        >
-          Learn More
-        </Button>
-      </Fragment>
-
-      <Fragment slot="card2Content">
-        <ul class="space-y-2 mb-6">
-          <li class="flex items-center gap-2 text-sm">
-            <CheckCircle className="h-4 w-4 text-secondary" />
-            <span>Step-by-step courses</span>
-          </li>
-          <li class="flex items-center gap-2 text-sm">
-            <CheckCircle className="h-4 w-4 text-secondary" />
-            <span>Clear, real-world workflows</span>
-          </li>
-          <li class="flex items-center gap-2 text-sm">
-            <CheckCircle className="h-4 w-4 text-secondary" />
-            <span>Lifetime access</span>
-          </li>
-        </ul>
-      </Fragment>
-      <Fragment slot="card2Footer">
-        <Button
-          href="/blog"
-          fullWidth
-          variant="solid"
-          bgColor="secondary"
-          textColor="secondary-foreground"
-          hoverBgColor="secondary/90"
-        >
-          View Blog
-        </Button>
-      </Fragment>
-
-      <Fragment slot="card3Content">
-        <ul class="space-y-2 mb-6">
-          <li class="flex items-center gap-2 text-sm">
-            <CheckCircle className="h-4 w-4 text-secondary" />
-            <span>Professional-quality tools</span>
-          </li>
-          <li class="flex items-center gap-2 text-sm">
-            <CheckCircle className="h-4 w-4 text-secondary" />
-            <span>Royalty-free content</span>
-          </li>
-          <li class="flex items-center gap-2 text-sm">
-            <CheckCircle className="h-4 w-4 text-secondary" />
-            <span>Instant download</span>
-          </li>
-        </ul>
-      </Fragment>
-      <Fragment slot="card3Footer">
-        <Button
-          href="/audio-tools"
-          fullWidth
-          variant="solid"
-          bgColor="accent"
-          textColor="accent-foreground"
-          hoverBgColor="accent/90"
-        >
-          View Tools
-        </Button>
-      </Fragment>
-    </ThreeCardsSection>
+    />
 
     {/* CTA Section */}
     <CtaSection

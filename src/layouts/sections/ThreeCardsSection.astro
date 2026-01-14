@@ -2,19 +2,43 @@
 import TripleColumnContainer from "@/layouts/TripleColumnContainer.astro";
 import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
 
+import Button from "@/components/ui/Button.astro";
 import Card from "@/components/ui/card/Card.astro";
+import CardContent from "@/components/ui/card/CardContent.astro";
+import CardDescription from "@/components/ui/card/CardDescription.astro";
+import CardFooter from "@/components/ui/card/CardFooter.astro";
 import CardHeader from "@/components/ui/card/CardHeader.astro";
 import CardTitle from "@/components/ui/card/CardTitle.astro";
-import CardDescription from "@/components/ui/card/CardDescription.astro";
-import CardContent from "@/components/ui/card/CardContent.astro";
 
 type ColorStyle = "primary" | "secondary" | "accent";
+
+type IconComponent = any;
+
+type BulletItem = {
+  text: string;
+  icon?: IconComponent;
+};
+
+type CardButtonDef = {
+  label: string;
+  href: string;
+  variant?: "solid" | "outline" | "destructive" | "ghost" | "text" | "link";
+  bgColor?: string;
+  hoverBgColor?: string;
+  textColor?: string;
+  hoverTextColor?: string;
+  borderColor?: string;
+  hoverBorderColor?: string;
+};
 
 type CardDef = {
   title: string;
   subtitle?: string;
-  icon?: any;
+  icon?: IconComponent;
   colorStyle?: ColorStyle;
+
+  bullets?: BulletItem[];
+  button?: CardButtonDef;
 };
 
 type ThreeCardsSectionProps = {
@@ -30,17 +54,14 @@ const { class: outerClass = "", title, subtitle, cards } =
 const inner =
   "mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12";
 
-const resolvedCards = [cards[0], cards[1], cards[2]] as [
-  CardDef,
-  CardDef,
-  CardDef
-];
+function assertThreeCards(value: CardDef[]): asserts value is [CardDef, CardDef, CardDef] {
+  if (!Array.isArray(value) || value.length < 3 || !value[0] || !value[1] || !value[2]) {
+    throw new Error("ThreeCardsSection requires 3 cards.");
+  }
+}
 
-const [card1, card2, card3] = resolvedCards;
-
-const Icon1 = card1?.icon;
-const Icon2 = card2?.icon;
-const Icon3 = card3?.icon;
+const resolvedCards = [cards[0], cards[1], cards[2]];
+assertThreeCards(resolvedCards);
 
 function colorClasses(colorStyle?: ColorStyle) {
   switch (colorStyle) {
@@ -66,9 +87,22 @@ function colorClasses(colorStyle?: ColorStyle) {
   }
 }
 
-const classes1 = colorClasses(card1?.colorStyle);
-const classes2 = colorClasses(card2?.colorStyle);
-const classes3 = colorClasses(card3?.colorStyle);
+type CardColorClasses = ReturnType<typeof colorClasses>;
+
+type RenderCard = {
+  card: CardDef;
+  classes: CardColorClasses;
+  bulletItems: BulletItem[];
+};
+
+const cardsWithClasses = resolvedCards.map((card): RenderCard => {
+  const cardClasses = colorClasses(card.colorStyle);
+  return {
+    card,
+    classes: cardClasses,
+    bulletItems: card.bullets ?? [],
+  };
+}) as [RenderCard, RenderCard, RenderCard];
 ---
 
 <section class={`w-full ${outerClass}`.trim()}>
@@ -85,72 +119,168 @@ const classes3 = colorClasses(card3?.colorStyle);
 
   <TripleColumnContainer extraOuterClass="pt-0">
     <div slot="first">
-      <Card class={`border-2 ${classes1.hoverBorder} transition-all duration-300`}>
-        <CardHeader>
-          {Icon1 && (
-            <div
-              class={`mb-4 flex h-12 w-12 items-center justify-center rounded-lg ${classes1.iconBg}`}
-            >
-              <Icon1 class={`h-6 w-6 ${classes1.iconText}`} />
-            </div>
-          )}
-          <CardTitle>{card1.title}</CardTitle>
-          {card1.subtitle && (
-            <CardDescription>{card1.subtitle}</CardDescription>
-          )}
-        </CardHeader>
+      {(() => {
+        const { card, classes: cardClasses, bulletItems } = cardsWithClasses[0];
 
-        <CardContent>
-          {Astro.slots.has("card1Content") && <slot name="card1Content" />}
-          {Astro.slots.has("card1Footer") && <slot name="card1Footer" />}
-        </CardContent>
-      </Card>
+        return (
+          <Card class={`border-2 ${cardClasses.hoverBorder} flex h-full flex-col transition-all duration-300`}>
+            <CardHeader class="flex-0">
+              {card.icon && (
+                <div
+                  class={`mb-4 flex h-12 w-12 items-center justify-center rounded-lg ${cardClasses.iconBg}`}
+                >
+                  <card.icon class={`h-6 w-6 ${cardClasses.iconText}`} />
+                </div>
+              )}
+              <CardTitle>{card.title}</CardTitle>
+              <CardDescription class="md:min-h-16">
+                {card.subtitle ?? ""}
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent class="flex-1">
+              {bulletItems.length > 0 && (
+                <ul class="space-y-2 mb-6">
+                  {bulletItems.map(({ text, icon: BulletIcon }) => (
+                    <li class="flex items-center gap-2 text-sm">
+                      {BulletIcon && <BulletIcon class="h-4 w-4 text-secondary" />}
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+
+            {card.button && (
+              <CardFooter>
+                <Button
+                  href={card.button.href}
+                  fullWidth
+                  variant={card.button.variant ?? "solid"}
+                  bgColor={card.button.bgColor}
+                  hoverBgColor={card.button.hoverBgColor}
+                  textColor={card.button.textColor}
+                  hoverTextColor={card.button.hoverTextColor}
+                  borderColor={card.button.borderColor}
+                  hoverBorderColor={card.button.hoverBorderColor}
+                >
+                  {card.button.label}
+                </Button>
+              </CardFooter>
+            )}
+          </Card>
+        );
+      })()}
     </div>
 
     <div slot="second">
-      <Card class={`border-2 ${classes2.hoverBorder} transition-all duration-300`}>
-        <CardHeader>
-          {Icon2 && (
-            <div
-              class={`mb-4 flex h-12 w-12 items-center justify-center rounded-lg ${classes2.iconBg}`}
-            >
-              <Icon2 class={`h-6 w-6 ${classes2.iconText}`} />
-            </div>
-          )}
-          <CardTitle>{card2.title}</CardTitle>
-          {card2.subtitle && (
-            <CardDescription>{card2.subtitle}</CardDescription>
-          )}
-        </CardHeader>
+      {(() => {
+        const { card, classes: cardClasses, bulletItems } = cardsWithClasses[1];
 
-        <CardContent>
-          {Astro.slots.has("card2Content") && <slot name="card2Content" />}
-          {Astro.slots.has("card2Footer") && <slot name="card2Footer" />}
-        </CardContent>
-      </Card>
+        return (
+          <Card class={`border-2 ${cardClasses.hoverBorder} flex h-full flex-col transition-all duration-300`}>
+            <CardHeader class="flex-0">
+              {card.icon && (
+                <div
+                  class={`mb-4 flex h-12 w-12 items-center justify-center rounded-lg ${cardClasses.iconBg}`}
+                >
+                  <card.icon class={`h-6 w-6 ${cardClasses.iconText}`} />
+                </div>
+              )}
+              <CardTitle>{card.title}</CardTitle>
+              <CardDescription class="md:min-h-16">
+                {card.subtitle ?? ""}
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent class="flex-1">
+              {bulletItems.length > 0 && (
+                <ul class="space-y-2 mb-6">
+                  {bulletItems.map(({ text, icon: BulletIcon }) => (
+                    <li class="flex items-center gap-2 text-sm">
+                      {BulletIcon && <BulletIcon class="h-4 w-4 text-secondary" />}
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+
+            {card.button && (
+              <CardFooter>
+                <Button
+                  href={card.button.href}
+                  fullWidth
+                  variant={card.button.variant ?? "solid"}
+                  bgColor={card.button.bgColor}
+                  hoverBgColor={card.button.hoverBgColor}
+                  textColor={card.button.textColor}
+                  hoverTextColor={card.button.hoverTextColor}
+                  borderColor={card.button.borderColor}
+                  hoverBorderColor={card.button.hoverBorderColor}
+                >
+                  {card.button.label}
+                </Button>
+              </CardFooter>
+            )}
+          </Card>
+        );
+      })()}
     </div>
 
     <div slot="third">
-      <Card class={`border-2 ${classes3.hoverBorder} transition-all duration-300`}>
-        <CardHeader>
-          {Icon3 && (
-            <div
-              class={`mb-4 flex h-12 w-12 items-center justify-center rounded-lg ${classes3.iconBg}`}
-            >
-              <Icon3 class={`h-6 w-6 ${classes3.iconText}`} />
-            </div>
-          )}
-          <CardTitle>{card3.title}</CardTitle>
-          {card3.subtitle && (
-            <CardDescription>{card3.subtitle}</CardDescription>
-          )}
-        </CardHeader>
+      {(() => {
+        const { card, classes: cardClasses, bulletItems } = cardsWithClasses[2];
 
-        <CardContent>
-          {Astro.slots.has("card3Content") && <slot name="card3Content" />}
-          {Astro.slots.has("card3Footer") && <slot name="card3Footer" />}
-        </CardContent>
-      </Card>
+        return (
+          <Card class={`border-2 ${cardClasses.hoverBorder} flex h-full flex-col transition-all duration-300`}>
+            <CardHeader class="flex-0">
+              {card.icon && (
+                <div
+                  class={`mb-4 flex h-12 w-12 items-center justify-center rounded-lg ${cardClasses.iconBg}`}
+                >
+                  <card.icon class={`h-6 w-6 ${cardClasses.iconText}`} />
+                </div>
+              )}
+              <CardTitle>{card.title}</CardTitle>
+              <CardDescription class="md:min-h-16">
+                {card.subtitle ?? ""}
+              </CardDescription>
+            </CardHeader>
+
+            <CardContent class="flex-1">
+              {bulletItems.length > 0 && (
+                <ul class="space-y-2 mb-6">
+                  {bulletItems.map(({ text, icon: BulletIcon }) => (
+                    <li class="flex items-center gap-2 text-sm">
+                      {BulletIcon && <BulletIcon class="h-4 w-4 text-secondary" />}
+                      <span>{text}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+
+            {card.button && (
+              <CardFooter>
+                <Button
+                  href={card.button.href}
+                  fullWidth
+                  variant={card.button.variant ?? "solid"}
+                  bgColor={card.button.bgColor}
+                  hoverBgColor={card.button.hoverBgColor}
+                  textColor={card.button.textColor}
+                  hoverTextColor={card.button.hoverTextColor}
+                  borderColor={card.button.borderColor}
+                  hoverBorderColor={card.button.hoverBorderColor}
+                >
+                  {card.button.label}
+                </Button>
+              </CardFooter>
+            )}
+          </Card>
+        );
+      })()}
     </div>
   </TripleColumnContainer>
 </section>
