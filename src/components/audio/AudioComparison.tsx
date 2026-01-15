@@ -24,6 +24,11 @@ export default function AudioComparison({ title, description, samples }: Props) 
   const [isReady, setIsReady] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
 
+  // Unique instance ID for global play coordination
+  const instanceIdRef = React.useRef<string>(
+    `audio-comparison-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+  );
+
   const audioCtxRef = React.useRef<AudioContext | null>(null);
   const buffersRef = React.useRef<Partial<Record<SampleKey, AudioBuffer>>>({});
   const matchGainsRef = React.useRef<Partial<Record<SampleKey, number>>>({});
@@ -146,15 +151,74 @@ export default function AudioComparison({ title, description, samples }: Props) 
   const ignoreWaveEventRef = React.useRef(false);
   const waveLoadIdRef = React.useRef(0);
   const seekToRef = React.useRef<(time: number) => void>(() => {});
+  const pauseRef = React.useRef<() => void>(() => {});
+
+  const resolveCssColor = React.useCallback(
+    (element: HTMLElement, cssVarName: string, fallback: string) => {
+      const style = getComputedStyle(element);
+
+      const resolveVar = (value: string, depth = 0): string => {
+        if (depth > 8) return fallback;
+        const trimmed = value.trim();
+        const match = /^var\((--[^,\s)]+)(?:,\s*(.+))?\)$/.exec(trimmed);
+        if (!match) return trimmed;
+
+        const varName = match[1];
+        if (!varName) return fallback;
+
+        const varFallback = match[2] ?? fallback;
+        const varValue = style.getPropertyValue(varName).trim();
+        if (!varValue) return resolveVar(varFallback, depth + 1);
+        return resolveVar(varValue, depth + 1);
+      };
+
+      const raw = style.getPropertyValue(cssVarName).trim();
+      const resolved = raw ? resolveVar(raw) : resolveVar(fallback);
+
+      const probe = document.createElement("span");
+      probe.style.color = resolved;
+      probe.style.display = "none";
+      document.body.appendChild(probe);
+      const computed = getComputedStyle(probe).color;
+      probe.remove();
+
+      return computed || resolved || fallback;
+    },
+    []
+  );
 
   React.useEffect(() => {
     if (!waveformRef.current) return;
 
+    const getWaveSurferColors = () => {
+      const el = waveformRef.current;
+      if (!el) {
+        return {
+          waveColor: "#888",
+          progressColor: "#6366f1",
+          cursorColor: "#6366f1",
+        };
+      }
+
+      return {
+        // Allow per-component overrides via CSS variables:
+        // - --wavesurfer-wave
+        // - --wavesurfer-progress
+        // - --wavesurfer-cursor
+        // Defaults map to existing theme variables from global.css.
+        waveColor: resolveCssColor(el, "--wavesurfer-wave", "var(--muted-foreground)"),
+        progressColor: resolveCssColor(el, "--wavesurfer-progress", "var(--secondary)"),
+        cursorColor: resolveCssColor(el, "--wavesurfer-cursor", "var(--accent)"),
+      };
+    };
+
+    const initialColors = getWaveSurferColors();
+
     const wave = WaveSurfer.create({
       container: waveformRef.current,
-      waveColor: "#888",
-      progressColor: "#6366f1",
-      cursorColor: "#6366f1",
+      waveColor: initialColors.waveColor,
+      progressColor: initialColors.progressColor,
+      cursorColor: initialColors.cursorColor,
       cursorWidth: 2,
       height: 72,
       normalize: true,
@@ -171,13 +235,29 @@ export default function AudioComparison({ title, description, samples }: Props) 
 
     wave.on("interaction", onInteraction);
 
+    const root = document.documentElement;
+    const observer = new MutationObserver(() => {
+      const colors = getWaveSurferColors();
+
+      // WaveSurfer v7 supports setOptions; if anything changes in the future,
+      // this will safely no-op.
+      (wave as unknown as { setOptions?: (opts: unknown) => void }).setOptions?.({
+        waveColor: colors.waveColor,
+        progressColor: colors.progressColor,
+        cursorColor: colors.cursorColor,
+      });
+    });
+
+    observer.observe(root, { attributes: true, attributeFilter: ["class", "style"] });
+
     return () => {
+      observer.disconnect();
       wave.un("interaction", onInteraction);
       wave.destroy();
       waveRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [resolveCssColor]);
 
   const syncWaveToTime = React.useCallback((time: number) => {
     const wave = waveRef.current;
@@ -287,6 +367,13 @@ export default function AudioComparison({ title, description, samples }: Props) 
       setIsPlaying(true);
       seekingRef.current = false;
       startRaf();
+
+      // Notify other instances to pause
+      window.dispatchEvent(
+        new CustomEvent("audiocomparison:play", {
+          detail: { instanceId: instanceIdRef.current },
+        })
+      );
     },
     [active, applyActiveGains, isReady, startRaf, stopSources]
   );
@@ -344,10 +431,31 @@ export default function AudioComparison({ title, description, samples }: Props) 
     seekToRef.current = seekTo;
   }, [seekTo]);
 
+  // Listen for global play events - pause this instance if another starts playing
+  React.useEffect(() => {
+    const handleGlobalPlay = (event: Event) => {
+      const customEvent = event as CustomEvent<{ instanceId: string }>;
+      if (customEvent.detail.instanceId !== instanceIdRef.current) {
+        // Another instance started playing, pause this one
+        pauseRef.current();
+      }
+    };
+
+    window.addEventListener("audiocomparison:play", handleGlobalPlay);
+    return () => {
+      window.removeEventListener("audiocomparison:play", handleGlobalPlay);
+    };
+  }, []);
+
   // Keep isPlayingRef in sync with state.
   React.useEffect(() => {
     isPlayingRef.current = isPlaying;
   }, [isPlaying]);
+
+  // Keep pauseRef in sync with the latest pause callback.
+  React.useEffect(() => {
+    pauseRef.current = pause;
+  }, [pause]);
 
   // Keep wave cursor in sync while playing.
   React.useEffect(() => {
