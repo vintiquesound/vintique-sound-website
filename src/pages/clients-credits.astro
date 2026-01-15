@@ -1,0 +1,88 @@
+---
+// Astro layout and section components
+import WebPageLayout from "@/layouts/WebPageLayout.astro";
+import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
+
+// Local UI components
+import Card from "@/components/ui/card/Card.astro";
+import ClientsCreditsTable from "@/components/clients-credits/ClientsCreditsTable";
+
+// Local utilities
+import { csvToTable } from "@/lib/csv";
+
+// Const definitions
+const CSV_URL = import.meta.env.CLIENTS_CREDITS_CSV_URL as string | undefined;
+
+const sampleCsv = `Client,Project,Song,Role,Year,Notes
+Example Artist,Single Release,Example Song,Mix & Master,2025,Pop / electronic
+Example Band,EP,Example Audio,Restoration + Master,2024,Archival tape transfer
+Example Creator,YouTube Series,Example Dialogue,Dialogue cleanup,2023,Weekly episodes`;
+
+let headers: string[] = [];
+let rows: Array<Record<string, string>> = [];
+let sourceLabel;
+
+try {
+  if (CSV_URL) {
+    const res = await fetch(CSV_URL);
+    if (!res.ok) throw new Error(`Failed to fetch CSV: ${res.status}`);
+    const text = await res.text();
+    const table = csvToTable(text);
+    headers = table.headers;
+    rows = table.rows;
+    sourceLabel = "*Live data";
+  } else {
+    const table = csvToTable(sampleCsv);
+    headers = table.headers;
+    rows = table.rows;
+    sourceLabel = "There was an error loading the data, a sample CSV is shown below. Please try again later."
+  }
+} catch {
+  const table = csvToTable(sampleCsv);
+  headers = table.headers;
+  rows = table.rows;
+  sourceLabel = "Sample data (failed to fetch live source).";
+}
+
+const totalCredits = rows.length;
+const clientKey = headers[0];
+const uniqueClients = clientKey
+  ? new Set(rows.map((r) => (r[clientKey] ?? "").trim()).filter(Boolean)).size
+  : 0;
+---
+
+<WebPageLayout title="Clients & Credits" description="A selection of past clients and credits.">
+  <section class="bg-linear-to-br from-secondary/20 to-accent/20">
+    <SingleColumnContainer outerClass="py-14 sm:py-18">
+      <div class="text-center">
+        <div class="text-center">
+          <h1 class="text-4xl sm:text-5xl font-bold tracking-tight m-0">Clients & Credits</h1>
+          <p class="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+            A searchable, sortable list of past work.<br>
+            Use the search box to filter by client, project, role, year, or notes.
+          </p>
+        </div>
+
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          <Card class="border-2 w-40 text-center py-4 px-2 flex flex-col items-center justify-center">
+            <div class="text-muted-foreground">Credits</div>
+            <div class="text-3xl font-bold">{totalCredits}</div>
+          </Card>
+          <Card class="border-2 w-40 text-center py-4 px-2 flex flex-col items-center justify-center">
+            <div class="text-muted-foreground">Unique clients</div>
+            <div class="text-3xl font-bold">{uniqueClients}</div>
+          </Card>
+        </div>
+
+        <i class="mt-3 text-xs text-muted-foreground">{sourceLabel}</i>
+      </div>
+    </SingleColumnContainer>
+  </section>
+
+  <section class="bg-background">
+    <SingleColumnContainer outerClass="py-12 sm:py-16" innerClass="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <ClientsCreditsTable client:visible columns={headers} rows={rows} initialSortKey="Year" initialSortDir="desc" />
+    </SingleColumnContainer>
+  </section>
+</WebPageLayout>
+
