@@ -1,9 +1,8 @@
 import * as React from "react";
-import { Pause, Play, RotateCcw } from "lucide-react";
+import { Pause, Play, RotateCcw, AudioWaveform, VolumeX } from "lucide-react";
 import WaveSurfer from "wavesurfer.js";
 
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button.tsx";
 
 type SampleKey = "beforeMix" | "beforeMaster" | "after";
 
@@ -23,6 +22,7 @@ export default function AudioComparison({ title, description, samples }: Props) 
   const [active, setActive] = React.useState<SampleKey>("beforeMix");
   const [isReady, setIsReady] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
+  const [loudnessMatch, setLoudnessMatch] = React.useState(true);
 
   // Unique instance ID for global play coordination
   const instanceIdRef = React.useRef<string>(
@@ -303,7 +303,7 @@ export default function AudioComparison({ title, description, samples }: Props) 
   }, [getCurrentPosition, stopRaf, syncWaveToTime]);
 
   const applyActiveGains = React.useCallback(
-    (key: SampleKey) => {
+    (key: SampleKey, useLoudnessMatch: boolean) => {
       const ctx = audioCtxRef.current;
       if (!ctx) return;
 
@@ -311,7 +311,10 @@ export default function AudioComparison({ title, description, samples }: Props) 
         const gainNode = trackGainsRef.current[k];
         if (!gainNode) return;
 
-        const target = k === key ? (matchGainsRef.current[k] ?? 1) : 0;
+        // When loudness matching is enabled, use the computed match gain;
+        // otherwise use unity gain (1) for the active track.
+        const matchGain = useLoudnessMatch ? (matchGainsRef.current[k] ?? 1) : 1;
+        const target = k === key ? matchGain : 0;
         gainNode.gain.cancelScheduledValues(ctx.currentTime);
         gainNode.gain.setTargetAtTime(target, ctx.currentTime, 0.015);
       });
@@ -362,7 +365,7 @@ export default function AudioComparison({ title, description, samples }: Props) 
         sourcesRef.current[key] = source;
       });
 
-      applyActiveGains(active);
+      applyActiveGains(active, loudnessMatch);
       isPlayingRef.current = true;
       setIsPlaying(true);
       seekingRef.current = false;
@@ -375,7 +378,7 @@ export default function AudioComparison({ title, description, samples }: Props) 
         })
       );
     },
-    [active, applyActiveGains, isReady, startRaf, stopSources]
+    [active, applyActiveGains, isReady, loudnessMatch, startRaf, stopSources]
   );
 
   const pause = React.useCallback(() => {
@@ -469,13 +472,21 @@ export default function AudioComparison({ title, description, samples }: Props) 
   const handleSelectVersion = React.useCallback(
     (key: SampleKey) => {
       setActive(key);
-      applyActiveGains(key);
+      applyActiveGains(key, loudnessMatch);
     },
-    [applyActiveGains]
+    [applyActiveGains, loudnessMatch]
   );
 
+  const toggleLoudnessMatch = React.useCallback(() => {
+    setLoudnessMatch((prev) => {
+      const next = !prev;
+      applyActiveGains(active, next);
+      return next;
+    });
+  }, [active, applyActiveGains]);
+
   return (
-    <div className="p-6 border rounded-lg bg-background">
+    <div className="p-6 border-2 rounded-lg bg-background shadow-md">
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <h3 className="text-xl font-bold mb-1">{title}</h3>
@@ -508,6 +519,19 @@ export default function AudioComparison({ title, description, samples }: Props) 
           >
             <RotateCcw className="size-5" />
           </Button>
+
+          {/* <Button
+            type="button"
+            size="icon"
+            variant={loudnessMatch ? "solid" : "ghost"}
+            onClick={toggleLoudnessMatch}
+            disabled={!isReady}
+            aria-label={loudnessMatch ? "Disable loudness matching" : "Enable loudness matching"}
+            title={loudnessMatch ? "Loudness matching ON" : "Loudness matching OFF"}
+            className={cn(!loudnessMatch && "border border-border")}
+          >
+            {loudnessMatch ? <Volume2 className="size-5" /> : <VolumeX className="size-5" />}
+          </Button> */}
         </div>
       </div>
 
@@ -520,11 +544,38 @@ export default function AudioComparison({ title, description, samples }: Props) 
             variant={active === key ? "solid" : "ghost"}
             onClick={() => handleSelectVersion(key)}
             disabled={!isReady}
-            className={cn("h-8", active !== key && "border border-border")}
+            useHoverScale={false}
+            borderAlways
+            borderColor={active === key ? "transparent" : "border"}
+            hoverBorderColor={active === key ? "transparent" : "border"}
           >
             {LABELS[key]}
           </Button>
         ))}
+
+        <Button
+          type="button"
+          size="sm"
+          variant={loudnessMatch ? "solid" : "ghost"}
+          {...(loudnessMatch
+            ? {
+                bgColor: "accent/90",
+                hoverBgColor: "accent/80",
+                textColor: "accent-foreground",
+                hoverTextColor: "accent-foreground",
+              }
+            : {})}
+          onClick={toggleLoudnessMatch}
+          disabled={!isReady}
+          aria-label={loudnessMatch ? "Disable loudness matching" : "Enable loudness matching"}
+          title={loudnessMatch ? "Loudness matching ON" : "Loudness matching OFF"}
+          useHoverScale={false}
+          borderAlways
+          borderColor={loudnessMatch ? "transparent" : "border"}
+          hoverBorderColor={loudnessMatch ? "transparent" : "border"}
+        >
+          <AudioWaveform className="size-4" />
+        </Button>
       </div>
 
       <div
