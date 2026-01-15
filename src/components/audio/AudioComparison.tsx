@@ -35,6 +35,8 @@ export default function AudioComparison({ title, description, samples }: Props) 
   const startedAtRef = React.useRef<number>(0);
   const rafRef = React.useRef<number | null>(null);
   const playSessionRef = React.useRef(0);
+  const isPlayingRef = React.useRef(false);
+  const seekingRef = React.useRef(false);
 
   // --- RMS loudness estimation ---
   const rms = (buffer: AudioBuffer) => {
@@ -75,7 +77,10 @@ export default function AudioComparison({ title, description, samples }: Props) 
   const getCurrentPosition = React.useCallback(() => {
     const ctx = audioCtxRef.current;
     if (!ctx || !isPlaying) return offsetRef.current;
-    const pos = offsetRef.current + (ctx.currentTime - startedAtRef.current);
+    const elapsed = ctx.currentTime - startedAtRef.current;
+    // During the scheduled start window (before audio actually begins), return the offset
+    if (elapsed < 0) return offsetRef.current;
+    const pos = offsetRef.current + elapsed;
     return Math.max(0, Math.min(durationRef.current || Number.POSITIVE_INFINITY, pos));
   }, [isPlaying]);
 
@@ -139,6 +144,8 @@ export default function AudioComparison({ title, description, samples }: Props) 
   const waveformRef = React.useRef<HTMLDivElement>(null);
   const waveRef = React.useRef<WaveSurfer | null>(null);
   const ignoreWaveEventRef = React.useRef(false);
+  const waveLoadIdRef = React.useRef(0);
+  const seekToRef = React.useRef<(time: number) => void>(() => {});
 
   React.useEffect(() => {
     if (!waveformRef.current) return;
@@ -156,12 +163,10 @@ export default function AudioComparison({ title, description, samples }: Props) 
     });
 
     waveRef.current = wave;
-    // Use one stable file for waveform rendering; seeking controls playback for all.
-    wave.load(samples.after);
 
     const onInteraction = (newTime: number) => {
       if (ignoreWaveEventRef.current) return;
-      seekTo(newTime);
+      seekToRef.current(newTime);
     };
 
     wave.on("interaction", onInteraction);
@@ -182,17 +187,40 @@ export default function AudioComparison({ title, description, samples }: Props) 
     ignoreWaveEventRef.current = false;
   }, []);
 
+  // Load the waveform for the currently selected version.
+  // Keep the playhead position stable when switching versions.
+  React.useEffect(() => {
+    const wave = waveRef.current;
+    if (!wave) return;
+
+    const loadId = ++waveLoadIdRef.current;
+    const currentTime = getCurrentPosition();
+
+    wave
+      .load(samples[active])
+      .then(() => {
+        if (waveLoadIdRef.current !== loadId) return;
+        syncWaveToTime(currentTime);
+      })
+      .catch(() => {
+        // ignore load errors here; audio decoding already handled separately
+      });
+  }, [active, getCurrentPosition, samples, syncWaveToTime]);
+
   const startRaf = React.useCallback(() => {
     stopRaf();
     const tick = () => {
-      const pos = getCurrentPosition();
-      syncWaveToTime(pos);
-      if (isPlaying) {
+      // Skip waveform updates while seeking to avoid visual glitches
+      if (!seekingRef.current) {
+        const pos = getCurrentPosition();
+        syncWaveToTime(pos);
+      }
+      if (isPlayingRef.current) {
         rafRef.current = requestAnimationFrame(tick);
       }
     };
     rafRef.current = requestAnimationFrame(tick);
-  }, [getCurrentPosition, isPlaying, stopRaf, syncWaveToTime]);
+  }, [getCurrentPosition, stopRaf, syncWaveToTime]);
 
   const applyActiveGains = React.useCallback(
     (key: SampleKey) => {
@@ -255,15 +283,19 @@ export default function AudioComparison({ title, description, samples }: Props) 
       });
 
       applyActiveGains(active);
+      isPlayingRef.current = true;
       setIsPlaying(true);
+      seekingRef.current = false;
+      startRaf();
     },
-    [active, applyActiveGains, isReady, stopSources]
+    [active, applyActiveGains, isReady, startRaf, stopSources]
   );
 
   const pause = React.useCallback(() => {
     const pos = getCurrentPosition();
     stopSources();
     offsetRef.current = pos;
+    isPlayingRef.current = false;
     setIsPlaying(false);
     syncWaveToTime(pos);
   }, [getCurrentPosition, stopSources, syncWaveToTime]);
@@ -280,6 +312,7 @@ export default function AudioComparison({ title, description, samples }: Props) 
   const reset = React.useCallback(() => {
     stopSources();
     offsetRef.current = 0;
+    isPlayingRef.current = false;
     setIsPlaying(false);
     setActive("beforeMix");
     syncWaveToTime(0);
@@ -287,16 +320,34 @@ export default function AudioComparison({ title, description, samples }: Props) 
 
   const seekTo = React.useCallback(
     (timeSeconds: number) => {
+      // Immediately stop RAF and set seeking flag to prevent visual glitches
+      seekingRef.current = true;
+      stopRaf();
+
       const t = Math.max(0, Math.min(durationRef.current || Infinity, timeSeconds));
       offsetRef.current = t;
       syncWaveToTime(t);
+
       if (isPlaying) {
         // Restart sources at the new offset (AudioBufferSourceNode cannot truly seek).
         void playFrom(t);
+      } else {
+        // Not playing, just clear seeking flag
+        seekingRef.current = false;
       }
     },
-    [isPlaying, playFrom, syncWaveToTime]
+    [isPlaying, playFrom, stopRaf, syncWaveToTime]
   );
+
+  // Keep seekToRef in sync with the latest seekTo callback.
+  React.useEffect(() => {
+    seekToRef.current = seekTo;
+  }, [seekTo]);
+
+  // Keep isPlayingRef in sync with state.
+  React.useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
 
   // Keep wave cursor in sync while playing.
   React.useEffect(() => {
