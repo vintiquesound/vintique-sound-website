@@ -1,5 +1,5 @@
 ---
-import DualColumnContainer from "@/layouts/DualColumnContainer.astro";
+import DoubleColumnContainer from "@/layouts/DoubleColumnContainer.astro";
 import Image from "astro/components/Image.astro";
 
 type Props = {
@@ -22,7 +22,7 @@ const gridClass = hasImage
 ---
 
 <section class={`relative overflow-hidden w-full bg-linear-to-br from-accent/30 via-secondary/30 to-primary/30 dark:from-neutral-900 dark:via-zinc-900 dark:to-neutral-900 ${outerClass}`.trim()}>
-  <DualColumnContainer gridClass={gridClass}>
+  <DoubleColumnContainer gridClass={gridClass}>
     <div slot="left">
       <div class="relative z-10 text-center md:text-left space-y-7 md:space-y-10 px-1 md:px-0 animate-fade-in">
         <div class="inline-block" aria-label="Section status: Under construction">
@@ -64,7 +64,7 @@ const gridClass = hasImage
         )}
       </div>
     </div>
-  </DualColumnContainer>
+  </DoubleColumnContainer>
 </section>
 
 <style>

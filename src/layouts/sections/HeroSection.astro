@@ -1,6 +1,6 @@
 ---
 // Local layout components
-import DualColumnContainer from "@/layouts/DualColumnContainer.astro";
+import DoubleColumnContainer from "@/layouts/DoubleColumnContainer.astro";
 import HeroSectionCopy from "@/layouts/sections/HeroSectionCopy.astro";
 import HeroSectionImage from "@/layouts/sections/HeroSectionImage.astro";
 
@@ -37,7 +37,7 @@ const isImageLeft = imagePosition === "left";
 
 <section class="w-full relative overflow-hidden">
 	<div class={`absolute inset-0 ${bgColors}`.trim()} />
-	<DualColumnContainer>
+	<DoubleColumnContainer>
 		<div slot="left">
 			{isImageLeft ? (
 				<HeroSectionImage image={image} imageAlt={imageAlt} />
@@ -63,5 +63,5 @@ const isImageLeft = imagePosition === "left";
 				<HeroSectionImage image={image} imageAlt={imageAlt} />
 			)}
 		</div>
-	</DualColumnContainer>
+	</DoubleColumnContainer>
 </section>

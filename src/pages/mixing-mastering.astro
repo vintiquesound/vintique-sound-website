@@ -6,7 +6,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
 
 // Third party libraries
 import { Icon } from "astro-icon/components"
-import { ArrowRight } from "lucide-astro";
+import { ArrowRight, Star } from "lucide-astro";
 
 // Local UI components
 import Card from "@/components/ui/card/Card.astro";
@@ -192,6 +192,64 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
               after: "/audio/comparisons/scot_helman-21_days-mixed_and_mastered.mp3"
             }}
           />
+        </div>
+      </div>
+    </section>
+
+    {/* CLIENT TESTIMONIALS */}
+    <section class="py-20 bg-linear-to-br from-primary/10 to-secondary/10">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Client Testimonials
+          </h2>
+          <p class="pb-0 mb-0 text-lg text-muted-foreground">
+            What artists say after working together
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          <Card class="border-2 hover:border-primary transition-all">
+            <CardContent>
+              <div class="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} class="h-5 w-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <p class="text-muted-foreground italic mb-4">
+                "Working with this studio transformed my music. The attention to detail and expertise in mixing gave my album a professional polish that I never thought possible."
+              </p>
+              <p class="font-semibold">- Sarah Johnson, Indie Artist</p>
+            </CardContent>
+          </Card>
+
+          <Card class="border-2 hover:border-primary transition-all">
+            <CardContent>
+              <div class="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} class="h-5 w-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <p class="text-muted-foreground italic mb-4">
+                "The mastering service brought my track to life. The balance and clarity are perfect for radio play. I couldn't be happier with the results."
+              </p>
+              <p class="font-semibold">- Mike Rodriguez, Hip-Hop Producer</p>
+            </CardContent>
+          </Card>
+
+          <Card class="border-2 hover:border-primary transition-all">
+            <CardContent>
+              <div class="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} class="h-5 w-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <p class="text-muted-foreground italic mb-4">
+                "The studio environment was perfect for recording. The gear and atmosphere helped me capture exactly what I envisioned in my music."
+              </p>
+              <p class="font-semibold">- Emma Thompson, Classical Composer</p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </section>

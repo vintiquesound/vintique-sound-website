@@ -2,18 +2,14 @@
 import { ABOUT_TITLE, ABOUT_DESCRIPTION } from "@/consts";
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  // CardFooter,
-} from "../components/ui/card";
+import Card from "@/components/ui/card/Card.astro";
+import CardContent from "@/components/ui/card/CardContent.astro";
+import CardHeader from "@/components/ui/card/CardHeader.astro";
+import CardTitle from "@/components/ui/card/CardTitle.astro";
+import CardDescription from "@/components/ui/card/CardDescription.astro";
 
-import { Button } from "../components/ui/button";
-import { Badge } from "../components/ui/badge";
-import { Separator } from "../components/ui/separator";
+import Button from "@/components/ui/Button.astro";
+import Badge from "@/components/ui/Badge.astro";
 ---
 
 <WebPageLayout title={ABOUT_TITLE} description={ABOUT_DESCRIPTION}>
@@ -23,7 +19,7 @@ import { Separator } from "../components/ui/separator";
       <h1 class="text-3xl font-semibold tracking-tight">About</h1>
 
       <Card>
-        <CardContent className="space-y-5">
+        <CardContent class="space-y-5">
           <p class="text-base leading-relaxed">
             I help Bands &amp; Electronic Music Producers turn their raw recordings into professional quality
             Mixes &amp; Masters. I also teach fundamentals of Mixing &amp; Mastering, and provide Cubase specific
@@ -31,18 +27,15 @@ import { Separator } from "../components/ui/separator";
           </p>
 
           <div class="flex flex-wrap gap-3">
-            <Button asChild>
-              <a href="/contact">Contact</a>
-            </Button>
+            <Button href="/contact">Contact</Button>
 
-            <Button variant="outline" asChild>
-              <a
-                href="https://www.youtube.com/c/vintiquesound"
-                target="_blank"
-                rel="noreferrer"
-              >
-                YouTube Channel
-              </a>
+            <Button
+              href="https://www.youtube.com/c/vintiquesound"
+              variant="outline"
+              target="_blank"
+              rel="noreferrer"
+            >
+              YouTube Channel
             </Button>
           </div>
         </CardContent>
@@ -54,7 +47,7 @@ import { Separator } from "../components/ui/separator";
       <h2 class="text-xl font-semibold">What I do</h2>
 
       <Card>
-        <CardContent className="space-y-4">
+        <CardContent class="space-y-4">
           <p class="leading-relaxed">
             The primary focus of Vintique Sound is to help Rock &amp; Indie Bands and Electronic Music Producers turn
             their raw recordings into professional quality Mixes &amp; Masters. I also provide Cubase specific training
@@ -69,7 +62,7 @@ import { Separator } from "../components/ui/separator";
       </Card>
     </section>
 
-    <Separator />
+    <div class="h-px w-full bg-border" />
 
     <!-- Story -->
     <section class="space-y-4">
@@ -81,7 +74,7 @@ import { Separator } from "../components/ui/separator";
             <CardTitle>Early years</CardTitle>
             <CardDescription>Where the music obsession started</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent class="space-y-4">
             <p class="leading-relaxed">
               Music has always been an important part of my life. I remember when I was a tiny human and used to bang away
               on a homemade drum kit made out of strategically placed margarine containers and ice cream pales. The faux drum
@@ -96,7 +89,7 @@ import { Separator } from "../components/ui/separator";
             <CardTitle>Bands &amp; creative outlets</CardTitle>
             <CardDescription>From covers to originals to genre experiments</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent class="space-y-4">
             <p class="leading-relaxed">
               My first band was called "Doofeye." We were a cover band and played our first concert called "Doofest 2002."
               I switched out between drummer and guitarist. I was the drummer in two other bands "Lacewing" &amp;
@@ -111,7 +104,7 @@ import { Separator } from "../components/ui/separator";
             <CardTitle>Recording / Mixing / Mastering</CardTitle>
             <CardDescription>The path to Cubase, services, and YouTube</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent class="space-y-4">
             <p class="leading-relaxed">
               I was experimenting with Recording/Mixing/Mastering as of about 2002. My first DAW was Cool Edit Pro,
               then Adobe Audition once they bought them out in 2003. I bought myself a Korg D4 portable recorder,
@@ -132,7 +125,7 @@ import { Separator } from "../components/ui/separator";
       <h2 class="text-xl font-semibold">Artists &amp; credits</h2>
 
       <Card>
-        <CardContent className="space-y-4">
+        <CardContent class="space-y-4">
           <p class="leading-relaxed">
             I've since had the pleasure of working with talented artists such as Ante Svircic, Leonard, Gypsy Mobile,
             Stephanie Harpe, Manobra de Massa, Gernot Gabriel, Timmy James, Mindwiser, &amp; Cataclysm. Some of my recordings
@@ -140,15 +133,15 @@ import { Separator } from "../components/ui/separator";
           </p>
 
           <div class="flex flex-wrap gap-2">
-            <Badge variant="secondary">Ante Svircic</Badge>
-            <Badge variant="secondary">Leonard</Badge>
-            <Badge variant="secondary">Gypsy Mobile</Badge>
-            <Badge variant="secondary">Stephanie Harpe</Badge>
-            <Badge variant="secondary">Manobra de Massa</Badge>
-            <Badge variant="secondary">Gernot Gabriel</Badge>
-            <Badge variant="secondary">Timmy James</Badge>
-            <Badge variant="secondary">Mindwiser</Badge>
-            <Badge variant="secondary">Cataclysm</Badge>
+            <Badge text="Ante Svircic" bgColor="bg-secondary text-secondary-foreground" size="sm" />
+            <Badge text="Leonard" bgColor="bg-secondary text-secondary-foreground" size="sm" />
+            <Badge text="Gypsy Mobile" bgColor="bg-secondary text-secondary-foreground" size="sm" />
+            <Badge text="Stephanie Harpe" bgColor="bg-secondary text-secondary-foreground" size="sm" />
+            <Badge text="Manobra de Massa" bgColor="bg-secondary text-secondary-foreground" size="sm" />
+            <Badge text="Gernot Gabriel" bgColor="bg-secondary text-secondary-foreground" size="sm" />
+            <Badge text="Timmy James" bgColor="bg-secondary text-secondary-foreground" size="sm" />
+            <Badge text="Mindwiser" bgColor="bg-secondary text-secondary-foreground" size="sm" />
+            <Badge text="Cataclysm" bgColor="bg-secondary text-secondary-foreground" size="sm" />
           </div>
         </CardContent>
       </Card>
@@ -166,52 +159,52 @@ import { Separator } from "../components/ui/separator";
       </Card>
     </section>
 
-    <Separator />
+    <div class="h-px w-full bg-border" />
 
     <!-- Outside the studio -->
     <section class="space-y-4">
       <h2 class="text-xl font-semibold">Outside the studio</h2>
 
       <div class="grid gap-4 md:grid-cols-3">
-        <Card className="overflow-hidden">
+        <Card class="overflow-hidden">
           <img
             src="/images/about/studio-nerd.jpg"
             alt="Studio nerd"
             class="h-44 w-full object-cover"
             loading="lazy"
           />
-          <CardContent className="space-y-2">
-            <CardTitle className="text-base">Studio nerd</CardTitle>
+          <CardContent class="space-y-2">
+            <CardTitle class="text-base">Studio nerd</CardTitle>
             <p class="text-sm leading-relaxed">
               I'm addicted to music, so naturally I spend every spare minute making music and fiddling around with gear.
             </p>
           </CardContent>
         </Card>
 
-        <Card className="overflow-hidden">
+        <Card class="overflow-hidden">
           <img
             src="/images/about/festival-dancer.jpg"
             alt="Festival dancer"
             class="h-44 w-full object-cover"
             loading="lazy"
           />
-          <CardContent className="space-y-2">
-            <CardTitle className="text-base">Festival dancer</CardTitle>
+          <CardContent class="space-y-2">
+            <CardTitle class="text-base">Festival dancer</CardTitle>
             <p class="text-sm leading-relaxed">
               If I'm not in the studio, I'm probably dancing up a storm in an astronaut costume at a music festival.
             </p>
           </CardContent>
         </Card>
 
-        <Card className="overflow-hidden">
+        <Card class="overflow-hidden">
           <img
             src="/images/about/mountain-dweller.jpg"
             alt="Mountain dweller"
             class="h-44 w-full object-cover"
             loading="lazy"
           />
-          <CardContent className="space-y-2">
-            <CardTitle className="text-base">Mountain dweller</CardTitle>
+          <CardContent class="space-y-2">
+            <CardTitle class="text-base">Mountain dweller</CardTitle>
             <p class="text-sm leading-relaxed">
               Or you'll catch me hiking in the summer or hittin that sweet pow at the tippy top of the mountain in the winter.
             </p>
