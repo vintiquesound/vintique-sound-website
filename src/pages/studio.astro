@@ -1,15 +1,195 @@
 ---
-// Astro layout and section components
+// studio.astro - Audio Engineering Studio Page
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
-import UnderConstructionSection from "@/layouts/sections/UnderConstructionSection.astro";
+import IntroSection from "@/layouts/sections/IntroSection.astro";
+import CtaSection from "@/layouts/sections/CtaSection.astro";
+import StudioSection from "@/layouts/sections/StudioSection.astro";
+
+// Third party libraries
+import { Icon } from "astro-icon/components"
+import { ArrowRight } from "lucide-astro";
+
+// Local UI components
+import Card from "@/components/ui/card/Card.astro";
+import CardHeader from "@/components/ui/card/CardHeader.astro";
+import CardTitle from "@/components/ui/card/CardTitle.astro";
+import CardContent from "@/components/ui/card/CardContent.astro";
+
+// Local content and assets
+import { gearCategories, studioPhotoSlots } from "@/content/webpage/studio-data";
 ---
 
-<WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
-  <UnderConstructionSection
-    title="Page Under Construction"
-    subtitle="Sorry, this page isn't quite ready yet."
-    image={{ src: "/src/assets/website/under_construction.png", alt: "Under Construction illustration" }}
-    class="min-h-[70vh]"
-  />
-</WebPageLayout>
+<WebPageLayout
+  title="Studio Gear"
+  description="A focused look at the monitoring, hardware, and software used to deliver professional mixes and masters."
+>
 
+  {/* INTRO */}
+  <IntroSection
+    bgColors="bg-linear-to-br from-primary/20 to-secondary/20"
+    badgeText="Studio Gear"
+    badgeColor="bg-primary text-primary-foreground"
+    title="Studio Gear & Monitoring"
+    subtitle="A translation-first setup built for detail, clarity, and repeatable results. Explore the monitoring chain, hardware workflow, and software stack behind Vintique Sound."
+    solidButton={{
+      label: "Mixing & Mastering Services",
+      href: "/mixing-mastering",
+      icon: ArrowRight,
+      iconPosition: "right"
+    }}
+    outlineButton={{
+      label: "Clients & Credits",
+      href: "/clients-credits",
+      hoverBgColor: "white",
+      textColor: "foreground",
+      borderColor: "foreground"
+    }}
+    align="center"
+  />
+
+  {/* OVERVIEW */}
+  <StudioSection
+    title="What This Page Covers"
+    subtitle="A quick breakdown of the studio setup and what matters for better mixes."
+  >
+    <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      <Card class="border-2 hover:border-primary transition-all">
+        <CardHeader>
+          <CardTitle class="text-xl flex items-center gap-2 mb-0">
+            <Icon name="lucide:speaker" class="h-5 w-5 text-secondary" />
+            Monitoring & Room
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p class="m-0 text-muted-foreground">
+            Translation-first monitoring and a controlled acoustic environment.
+          </p>
+        </CardContent>
+      </Card>
+      <Card class="border-2 hover:border-primary transition-all">
+        <CardHeader>
+          <CardTitle class="text-xl flex items-center gap-2 mb-0">
+            <Icon name="lucide:settings" class="h-5 w-5 text-secondary" />
+            Hardware Workflow
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p class="m-0 text-muted-foreground">
+            The essential tools and routing used for capture, control, and tone.
+          </p>
+        </CardContent>
+      </Card>
+      <Card class="border-2 hover:border-primary transition-all">
+        <CardHeader>
+          <CardTitle class="text-xl flex items-center gap-2 mb-0">
+            <Icon name="lucide:plug" class="h-5 w-5 text-secondary" />
+            Software Stack
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p class="m-0 text-muted-foreground">
+            DAW, plugins, and metering used to deliver consistent results.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  </StudioSection>
+
+  {/* GEAR CATEGORIES */}
+  <StudioSection
+    title="Gear Categories"
+    subtitle="A high-level look at the tools that support clean decisions and consistent delivery."
+  >
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+      {gearCategories.map((category) => (
+        <Card class="border-2 hover:border-primary transition-all h-full">
+          <CardHeader>
+            <CardTitle class="text-xl flex items-center gap-2 mb-2">
+              <Icon name={category.icon} class="h-5 w-5 text-secondary" />
+              {category.title}
+            </CardTitle>
+            {category.description && (
+              <p class="m-0 text-sm text-muted-foreground">{category.description}</p>
+            )}
+          </CardHeader>
+          <CardContent>
+            <ul class="space-y-2">
+              {category.items.map((item) => (
+                <li class="flex items-start gap-2">
+                  <Icon name="lucide:check-circle" class="text-secondary h-5 w-5 mt-0.5 shrink-0" />
+                  <div class="leading-snug">
+                    <span class="font-medium">{item.name}</span>
+                    {item.details && (
+                      <span class="text-muted-foreground"> — {item.details}</span>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </StudioSection>
+
+  {/* PHOTO SLOTS */}
+  <StudioSection
+    title="Studio Photos"
+    subtitle="Add photos here over time (desk, monitors, rack, room treatment). These are placeholders so you can drop images into /public and link them in the data file."
+  >
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+      {studioPhotoSlots.map((photo) => (
+        <Card class="border-2 hover:border-primary transition-all overflow-hidden">
+          <div class="aspect-video bg-muted/60">
+            {photo.src ? (
+              <img
+                src={photo.src}
+                alt={photo.alt ?? photo.title}
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            ) : (
+              <div class="w-full h-full flex items-center justify-center border-2 border-dashed border-border/60">
+                <span class="text-sm text-muted-foreground">Photo slot</span>
+              </div>
+            )}
+          </div>
+          <CardContent>
+            <p class="font-semibold mb-1">{photo.title}</p>
+            {photo.caption && (
+              <p class="m-0 text-sm text-muted-foreground">{photo.caption}</p>
+            )}
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </StudioSection>
+
+  {/* CTA */}
+  <CtaSection
+    bgColors="bg-linear-to-br from-primary via-primary/80 to-accent"
+    title="Want Results That Translate?"
+    subtitle="See the mixing & mastering services, pricing, and before/after comparisons."
+    solid={{
+      label: "Mixing & Mastering",
+      href: "/mixing-mastering",
+      icon: ArrowRight,
+      bgColor: "white",
+      hoverBgColor: "white",
+      textColor: "primary",
+      hoverTextColor: "primary",
+      iconPosition: "right"
+    }}
+    outline={{
+      label: "Clients & Credits",
+      href: "/clients-credits",
+      borderAlways: true,
+      borderColor: "white",
+      hoverBorderColor: "white",
+      hoverBgColor: "accent/60",
+      textColor: "white",
+      hoverTextColor: "white"
+    }}
+  />
+
+</WebPageLayout>
