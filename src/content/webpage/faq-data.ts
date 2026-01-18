@@ -6,11 +6,11 @@ export const faqData = {
     },
     {
       question: "How long does a typical mix or master take?",
-      answer: "Mixing typically takes 4-8 days depending on track complexity and revision rounds. Mastering is usually completed within 3-5 days. Rush services for urgent projects are available at an additional fee. Standard packages include turnaround times and revision policies to ensure you get exactly what you need."
+      answer: "Mixing typically takes 4-6 business days depending on track complexity and revision rounds. Mastering is usually completed within 3-4 business days. Rush services of 2 business days turnaround for urgent projects are available at an additional fee. Standard packages include turnaround times and revision policies to ensure you get exactly what you need."
     },
     {
       question: "What file formats do you accept and deliver?",
-      answer: "Accepted audio formats include WAV, FLAC, and AIFF (lossless formats). For stems, 24-bit / 48 kHz or higher is preferred. Final masters can be delivered in any requested format, including WAV, FLAC, MP3, and streaming-optimized files. Platform-specific masters can also be provided for services such as Spotify, Apple Music, and other streaming platforms."
+      answer: "Accepted lossless audio formats include WAV, FLAC (preferred), and AIFF. It is recommended to use at least 24-bit / 41.1 kHz or higher for best results. Final output files can be delivered in any requested format, including WAV, FLAC, AIFF, MP3, and streaming-optimized files. Platform-specific masters can also be provided for services such as Spotify, Apple Music, and other streaming platforms."
     },
     {
       question: "How many revisions are included?",

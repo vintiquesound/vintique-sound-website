@@ -19,7 +19,7 @@ import Badge from "@/components/ui/Badge.astro";
 import AudioComparison from "@/components/audio/AudioComparison.tsx";
 
 // Local content and assets
-import { services, genreExperience, processSteps, idealClients } from "@/content/webpage/mixing-mastering-data";
+import { services, genreExperience, processSteps, idealClients, technicalDetails } from "@/content/webpage/mixing-mastering-data";
 ---
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
@@ -197,7 +197,7 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
     </section>
 
     {/* CLIENT TESTIMONIALS */}
-    <section class="py-20 bg-linear-to-br from-primary/10 to-secondary/10">
+    <section class="py-20 bg-linear-to-br from-primary/20 to-secondary/20">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-3xl md:text-4xl font-bold mb-4">
@@ -254,6 +254,34 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
       </div>
     </section>
 
+    {/* WHO ITS FOR */}
+    <section class="py-20 bg-muted">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Is This Right for You?
+          </h2>
+          <p class="text-lg text-muted-foreground">
+            These services are designed for artists who care about their sound
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {idealClients.map((client) => (
+            <Card class="border-2 hover:border-primary transition-all">
+              <CardHeader class="flex flex-col items-center">
+                <Icon name={client.icon} class="h-6 w-6 text-primary mb-3" />
+                <CardTitle class="font-bold text-center">{client.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription class="text-center">{client.description}</CardDescription>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+
     {/* HOW IT WORKS */}
     <section class="py-20 bg-linear-to-br from-accent/20 to-primary/20">
       <div class="container mx-auto px-4">
@@ -289,30 +317,134 @@ import { services, genreExperience, processSteps, idealClients } from "@/content
       </div>
     </section>
 
-    {/* WHO ITS FOR */}
+    {/* TECHNICAL DETAILS & DELIVERY */}
     <section class="py-20 bg-muted">
       <div class="container mx-auto px-4">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold mb-4">
-            Is This Right for You?
-          </h2>
-          <p class="text-lg text-muted-foreground">
-            These services are designed for artists who care about their sound
-          </p>
-        </div>
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Technical Details & Delivery</h2>
+            <p class="text-lg text-muted-foreground">
+              Professional standards for optimal results
+            </p>
+          </div>
 
-        <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {idealClients.map((client) => (
-            <Card class="border-2 hover:border-primary transition-all">
-              <CardHeader class="flex flex-col items-center">
-                <Icon name={client.icon} class="h-6 w-6 text-primary mb-3" />
-                <CardTitle class="font-bold text-center">{client.title}</CardTitle>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Accepted Formats -->
+            <Card class="border-2">
+              <CardHeader>
+                <CardTitle class="flex items-center gap-2">
+                  <Icon name={technicalDetails.acceptedFormats.icon} class={`h-5 w-5 ${technicalDetails.acceptedFormats.iconClassName}`} />
+                  {technicalDetails.acceptedFormats.title}
+                </CardTitle>
               </CardHeader>
-              <CardContent>
-                <CardDescription class="text-center">{client.description}</CardDescription>
+              <CardContent class={technicalDetails.acceptedFormats.contentClassName}>
+                <div>
+                  <h4 class="font-semibold mb-2">Audio Files:</h4>
+                  <ul class="space-y-1 text-sm text-muted-foreground">
+                    {technicalDetails.acceptedFormats.audioFiles.map((item) => (
+                      <li>• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold mb-2">Recommendations:</h4>
+                  <ul class="space-y-1 text-sm text-muted-foreground">
+                    {technicalDetails.acceptedFormats.recommendations.map((item) => (
+                      <li>• {item}</li>
+                    ))}
+                  </ul>
+                </div>
               </CardContent>
             </Card>
-          ))}
+
+            <!-- Delivery Formats -->
+            <Card class="border-2">
+              <CardHeader>
+                <CardTitle class="flex items-center gap-2">
+                  <Icon name={technicalDetails.deliveryFormats.icon} class={`h-5 w-5 ${technicalDetails.deliveryFormats.iconClassName}`} />
+                  {technicalDetails.deliveryFormats.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent class={technicalDetails.deliveryFormats.contentClassName}>
+                <div>
+                  <h4 class="font-semibold mb-2">Standard Delivery:</h4>
+                  <ul class="space-y-1 text-sm text-muted-foreground">
+                    {technicalDetails.deliveryFormats.standardDelivery.map((item) => (
+                      <li>• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold mb-2">Platform-Specific Masters:</h4>
+                  <ul class="space-y-1 text-sm text-muted-foreground">
+                    {technicalDetails.deliveryFormats.platformSpecificMasters.map((item) => (
+                      <li>• {item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+
+            <!-- Quality Standards -->
+            <Card class="border-2">
+              <CardHeader>
+                <CardTitle class="flex items-center gap-2">
+                  <Icon name={technicalDetails.qualityStandards.icon} class={`h-5 w-5 ${technicalDetails.qualityStandards.iconClassName}`} />
+                  {technicalDetails.qualityStandards.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent class={technicalDetails.qualityStandards.contentClassName}>
+                <div>
+                  <p class="font-semibold text-sm mb-1">Mixing:</p>
+                  <ul class="space-y-2 text-sm text-muted-foreground">
+                    {technicalDetails.qualityStandards.mixing.map((item) => (
+                      <li class="flex items-start gap-2">
+                        <Icon name="lucide:check-circle" class="h-4 w-4 text-secondary mt-0.5 shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div class="pt-2 border-t">
+                  <p class="font-semibold text-sm mb-1">Mastering:</p>
+                  <ul class="space-y-2 text-sm text-muted-foreground">
+                    {technicalDetails.qualityStandards.mastering.map((item) => (
+                      <li class="flex items-start gap-2">
+                        <Icon name="lucide:check-circle" class="h-4 w-4 text-secondary mt-0.5 shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+
+            <!-- Turnaround & Revisions -->
+            <Card class="border-2">
+              <CardHeader>
+                <CardTitle class="flex items-center gap-2">
+                  <Icon name={technicalDetails.turnaroundRevisions.icon} class={`h-5 w-5 ${technicalDetails.turnaroundRevisions.iconClassName}`} />
+                  {technicalDetails.turnaroundRevisions.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent class={technicalDetails.turnaroundRevisions.contentClassName}>
+                <div class="space-y-3">
+                  {technicalDetails.turnaroundRevisions.timeframes.map((fact) => (
+                    <div>
+                      <p class="font-semibold text-sm mb-1">{fact.label}</p>
+                      <p class="text-sm text-muted-foreground">{fact.value}</p>
+                    </div>
+                  ))}
+                  <div class="pt-2 border-t">
+                    <p class="font-semibold text-sm mb-1">Additional Addons:</p>
+                    {technicalDetails.turnaroundRevisions.additionalAddons.map((paragraph) => (
+                      <p class="text-xs text-muted-foreground">{paragraph}</p>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </section>

@@ -155,3 +155,82 @@ export const idealClients = [
       "Podcasters, YouTubers, and media creators who need audio post-production",
   },
 ];
+
+export type TechnicalDetailsCardBase = {
+  icon: string;
+  iconClassName: string;
+  title: string;
+  contentClassName: string;
+};
+
+export const technicalDetails = {
+  acceptedFormats: {
+    icon: "lucide:upload",
+    iconClassName: "text-primary",
+    title: "Accepted Formats",
+    contentClassName: "space-y-3",
+    audioFiles: [
+      "WAV, FLAC, or AIFF (FLAC preferred)",
+      "24-bit / 44.1kHz or higher",
+      "Individual tracks or stems",
+    ],
+    recommendations: [
+      "24-bit / 48kHz for best results",
+      "Leave 3-6 dB of headroom",
+      "No master bus processing on stems",
+      "Include reference tracks if desired",
+    ],
+  },
+
+  deliveryFormats: {
+    icon: "lucide:download",
+    iconClassName: "text-primary",
+    title: "Delivery Formats",
+    contentClassName: "space-y-3",
+    standardDelivery: [
+      "WAV (24-bit / 44.1kHz or 48kHz)",
+      "16-bit / 44.1kHz for CD mastering (optional)",
+      "MP3 (320kbps), FLAC, and AIFF (all optional)",
+    ],
+    platformSpecificMasters: [
+      "Spotify / YouTube / YouTube Music (-14 LUFS integrated)",
+      "Apple Music / iTunes (-16 LUFS integrated)",
+      "Deezer (-15 LUFS integrated)",
+      "And more!",
+    ],
+  },
+
+  qualityStandards: {
+    icon: "lucide:waves",
+    iconClassName: "text-accent",
+    title: "Quality Standards",
+    contentClassName: "space-y-2",
+    mixing: [
+      "Frequency masking mitigation",
+      "Preservation of emotional dynamics (genre specific)",
+      "Careful cohesive automation to guide the listener's focus",
+    ],
+    mastering: [
+      "Industry-standard loudness (LUFS) targeting",
+      "True peak limiting to prevent clipping",
+      "Final EQ for tonal balance across all systems",
+      "Stereo field optimization & mono compatibility checks",
+    ],
+  },
+
+  turnaroundRevisions: {
+    icon: "lucide:rotate-ccw",
+    iconClassName: "text-secondary",
+    title: "Turnaround & Revisions",
+    contentClassName: "space-y-2",
+    timeframes: [
+      { label: "Mixing:", value: "4-6 business days (up to 3 revisions)" },
+      { label: "Mastering:", value: "3-4 business days (up to 3 revisions)" },
+      { label: "Mix + Master:", value: "7-10 business days (up to 3 revisions)" },
+    ],
+    additionalAddons: [
+      "Rush service for 2 business days delivery (additional fee).",
+      "Unlimited revisions within 1 month of purchase (additional fee).",
+    ],
+  },
+} as const;
