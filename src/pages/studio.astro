@@ -21,7 +21,7 @@ import { gearCategories, studioPhotoSlots } from "@/content/webpage/studio-data"
 
 <WebPageLayout
   title="Studio Gear"
-  description="A focused look at the monitoring, hardware, and software used to deliver professional mixes and masters."
+  description="A breakdown of the monitoring, hardware, and software used to deliver professional mixes and masters at Vintique Sound."
 >
 
   {/* INTRO */}
@@ -30,7 +30,7 @@ import { gearCategories, studioPhotoSlots } from "@/content/webpage/studio-data"
     badgeText="Studio Gear"
     badgeColor="bg-primary text-primary-foreground"
     title="Studio Gear & Monitoring"
-    subtitle="A translation-first setup built for detail, clarity, and repeatable results. Explore the monitoring chain, hardware workflow, and software stack behind Vintique Sound."
+    subtitle="A translation-first setup built for detail, clarity, and repeatable results. Explore the monitoring chain, studio workflow, and software stack behind Vintique Sound."
     solidButton={{
       label: "Mixing & Mastering Services",
       href: "/mixing-mastering",
@@ -49,14 +49,14 @@ import { gearCategories, studioPhotoSlots } from "@/content/webpage/studio-data"
 
   {/* OVERVIEW */}
   <StudioSection
-    title="What This Page Covers"
-    subtitle="A quick breakdown of the studio setup and what matters for better mixes."
+    title="Requirements For Success"
+    subtitle="Here is a breakdown of what matters to achieve better mixes and masters."
   >
     <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
       <Card class="border-2 hover:border-primary transition-all">
         <CardHeader>
           <CardTitle class="text-xl flex items-center gap-2 mb-0">
-            <Icon name="lucide:speaker" class="h-5 w-5 text-secondary" />
+            <Icon name="lucide:speaker" class="h-5 w-5 shrink-0 text-secondary" />
             Monitoring & Room
           </CardTitle>
         </CardHeader>
@@ -69,75 +69,39 @@ import { gearCategories, studioPhotoSlots } from "@/content/webpage/studio-data"
       <Card class="border-2 hover:border-primary transition-all">
         <CardHeader>
           <CardTitle class="text-xl flex items-center gap-2 mb-0">
-            <Icon name="lucide:settings" class="h-5 w-5 text-secondary" />
-            Hardware Workflow
+            <Icon name="lucide:monitor-cog" class="h-5 w-5 shrink-0 text-secondary" />
+            Mixing & Mastering Workflow
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p class="m-0 text-muted-foreground">
-            The essential tools and routing used for capture, control, and tone.
+            A highly effective and consistent workflow that is also efficient.
           </p>
         </CardContent>
       </Card>
       <Card class="border-2 hover:border-primary transition-all">
         <CardHeader>
           <CardTitle class="text-xl flex items-center gap-2 mb-0">
-            <Icon name="lucide:plug" class="h-5 w-5 text-secondary" />
+            <Icon name="lucide:plug" class="h-5 w-5 shrink-0 text-secondary" />
             Software Stack
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p class="m-0 text-muted-foreground">
-            DAW, plugins, and metering used to deliver consistent results.
+            High quality DAW, plugins, and metering to deliver consistent results.
           </p>
         </CardContent>
       </Card>
     </div>
   </StudioSection>
 
-  {/* GEAR CATEGORIES */}
-  <StudioSection
-    title="Gear Categories"
-    subtitle="A high-level look at the tools that support clean decisions and consistent delivery."
-  >
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-      {gearCategories.map((category) => (
-        <Card class="border-2 hover:border-primary transition-all h-full">
-          <CardHeader>
-            <CardTitle class="text-xl flex items-center gap-2 mb-2">
-              <Icon name={category.icon} class="h-5 w-5 text-secondary" />
-              {category.title}
-            </CardTitle>
-            {category.description && (
-              <p class="m-0 text-sm text-muted-foreground">{category.description}</p>
-            )}
-          </CardHeader>
-          <CardContent>
-            <ul class="space-y-2">
-              {category.items.map((item) => (
-                <li class="flex items-start gap-2">
-                  <Icon name="lucide:check-circle" class="text-secondary h-5 w-5 mt-0.5 shrink-0" />
-                  <div class="leading-snug">
-                    <span class="font-medium">{item.name}</span>
-                    {item.details && (
-                      <span class="text-muted-foreground"> — {item.details}</span>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  </StudioSection>
-
   {/* PHOTO SLOTS */}
   <StudioSection
-    title="Studio Photos"
-    subtitle="Add photos here over time (desk, monitors, rack, room treatment). These are placeholders so you can drop images into /public and link them in the data file."
+    title="My Monitoring Setup"
+    subtitle="Here is breakdown of the studio monitors, acoustic treatment, and overall setup in my studio."
+    outerClass="py-20 bg-linear-to-br from-secondary/20 to-accent/20"
   >
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
       {studioPhotoSlots.map((photo) => (
         <Card class="border-2 hover:border-primary transition-all overflow-hidden">
           <div class="aspect-video bg-muted/60">
@@ -159,6 +123,43 @@ import { gearCategories, studioPhotoSlots } from "@/content/webpage/studio-data"
             {photo.caption && (
               <p class="m-0 text-sm text-muted-foreground">{photo.caption}</p>
             )}
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </StudioSection>
+
+  {/* STUDIO EQUIPMENT */}
+  <StudioSection
+    title="Studio Equipment"
+    subtitle="Here is a breakdown of the equipment and tools I use to make creative decisions and to get consistent results."
+  >
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+      {gearCategories.map((category) => (
+        <Card class="border-2 hover:border-primary transition-all h-full">
+          <CardHeader>
+            <CardTitle class="text-xl flex items-center gap-2 mb-2">
+              <Icon name={category.icon} class="h-5 w-5 shrink-0 text-primary" />
+              {category.title}
+            </CardTitle>
+            {category.description && (
+              <p class="m-0 text-sm text-muted-foreground">{category.description}</p>
+            )}
+          </CardHeader>
+          <CardContent>
+            <ul class="space-y-2">
+              {category.items.map((item) => (
+                <li class="flex items-start gap-2">
+                  <Icon name="lucide:check-circle" class="text-secondary h-5 w-5 mt-0.5 shrink-0" />
+                  <div class="leading-snug">
+                    <span class="font-medium">{item.name}</span>
+                    {item.details && (
+                      <span class="text-muted-foreground"> — {item.details}</span>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
           </CardContent>
         </Card>
       ))}
