@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pause, Play, RotateCcw, AudioWaveform, VolumeX } from "lucide-react";
+import { Pause, Play, RotateCcw, AudioWaveform } from "lucide-react";
 import WaveSurfer from "wavesurfer.js";
 
 import { Button } from "@/components/ui/button.tsx";
