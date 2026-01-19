@@ -103,13 +103,13 @@ import { gearCategories, studioPhotoSlots } from "@/content/webpage/studio-data"
   >
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
       {studioPhotoSlots.map((photo) => (
-        <Card class="border-2 hover:border-primary transition-all overflow-hidden">
+        <Card class="pt-0 border-2 hover:border-primary transition-all overflow-hidden">
           <div class="aspect-video bg-muted/60">
             {photo.src ? (
               <img
                 src={photo.src}
                 alt={photo.alt ?? photo.title}
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover rounded-none"
                 loading="lazy"
               />
             ) : (
