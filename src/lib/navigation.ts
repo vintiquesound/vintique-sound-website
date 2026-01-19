@@ -23,7 +23,7 @@ export const navMenuGroups = [
     children: [
       { label: "Blog", href: "/blog" },
       { label: "YouTube Videos", href: "/youtube-videos" },
-      { label: "Tutorial Videos", href: "/tutorial-videos" },
+      { label: "Courses", href: "/courses" },
     ],
   },
   {
