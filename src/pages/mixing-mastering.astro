@@ -19,7 +19,7 @@ import Badge from "@/components/ui/Badge.astro";
 import AudioComparison from "@/components/audio/AudioComparison.tsx";
 
 // Local content and assets
-import { services, genreExperience, processSteps, idealClients, technicalDetails } from "@/content/webpage/mixing-mastering-data";
+import { services, genreExperience, processSteps, idealClients, technicalDetails, testimonials } from "@/content/webpage/mixing-mastering-data";
 ---
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
@@ -81,7 +81,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
                 <ul class="mt-4 space-y-3">
                   {service.features.map((feature) => (
                     <li class="flex gap-2">
-                      <Icon name="lucide:check-circle" class="text-secondary h-5 w-5" />
+                      <Icon name="lucide:check-circle" class="text-secondary h-5 w-5 shrink-0" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -141,7 +141,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
             Hear The Difference
           </h2>
           <p class="pb-0 mb-0 text-lg text-muted-foreground">
-            Before and after examples from real mixing and mastering projects
+            Before and after examples from real mixing and mastering projects.
           </p>
           <i class="py-0 my-0 text-sm text-muted-foreground">
             *Here you can find a complete list of past
@@ -150,6 +150,15 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
         </div>
 
         <div class="flex flex-col gap-6 max-w-4xl mx-auto">
+          <AudioComparison client:load
+            title="Rock & Alternative - Mix and Master"
+            description="Dear Rouge - Nostalgia"
+            samples={{
+              beforeMix: "/audio/comparisons/dear_rouge-nostalgia-untouched_raw_tracks.mp3",
+              beforeMaster: "/audio/comparisons/dear_rouge-nostalgia-mixed.mp3",
+              afterMixAndMaster: "/audio/comparisons/dear_rouge-nostalgia-mixed_and_mastered.mp3"
+            }}
+          />
           <AudioComparison client:load
             title="Rock & Alternative - Mix and Master"
             description="Manobra de Massa - Reencontro"
@@ -161,7 +170,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
           />
           <AudioComparison client:load
             title="Rock & Alternative - Stem Master"
-            description="Manobra de Massa - Reencontro"
+            description="Jon Harris - My Little Lady"
             samples={{
               beforeStemMaster: "/audio/comparisons/jon_harris-my_little_lady-untouched_mix.wav",
               afterStemMaster: "/audio/comparisons/jon_harris-my_little_lady-stem_master.wav"
@@ -212,52 +221,24 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
             Client Testimonials
           </h2>
           <p class="pb-0 mb-0 text-lg text-muted-foreground">
-            What artists say after working together
+            What artists say after working together.
           </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          <Card class="border-2 hover:border-primary transition-all">
-            <CardContent>
-              <div class="flex items-center mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} class="h-5 w-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p class="text-muted-foreground italic mb-4">
-                "Working with this studio transformed my music. The attention to detail and expertise in mixing gave my album a professional polish that I never thought possible."
-              </p>
-              <p class="font-semibold">- Sarah Johnson, Indie Artist</p>
-            </CardContent>
-          </Card>
-
-          <Card class="border-2 hover:border-primary transition-all">
-            <CardContent>
-              <div class="flex items-center mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} class="h-5 w-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p class="text-muted-foreground italic mb-4">
-                "The mastering service brought my track to life. The balance and clarity are perfect for radio play. I couldn't be happier with the results."
-              </p>
-              <p class="font-semibold">- Mike Rodriguez, Hip-Hop Producer</p>
-            </CardContent>
-          </Card>
-
-          <Card class="border-2 hover:border-primary transition-all">
-            <CardContent>
-              <div class="flex items-center mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} class="h-5 w-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <p class="text-muted-foreground italic mb-4">
-                "The studio environment was perfect for recording. The gear and atmosphere helped me capture exactly what I envisioned in my music."
-              </p>
-              <p class="font-semibold">- Emma Thompson, Classical Composer</p>
-            </CardContent>
-          </Card>
+        <div class="grid lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+          {testimonials.map((t, i) => (
+            <Card key={i} class="border-2 hover:border-primary transition-all">
+              <CardContent>
+                <div class="flex items-center mb-4">
+                  {[...Array(5)].map((_, idx) => (
+                    <Star key={idx} class="h-5 w-5 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                <p class="text-muted-foreground italic mb-4">{t.quote}</p>
+                <p class="font-semibold">{t.name}</p>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </section>
@@ -270,11 +251,11 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
             Is This Right for You?
           </h2>
           <p class="text-lg text-muted-foreground">
-            These services are designed for artists who care about their sound
+            These services are designed for artists who care about their sound.
           </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {idealClients.map((client) => (
             <Card class="border-2 hover:border-primary transition-all">
               <CardHeader class="flex flex-col items-center">
@@ -298,7 +279,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
             How It Works
           </h2>
           <p class="text-lg text-muted-foreground">
-            A simple, collaborative process from upload to final delivery
+            A simple, collaborative process from upload to final delivery.
           </p>
         </div>
 
@@ -332,7 +313,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
           <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-bold mb-4">Technical Details & Delivery</h2>
             <p class="text-lg text-muted-foreground">
-              Professional standards for optimal results
+              Professional standards for optimal results.
             </p>
           </div>
 

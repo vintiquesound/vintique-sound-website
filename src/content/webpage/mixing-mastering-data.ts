@@ -90,38 +90,20 @@ export const genreExperience = [
   },
 ];
 
-export const processSteps = [
+export const testimonials = [
   {
-    icon: "lucide:upload",
-    title: "Project Upload",
-    description:
-      "Upload your Cubase, Ableton, or Bitwig project (or consolidated audio files) through my secure transfer system.",
+    name: "Sarah Johnson, Indie Artist",
+    quote: "Working with this studio transformed my music. The attention to detail and expertise in mixing gave my album a professional polish that I never thought possible.",
   },
   {
-    icon: "lucide:list-music",
-    title: "Initial Review",
-    description:
-      "I carefully review your files, reference tracks, and notes to fully understand your sound and goals with the project.",
+    name: "Mike Rodriguez, Hip-Hop Producer",
+    quote: "The mastering service brought my track to life. The balance and clarity are perfect for radio play. I couldn't be happier with the results.",
   },
   {
-    icon: "lucide:audio-lines",
-    title: "Mixing & Mastering",
-    description:
-      "Your tracks are mixed and/or mastered using professional tools. A high-quality preview is uploaded for feedback.",
+    name: "Emma Thompson, Classical Composer",
+    quote: "The studio environment was perfect for recording. The gear and atmosphere helped me capture exactly what I envisioned in my music.",
   },
-  {
-    icon: "lucide:rotate-ccw",
-    title: "Revisions & Feedback",
-    description:
-      "If you're not completely satisfied, you can request adjustments, and I refine the mix and/or master until it feels right to you.",
-  },
-  {
-    icon: "lucide:download",
-    title: "Final Delivery",
-    description:
-      "Download your finished files in whatever formats you specify in your package. All finished files are ready for release.",
-  },
-];
+] as const;
 
 export const idealClients = [
   {
@@ -146,13 +128,40 @@ export const idealClients = [
     icon: "lucide:speaker",
     title: "Studios & Engineers",
     description:
-      "Other studios outsourcing mastering or seeking a second opinion on mixes",
+      "Other studios outsourcing mixing or mastering or seeking a second opinion",
+  },
+];
+
+export const processSteps = [
+  {
+    icon: "lucide:upload",
+    title: "Project Upload",
+    description:
+      "Upload your Cubase, Ableton, or Bitwig project (or consolidated audio files) through my secure transfer system.",
   },
   {
-    icon: "lucide:video",
-    title: "Content Creators",
+    icon: "lucide:list-music",
+    title: "Initial Review",
     description:
-      "Podcasters, YouTubers, and media creators who need audio post-production",
+      "I carefully review your files, reference tracks, and notes to fully understand your sound and goals with the project.",
+  },
+  {
+    icon: "lucide:audio-lines",
+    title: "Mixing & Mastering",
+    description:
+      "Your tracks are mixed and/or mastered using professional tools. A high-quality preview is uploaded for feedback.",
+  },
+  {
+    icon: "lucide:rotate-ccw",
+    title: "Revisions & Feedback",
+    description:
+      "You can request changes. Up to 3 revisions are included. I refine the mix and/or master until it feels right to you.",
+  },
+  {
+    icon: "lucide:download",
+    title: "Final Delivery",
+    description:
+      "Download your finished files in whatever formats you specify in your package. All finished files are ready for release.",
   },
 ];
 
@@ -171,7 +180,7 @@ export const technicalDetails = {
     contentClassName: "space-y-3",
     audioFiles: [
       "WAV, FLAC, or AIFF (FLAC preferred)",
-      "24-bit / 44.1kHz or higher",
+      "16-bit / 44.1kHz or higher",
       "Individual tracks or stems",
     ],
     recommendations: [
@@ -179,6 +188,7 @@ export const technicalDetails = {
       "Leave 3-6 dB of headroom",
       "No master bus processing on stems",
       "Include reference tracks if desired",
+      "Provide clear and descriptive notes on how you want your mixes and/or masters to sound",
     ],
   },
 
@@ -190,7 +200,8 @@ export const technicalDetails = {
     standardDelivery: [
       "WAV (24-bit / 44.1kHz or 48kHz)",
       "16-bit / 44.1kHz for CD mastering (optional)",
-      "MP3 (320kbps), FLAC, and AIFF (all optional)",
+      "MP3 (320kbps), FLAC, and AIFF (optional)",
+      "Custom bit/sample rates and file formats available upon request",
     ],
     platformSpecificMasters: [
       "Spotify / YouTube / YouTube Music (-14 LUFS integrated)",
@@ -208,7 +219,7 @@ export const technicalDetails = {
     mixing: [
       "Frequency masking mitigation",
       "Preservation of emotional dynamics (genre specific)",
-      "Careful cohesive automation to guide the listener's focus",
+      "Intentional and expressive automation to guide the listener's focus",
     ],
     mastering: [
       "Industry-standard loudness (LUFS) targeting",
