@@ -14,7 +14,7 @@ export const faqData = {
     },
     {
       question: "How many revisions are included?",
-      answer: "All audio engineering services (including mixing, mastering, editing, and so on) include up to 3 revisions. Unlimited revisions are available at an additional feeI want you to be completely satisfied with the final result."
+      answer: "All audio engineering services (including mixing, mastering, editing, and so on) include up to 3 revisions. Unlimited revisions are available at an additional fee. I want you to be completely satisfied with the final result."
     },
     {
       question: "Do you work remotely or do I need to come to the studio?",

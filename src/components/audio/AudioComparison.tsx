@@ -4,25 +4,54 @@ import WaveSurfer from "wavesurfer.js";
 
 import { Button } from "@/components/ui/button.tsx";
 
-type SampleKey = "beforeMix" | "beforeMaster" | "after";
+type SampleKey =
+  | "beforeMix"
+  | "beforeMaster"
+  | "beforeStemMaster"
+  | "afterMix"
+  | "afterMixAndMaster"
+  | "afterStemMaster";
+
+const ALL_SAMPLE_KEYS: SampleKey[] = [
+  "beforeMix",
+  "beforeMaster",
+  "beforeStemMaster",
+  "afterMix",
+  "afterMixAndMaster",
+  "afterStemMaster",
+];
+
+const getAvailableKeysFromSamples = (
+  samples: Partial<Record<SampleKey, string>>
+): SampleKey[] =>
+  ALL_SAMPLE_KEYS.filter((key) => Boolean(samples[key] && samples[key]?.trim().length));
 
 type Props = {
   title: string;
   description?: string;
-  samples: Record<SampleKey, string>;
+  samples: Partial<Record<SampleKey, string>>;
 };
 
 const LABELS: Record<SampleKey, string> = {
   beforeMix: "Before mix",
   beforeMaster: "Before master",
-  after: "After mix and master",
+  beforeStemMaster: "Before stem master",
+  afterMix: "After mix",
+  afterMixAndMaster: "After mix and master",
+  afterStemMaster: "After stem master",
 };
 
 export default function AudioComparison({ title, description, samples }: Props) {
-  const [active, setActive] = React.useState<SampleKey>("beforeMix");
+  const [active, setActive] = React.useState<SampleKey>(() => {
+    const available = getAvailableKeysFromSamples(samples);
+    return available[0] ?? "beforeMix";
+  });
   const [isReady, setIsReady] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [loudnessMatch, setLoudnessMatch] = React.useState(true);
+  const [availableKeys, setAvailableKeys] = React.useState<SampleKey[]>(() =>
+    getAvailableKeysFromSamples(samples)
+  );
 
   // Unique instance ID for global play coordination
   const instanceIdRef = React.useRef<string>(
@@ -42,6 +71,23 @@ export default function AudioComparison({ title, description, samples }: Props) 
   const playSessionRef = React.useRef(0);
   const isPlayingRef = React.useRef(false);
   const seekingRef = React.useRef(false);
+
+  const hasAnySampleUrl = React.useMemo(
+    () => getAvailableKeysFromSamples(samples).length > 0,
+    [samples]
+  );
+
+  const activeIsAvailable = React.useMemo(
+    () => availableKeys.includes(active),
+    [active, availableKeys]
+  );
+
+  const getFallbackActiveKey = React.useCallback((): SampleKey => {
+    const fromDecoded = availableKeys[0];
+    if (fromDecoded) return fromDecoded;
+    const fromUrls = getAvailableKeysFromSamples(samples)[0];
+    return fromUrls ?? "beforeMix";
+  }, [availableKeys, samples]);
 
   // --- RMS loudness estimation ---
   const rms = (buffer: AudioBuffer) => {
@@ -101,22 +147,39 @@ export default function AudioComparison({ title, description, samples }: Props) 
       const decoded: Partial<Record<SampleKey, AudioBuffer>> = {};
 
       for (const [key, url] of entries) {
-        const res = await fetch(url);
-        const arr = await res.arrayBuffer();
-        decoded[key] = await audioCtx.decodeAudioData(arr);
+        if (!url || url.trim().length === 0) continue;
+        try {
+          const res = await fetch(url);
+          if (!res.ok) continue;
+          const arr = await res.arrayBuffer();
+          decoded[key] = await audioCtx.decodeAudioData(arr);
+        } catch {
+          // ignore per-file load/decode errors; keep others working
+        }
       }
 
       if (cancelled) return;
 
-      const rmsValues = (Object.values(decoded) as AudioBuffer[]).map((b) => rms(b));
-      const target = Math.min(...rmsValues.filter((v) => Number.isFinite(v) && v > 0));
+      const decodedKeys = (Object.keys(decoded) as SampleKey[]).filter((k) => decoded[k]);
+      setAvailableKeys(decodedKeys);
 
-      entries.forEach(([key]) => {
+      const rmsValues = decodedKeys
+        .map((k) => decoded[k])
+        .filter((b): b is AudioBuffer => Boolean(b))
+        .map((b) => rms(b));
+      const finitePositive = rmsValues.filter((v) => Number.isFinite(v) && v > 0);
+      const target = finitePositive.length > 0 ? Math.min(...finitePositive) : 0;
+
+      // Create gain nodes for all tracks so the mixer logic stays simple.
+      ALL_SAMPLE_KEYS.forEach((key) => {
         const buffer = decoded[key];
-        if (!buffer) return;
-        const bufferRms = rms(buffer);
-        const match = bufferRms > 0 ? target / bufferRms : 1;
-        matchGainsRef.current[key] = match;
+        if (buffer && target > 0) {
+          const bufferRms = rms(buffer);
+          const match = bufferRms > 0 ? target / bufferRms : 1;
+          matchGainsRef.current[key] = match;
+        } else {
+          matchGainsRef.current[key] = 1;
+        }
 
         const gainNode = audioCtx.createGain();
         gainNode.gain.value = 0;
@@ -125,13 +188,19 @@ export default function AudioComparison({ title, description, samples }: Props) 
       });
 
       durationRef.current = Math.max(
-        ...entries
-          .map(([key]) => decoded[key]?.duration ?? 0)
-          .filter((d) => Number.isFinite(d))
+        0,
+        ...ALL_SAMPLE_KEYS.map((key) => decoded[key]?.duration ?? 0).filter((d) =>
+          Number.isFinite(d)
+        )
       );
 
       buffersRef.current = decoded;
       setIsReady(true);
+
+      // If the currently active version isn't available, fall back.
+      if (!decodedKeys.includes(active)) {
+        setActive(decodedKeys[0] ?? "beforeMix");
+      }
     };
 
     load();
@@ -143,7 +212,7 @@ export default function AudioComparison({ title, description, samples }: Props) 
       audioCtxRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [samples]);
 
   // --- WaveSurfer visual waveform ---
   const waveformRef = React.useRef<HTMLDivElement>(null);
@@ -276,8 +345,16 @@ export default function AudioComparison({ title, description, samples }: Props) 
     const loadId = ++waveLoadIdRef.current;
     const currentTime = getCurrentPosition();
 
+    const url = samples[active];
+    if (!url || url.trim().length === 0) {
+      // Avoid WaveSurfer errors on blank URLs; clear the view instead.
+      (wave as unknown as { empty?: () => void }).empty?.();
+      syncWaveToTime(0);
+      return;
+    }
+
     wave
-      .load(samples[active])
+      .load(url)
       .then(() => {
         if (waveLoadIdRef.current !== loadId) return;
         syncWaveToTime(currentTime);
@@ -327,6 +404,14 @@ export default function AudioComparison({ title, description, samples }: Props) 
       const ctx = audioCtxRef.current;
       if (!ctx) return;
       if (!isReady) return;
+      if (!hasAnySampleUrl) return;
+
+      const playableKey: SampleKey = activeIsAvailable ? active : getFallbackActiveKey();
+      if (!buffersRef.current[playableKey]) return;
+
+      if (playableKey !== active) {
+        setActive(playableKey);
+      }
 
       await ctx.resume();
 
@@ -365,7 +450,7 @@ export default function AudioComparison({ title, description, samples }: Props) 
         sourcesRef.current[key] = source;
       });
 
-      applyActiveGains(active, loudnessMatch);
+      applyActiveGains(playableKey, loudnessMatch);
       isPlayingRef.current = true;
       setIsPlaying(true);
       seekingRef.current = false;
@@ -378,7 +463,17 @@ export default function AudioComparison({ title, description, samples }: Props) 
         })
       );
     },
-    [active, applyActiveGains, isReady, loudnessMatch, startRaf, stopSources]
+    [
+      active,
+      activeIsAvailable,
+      applyActiveGains,
+      getFallbackActiveKey,
+      hasAnySampleUrl,
+      isReady,
+      loudnessMatch,
+      startRaf,
+      stopSources,
+    ]
   );
 
   const pause = React.useCallback(() => {
@@ -404,9 +499,9 @@ export default function AudioComparison({ title, description, samples }: Props) 
     offsetRef.current = 0;
     isPlayingRef.current = false;
     setIsPlaying(false);
-    setActive("beforeMix");
+    setActive(getFallbackActiveKey());
     syncWaveToTime(0);
-  }, [stopSources, syncWaveToTime]);
+  }, [getFallbackActiveKey, stopSources, syncWaveToTime]);
 
   const seekTo = React.useCallback(
     (timeSeconds: number) => {
@@ -471,10 +566,11 @@ export default function AudioComparison({ title, description, samples }: Props) 
 
   const handleSelectVersion = React.useCallback(
     (key: SampleKey) => {
+      if (!availableKeys.includes(key)) return;
       setActive(key);
       applyActiveGains(key, loudnessMatch);
     },
-    [applyActiveGains, loudnessMatch]
+    [applyActiveGains, availableKeys, loudnessMatch]
   );
 
   const toggleLoudnessMatch = React.useCallback(() => {
@@ -501,7 +597,7 @@ export default function AudioComparison({ title, description, samples }: Props) 
             size="icon"
             variant="solid"
             onClick={() => void togglePlayPause()}
-            disabled={!isReady}
+            disabled={!isReady || !activeIsAvailable}
             aria-label={isPlaying ? "Pause" : "Play"}
             title={isPlaying ? "Pause" : "Play"}
           >
@@ -536,22 +632,24 @@ export default function AudioComparison({ title, description, samples }: Props) 
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
-        {(["beforeMix", "beforeMaster", "after"] as SampleKey[]).map((key) => (
-          <Button
-            key={key}
-            type="button"
-            size="sm"
-            variant={active === key ? "solid" : "ghost"}
-            onClick={() => handleSelectVersion(key)}
-            disabled={!isReady}
-            useHoverScale={false}
-            borderAlways
-            borderColor={active === key ? "transparent" : "border"}
-            hoverBorderColor={active === key ? "transparent" : "border"}
-          >
-            {LABELS[key]}
-          </Button>
-        ))}
+        {ALL_SAMPLE_KEYS.filter((key) => Boolean(samples[key] && samples[key]?.trim().length)).map(
+          (key) => (
+            <Button
+              key={key}
+              type="button"
+              size="sm"
+              variant={active === key ? "solid" : "ghost"}
+              onClick={() => handleSelectVersion(key)}
+              disabled={!isReady || !availableKeys.includes(key)}
+              useHoverScale={false}
+              borderAlways
+              borderColor={active === key ? "transparent" : "border"}
+              hoverBorderColor={active === key ? "transparent" : "border"}
+            >
+              {LABELS[key]}
+            </Button>
+          )
+        )}
 
         <Button
           type="button"
@@ -585,6 +683,10 @@ export default function AudioComparison({ title, description, samples }: Props) 
 
       {!isReady && (
         <p className="mt-3 text-sm text-muted-foreground">Loading audio…</p>
+      )}
+
+      {isReady && !hasAnySampleUrl && (
+        <p className="mt-3 text-sm text-muted-foreground">No audio samples provided.</p>
       )}
     </div>
   );

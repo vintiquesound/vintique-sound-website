@@ -230,7 +230,7 @@ export const technicalDetails = {
     ],
     additionalAddons: [
       "Rush service for 2 business days delivery (additional fee).",
-      "Unlimited revisions within 1 month of purchase (additional fee).",
+      "Unlimited revisions within 1 month of project start date (additional fee).",
     ],
   },
 } as const;
