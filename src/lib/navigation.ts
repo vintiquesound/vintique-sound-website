@@ -14,7 +14,7 @@ export const navMenuGroups = [
     children: [
       { label: "Mixing & Mastering", href: "/mixing-mastering" },
       { label: "Audio Editing", href: "/audio-editing" },
-      { label: "Audio Restoration", href: "/audio-restoration" },
+      { label: "Audio Repair", href: "/audio-repair" },
       { label: "Build Your Package", href: "/build-your-package" },
     ],
   },
