@@ -5,20 +5,20 @@ import WaveSurfer from "wavesurfer.js";
 import { Button } from "@/components/ui/button.tsx";
 
 type SampleKey =
-  | "beforeMix"
-  | "beforeMaster"
-  | "beforeStemMaster"
-  | "afterMix"
-  | "afterMixAndMaster"
-  | "afterStemMaster";
+  | "rawTracks"
+  | "rawStems"
+  | "rawMix"
+  | "mixed"
+  | "mastered"
+  | "stemMastered";
 
 const ALL_SAMPLE_KEYS: SampleKey[] = [
-  "beforeMix",
-  "beforeMaster",
-  "beforeStemMaster",
-  "afterMix",
-  "afterMixAndMaster",
-  "afterStemMaster",
+  "rawTracks",
+  "rawStems",
+  "rawMix",
+  "mixed",
+  "mastered",
+  "stemMastered",
 ];
 
 const getAvailableKeysFromSamples = (
@@ -33,18 +33,18 @@ type Props = {
 };
 
 const LABELS: Record<SampleKey, string> = {
-  beforeMix: "Before mix",
-  beforeMaster: "Before master",
-  beforeStemMaster: "Before stem master",
-  afterMix: "After mix",
-  afterMixAndMaster: "After mix and master",
-  afterStemMaster: "After stem master",
+  rawTracks: "Raw Tracks",
+  rawStems: "Raw Stems",
+  rawMix: "Raw Mix",
+  mixed: "Mixed",
+  mastered: "Mastered",
+  stemMastered: "Stem Mastered",
 };
 
 export default function AudioComparison({ title, description, samples }: Props) {
   const [active, setActive] = React.useState<SampleKey>(() => {
     const available = getAvailableKeysFromSamples(samples);
-    return available[0] ?? "beforeMix";
+    return available[0] ?? "rawTracks";
   });
   const [isReady, setIsReady] = React.useState(false);
   const [isPlaying, setIsPlaying] = React.useState(false);
@@ -86,7 +86,7 @@ export default function AudioComparison({ title, description, samples }: Props) 
     const fromDecoded = availableKeys[0];
     if (fromDecoded) return fromDecoded;
     const fromUrls = getAvailableKeysFromSamples(samples)[0];
-    return fromUrls ?? "beforeMix";
+    return fromUrls ?? "rawTracks";
   }, [availableKeys, samples]);
 
   // --- RMS loudness estimation ---
@@ -199,7 +199,7 @@ export default function AudioComparison({ title, description, samples }: Props) 
 
       // If the currently active version isn't available, fall back.
       if (!decodedKeys.includes(active)) {
-        setActive(decodedKeys[0] ?? "beforeMix");
+        setActive(decodedKeys[0] ?? "rawTracks");
       }
     };
 
