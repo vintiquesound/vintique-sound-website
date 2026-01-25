@@ -179,7 +179,7 @@ export const technicalDetails = {
     title: "Accepted Formats",
     contentClassName: "space-y-3",
     audioFiles: [
-      "WAV, FLAC, or AIFF (FLAC preferred)",
+      "WAV, FLAC, or AIFF (WAV preferred)",
       "16-bit / 44.1kHz or higher",
       "Individual tracks or stems",
     ],
