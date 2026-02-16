@@ -57,6 +57,19 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## Pricing Architecture
+
+- Canonical prices are stored in CAD cents in `src/lib/pricing/catalog.ts`.
+- Currency conversion uses a weekly snapshot in `src/lib/pricing/fx-weekly-snapshot.ts`.
+- The header currency selector only shows checkout-supported currencies from `src/lib/payments/providers.ts`.
+- Shared conversion/formatting helpers are in `src/lib/pricing/money.ts`.
+
+### Weekly FX updates
+
+- Manual local refresh: `pnpm fx:update-weekly`
+- Scheduled refresh: `.github/workflows/fx-weekly.yml` runs weekly and commits the updated snapshot.
+- If live FX fetch fails, fallback rates are used by `scripts/update-fx-weekly.mjs` so builds remain stable.
+
 ## 👀 Want to learn more?
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

@@ -1,20 +1,25 @@
+import {
+  EXTRAS_PRICING_CAD_CENTS,
+  TRACK_LENGTH_TIERS_CAD_CENTS,
+  cadCentsToDollars,
+} from "@/lib/pricing/catalog";
+import { getDisplayCurrency } from "@/lib/pricing/currency-preference";
+import { convertCadCentsToCurrencyCents, formatMoneyFromCents } from "@/lib/pricing/money";
+
 export type LengthTier = { max: number; surcharge: number };
 
 // Reuses the same minute cutoffs as the mixing song-length tiers, but applied as a
 // per-track surcharge for Editing/Repair.
-export const TRACK_LENGTH_TIERS: readonly LengthTier[] = [
-  { max: 1, surcharge: 0 },
-  { max: 2, surcharge: 5 },
-  { max: 4, surcharge: 10 },
-  { max: 6, surcharge: 15 },
-  { max: 8, surcharge: 20 },
-  { max: 12, surcharge: 30 },
-  { max: 16, surcharge: 40 },
-] as const;
+export const TRACK_LENGTH_TIERS: readonly LengthTier[] = TRACK_LENGTH_TIERS_CAD_CENTS.map(
+  ({ max, surchargeCents }) => ({
+    max,
+    surcharge: cadCentsToDollars(surchargeCents),
+  })
+);
 
 export const EXTRAS_PRICING = {
-  rushService2Days: 100,
-  unlimitedRevisions1Month: 80,
+  rushService2Days: cadCentsToDollars(EXTRAS_PRICING_CAD_CENTS.rushService2Days),
+  unlimitedRevisions1Month: cadCentsToDollars(EXTRAS_PRICING_CAD_CENTS.unlimitedRevisions1Month),
 } as const;
 
 export function clampInt(value: number, min: number, max: number) {
@@ -24,11 +29,10 @@ export function clampInt(value: number, min: number, max: number) {
 
 export function formatCurrency(amount: number) {
   const normalized = Number.isFinite(amount) ? amount : 0;
-  return normalized.toLocaleString(undefined, {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  });
+  const cadCents = Math.round(normalized * 100);
+  const currency = getDisplayCurrency();
+  const convertedCents = convertCadCentsToCurrencyCents(cadCents, currency);
+  return formatMoneyFromCents(convertedCents, currency);
 }
 
 export function getLengthSurcharge(

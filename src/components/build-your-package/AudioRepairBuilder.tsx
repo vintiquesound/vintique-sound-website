@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import PackageSummaryCard from "@/components/build-your-package/PackageSummaryCard";
 import PagedItemNav from "@/components/build-your-package/PagedItemNav";
 import { REPAIR_SERVICE_NOTE_PLACEHOLDERS } from "@/components/build-your-package/service-note-placeholders";
+import { REPAIR_SERVICE_PER_TRACK_CAD_CENTS, cadCentsToDollars } from "@/lib/pricing/catalog";
+import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
 
 import { clampInt, EXTRAS_PRICING, formatCurrency, getLengthSurcharge, TRACK_LENGTH_TIERS } from "./pricing";
 
@@ -31,7 +33,7 @@ const SERVICE_LABELS: Record<ServiceKey, string> = {
   reverbReduction: "Reverb reduction",
 };
 
-const PER_SERVICE_BASE = 10;
+const PER_SERVICE_BASE = cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.hissRemoval);
 
 function createEmptyTrack(): TrackConfig {
   return {
@@ -58,6 +60,8 @@ export type AudioRepairBuilderProps = {
 };
 
 export default function AudioRepairBuilder({ onChangeCategory: _onChangeCategory }: AudioRepairBuilderProps) {
+  useDisplayCurrency();
+
   const [step, setStep] = React.useState<BuilderStep>("tracks");
   const [trackCount, setTrackCount] = React.useState(1);
   const [tracks, setTracks] = React.useState<TrackConfig[]>(() => [createEmptyTrack()]);

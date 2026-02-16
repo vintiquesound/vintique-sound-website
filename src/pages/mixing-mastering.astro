@@ -17,6 +17,7 @@ import CardDescription from "@/components/ui/card/CardDescription.astro";
 import CardAction from "@/components/ui/card/CardAction.astro";
 import Badge from "@/components/ui/Badge.astro";
 import AudioComparison from "@/components/audio/AudioComparison.tsx";
+import PriceText from "@/components/ui/PriceText";
 
 // Local content and assets
 import { services, genreExperience, processSteps, idealClients, technicalDetails, testimonials } from "@/content/webpage/mixing-mastering-data";
@@ -74,7 +75,9 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
               )}
               <CardHeader>
                 <CardTitle class="text-3xl">{service.title}</CardTitle>
-                <p class="mb-0 text-2xl font-bold text-primary">{service.price}</p>
+                <p class="mb-0 text-2xl font-bold text-primary">
+                  <PriceText client:idle cadCents={service.priceCadCents} prefixFrom />
+                </p>
               </CardHeader>
               <CardContent>
                 <CardDescription>{service.description}</CardDescription>
@@ -226,12 +229,12 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
         </div>
 
         <div class="grid lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {testimonials.map((t, i) => (
-            <Card key={i} class="border-2 hover:border-primary transition-all">
+          {testimonials.map((t) => (
+            <Card class="border-2 hover:border-primary transition-all">
               <CardContent>
                 <div class="flex items-center mb-4">
-                  {[...Array(5)].map((_, idx) => (
-                    <Star key={idx} class="h-5 w-5 text-yellow-400 fill-current" />
+                  {[...Array(5)].map(() => (
+                    <Star class="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
                 <p class="text-muted-foreground italic mb-4">{t.quote}</p>

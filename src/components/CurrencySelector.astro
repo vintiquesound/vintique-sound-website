@@ -1,0 +1,16 @@
+---
+import CurrencySelectorMenu from "./CurrencySelectorMenu";
+---
+
+<script is:inline>
+  (() => {
+    const STORAGE_KEY = "display-currency";
+    const allowed = ["CAD", "USD", "EUR", "GBP"];
+    const raw = localStorage.getItem(STORAGE_KEY) || "CAD";
+    const currency = allowed.includes(raw) ? raw : "CAD";
+    localStorage.setItem(STORAGE_KEY, currency);
+    document.documentElement.dataset.displayCurrency = currency;
+  })();
+</script>
+
+<CurrencySelectorMenu client:idle />

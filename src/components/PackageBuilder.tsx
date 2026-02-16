@@ -8,6 +8,17 @@ import {
   EDITING_SERVICE_NOTE_PLACEHOLDERS,
   REPAIR_SERVICE_NOTE_PLACEHOLDERS,
 } from "@/components/build-your-package/service-note-placeholders";
+import {
+  EDITING_SERVICE_PER_TRACK_CAD_CENTS,
+  EXPORTS_PRICING_CAD_CENTS,
+  EXTRAS_PRICING_CAD_CENTS,
+  MIXING_MASTERING_BASE_PRICES_CAD_CENTS,
+  REPAIR_SERVICE_PER_TRACK_CAD_CENTS,
+  cadCentsToDollars,
+} from "@/lib/pricing/catalog";
+import { getDisplayCurrency } from "@/lib/pricing/currency-preference";
+import { convertCadCentsToCurrencyCents, formatMoneyFromCents } from "@/lib/pricing/money";
+import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
 
 type ProjectType = "single" | "album";
 type BuilderStep = "project" | "songs";
@@ -113,44 +124,44 @@ const BASE_SERVICE_PRICING: Record<
   }
 > = {
   mix: {
-    base: 200,
+    base: cadCentsToDollars(MIXING_MASTERING_BASE_PRICES_CAD_CENTS.mix),
     trackTiers: MIXING_TRACK_TIERS,
     songLengthTiers: MIXING_SONG_LENGTH_TIERS,
   },
 
   master: {
-    base: 30,
+    base: cadCentsToDollars(MIXING_MASTERING_BASE_PRICES_CAD_CENTS.master),
     trackTiers: [{ max: 1, surcharge: 0 }],
     songLengthTiers: MASTERING_SONG_LENGTH_TIERS,
   },
 
   mixAndMaster: {
-    base: 220,
+    base: cadCentsToDollars(MIXING_MASTERING_BASE_PRICES_CAD_CENTS.mixAndMaster),
     trackTiers: MIXING_TRACK_TIERS,
     songLengthTiers: MIXING_SONG_LENGTH_TIERS,
   },
 
   stemMaster: {
-    base: 80,
+    base: cadCentsToDollars(MIXING_MASTERING_BASE_PRICES_CAD_CENTS.stemMaster),
     trackTiers: STEM_MASTERING_TRACK_TIERS,
     songLengthTiers: STEM_MASTERING_SONG_LENGTH_TIERS,
   },
 } as const;
 
 const EDITING_SERVICE_PRICING = {
-  timeAlignment: { perTrack: 10 },
-  comping: { perTrack: 10 },
-  vocalTuning: { perTrack: 10 },
-  instrumentTuning: { perTrack: 10 },
-  cleanupNoiseRemoval: { perTrack: 10 },
+  timeAlignment: { perTrack: cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.timeAlignment) },
+  comping: { perTrack: cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.comping) },
+  vocalTuning: { perTrack: cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.vocalTuning) },
+  instrumentTuning: { perTrack: cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.instrumentTuning) },
+  cleanupNoiseRemoval: { perTrack: cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.cleanupNoiseRemoval) },
 } as const;
 
 const REPAIR_SERVICE_PRICING: Record<RepairService, { perTrack: number }> = {
-  hissRemoval: { perTrack: 10 },
-  cracklingRemoval: { perTrack: 10 },
-  clicksPopsRemoval: { perTrack: 10 },
-  plosiveReduction: { perTrack: 10 },
-  reverbReduction: { perTrack: 10 },
+  hissRemoval: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.hissRemoval) },
+  cracklingRemoval: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.cracklingRemoval) },
+  clicksPopsRemoval: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.clicksPopsRemoval) },
+  plosiveReduction: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.plosiveReduction) },
+  reverbReduction: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.reverbReduction) },
 } as const;
 
 const REPAIR_SERVICE_LABELS: Record<RepairService, string> = {
@@ -162,18 +173,18 @@ const REPAIR_SERVICE_LABELS: Record<RepairService, string> = {
 } as const;
 
 const EXPORTS_PRICING = {
-  multitrackExportFlat: 80,
+  multitrackExportFlat: cadCentsToDollars(EXPORTS_PRICING_CAD_CENTS.multitrackExportFlat),
   additionalExports: {
-    instrumental: 20,
-    acapella: 20,
-    radioEdit: 80,
-    cleanVersion: 80,
+    instrumental: cadCentsToDollars(EXPORTS_PRICING_CAD_CENTS.additionalExports.instrumental),
+    acapella: cadCentsToDollars(EXPORTS_PRICING_CAD_CENTS.additionalExports.acapella),
+    radioEdit: cadCentsToDollars(EXPORTS_PRICING_CAD_CENTS.additionalExports.radioEdit),
+    cleanVersion: cadCentsToDollars(EXPORTS_PRICING_CAD_CENTS.additionalExports.cleanVersion),
   },
 } as const;
 
 const EXTRAS_PRICING = {
-  rushService2Days: 100,
-  unlimitedRevisions1Month: 80,
+  rushService2Days: cadCentsToDollars(EXTRAS_PRICING_CAD_CENTS.rushService2Days),
+  unlimitedRevisions1Month: cadCentsToDollars(EXTRAS_PRICING_CAD_CENTS.unlimitedRevisions1Month),
 } as const;
 
 function getSongLengthSurcharge(lengthMinutes: number | null, service?: ServiceSelection): number {
@@ -224,11 +235,10 @@ function clampInt(value: number, min: number, max: number) {
 
 function formatCurrency(amount: number) {
   const normalized = Number.isFinite(amount) ? amount : 0;
-  return normalized.toLocaleString(undefined, {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  });
+  const cadCents = Math.round(normalized * 100);
+  const currency = getDisplayCurrency();
+  const convertedCents = convertCadCentsToCurrencyCents(cadCents, currency);
+  return formatMoneyFromCents(convertedCents, currency);
 }
 
 function createEmptySong(): SongConfig {
@@ -394,6 +404,8 @@ function computeSongBreakdown(song: SongConfig) {
 }
 
 export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: PackageBuilderProps) {
+  useDisplayCurrency();
+
   const [step, setStep] = React.useState<BuilderStep>("project");
   const [songStep, setSongStep] = React.useState<SongStep>("details");
   const [projectType, setProjectType] = React.useState<ProjectType>("single");

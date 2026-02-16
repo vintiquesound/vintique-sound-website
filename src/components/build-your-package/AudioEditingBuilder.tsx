@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import PackageSummaryCard from "@/components/build-your-package/PackageSummaryCard";
 import PagedItemNav from "@/components/build-your-package/PagedItemNav";
 import { EDITING_SERVICE_NOTE_PLACEHOLDERS } from "@/components/build-your-package/service-note-placeholders";
+import { EDITING_SERVICE_PER_TRACK_CAD_CENTS, cadCentsToDollars } from "@/lib/pricing/catalog";
+import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
 
 import { clampInt, EXTRAS_PRICING, formatCurrency, getLengthSurcharge, TRACK_LENGTH_TIERS } from "./pricing";
 
@@ -32,7 +34,7 @@ const SERVICE_LABELS: Record<ServiceKey, string> = {
 };
 
 
-const PER_SERVICE_BASE = 10;
+const PER_SERVICE_BASE = cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.timeAlignment);
 
 function createEmptyTrack(): TrackConfig {
   return {
@@ -59,6 +61,8 @@ export type AudioEditingBuilderProps = {
 };
 
 export default function AudioEditingBuilder({ onChangeCategory: _onChangeCategory }: AudioEditingBuilderProps) {
+  useDisplayCurrency();
+
   const [step, setStep] = React.useState<BuilderStep>("tracks");
   const [trackCount, setTrackCount] = React.useState(1);
   const [tracks, setTracks] = React.useState<TrackConfig[]>(() => [createEmptyTrack()]);

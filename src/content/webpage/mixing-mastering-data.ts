@@ -1,3 +1,5 @@
+import { MIXING_MASTERING_BASE_PRICES_CAD_CENTS } from "src/lib/pricing/catalog.ts";
+
 export const services = [
   {
     title: "Mixing",
@@ -11,7 +13,7 @@ export const services = [
       "Creative effects and automation",
       "Detailed mix referencing and quality checks",
     ],
-    price: "from $200",
+    priceCadCents: MIXING_MASTERING_BASE_PRICES_CAD_CENTS.mix,
     color: "primary",
   },
   {
@@ -26,7 +28,7 @@ export const services = [
       "Multiple format delivery",
       "Platform-specific masters available",
     ],
-    price: "from $30",
+    priceCadCents: MIXING_MASTERING_BASE_PRICES_CAD_CENTS.master,
     color: "secondary",
   },
   {
@@ -41,7 +43,7 @@ export const services = [
       "Fewer revisions due to end-to-end consistency",
       "Best overall value for full production",
     ],
-    price: "from $220",
+    priceCadCents: MIXING_MASTERING_BASE_PRICES_CAD_CENTS.mixAndMaster,
     color: "accent",
     badge: "Best Value",
   },
@@ -57,7 +59,7 @@ export const services = [
       "Ideal for EDM and hip-hop",
       "Available for up to 12 stems",
     ],
-    price: "from $80",
+    priceCadCents: MIXING_MASTERING_BASE_PRICES_CAD_CENTS.stemMaster,
     color: "primary",
   },
 ];
