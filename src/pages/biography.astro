@@ -12,7 +12,8 @@ import CardHeader from "@/components/ui/card/CardHeader.astro";
 import CardTitle from "@/components/ui/card/CardTitle.astro";
 import CardDescription from "@/components/ui/card/CardDescription.astro";
 
-import { ArrowLeft, ArrowRight } from "lucide-astro";
+import Badge from "@/components/ui/Badge.astro";
+import { ArrowLeft, ArrowRight, Drum, Guitar, Headphones, Plane, Users, GraduationCap } from "lucide-astro";
 import KevinAtSteinbergImage from "@/assets/website/biography-kevano_at_steinberg_headquarters.jpeg";
 import KevinStudioImage from "@/assets/website/about-kevin_ulliac-in_the_studio.jpg";
 import KevinFestivalImage from "@/assets/website/biography-kevano_evano-moon_landing.jpg";
@@ -37,12 +38,19 @@ import KevinMountainImage from "@/assets/website/biography-kevano-snowboard_moun
     imageAlt="Kevin Ulliac at Steinberg headquarters in Hamburg, Germany"
   />
 
-  <DoubleColumnContainer outerClass="py-16">
+  <DoubleColumnContainer outerClass="py-16" extraOuterClass="bg-muted/40">
     <div slot="left">
-      <Card>
+      <Card class="border-l-4 border-l-primary hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle>Early years</CardTitle>
-          <CardDescription>Where the music obsession started</CardDescription>
+          <div class="flex items-center gap-3 mb-1">
+            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+              <Drum class="h-5 w-5 text-primary" />
+            </div>
+            <div>
+              <CardTitle>Early years</CardTitle>
+              <CardDescription>Where the music obsession started</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent class="space-y-4">
           <p class="leading-relaxed">
@@ -56,49 +64,81 @@ import KevinMountainImage from "@/assets/website/biography-kevano-snowboard_moun
     </div>
 
     <div slot="right">
-      <Card>
+      <Card class="border-l-4 border-l-secondary hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle>Bands &amp; creative outlets</CardTitle>
-          <CardDescription>From covers to originals to genre experiments</CardDescription>
+          <div class="flex items-center gap-3 mb-1">
+            <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
+              <Guitar class="h-5 w-5 text-secondary" />
+            </div>
+            <div>
+              <CardTitle>Bands &amp; creative outlets</CardTitle>
+              <CardDescription>From covers to originals to genre experiments</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent class="space-y-4">
           <p class="leading-relaxed">
             My first band was called "Doofeye." We were a cover band and played our first concert called "Doofest 2002."
             I switched out between drummer and guitarist. I was the drummer in two other bands "Lacewing" &amp;
-            "The Equation" (all originals this time). And I even started my own 1-piece band called "Sirloin Casket"
-            which was my creative outlet to experiment with different genres.
+            "The Equation" (all originals this time). I even started my own 1-piece band called "Sirloin Casket" which
+            was my creative outlet to experiment with different genres and to learn more about songwriting and production.
           </p>
         </CardContent>
       </Card>
     </div>
   </DoubleColumnContainer>
 
-  <SingleColumnContainer outerClass="pt-0 pb-16">
-    <Card>
+  <SingleColumnContainer outerClass="py-16" extraOuterClass="bg-secondary/10">
+    <Card class="overflow-hidden border-t-4 border-t-accent hover:shadow-lg transition-shadow">
       <CardHeader>
-        <CardTitle>Recording / Mixing / Mastering</CardTitle>
-        <CardDescription>The path to Cubase, services, and YouTube</CardDescription>
+        <div class="flex items-center gap-3 mb-1">
+          <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+            <Headphones class="h-5 w-5 text-accent" />
+          </div>
+          <div>
+            <CardTitle>Recording / Mixing / Mastering</CardTitle>
+            <CardDescription>The path to Cubase, services, and YouTube</CardDescription>
+          </div>
+        </div>
       </CardHeader>
       <CardContent class="space-y-4">
-        <p class="leading-relaxed">
-          I was experimenting with Recording/Mixing/Mastering as of about 2002. My first DAW was Cool Edit Pro,
-          then Adobe Audition once they bought them out in 2003. I bought myself a Korg D4 portable recorder,
-          then later a Zoom R16. It wasn&apos;t until about 2012 when I decide to get serious with Audio Engineering.
-        </p>
-        <p class="leading-relaxed">
-          I bought Cubase Pro 6.5 and an audio interface and some studio monitors. I started producing Electronic Music
-          under the alias Phantom Limb (dubstep) &amp; a few years later as Antoku (deep house/nu disco) and more
-          recently as Rhythm Ace (chill hip hop). I also started providing services to bands and started a YouTube Channel.
-        </p>
+        <div class="flex flex-col md:flex-row gap-6">
+          <div class="space-y-4 flex-1">
+            <Badge variant="outline" text="2002 – 2012" size="sm" />
+            <p class="leading-relaxed">
+              I was experimenting with Recording/Mixing/Mastering as of about 2002. My first DAW was Cool Edit Pro,
+              then Adobe Audition once they bought them out in 2003. I bought myself a Korg D4 portable recorder,
+              then later a Zoom R16. It wasn&apos;t until about 2012 when I decide to get serious with Audio Engineering.
+            </p>
+          </div>
+          <div class="hidden md:block w-px bg-border" />
+          <div class="space-y-4 flex-1">
+            <Badge variant="outline" text="2012 – Present" size="sm" />
+            <p class="leading-relaxed">
+              I bought Cubase Pro 6.5 and an audio interface and some studio monitors. I started producing Electronic Music
+              under the alias Phantom Limb (dubstep) &amp; a few years later as Antoku (deep house/nu disco) and more
+              recently as Rhythm Ace (chill hip hop). I also started providing services to bands and started a YouTube Channel.
+            </p>
+          </div>
+        </div>
       </CardContent>
     </Card>
   </SingleColumnContainer>
 
-  <SingleColumnContainer outerClass="pt-0 pb-16">
-    <Card>
+  <SingleColumnContainer outerClass="py-16">
+    <Card class="relative overflow-hidden border-2 border-primary/20 bg-linear-to-br from-primary/5 to-accent/5 hover:border-primary/40 transition-colors">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2" />
       <CardHeader>
-        <CardTitle>A visit to Steinberg headquarters in Hamburg, Germany</CardTitle>
-        <CardDescription>A memorable professional milestone in my audio journey</CardDescription>
+        <div class="flex items-center gap-3 mb-1">
+          <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+            <Plane class="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <Badge variant="solid" text="2019" size="sm" bgColor="bg-primary text-primary-foreground" />
+            <CardTitle>A visit to Steinberg headquarters in Hamburg, Germany</CardTitle>
+            <CardDescription>A memorable professional milestone in my audio journey</CardDescription>
+          </div>
+        </div>
       </CardHeader>
       <CardContent class="space-y-4">
         <p class="leading-relaxed">
@@ -112,11 +152,16 @@ import KevinMountainImage from "@/assets/website/biography-kevano-snowboard_moun
     </Card>
   </SingleColumnContainer>
 
-  <SingleColumnContainer outerClass="py-0">
-    <div class="grid gap-4 md:grid-cols-2">
-      <Card>
+  <DoubleColumnContainer outerClass="py-16" extraOuterClass="bg-accent/10">
+    <div slot="left">
+      <Card class="border-l-4 border-l-accent hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle>Artists &amp; credits</CardTitle>
+          <div class="flex items-center gap-3 mb-1">
+            <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+              <Users class="h-5 w-5 text-accent" />
+            </div>
+            <CardTitle>Artists &amp; credits</CardTitle>
+          </div>
         </CardHeader>
         <CardContent class="space-y-4">
           <p class="leading-relaxed">
@@ -126,10 +171,17 @@ import KevinMountainImage from "@/assets/website/biography-kevano-snowboard_moun
           </p>
         </CardContent>
       </Card>
+    </div>
 
-      <Card>
+    <div slot="right">
+      <Card class="border-l-4 border-l-secondary hover:shadow-lg transition-shadow">
         <CardHeader>
-          <CardTitle>Fun fact</CardTitle>
+          <div class="flex items-center gap-3 mb-1">
+            <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
+              <GraduationCap class="h-5 w-5 text-secondary" />
+            </div>
+            <CardTitle>Fun fact</CardTitle>
+          </div>
         </CardHeader>
         <CardContent>
           <p class="leading-relaxed">
@@ -140,7 +192,7 @@ import KevinMountainImage from "@/assets/website/biography-kevano-snowboard_moun
         </CardContent>
       </Card>
     </div>
-  </SingleColumnContainer>
+  </DoubleColumnContainer>
 
   <TripleColumnContainer outerClass="py-16">
     <Fragment slot="header">
