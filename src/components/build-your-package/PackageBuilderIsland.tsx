@@ -50,7 +50,7 @@ export default function PackageBuilderIsland() {
                   setActiveCategory(key);
                   setIsChoosingCategory(false);
                 }}
-                className="rounded-xl border border-border p-5 text-left hover:bg-muted/40 hover:border-primary transition"
+                className="rounded-xl border border-border p-5 text-left hover:bg-muted/40 hover:border-primary cursor-pointer transition"
               >
                 <div className="space-y-1">
                   <div className="font-semibold">{CATEGORY_META[key].title}</div>

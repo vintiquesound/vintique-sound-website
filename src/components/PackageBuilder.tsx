@@ -64,8 +64,7 @@ export type PackageBuilderProps = {
 };
 
 const MIXING_TRACK_TIERS: TrackCountTier[] = [
-  { max: 1, surcharge: 0 },
-  { max: 4, surcharge: 5 },
+  { max: 4, surcharge: 0 },
   { max: 8, surcharge: 10 },
   { max: 12, surcharge: 15 },
   { max: 16, surcharge: 20 },
@@ -86,33 +85,42 @@ const STEM_MASTERING_TRACK_TIERS: TrackCountTier[] = [
 ];
 
 const MIXING_SONG_LENGTH_TIERS: SongLengthTier[] = [
-  { max: 1, surcharge: 0 },
-  { max: 2, surcharge: 10 },
-  { max: 4, surcharge: 20 },
-  { max: 6, surcharge: 30 },
-  { max: 8, surcharge: 40 },
-  { max: 12, surcharge: 60 },
-  { max: 16, surcharge: 80 },
+  { max: 2, surcharge: 0 },
+  { max: 4, surcharge: 10 },
+  { max: 6, surcharge: 20 },
+  { max: 8, surcharge: 30 },
+  { max: 10, surcharge: 40 },
+  { max: 12, surcharge: 50 },
+  { max: 14, surcharge: 60 },
+  { max: 16, surcharge: 70 },
+  { max: 18, surcharge: 80 },
+  { max: 20, surcharge: 90 },
 ];
 
 const MASTERING_SONG_LENGTH_TIERS: SongLengthTier[] = [
-  { max: 1, surcharge: 0 },
-  { max: 2, surcharge: 10 },
-  { max: 4, surcharge: 20 },
-  { max: 6, surcharge: 25 },
-  { max: 8, surcharge: 30 },
-  { max: 12, surcharge: 40 },
-  { max: 16, surcharge: 50 },
+  { max: 2, surcharge: 0 },
+  { max: 4, surcharge: 5 },
+  { max: 6, surcharge: 10 },
+  { max: 8, surcharge: 15 },
+  { max: 10, surcharge: 20 },
+  { max: 12, surcharge: 25 },
+  { max: 14, surcharge: 30 },
+  { max: 16, surcharge: 35 },
+  { max: 18, surcharge: 40 },
+  { max: 20, surcharge: 45 },
 ];
 
 const STEM_MASTERING_SONG_LENGTH_TIERS: SongLengthTier[] = [
-  { max: 1, surcharge: 0 },
-  { max: 2, surcharge: 5 },
+  { max: 2, surcharge: 0 },
   { max: 4, surcharge: 10 },
-  { max: 6, surcharge: 15 },
-  { max: 8, surcharge: 20 },
-  { max: 12, surcharge: 30 },
-  { max: 16, surcharge: 40 },
+  { max: 6, surcharge: 20 },
+  { max: 8, surcharge: 30 },
+  { max: 10, surcharge: 40 },
+  { max: 12, surcharge: 50 },
+  { max: 14, surcharge: 60 },
+  { max: 16, surcharge: 70 },
+  { max: 18, surcharge: 80 },
+  { max: 20, surcharge: 90 },
 ];
 
 const BASE_SERVICE_PRICING: Record<
@@ -279,6 +287,67 @@ function ensureSongCount(songs: SongConfig[], desiredCount: number) {
   return next;
 }
 
+function isSongOptionsUnconfigured(song: SongConfig) {
+  const empty = createEmptySong();
+  return (
+    song.service === empty.service &&
+    song.trackCount === empty.trackCount &&
+    song.lengthMinutes === empty.lengthMinutes &&
+    song.multitrackExport === empty.multitrackExport &&
+    song.rushService2Days === empty.rushService2Days &&
+    song.unlimitedRevisions1Month === empty.unlimitedRevisions1Month &&
+    song.additionalMixVersions.instrumental === empty.additionalMixVersions.instrumental &&
+    song.additionalMixVersions.acapella === empty.additionalMixVersions.acapella &&
+    song.additionalMixVersions.radioEdit === empty.additionalMixVersions.radioEdit &&
+    song.additionalMixVersions.cleanVersion === empty.additionalMixVersions.cleanVersion &&
+    (Object.keys(song.editingServices) as Array<keyof SongConfig["editingServices"]>).every((key) => {
+      const current = song.editingServices[key];
+      const baseline = empty.editingServices[key];
+      return (
+        current.enabled === baseline.enabled &&
+        current.trackCount === baseline.trackCount &&
+        current.notes === baseline.notes
+      );
+    }) &&
+    (Object.keys(song.repairServices) as Array<keyof SongConfig["repairServices"]>).every((key) => {
+      const current = song.repairServices[key];
+      const baseline = empty.repairServices[key];
+      return (
+        current.enabled === baseline.enabled &&
+        current.trackCount === baseline.trackCount &&
+        current.notes === baseline.notes
+      );
+    })
+  );
+}
+
+function cloneSongOptionsFromSource(source: SongConfig, name: string): SongConfig {
+  return {
+    name,
+    service: source.service,
+    trackCount: source.trackCount,
+    lengthMinutes: source.lengthMinutes,
+    editingServices: {
+      timeAlignment: { ...source.editingServices.timeAlignment },
+      comping: { ...source.editingServices.comping },
+      vocalTuning: { ...source.editingServices.vocalTuning },
+      instrumentTuning: { ...source.editingServices.instrumentTuning },
+      cleanupNoiseRemoval: { ...source.editingServices.cleanupNoiseRemoval },
+    },
+    repairServices: {
+      hissRemoval: { ...source.repairServices.hissRemoval },
+      cracklingRemoval: { ...source.repairServices.cracklingRemoval },
+      clicksPopsRemoval: { ...source.repairServices.clicksPopsRemoval },
+      plosiveReduction: { ...source.repairServices.plosiveReduction },
+      reverbReduction: { ...source.repairServices.reverbReduction },
+    },
+    multitrackExport: source.multitrackExport,
+    additionalMixVersions: { ...source.additionalMixVersions },
+    rushService2Days: source.rushService2Days,
+    unlimitedRevisions1Month: source.unlimitedRevisions1Month,
+  };
+}
+
 function getAdditionalExportsPrice(versions: Record<AdditionalMixVersion, boolean>) {
   let total = 0;
   if (versions.instrumental) total += EXPORTS_PRICING.additionalExports.instrumental;
@@ -415,7 +484,6 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
 
   const [songs, setSongs] = React.useState<SongConfig[]>(() => [createEmptySong()]);
   const [activeSongIndex, setActiveSongIndex] = React.useState(0);
-  const [duplicateToNextSong, setDuplicateToNextSong] = React.useState(false);
 
   const inputClassName =
     "flex h-10 w-full rounded-md border border-input bg-input-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
@@ -442,7 +510,6 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
   React.useEffect(() => {
     if (step !== "songs") return;
     setSongStep("details");
-    setDuplicateToNextSong(false);
   }, [activeSongIndex, step]);
 
   const total = React.useMemo(() => songs.reduce((sum, song) => sum + computeSongPrice(song), 0), [
@@ -590,45 +657,34 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
     });
   }
 
-  function goToNextSong() {
-    if (activeSongIndex >= songs.length - 1) return;
+  function applyDefaultsToSongIfEligible(targetIndex: number) {
+    setSongs((prev) => {
+      if (targetIndex <= 0 || targetIndex >= prev.length) return prev;
+      const target = prev[targetIndex];
+      if (!target || !isSongOptionsUnconfigured(target)) return prev;
+      const source = prev[targetIndex - 1];
+      if (!source) return prev;
 
-    if (duplicateToNextSong) {
-      setSongs((prev) => {
-        const next = prev.slice();
-        const current = next[activeSongIndex] ?? createEmptySong();
-        const target = next[activeSongIndex + 1] ?? createEmptySong();
-        next[activeSongIndex + 1] = {
-          ...target,
-          service: current.service,
-          trackCount: current.trackCount,
-          lengthMinutes: current.lengthMinutes,
-          editingServices: {
-            timeAlignment: { ...current.editingServices.timeAlignment, notes: "" },
-            vocalTuning: { ...current.editingServices.vocalTuning, notes: "" },
-            comping: { ...current.editingServices.comping, notes: "" },
-            instrumentTuning: { ...current.editingServices.instrumentTuning, notes: "" },
-            cleanupNoiseRemoval: { ...current.editingServices.cleanupNoiseRemoval, notes: "" },
-          },
-          repairServices: {
-            hissRemoval: { ...current.repairServices.hissRemoval, notes: "" },
-            cracklingRemoval: { ...current.repairServices.cracklingRemoval, notes: "" },
-            clicksPopsRemoval: { ...current.repairServices.clicksPopsRemoval, notes: "" },
-            plosiveReduction: { ...current.repairServices.plosiveReduction, notes: "" },
-            reverbReduction: { ...current.repairServices.reverbReduction, notes: "" },
-          },
-          multitrackExport: current.multitrackExport,
-          additionalMixVersions: { ...current.additionalMixVersions },
-          rushService2Days: current.rushService2Days,
-          unlimitedRevisions1Month: current.unlimitedRevisions1Month,
-          // Do not copy song name.
-          name: "",
-        };
-        return next;
-      });
+      const next = prev.slice();
+      next[targetIndex] = cloneSongOptionsFromSource(source, target.name);
+      return next;
+    });
+  }
+
+  function goToSong(index: number) {
+    const bounded = clampInt(index, 0, Math.max(0, songs.length - 1));
+    if (bounded === activeSongIndex) return;
+
+    if (bounded === activeSongIndex + 1) {
+      applyDefaultsToSongIfEligible(bounded);
     }
 
-    setActiveSongIndex((i) => Math.min(songs.length - 1, i + 1));
+    setActiveSongIndex(bounded);
+  }
+
+  function goToNextSong() {
+    if (activeSongIndex >= songs.length - 1) return;
+    goToSong(activeSongIndex + 1);
   }
 
   return (
@@ -762,8 +818,8 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                         itemLabel="Song"
                         currentIndex={activeSongIndex}
                         total={songs.length}
-                        onPrevious={() => setActiveSongIndex((i) => Math.max(0, i - 1))}
-                        onNext={() => setActiveSongIndex((i) => Math.min(songs.length - 1, i + 1))}
+                        onPrevious={() => goToSong(activeSongIndex - 1)}
+                        onNext={() => goToSong(activeSongIndex + 1)}
                       />
                     </div>
 
@@ -819,8 +875,8 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                         itemLabel="Song"
                         currentIndex={activeSongIndex}
                         total={songs.length}
-                        onPrevious={() => setActiveSongIndex((i) => Math.max(0, i - 1))}
-                        onNext={() => setActiveSongIndex((i) => Math.min(songs.length - 1, i + 1))}
+                        onPrevious={() => goToSong(activeSongIndex - 1)}
+                        onNext={() => goToSong(activeSongIndex + 1)}
                       />
                     </div>
 
@@ -998,8 +1054,8 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                         itemLabel="Song"
                         currentIndex={activeSongIndex}
                         total={songs.length}
-                        onPrevious={() => setActiveSongIndex((i) => Math.max(0, i - 1))}
-                        onNext={() => setActiveSongIndex((i) => Math.min(songs.length - 1, i + 1))}
+                        onPrevious={() => goToSong(activeSongIndex - 1)}
+                        onNext={() => goToSong(activeSongIndex + 1)}
                       />
                     </div>
 
@@ -1386,8 +1442,8 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                         itemLabel="Song"
                         currentIndex={activeSongIndex}
                         total={songs.length}
-                        onPrevious={() => setActiveSongIndex((i) => Math.max(0, i - 1))}
-                        onNext={() => setActiveSongIndex((i) => Math.min(songs.length - 1, i + 1))}
+                        onPrevious={() => goToSong(activeSongIndex - 1)}
+                        onNext={() => goToSong(activeSongIndex + 1)}
                       />
                     </div>
 
@@ -1506,8 +1562,8 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                         itemLabel="Song"
                         currentIndex={activeSongIndex}
                         total={songs.length}
-                        onPrevious={() => setActiveSongIndex((i) => Math.max(0, i - 1))}
-                        onNext={() => setActiveSongIndex((i) => Math.min(songs.length - 1, i + 1))}
+                        onPrevious={() => goToSong(activeSongIndex - 1)}
+                        onNext={() => goToSong(activeSongIndex + 1)}
                       />
                     </div>
 
@@ -1559,17 +1615,6 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                     </label>
                   </div>
 
-                  {songs.length > 1 && activeSongIndex < songs.length - 1 && (
-                    <label className="flex items-center gap-3 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={duplicateToNextSong}
-                        onChange={(e) => setDuplicateToNextSong(e.target.checked)}
-                      />
-                      Duplicate these options to next song
-                    </label>
-                  )}
-
                   <div className="flex flex-col gap-1">
                     <p className="text-sm text-muted-foreground self-end">
                       Step 5 of 6
@@ -1609,8 +1654,8 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                         itemLabel="Song"
                         currentIndex={activeSongIndex}
                         total={songs.length}
-                        onPrevious={() => setActiveSongIndex((i) => Math.max(0, i - 1))}
-                        onNext={() => setActiveSongIndex((i) => Math.min(songs.length - 1, i + 1))}
+                        onPrevious={() => goToSong(activeSongIndex - 1)}
+                        onNext={() => goToSong(activeSongIndex + 1)}
                       />
                     </div>
 

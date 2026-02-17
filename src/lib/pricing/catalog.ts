@@ -2,9 +2,9 @@ export type BaseService = "mix" | "master" | "mixAndMaster" | "stemMaster";
 
 export const MIXING_MASTERING_BASE_PRICES_CAD_CENTS: Record<BaseService, number> = {
   mix: 20000,
-  master: 3000,
-  mixAndMaster: 22000,
-  stemMaster: 8000,
+  master: 4000,
+  mixAndMaster: 23000,
+  stemMaster: 10000,
 } as const;
 
 export const TRACK_LENGTH_TIERS_CAD_CENTS = [
