@@ -1,14 +1,26 @@
 ---
-import CurrencySelectorMenu from "./CurrencySelectorMenu";
+import CurrencySelectorMenu from "./CurrencySelectorMenu"
+import {
+  DEFAULT_DISPLAY_CURRENCY,
+  DISPLAY_CURRENCY_STORAGE_KEY,
+  getAllowedDisplayCurrencies,
+} from "@/lib/pricing/currency-preference"
+
+const allowedDisplayCurrencies = getAllowedDisplayCurrencies()
 ---
 
-<script is:inline>
+<script
+  is:inline
+  define:vars={{
+    storageKey: DISPLAY_CURRENCY_STORAGE_KEY,
+    allowed: allowedDisplayCurrencies,
+    fallback: DEFAULT_DISPLAY_CURRENCY,
+  }}
+>
   (() => {
-    const STORAGE_KEY = "display-currency";
-    const allowed = ["CAD", "USD", "EUR", "GBP"];
-    const raw = localStorage.getItem(STORAGE_KEY) || "CAD";
-    const currency = allowed.includes(raw) ? raw : "CAD";
-    localStorage.setItem(STORAGE_KEY, currency);
+    const raw = localStorage.getItem(storageKey) || fallback;
+    const currency = allowed.includes(raw) ? raw : fallback;
+    localStorage.setItem(storageKey, currency);
     document.documentElement.dataset.displayCurrency = currency;
   })();
 </script>

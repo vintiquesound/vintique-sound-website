@@ -19,7 +19,11 @@ const mobileLinkBase =
   "block w-full py-3 px-4 text-base text-(--text) hover:text-accent no-underline transition-colors"
 ---
 
-<header class="sticky top-0 z-50 border-b border-border bg-background backdrop-blur-lg supports-backdrop-filter:bg-background/80">
+<header class="sticky top-0 z-50 border-b border-border isolate">
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 -z-10 bg-background backdrop-blur-lg supports-backdrop-filter:bg-background/85"
+  ></div>
   <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
     <nav class="flex items-center justify-between">
       <a href="/" aria-label={SITE_TITLE} class="inline-block shrink-0 no-underline text-(--text)">
@@ -94,19 +98,27 @@ const mobileLinkBase =
   const panel = document.getElementById("mobile-nav");
 
   if (button instanceof HTMLButtonElement && panel) {
-    const setOpen = (open) => {
+    const setMenuOpen = (open) => {
       panel.hidden = !open;
       button.setAttribute("aria-expanded", String(open));
+      button.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     };
 
-    setOpen(false);
+    setMenuOpen(false);
 
     button.addEventListener("click", () => {
-      setOpen(panel.hidden);
+      setMenuOpen(panel.hidden);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      if (panel.hidden) return;
+      setMenuOpen(false);
+      button.focus();
     });
 
     window.addEventListener("resize", () => {
-      if (window.matchMedia("(min-width: 768px)").matches) setOpen(false);
+      if (window.matchMedia("(min-width: 768px)").matches) setMenuOpen(false);
     });
   }
 </script>

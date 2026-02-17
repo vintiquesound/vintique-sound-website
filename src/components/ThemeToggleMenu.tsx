@@ -1,16 +1,26 @@
 import * as React from "react"
 import { Check, Monitor, Moon, Sun } from "lucide-react"
 
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  HeaderDropdownMenu,
+  headerDropdownItemClass,
+} from "@/components/ui/HeaderDropdownMenu"
 
 type ThemeMode = "light" | "dark" | "system"
 
 const STORAGE_KEY = "theme-mode"
+const THEME_OPTIONS = [
+  { value: "light", label: "Light", Icon: Sun },
+  { value: "dark", label: "Dark", Icon: Moon },
+  { value: "system", label: "System", Icon: Monitor },
+] as const
+
+const triggerIconClassByMode: Record<ThemeMode, string> = {
+  light: "hidden leading-none in-data-[theme-mode=light]:inline-flex",
+  dark: "hidden leading-none in-data-[theme-mode=dark]:inline-flex",
+  system: "hidden leading-none in-data-[theme-mode=system]:inline-flex",
+}
 
 export default function ThemeToggleMenu() {
   const [mode, setMode] = React.useState<ThemeMode>("system")
@@ -43,78 +53,38 @@ export default function ThemeToggleMenu() {
   }, [])
 
   return (
-    <DropdownMenu modal={false}>
-      <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          className="inline-flex items-center justify-center py-4 px-2 bg-transparent border-0 cursor-pointer text-(--text) hover:text-accent focus:text-accent border-b-4 border-transparent focus-visible:outline-none transition-colors"
-          aria-haspopup="menu"
-          aria-label="Theme"
-        >
-          <span
-            className="hidden leading-none in-data-[theme-mode=light]:inline-flex"
-            aria-hidden="true"
-          >
-            <Sun size={18} />
-          </span>
-          <span
-            className="hidden leading-none in-data-[theme-mode=dark]:inline-flex"
-            aria-hidden="true"
-          >
-            <Moon size={18} />
-          </span>
-          <span
-            className="hidden leading-none in-data-[theme-mode=system]:inline-flex"
-            aria-hidden="true"
-          >
-            <Monitor size={18} />
-          </span>
-        </button>
-      </DropdownMenuTrigger>
-
-      <DropdownMenuContent
-        align="end"
-        className="min-w-40 p-1 rounded-[10px] bg-background/95 supports-backdrop-filter:bg-background/80 backdrop-blur-lg border border-border shadow-md z-30 text-(--text)"
-      >
-        <DropdownMenuItem
-          className="flex items-center justify-between gap-3 py-[0.6rem] px-3 rounded-lg cursor-pointer"
-          onSelect={() => setThemeMode("light")}
-        >
-          <span className="flex items-center gap-2">
-            <span className="inline-flex leading-none" aria-hidden="true">
-              <Sun size={18} />
+    <HeaderDropdownMenu
+      ariaLabel="Theme"
+      align="end"
+      contentClassName="min-w-40"
+      trigger={(
+        <>
+          {THEME_OPTIONS.map(({ value, Icon }) => (
+            <span key={value} className={triggerIconClassByMode[value]} aria-hidden="true">
+              <Icon size={18} />
             </span>
-            <span>Light</span>
-          </span>
-          {mode === "light" ? <Check className="size-4" aria-hidden="true" /> : null}
-        </DropdownMenuItem>
-
-        <DropdownMenuItem
-          className="flex items-center justify-between gap-3 py-[0.6rem] px-3 rounded-lg cursor-pointer"
-          onSelect={() => setThemeMode("dark")}
-        >
-          <span className="flex items-center gap-2">
-            <span className="inline-flex leading-none" aria-hidden="true">
-              <Moon size={18} />
-            </span>
-            <span>Dark</span>
-          </span>
-          {mode === "dark" ? <Check className="size-4" aria-hidden="true" /> : null}
-        </DropdownMenuItem>
-
-        <DropdownMenuItem
-          className="flex items-center justify-between gap-3 py-[0.6rem] px-3 rounded-lg cursor-pointer"
-          onSelect={() => setThemeMode("system")}
-        >
-          <span className="flex items-center gap-2">
-            <span className="inline-flex leading-none" aria-hidden="true">
-              <Monitor size={18} />
-            </span>
-            <span>System</span>
-          </span>
-          {mode === "system" ? <Check className="size-4" aria-hidden="true" /> : null}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          ))}
+        </>
+      )}
+      content={(
+        <>
+          {THEME_OPTIONS.map(({ value, label, Icon }) => (
+            <DropdownMenuItem
+              key={value}
+              className={headerDropdownItemClass}
+              onSelect={() => setThemeMode(value)}
+            >
+              <span className="flex items-center gap-2">
+                <span className="inline-flex leading-none" aria-hidden="true">
+                  <Icon size={18} />
+                </span>
+                <span>{label}</span>
+              </span>
+              {mode === value ? <Check className="size-4" aria-hidden="true" /> : null}
+            </DropdownMenuItem>
+          ))}
+        </>
+      )}
+    />
   )
 }

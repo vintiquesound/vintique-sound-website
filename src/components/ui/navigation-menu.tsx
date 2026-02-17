@@ -85,23 +85,32 @@ function NavigationMenuTrigger({
 const navigationMenuContentMotion =
   "data-[motion^=from-]:animate-in data-[motion^=to-]:animate-out data-[motion^=from-]:fade-in data-[motion^=to-]:fade-out data-[motion=from-end]:slide-in-from-right-52 data-[motion=from-start]:slide-in-from-left-52 data-[motion=to-end]:slide-out-to-right-52 data-[motion=to-start]:slide-out-to-left-52 top-0 left-0 w-full p-2 pr-2.5 md:absolute md:w-auto"
 
-const navigationMenuGlassSurface =
-  "rounded-[10px] bg-background/95 supports-backdrop-filter:bg-background/80 backdrop-blur-lg border border-border shadow-md z-30 text-(--text)"
+const navigationMenuContentLayout =
+  "top-0 left-0 w-full p-2 pr-2.5 md:absolute md:w-auto"
 
-const navigationMenuContentSurface =
-  "top-full mt-1.5 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 **:data-[slot=navigation-menu-link]:focus:ring-0 **:data-[slot=navigation-menu-link]:focus:outline-none"
+const navigationMenuGlassSurface =
+  "rounded-[10px] bg-background/95 supports-backdrop-filter:bg-background/95 backdrop-blur-lg border border-border shadow-md z-30 text-(--text)"
+
+const navigationMenuContentSurfaceBase =
+  "top-full mt-1.5 **:data-[slot=navigation-menu-link]:focus:ring-0 **:data-[slot=navigation-menu-link]:focus:outline-none"
+
+const navigationMenuContentSurfaceMotion =
+  "duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0"
 
 function NavigationMenuContent({
+  disableMotion = false,
   className,
   ...props
-}: React.ComponentProps<typeof NavigationMenuPrimitive.Content>) {
+}: React.ComponentProps<typeof NavigationMenuPrimitive.Content> & {
+  disableMotion?: boolean
+}) {
   return (
     <NavigationMenuPrimitive.Content
       data-slot="navigation-menu-content"
       className={cn(
-        navigationMenuContentMotion,
-        navigationMenuGlassSurface,
-        navigationMenuContentSurface,
+        disableMotion ? navigationMenuContentLayout : navigationMenuContentMotion,
+        navigationMenuContentSurfaceBase,
+        !disableMotion && navigationMenuContentSurfaceMotion,
         className
       )}
       {...props}

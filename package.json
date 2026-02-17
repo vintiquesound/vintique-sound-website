@@ -10,6 +10,7 @@
     "fx:update-weekly": "node scripts/update-fx-weekly.mjs"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.6",
     "@astrojs/react": "4.4.2",
     "@astrojs/rss": "^4.0.15",
     "@astrojs/sitemap": "^3.7.0",
@@ -32,6 +33,7 @@
     "sharp": "^0.34.2",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3",
     "wavesurfer.js": "^7.12.1"
   },
   "devDependencies": {

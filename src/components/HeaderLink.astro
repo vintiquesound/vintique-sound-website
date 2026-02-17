@@ -14,7 +14,7 @@ const isActive = isNavLinkActive(pathname, href)
 <a
   href={href}
   class:list={[
-    "inline-block no-underline text-[var(--text)] hover:text-[var(--accent)] transition-colors",
+    "inline-block no-underline text-(--text) hover:text-accent transition-colors",
     className,
     { "font-bold underline": isActive },
   ]}

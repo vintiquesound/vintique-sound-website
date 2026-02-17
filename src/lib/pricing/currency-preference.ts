@@ -4,7 +4,7 @@ import { isCurrencyCode, type CurrencyCode } from "@/lib/pricing/types";
 export const DISPLAY_CURRENCY_STORAGE_KEY = "display-currency";
 export const DISPLAY_CURRENCY_EVENT = "display-currency-change";
 
-const DEFAULT_DISPLAY_CURRENCY: CurrencyCode = "CAD";
+export const DEFAULT_DISPLAY_CURRENCY: CurrencyCode = "CAD";
 
 function getAllowedCurrencies(): readonly CurrencyCode[] {
   return getActiveProviderSupportedCurrencies();
