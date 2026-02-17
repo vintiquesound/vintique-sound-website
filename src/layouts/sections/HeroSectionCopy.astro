@@ -7,9 +7,13 @@ type HeroSectionCopyProps = {
 	subtitle?: string;
 	solidButton: CtaButton;
 	outlineButton?: CtaButton;
+	textLink?: {
+		label: string;
+		href: string;
+	};
 };
 
-const { title, subtitle, solidButton, outlineButton } = Astro.props as HeroSectionCopyProps;
+const { title, subtitle, solidButton, outlineButton, textLink } = Astro.props as HeroSectionCopyProps;
 
 const solidButtonSize = solidButton.size ?? "lg";
 const outlineButtonSize = outlineButton?.size ?? "lg";
@@ -74,4 +78,12 @@ const outlineButtonSize = outlineButton?.size ?? "lg";
 			</Button>
 		)}
 	</div>
+	{textLink && (
+		<a
+			href={textLink.href}
+			class="mt-4 inline-block text-accent underline underline-offset-4 transition-colors hover:text-accent/80"
+		>
+			{textLink.label}
+		</a>
+	)}
 </div>

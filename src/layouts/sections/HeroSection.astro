@@ -15,7 +15,13 @@ type HeroSectionProps = {
 	subtitle?: string;
   solidButton: CtaButton;
   outlineButton?: CtaButton;
+	textLink?: {
+		label: string;
+		href: string;
+	};
 	image: ImageMetadata;
+	imageAspect?: "responsive" | "square";
+	imageSquareSizePx?: number;
 	imagePosition?: "left" | "right";
 	imageAlt: string;
 };
@@ -27,7 +33,10 @@ const {
 	subtitle,
 	solidButton,
 	outlineButton,
+	textLink,
 	image,
+	imageAspect,
+	imageSquareSizePx,
 	imagePosition = "right",
 	imageAlt,
 } = Astro.props as HeroSectionProps;
@@ -40,13 +49,19 @@ const isImageLeft = imagePosition === "left";
 	<DoubleColumnContainer>
 		<div slot="left">
 			{isImageLeft ? (
-				<HeroSectionImage image={image} imageAlt={imageAlt} />
+				<HeroSectionImage
+					image={image}
+					imageAlt={imageAlt}
+					{...(imageAspect ? { imageAspect } : {})}
+					{...(imageSquareSizePx ? { imageSquareSizePx } : {})}
+				/>
 			) : (
 				<HeroSectionCopy
 					title={title}
 					subtitle={subtitle}
 					solidButton={solidButton}
 					outlineButton={outlineButton}
+					textLink={textLink}
 				/>
 			)}
 		</div>
@@ -58,9 +73,15 @@ const isImageLeft = imagePosition === "left";
 					subtitle={subtitle}
 					solidButton={solidButton}
 					outlineButton={outlineButton}
+					textLink={textLink}
 				/>
 			) : (
-				<HeroSectionImage image={image} imageAlt={imageAlt} />
+				<HeroSectionImage
+					image={image}
+					imageAlt={imageAlt}
+					{...(imageAspect ? { imageAspect } : {})}
+					{...(imageSquareSizePx ? { imageSquareSizePx } : {})}
+				/>
 			)}
 		</div>
 	</DoubleColumnContainer>

@@ -7,7 +7,7 @@ export const stats = [
 
 export const credentials = [
   "Mix & Mastering Specialist",
-  "Proficient Software Engineer",
+  "Experienced Software Engineer",
   "Bachelor of Computer Science",
   "Bachelor of Arts"
 ];
@@ -19,7 +19,7 @@ export const resume = [
     title: "Founder & Lead Engineer",
     company: "Vintique Sound",
     description:
-      "Founded and led an independent audio production company focused on high-end mixing, mastering, and audio education. Oversaw all technical, creative, and business operations. This role formed the foundation of my professional identity as both an engineer and educator."
+      "Founded and led an independent audio production company focused on high-end mixing, mastering, and audio education. Oversaw all technical, creative, and business operations. This role formed the foundation of my professional identity as an audio engineer and educator."
   },
   {
     year: "2022 - 2025",
@@ -35,7 +35,7 @@ export const resume = [
     title: "Recording, Mixing & Mastering Engineer",
     company: "Golden Wave Studios",
     description:
-      "Worked in a professional studio environment, contributing to recording, mixing, and mastering sessions. Gained hands-on experience with analog signal chains, critical listening, session workflow, and high-pressure production environments, skills later integrated into both independent work and teaching."
+      "Worked in a professional studio environment, contributing to recording, mixing, and mastering sessions. Gained hands-on experience with analog signal chains, critical listening, session workflow, and high-pressure production environments, skills later integrated into my work and teachings at Vintique Sound."
   },
   {
     year: "2011 - 2017",
@@ -47,4 +47,4 @@ export const resume = [
   }
 ];
 
-export const philosophy = "At its core, engineering is about understanding problems and then systematically and creatively solving them, preferably in an elegant way. In audio, that means shaping emotion and narrative through sound. In technology, it means designing systems that are intuitive, creative, and purposeful.<br><br>I approach every project with the same mindset: listen carefully, understand the goal, and build only what serves it. Whether I'm mixing a record, teaching, or developing tools, clarity and intent come first.";
+export const philosophy = "At its core, engineering is about understanding problems and then systematically and creatively solving them. Preferably, the solution is both efficient and elegant. In audio engineering, that means shaping emotion and narrative through sound. In technology, it means designing systems that are intuitive, creative, and purposeful.<br><br>I approach every project with the same mindset: listen carefully, understand the goal, and build on what serves it. Whether I'm mixing a record, teaching, or developing tools, clarity and intent come first.";

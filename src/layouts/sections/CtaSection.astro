@@ -11,6 +11,7 @@ type CtaSectionProps = {
   outline?: CtaButton;
   align?: "center" | "left" | "right";
   outerClass?: string;
+  containerOuterClass?: string;
 };
 
 const {
@@ -21,6 +22,7 @@ const {
   outline,
   align = "center",
   outerClass,
+  containerOuterClass,
 } = Astro.props as CtaSectionProps;
 
 const solidSize = solid?.size ?? "lg";
@@ -32,7 +34,10 @@ const actionsJustify = align === "center" ? "justify-center" : "justify-start";
 <section class={`w-full relative overflow-hidden ${outerClass}`.trim()}>
   <div class={`absolute inset-0 ${bgColors}`.trim()} />
 
-  <SingleColumnContainer innerClass="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12">
+  <SingleColumnContainer
+    {...(containerOuterClass ? { outerClass: containerOuterClass } : {})}
+    innerClass="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12"
+  >
 
     <div class={`flex flex-col gap-6 ${alignment}`}>
       <div class="space-y-4">

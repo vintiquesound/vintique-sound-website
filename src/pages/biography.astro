@@ -1,0 +1,218 @@
+---
+import WebPageLayout from "@/layouts/WebPageLayout.astro";
+import HeroSection from "@/layouts/sections/HeroSection.astro";
+import CtaSection from "@/layouts/sections/CtaSection.astro";
+import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
+import DoubleColumnContainer from "@/layouts/DoubleColumnContainer.astro";
+import TripleColumnContainer from "@/layouts/TripleColumnContainer.astro";
+
+import Card from "@/components/ui/card/Card.astro";
+import CardContent from "@/components/ui/card/CardContent.astro";
+import CardHeader from "@/components/ui/card/CardHeader.astro";
+import CardTitle from "@/components/ui/card/CardTitle.astro";
+import CardDescription from "@/components/ui/card/CardDescription.astro";
+
+import { ArrowLeft, ArrowRight } from "lucide-astro";
+import KevinAtSteinbergImage from "@/assets/website/biography-kevano_at_steinberg_headquarters.jpeg";
+import KevinStudioImage from "@/assets/website/about-kevin_ulliac-in_the_studio.jpg";
+import KevinFestivalImage from "@/assets/website/biography-kevano_evano-moon_landing.jpg";
+import KevinMountainImage from "@/assets/website/biography-kevano-snowboard_mountain.jpg";
+---
+
+<WebPageLayout title="Biography" description="Biography of Kevin Ulliac">
+  <HeroSection
+    bgColors="bg-linear-to-br from-accent/20 to-primary/20"
+    title="Biography"
+    subtitle="A lifelong music obsession that evolved into a professional path in recording, mixing, mastering, and artist support."
+    solidButton={{
+      label: "Back to About",
+      href: "/about",
+      icon: ArrowLeft,
+      iconPosition: "left"
+    }}
+    image={KevinAtSteinbergImage}
+    imageAspect="square"
+    imageSquareSizePx={480}
+    imagePosition="right"
+    imageAlt="Kevin Ulliac at Steinberg headquarters in Hamburg, Germany"
+  />
+
+  <DoubleColumnContainer outerClass="py-16">
+    <div slot="left">
+      <Card>
+        <CardHeader>
+          <CardTitle>Early years</CardTitle>
+          <CardDescription>Where the music obsession started</CardDescription>
+        </CardHeader>
+        <CardContent class="space-y-4">
+          <p class="leading-relaxed">
+            Music has always been an important part of my life. I remember when I was a tiny human and used to bang away
+            on a homemade drum kit made out of strategically placed margarine containers and ice cream pales. The faux drum
+            set was quickly replaced with a novice sized orange sparkle drum kit bought at a garage sale and an electric guitar
+            &amp; amp kit from Costco (and thankfully I&apos;ve upgraded all of that gear as the years went by).
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+
+    <div slot="right">
+      <Card>
+        <CardHeader>
+          <CardTitle>Bands &amp; creative outlets</CardTitle>
+          <CardDescription>From covers to originals to genre experiments</CardDescription>
+        </CardHeader>
+        <CardContent class="space-y-4">
+          <p class="leading-relaxed">
+            My first band was called "Doofeye." We were a cover band and played our first concert called "Doofest 2002."
+            I switched out between drummer and guitarist. I was the drummer in two other bands "Lacewing" &amp;
+            "The Equation" (all originals this time). And I even started my own 1-piece band called "Sirloin Casket"
+            which was my creative outlet to experiment with different genres.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  </DoubleColumnContainer>
+
+  <SingleColumnContainer outerClass="pt-0 pb-16">
+    <Card>
+      <CardHeader>
+        <CardTitle>Recording / Mixing / Mastering</CardTitle>
+        <CardDescription>The path to Cubase, services, and YouTube</CardDescription>
+      </CardHeader>
+      <CardContent class="space-y-4">
+        <p class="leading-relaxed">
+          I was experimenting with Recording/Mixing/Mastering as of about 2002. My first DAW was Cool Edit Pro,
+          then Adobe Audition once they bought them out in 2003. I bought myself a Korg D4 portable recorder,
+          then later a Zoom R16. It wasn&apos;t until about 2012 when I decide to get serious with Audio Engineering.
+        </p>
+        <p class="leading-relaxed">
+          I bought Cubase Pro 6.5 and an audio interface and some studio monitors. I started producing Electronic Music
+          under the alias Phantom Limb (dubstep) &amp; a few years later as Antoku (deep house/nu disco) and more
+          recently as Rhythm Ace (chill hip hop). I also started providing services to bands and started a YouTube Channel.
+        </p>
+      </CardContent>
+    </Card>
+  </SingleColumnContainer>
+
+  <SingleColumnContainer outerClass="pt-0 pb-16">
+    <Card>
+      <CardHeader>
+        <CardTitle>A visit to Steinberg headquarters in Hamburg, Germany</CardTitle>
+        <CardDescription>A memorable professional milestone in my audio journey</CardDescription>
+      </CardHeader>
+      <CardContent class="space-y-4">
+        <p class="leading-relaxed">
+          In 2019, I had the opportunity to visit Steinberg&apos;s headquarters in Hamburg, Germany, where I was given a guided tour of their facilities.
+        </p>
+        <p class="leading-relaxed">
+          During the visit, I met with team members across several departments and gained valuable insight into how their software, hardware,
+          and broader product ecosystem are developed, tested, and supported.
+        </p>
+      </CardContent>
+    </Card>
+  </SingleColumnContainer>
+
+  <SingleColumnContainer outerClass="py-0">
+    <div class="grid gap-4 md:grid-cols-2">
+      <Card>
+        <CardHeader>
+          <CardTitle>Artists &amp; credits</CardTitle>
+        </CardHeader>
+        <CardContent class="space-y-4">
+          <p class="leading-relaxed">
+            I&apos;ve had the pleasure of working with talented artists such as Ante Svircic, Leonard, Jon Harris,
+            Gypsy Mobile, Stephanie Harpe, Manobra de Massa, Timmy James, Mindwiser, &amp; Cataclysm. Some of my
+            recordings and mixes have found their way to Howie Weinberg Mastering &amp; various radio stations.
+          </p>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Fun fact</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p class="leading-relaxed">
+            You might be surprised to learn that I have an Automotive Mechanic Certificate, a Bachelor of Arts in Philosophy
+            and Psychology, and a Bachelor of Science in Computer Science and Mathematics. Not only am I addicted to music,
+            but I&apos;m also proud of my technical and academic background.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  </SingleColumnContainer>
+
+  <TripleColumnContainer outerClass="py-16">
+    <Fragment slot="header">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Outside the studio</h2>
+      <p class="text-lg text-muted-foreground">A few snapshots from life beyond the mixing desk</p>
+    </Fragment>
+
+    <Card slot="first" class="pt-0 pb-6 overflow-hidden">
+      <a href={KevinStudioImage.src} target="_blank" rel="noreferrer noopener" class="block">
+        <img
+          src={KevinStudioImage.src}
+          alt="Studio nerd"
+          class="h-52 md:h-56 w-full object-cover rounded-none"
+          loading="lazy"
+        />
+      </a>
+      <CardContent class="space-y-4 pt-2">
+        <CardTitle class="text-lg">Studio nerd</CardTitle>
+        <p class="text-base leading-relaxed">
+          I&apos;m addicted to music, so naturally I spend every spare minute making music and fiddling around with gear.
+        </p>
+      </CardContent>
+    </Card>
+
+    <Card slot="second" class="pt-0 pb-6 overflow-hidden">
+      <a href={KevinFestivalImage.src} target="_blank" rel="noreferrer noopener" class="block">
+        <img
+          src={KevinFestivalImage.src}
+          alt="Festival dancer"
+          class="h-52 md:h-56 w-full object-cover rounded-none"
+          loading="lazy"
+        />
+      </a>
+      <CardContent class="space-y-4 pt-2">
+        <CardTitle class="text-lg">Festival dancer</CardTitle>
+        <p class="text-base leading-relaxed">
+          If I&apos;m not in the studio, I&apos;m probably dancing up a storm in an astronaut costume at a music festival.
+        </p>
+      </CardContent>
+    </Card>
+
+    <Card slot="third" class="pt-0 pb-6 overflow-hidden">
+      <a href={KevinMountainImage.src} target="_blank" rel="noreferrer noopener" class="block">
+        <img
+          src={KevinMountainImage.src}
+          alt="Mountain dweller"
+          class="h-52 md:h-56 w-full object-cover rounded-none"
+          loading="lazy"
+        />
+      </a>
+      <CardContent class="space-y-4 pt-2">
+        <CardTitle class="text-lg">Mountain dweller</CardTitle>
+        <p class="text-base leading-relaxed">
+          Or you&apos;ll catch me hiking in the summer or hittin that sweet pow at the tippy top of the mountain in the winter.
+        </p>
+      </CardContent>
+    </Card>
+  </TripleColumnContainer>
+
+  <CtaSection
+    bgColors="bg-linear-to-br from-accent via-accent/80 to-secondary"
+    title="Ready to work together?"
+    subtitle="If my story and approach resonate with your goals, let&apos;s talk about your next project."
+    solid={{
+      label: "Start Your Project",
+      href: "/contact",
+      icon: ArrowRight,
+      iconPosition: "right",
+      bgColor: "primary",
+      hoverBgColor: "primary/90",
+      textColor: "primary-foreground",
+      hoverTextColor: "primary-foreground"
+    }}
+  />
+</WebPageLayout>

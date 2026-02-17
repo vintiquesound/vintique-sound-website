@@ -14,7 +14,7 @@ import Badge from "@/components/ui/Badge.astro";
 
 // Local content and assets
 import { stats, credentials, resume, philosophy } from "@/content/webpage/about-data";
-import KevinUlliacImage from "@/assets/website/kevin_ulliac-in_the_studio.jpg";
+import KevinUlliacImage from "@/assets/website/about-kevin_ulliac-in_the_studio.jpg";
 ---
 
 <WebPageLayout title="About" description="About Kevin Ulliac" >
@@ -36,6 +36,10 @@ import KevinUlliacImage from "@/assets/website/kevin_ulliac-in_the_studio.jpg";
       hoverBgColor: "white",
       textColor: "foreground",
       borderColor: "foreground"
+    }}
+    textLink={{
+      label: "Read full biography",
+      href: "/biography"
     }}
     image={KevinUlliacImage
   }
