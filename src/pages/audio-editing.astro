@@ -6,7 +6,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
 
 // Third party libraries
 import { Icon } from "astro-icon/components"
-import { ArrowRight, Star } from "lucide-astro";
+import { ArrowRight } from "lucide-astro";
 
 // Local UI components
 import Card from "@/components/ui/card/Card.astro";
@@ -19,7 +19,7 @@ import Badge from "@/components/ui/Badge.astro";
 import AudioComparison from "@/components/audio/AudioComparison.tsx";
 
 // Local content and assets
-import { services, genreExperience, processSteps, idealClients, technicalDetails } from "@/content/webpage/audio-editing-data";
+import { services, processSteps, idealClients, technicalDetails } from "@/content/webpage/audio-editing-data";
 ---
 
 <WebPageLayout title="Audio Editing Services" description="Professional audio editing services including time alignment, pitch correction, noise removal, and tuning.">
@@ -111,9 +111,9 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
             title="Multi-Track Drum Time Alignment"
             description="Dear Rouge - Nostalgia"
             samples={{
-              beforeMix: "/audio/comparisons/dear_rouge-nostalgia-untouched_raw_tracks.mp3",
-              beforeMaster: "/audio/comparisons/dear_rouge-nostalgia-mixed.mp3",
-              afterMixAndMaster: "/audio/comparisons/dear_rouge-nostalgia-mixed_and_mastered.mp3"
+              rawTracks: "/audio/comparisons/dear_rouge-nostalgia-untouched_raw_tracks.mp3",
+              mixed: "/audio/comparisons/dear_rouge-nostalgia-mixed.mp3",
+              mastered: "/audio/comparisons/dear_rouge-nostalgia-mixed_and_mastered.mp3"
             }}
           />
         </div>
