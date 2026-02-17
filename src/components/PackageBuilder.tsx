@@ -9,13 +9,16 @@ import {
   REPAIR_SERVICE_NOTE_PLACEHOLDERS,
 } from "@/components/build-your-package/service-note-placeholders";
 import {
-  EDITING_SERVICE_PER_TRACK_CAD_CENTS,
-  EXPORTS_PRICING_CAD_CENTS,
-  EXTRAS_PRICING_CAD_CENTS,
-  MIXING_MASTERING_BASE_PRICES_CAD_CENTS,
-  REPAIR_SERVICE_PER_TRACK_CAD_CENTS,
-  cadCentsToDollars,
+  type BaseService,
 } from "@/lib/pricing/catalog";
+import {
+  BASE_SERVICE_PRICING,
+  type BaseServicePricing,
+  EDITING_SERVICE_PRICING,
+  EXPORTS_PRICING,
+  EXTRAS_PRICING,
+  REPAIR_SERVICE_PRICING,
+} from "@/lib/pricing/package-builder";
 import { getDisplayCurrency } from "@/lib/pricing/currency-preference";
 import { convertCadCentsToCurrencyCents, formatMoneyFromCents } from "@/lib/pricing/money";
 import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
@@ -24,13 +27,8 @@ type ProjectType = "single" | "album";
 type BuilderStep = "project" | "songs";
 type SongStep = "details" | "base" | "editing" | "repair" | "exports" | "addons";
 
-type BaseService = "mix" | "master" | "mixAndMaster" | "stemMaster";
 type ServiceSelection = BaseService | "";
 type AdditionalMixVersion = "instrumental" | "acapella" | "radioEdit" | "cleanVersion";
-
-type TrackCountTier = { max: number; surcharge: number };
-
-type SongLengthTier = { max: number; surcharge: number };
 
 type EditingServiceConfig = {
   enabled: boolean;
@@ -63,136 +61,12 @@ export type PackageBuilderProps = {
   onChangeCategory?: () => void;
 };
 
-const MIXING_TRACK_TIERS: TrackCountTier[] = [
-  { max: 4, surcharge: 0 },
-  { max: 8, surcharge: 10 },
-  { max: 12, surcharge: 15 },
-  { max: 16, surcharge: 20 },
-  { max: 24, surcharge: 30 },
-  { max: 32, surcharge: 40 },
-  { max: 40, surcharge: 50 },
-  { max: 48, surcharge: 60 },
-  { max: 64, surcharge: 80 },
-  { max: 72, surcharge: 90 },
-];
-
-const STEM_MASTERING_TRACK_TIERS: TrackCountTier[] = [
-  { max: 4, surcharge: 0 },
-  { max: 6, surcharge: 10 },
-  { max: 8, surcharge: 20 },
-  { max: 10, surcharge: 30 },
-  { max: 12, surcharge: 40 },
-];
-
-const MIXING_SONG_LENGTH_TIERS: SongLengthTier[] = [
-  { max: 2, surcharge: 0 },
-  { max: 4, surcharge: 10 },
-  { max: 6, surcharge: 20 },
-  { max: 8, surcharge: 30 },
-  { max: 10, surcharge: 40 },
-  { max: 12, surcharge: 50 },
-  { max: 14, surcharge: 60 },
-  { max: 16, surcharge: 70 },
-  { max: 18, surcharge: 80 },
-  { max: 20, surcharge: 90 },
-];
-
-const MASTERING_SONG_LENGTH_TIERS: SongLengthTier[] = [
-  { max: 2, surcharge: 0 },
-  { max: 4, surcharge: 5 },
-  { max: 6, surcharge: 10 },
-  { max: 8, surcharge: 15 },
-  { max: 10, surcharge: 20 },
-  { max: 12, surcharge: 25 },
-  { max: 14, surcharge: 30 },
-  { max: 16, surcharge: 35 },
-  { max: 18, surcharge: 40 },
-  { max: 20, surcharge: 45 },
-];
-
-const STEM_MASTERING_SONG_LENGTH_TIERS: SongLengthTier[] = [
-  { max: 2, surcharge: 0 },
-  { max: 4, surcharge: 10 },
-  { max: 6, surcharge: 20 },
-  { max: 8, surcharge: 30 },
-  { max: 10, surcharge: 40 },
-  { max: 12, surcharge: 50 },
-  { max: 14, surcharge: 60 },
-  { max: 16, surcharge: 70 },
-  { max: 18, surcharge: 80 },
-  { max: 20, surcharge: 90 },
-];
-
-const BASE_SERVICE_PRICING: Record<
-  BaseService,
-  {
-    base: number;
-    trackTiers: readonly TrackCountTier[];
-    songLengthTiers: readonly SongLengthTier[];
-  }
-> = {
-  mix: {
-    base: cadCentsToDollars(MIXING_MASTERING_BASE_PRICES_CAD_CENTS.mix),
-    trackTiers: MIXING_TRACK_TIERS,
-    songLengthTiers: MIXING_SONG_LENGTH_TIERS,
-  },
-
-  master: {
-    base: cadCentsToDollars(MIXING_MASTERING_BASE_PRICES_CAD_CENTS.master),
-    trackTiers: [{ max: 1, surcharge: 0 }],
-    songLengthTiers: MASTERING_SONG_LENGTH_TIERS,
-  },
-
-  mixAndMaster: {
-    base: cadCentsToDollars(MIXING_MASTERING_BASE_PRICES_CAD_CENTS.mixAndMaster),
-    trackTiers: MIXING_TRACK_TIERS,
-    songLengthTiers: MIXING_SONG_LENGTH_TIERS,
-  },
-
-  stemMaster: {
-    base: cadCentsToDollars(MIXING_MASTERING_BASE_PRICES_CAD_CENTS.stemMaster),
-    trackTiers: STEM_MASTERING_TRACK_TIERS,
-    songLengthTiers: STEM_MASTERING_SONG_LENGTH_TIERS,
-  },
-} as const;
-
-const EDITING_SERVICE_PRICING = {
-  timeAlignment: { perTrack: cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.timeAlignment) },
-  comping: { perTrack: cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.comping) },
-  vocalTuning: { perTrack: cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.vocalTuning) },
-  instrumentTuning: { perTrack: cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.instrumentTuning) },
-  cleanupNoiseRemoval: { perTrack: cadCentsToDollars(EDITING_SERVICE_PER_TRACK_CAD_CENTS.cleanupNoiseRemoval) },
-} as const;
-
-const REPAIR_SERVICE_PRICING: Record<RepairService, { perTrack: number }> = {
-  hissRemoval: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.hissRemoval) },
-  cracklingRemoval: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.cracklingRemoval) },
-  clicksPopsRemoval: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.clicksPopsRemoval) },
-  plosiveReduction: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.plosiveReduction) },
-  reverbReduction: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.reverbReduction) },
-} as const;
-
 const REPAIR_SERVICE_LABELS: Record<RepairService, string> = {
   hissRemoval: "Hiss removal",
   cracklingRemoval: "Crackling removal",
   clicksPopsRemoval: "Clicks / pops removal",
   plosiveReduction: "Plosive reduction",
   reverbReduction: "Reverb reduction",
-} as const;
-
-const EXPORTS_PRICING = {
-  multitrackExportFlat: cadCentsToDollars(EXPORTS_PRICING_CAD_CENTS.multitrackExportFlat),
-  additionalExports: {
-    instrumental: cadCentsToDollars(EXPORTS_PRICING_CAD_CENTS.additionalExports.instrumental),
-    acapella: cadCentsToDollars(EXPORTS_PRICING_CAD_CENTS.additionalExports.acapella),
-    radioEdit: cadCentsToDollars(EXPORTS_PRICING_CAD_CENTS.additionalExports.radioEdit),
-    cleanVersion: cadCentsToDollars(EXPORTS_PRICING_CAD_CENTS.additionalExports.cleanVersion),
-  },
-} as const;
-
-const EXTRAS_PRICING = {
-  rushService2Days: cadCentsToDollars(EXTRAS_PRICING_CAD_CENTS.rushService2Days),
-  unlimitedRevisions1Month: cadCentsToDollars(EXTRAS_PRICING_CAD_CENTS.unlimitedRevisions1Month),
 } as const;
 
 function getSongLengthSurcharge(lengthMinutes: number | null, service?: ServiceSelection): number {
@@ -205,12 +79,6 @@ function getSongLengthSurcharge(lengthMinutes: number | null, service?: ServiceS
   const last = tiers.at(-1);
   return last?.surcharge ?? 0;
 }
-
-type BaseServicePricing = {
-  base: number;
-  trackTiers: readonly TrackCountTier[];
-  songLengthTiers: readonly SongLengthTier[];
-};
 
 function getServicePricing(service: BaseService): BaseServicePricing {
   return BASE_SERVICE_PRICING[service];
@@ -1003,7 +871,7 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                         <option value="">Select song length</option>
                         {(activeSong.service
                           ? getServicePricing(activeSong.service as BaseService).songLengthTiers
-                          : MIXING_SONG_LENGTH_TIERS
+                          : BASE_SERVICE_PRICING.mix.songLengthTiers
                         ).map((interval) => (
                           <option key={interval.max} value={interval.max}>
                             Up to {interval.max} min{interval.max > 1 ? "s" : ""}
