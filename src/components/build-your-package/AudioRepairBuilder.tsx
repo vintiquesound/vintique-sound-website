@@ -68,6 +68,7 @@ export default function AudioRepairBuilder({ onChangeCategory: _onChangeCategory
   const [trackCount, setTrackCount] = React.useState(1);
   const [tracks, setTracks] = React.useState<TrackConfig[]>(() => [createEmptyTrack()]);
   const [activeTrackIndex, setActiveTrackIndex] = React.useState(0);
+  const [isPackageFinalized, setIsPackageFinalized] = React.useState(false);
 
   const [rushService2Days, setRushService2Days] = React.useState(false);
   const [unlimitedRevisions1Month, setUnlimitedRevisions1Month] = React.useState(false);
@@ -83,6 +84,10 @@ export default function AudioRepairBuilder({ onChangeCategory: _onChangeCategory
     setTracks((prev) => ensureTrackCount(prev, trackCount));
     setActiveTrackIndex((prev) => clampInt(prev, 0, Math.max(0, trackCount - 1)));
   }, [trackCount]);
+
+  React.useEffect(() => {
+    setIsPackageFinalized(false);
+  }, [trackCount, tracks, rushService2Days, unlimitedRevisions1Month]);
 
   const activeTrack = tracks[activeTrackIndex];
 
@@ -109,8 +114,6 @@ export default function AudioRepairBuilder({ onChangeCategory: _onChangeCategory
     (unlimitedRevisions1Month ? EXTRAS_PRICING.unlimitedRevisions1Month : 0);
 
   const total = servicesSubtotal + extrasSubtotal;
-
-  const showAddToCart = step === "extras";
 
   const requestPackage = React.useMemo(() => {
     const lines: string[] = [];
@@ -443,6 +446,9 @@ export default function AudioRepairBuilder({ onChangeCategory: _onChangeCategory
               >
                 Back
               </Button>
+              <Button type="button" onClick={() => setIsPackageFinalized(true)}>
+                Done
+              </Button>
             </div>
           </section>
         )}
@@ -450,7 +456,7 @@ export default function AudioRepairBuilder({ onChangeCategory: _onChangeCategory
 
       <PackageSummaryCard
         total={formatCurrency(total)}
-        showAddToCart={showAddToCart}
+        canRequestPackage={isPackageFinalized}
         requestPackage={requestPackage}
       >
         <div className="space-y-2 text-sm">

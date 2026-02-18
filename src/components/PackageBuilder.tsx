@@ -24,11 +24,13 @@ import { convertCadCentsToCurrencyCents, formatMoneyFromCents } from "@/lib/pric
 import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
 
 type ProjectType = "single" | "album";
-type BuilderStep = "project" | "songs";
+type BuilderStep = "project" | "songs" | "delivery";
 type SongStep = "details" | "base" | "editing" | "repair" | "exports" | "addons";
 
 type ServiceSelection = BaseService | "";
 type AdditionalMixVersion = "instrumental" | "acapella" | "radioEdit" | "cleanVersion";
+type DeliveryFormat = "standardDelivery" | "cdMaster" | "mp3_320" | "flac24" | "aiff24" | "custom";
+type PlatformMasterOption = "spotifyYoutube" | "appleMusic" | "deezer" | "custom";
 
 type EditingServiceConfig = {
   enabled: boolean;
@@ -69,6 +71,37 @@ const REPAIR_SERVICE_LABELS: Record<RepairService, string> = {
   plosiveReduction: "Plosive reduction",
   reverbReduction: "Reverb reduction",
 } as const;
+
+const BASE_SERVICE_LABELS: Record<BaseService, string> = {
+  mix: "Mix",
+  master: "Master",
+  mixAndMaster: "Mix + Master",
+  stemMaster: "Stem Master",
+};
+
+const EDITING_SERVICE_LABELS: Record<keyof SongConfig["editingServices"], string> = {
+  timeAlignment: "Time alignment",
+  comping: "Comping",
+  vocalTuning: "Vocal tuning",
+  instrumentTuning: "Instrument tuning",
+  cleanupNoiseRemoval: "Cleanup / noise removal",
+};
+
+const DELIVERY_FORMAT_LABELS: Record<DeliveryFormat, string> = {
+  standardDelivery: "Standard delivery (WAV 24-bit / ** kHz)",
+  cdMaster: "CD master (WAV 16-bit / 44.1kHz)",
+  flac24: "Lossless (FLAC 24-bit / ** kHz)",
+  aiff24: "Lossless (AIFF 24-bit / ** kHz)",
+  mp3_320: "Lossy (MP3 320 kbps)",
+  custom: "Custom delivery formats",
+};
+
+const PLATFORM_MASTER_LABELS: Record<PlatformMasterOption, string> = {
+  spotifyYoutube: "Spotify / YouTube / YouTube Music (-14 LUFS integrated)",
+  appleMusic: "Apple Music / iTunes (-16 LUFS integrated)",
+  deezer: "Deezer (-15 LUFS integrated)",
+  custom: "Custom platform target",
+};
 
 function getSongLengthSurcharge(lengthMinutes: number | null, service?: ServiceSelection): number {
   if (lengthMinutes == null) return 0;
@@ -352,6 +385,23 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
   const [songCount, setSongCount] = React.useState(1);
   const [artistName, setArtistName] = React.useState("");
   const [albumName, setAlbumName] = React.useState("");
+  const [isPackageFinalized, setIsPackageFinalized] = React.useState(false);
+  const [deliveryFormats, setDeliveryFormats] = React.useState<Record<DeliveryFormat, boolean>>({
+    standardDelivery: true,
+    cdMaster: false,
+    mp3_320: false,
+    flac24: false,
+    aiff24: false,
+    custom: false,
+  });
+  const [customDeliveryDetails, setCustomDeliveryDetails] = React.useState("");
+  const [platformMasters, setPlatformMasters] = React.useState<Record<PlatformMasterOption, boolean>>({
+    spotifyYoutube: false,
+    appleMusic: false,
+    deezer: false,
+    custom: false,
+  });
+  const [customPlatformMasterDetails, setCustomPlatformMasterDetails] = React.useState("");
 
   const [songs, setSongs] = React.useState<SongConfig[]>(() => [createEmptySong()]);
   const [activeSongIndex, setActiveSongIndex] = React.useState(0);
@@ -383,6 +433,10 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
     setSongStep("details");
   }, [activeSongIndex, step]);
 
+  React.useEffect(() => {
+    setIsPackageFinalized(false);
+  }, [projectType, songCount, artistName, albumName, songs]);
+
   const total = React.useMemo(() => songs.reduce((sum, song) => sum + computeSongPrice(song), 0), [
     songs,
   ]);
@@ -398,6 +452,54 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
     if (songs.length !== expected) return false;
     return songs.every(isSongConfigured);
   }, [projectType, songs, songCount]);
+
+  const hasMasteringOrMixAndMasterService = React.useMemo(
+    () => songs.some((song) => song.service === "master" || song.service === "mixAndMaster"),
+    [songs]
+  );
+
+  React.useEffect(() => {
+    if (hasMasteringOrMixAndMasterService) return;
+    setPlatformMasters({
+      spotifyYoutube: false,
+      appleMusic: false,
+      deezer: false,
+      custom: false,
+    });
+    setCustomPlatformMasterDetails("");
+  }, [hasMasteringOrMixAndMasterService]);
+
+  const hasAtLeastOneDeliveryFormat = React.useMemo(
+    () => (Object.keys(deliveryFormats) as DeliveryFormat[]).some((key) => deliveryFormats[key]),
+    [deliveryFormats]
+  );
+
+  const hasValidCustomDeliveryDetails = !deliveryFormats.custom || customDeliveryDetails.trim().length > 0;
+  const hasValidCustomPlatformDetails = !platformMasters.custom || customPlatformMasterDetails.trim().length > 0;
+
+  const canRequestFinalizedPackage =
+    isPackageComplete &&
+    isPackageFinalized &&
+    step === "delivery" &&
+    hasAtLeastOneDeliveryFormat &&
+    hasValidCustomDeliveryDetails &&
+    hasValidCustomPlatformDetails;
+
+  const selectedDeliveryFormatLabels = React.useMemo(
+    () =>
+      (Object.keys(deliveryFormats) as DeliveryFormat[])
+        .filter((key) => deliveryFormats[key])
+        .map((key) => DELIVERY_FORMAT_LABELS[key]),
+    [deliveryFormats]
+  );
+
+  const selectedPlatformMasterLabels = React.useMemo(
+    () =>
+      (Object.keys(platformMasters) as PlatformMasterOption[])
+        .filter((key) => platformMasters[key])
+        .map((key) => PLATFORM_MASTER_LABELS[key]),
+    [platformMasters]
+  );
 
   const canGoNextFromProject = React.useMemo(() => {
     const hasArtist = artistName.trim().length > 0;
@@ -435,61 +537,174 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
 
     songs.forEach((song, idx) => {
       lines.push(`Song ${idx + 1}: ${song.name.trim() || "(unnamed)"}`);
-      lines.push(`- Base service: ${song.service || "—"}`);
-      if (song.service === "master") {
-        lines.push(`- Tracks in song: 1`);
-      } else {
-        lines.push(`- Tracks in song: ${song.trackCount ?? "—"}`);
-      }
+      lines.push(`- Service: ${song.service ? BASE_SERVICE_LABELS[song.service] : "—"}`);
+      lines.push(`- Tracks in song: ${song.service === "master" ? 1 : song.trackCount ?? "—"}`);
       lines.push(`- Length: ${song.lengthMinutes == null ? "—" : `Up to ${song.lengthMinutes} min`}`);
 
-      const editingEnabled = (Object.keys(song.editingServices) as Array<keyof SongConfig["editingServices"]>)
-        .filter((k) => song.editingServices[k].enabled)
-        .map((k) => ({
-          key: k,
-          trackCount: song.editingServices[k].trackCount,
-          notes: song.editingServices[k].notes.trim(),
-        }));
+      if (!song.service) {
+        lines.push("- Price breakdown: —");
+        lines.push("");
+        return;
+      }
 
-      lines.push("- Editing services:");
-      if (editingEnabled.length === 0) {
-        lines.push("  - —");
+      const pricing = getServicePricing(song.service);
+      const trackSurcharge = getTrackCountSurcharge(song.service, song.trackCount);
+      const lengthSurcharge = getSongLengthSurcharge(song.lengthMinutes, song.service);
+      const effectiveTrackCount = song.service === "master" ? 1 : song.trackCount ?? 1;
+
+      lines.push("- Price breakdown:");
+      lines.push(`  - Base service (${BASE_SERVICE_LABELS[song.service]}): ${formatCurrency(pricing.base)}`);
+      lines.push(`  - Track-count surcharge: ${formatCurrency(trackSurcharge)}`);
+      lines.push(`  - Song-length surcharge: ${formatCurrency(lengthSurcharge)}`);
+
+      const editingLineItems = (Object.keys(song.editingServices) as Array<keyof SongConfig["editingServices"]>)
+        .filter((key) => song.editingServices[key].enabled)
+        .map((key) => {
+          const cfg = song.editingServices[key];
+          const units = clampInt(cfg.trackCount, 1, effectiveTrackCount);
+          const perTrack = EDITING_SERVICE_PRICING[key].perTrack;
+          const amount = perTrack * units;
+          return {
+            label: EDITING_SERVICE_LABELS[key],
+            units,
+            perTrack,
+            amount,
+            notes: cfg.notes.trim(),
+          };
+        });
+
+      lines.push("  - Editing services:");
+      if (editingLineItems.length === 0) {
+        lines.push("    - —");
       } else {
-        editingEnabled.forEach((cfg) => {
-          lines.push(`  - ${String(cfg.key)} (tracks: ${cfg.trackCount})${cfg.notes ? ` — ${cfg.notes}` : ""}`);
+        editingLineItems.forEach((item) => {
+          lines.push(
+            `    - ${item.label}: ${formatCurrency(item.perTrack)} × ${item.units} = ${formatCurrency(item.amount)}${item.notes ? ` — ${item.notes}` : ""}`
+          );
         });
       }
 
-      const repairEnabled = (Object.keys(song.repairServices) as Array<keyof SongConfig["repairServices"]>)
-        .filter((k) => song.repairServices[k].enabled)
-        .map((k) => ({
-          key: k,
-          trackCount: song.repairServices[k].trackCount,
-          notes: song.repairServices[k].notes.trim(),
-        }));
+      const repairLineItems = (Object.keys(song.repairServices) as RepairService[])
+        .filter((key) => song.repairServices[key].enabled)
+        .map((key) => {
+          const cfg = song.repairServices[key];
+          const units = clampInt(cfg.trackCount, 1, effectiveTrackCount);
+          const perTrack = REPAIR_SERVICE_PRICING[key].perTrack;
+          const amount = perTrack * units;
+          return {
+            label: REPAIR_SERVICE_LABELS[key],
+            units,
+            perTrack,
+            amount,
+            notes: cfg.notes.trim(),
+          };
+        });
 
-      lines.push("- Repair services:");
-      if (repairEnabled.length === 0) {
-        lines.push("  - —");
+      lines.push("  - Repair services:");
+      if (repairLineItems.length === 0) {
+        lines.push("    - —");
       } else {
-        repairEnabled.forEach((cfg) => {
-          lines.push(`  - ${String(cfg.key)} (tracks: ${cfg.trackCount})${cfg.notes ? ` — ${cfg.notes}` : ""}`);
+        repairLineItems.forEach((item) => {
+          lines.push(
+            `    - ${item.label}: ${formatCurrency(item.perTrack)} × ${item.units} = ${formatCurrency(item.amount)}${item.notes ? ` — ${item.notes}` : ""}`
+          );
         });
       }
 
-      lines.push(`- Multitrack export: ${song.multitrackExport ? "Yes" : "No"}`);
-      lines.push(`- Additional exports: ${song.additionalMixVersions.instrumental ? "Instrumental" : ""}${song.additionalMixVersions.acapella ? (song.additionalMixVersions.instrumental ? ", Acapella" : "Acapella") : ""}${!song.additionalMixVersions.instrumental && !song.additionalMixVersions.acapella ? "—" : ""}`);
-      lines.push(`- Additional edits: ${song.additionalMixVersions.radioEdit ? "Radio edit" : ""}${song.additionalMixVersions.cleanVersion ? (song.additionalMixVersions.radioEdit ? ", Clean edit" : "Clean edit") : ""}${!song.additionalMixVersions.radioEdit && !song.additionalMixVersions.cleanVersion ? "—" : ""}`);
-      lines.push(`- Rush service (2 days): ${song.rushService2Days ? "Yes" : "No"}`);
-      lines.push(`- Unlimited revisions (1 month): ${song.unlimitedRevisions1Month ? "Yes" : "No"}`);
+      const multitrackExportPrice = song.multitrackExport ? EXPORTS_PRICING.multitrackExportFlat : 0;
+      const instrumentalPrice = song.additionalMixVersions.instrumental ? EXPORTS_PRICING.additionalExports.instrumental : 0;
+      const acapellaPrice = song.additionalMixVersions.acapella ? EXPORTS_PRICING.additionalExports.acapella : 0;
+      lines.push("  - Exports:");
+      lines.push(`    - Multitrack export: ${formatCurrency(multitrackExportPrice)}`);
+      lines.push(`    - Instrumental version: ${formatCurrency(instrumentalPrice)}`);
+      lines.push(`    - Acapella version: ${formatCurrency(acapellaPrice)}`);
+
+      const radioEditPrice = song.additionalMixVersions.radioEdit ? EXPORTS_PRICING.additionalExports.radioEdit : 0;
+      const cleanEditPrice = song.additionalMixVersions.cleanVersion ? EXPORTS_PRICING.additionalExports.cleanVersion : 0;
+      const rushPrice = song.rushService2Days ? EXTRAS_PRICING.rushService2Days : 0;
+      const revisionsPrice = song.unlimitedRevisions1Month ? EXTRAS_PRICING.unlimitedRevisions1Month : 0;
+      lines.push("  - Edits & extras:");
+      lines.push(`    - Radio edit: ${formatCurrency(radioEditPrice)}`);
+      lines.push(`    - Clean edit: ${formatCurrency(cleanEditPrice)}`);
+      lines.push(`    - Rush service (2 days): ${formatCurrency(rushPrice)}`);
+      lines.push(`    - Unlimited revisions (1 month): ${formatCurrency(revisionsPrice)}`);
+
+      const breakdown = computeSongBreakdown(song);
+      lines.push(`  - Song subtotal (base + surcharges): ${formatCurrency(breakdown.detailsSubtotal)}`);
+      lines.push(`  - Song subtotal (editing): ${formatCurrency(breakdown.editingSubtotal)}`);
+      lines.push(`  - Song subtotal (repair): ${formatCurrency(breakdown.repairSubtotal)}`);
+      lines.push(`  - Song subtotal (exports): ${formatCurrency(breakdown.exportsSubtotal)}`);
+      lines.push(`  - Song subtotal (edits & extras): ${formatCurrency(breakdown.addonsSubtotal)}`);
+      lines.push(`  - Song total: ${formatCurrency(breakdown.songTotal)}`);
       lines.push("");
     });
+
+    lines.push("Package pricing summary:");
+    const packageSubtotals = songs.reduce(
+      (acc, song) => {
+        const breakdown = computeSongBreakdown(song);
+        return {
+          details: acc.details + breakdown.detailsSubtotal,
+          editing: acc.editing + breakdown.editingSubtotal,
+          repair: acc.repair + breakdown.repairSubtotal,
+          exports: acc.exports + breakdown.exportsSubtotal,
+          addons: acc.addons + breakdown.addonsSubtotal,
+          total: acc.total + breakdown.songTotal,
+        };
+      },
+      { details: 0, editing: 0, repair: 0, exports: 0, addons: 0, total: 0 }
+    );
+    lines.push(`- Base + surcharges subtotal: ${formatCurrency(packageSubtotals.details)}`);
+    lines.push(`- Editing services subtotal: ${formatCurrency(packageSubtotals.editing)}`);
+    lines.push(`- Repair services subtotal: ${formatCurrency(packageSubtotals.repair)}`);
+    lines.push(`- Exports subtotal: ${formatCurrency(packageSubtotals.exports)}`);
+    lines.push(`- Edits & extras subtotal: ${formatCurrency(packageSubtotals.addons)}`);
+    lines.push(`- Package total: ${formatCurrency(packageSubtotals.total)}`);
+    lines.push("");
+
+    lines.push("Delivery formats:");
+    if (selectedDeliveryFormatLabels.length === 0) {
+      lines.push("- —");
+    } else {
+      selectedDeliveryFormatLabels.forEach((label) => lines.push(`- ${label}`));
+    }
+
+    if (deliveryFormats.custom) {
+      lines.push(`- Custom delivery details: ${customDeliveryDetails.trim() || "—"}`);
+    }
+
+    if (hasMasteringOrMixAndMasterService) {
+      lines.push("");
+      lines.push("Platform-specific masters:");
+      if (selectedPlatformMasterLabels.length === 0) {
+        lines.push("- —");
+      } else {
+        selectedPlatformMasterLabels.forEach((label) => lines.push(`- ${label}`));
+      }
+
+      if (platformMasters.custom) {
+        lines.push(`- Custom platform target details: ${customPlatformMasterDetails.trim() || "—"}`);
+      }
+    }
 
     return {
       subject: "Package Request — Mixing & Mastering",
       summaryText: lines.join("\n"),
     };
-  }, [projectType, artistName, albumName, songCount, songs]);
+  }, [
+    projectType,
+    artistName,
+    albumName,
+    songCount,
+    songs,
+    selectedDeliveryFormatLabels,
+    deliveryFormats.custom,
+    customDeliveryDetails,
+    hasMasteringOrMixAndMasterService,
+    selectedPlatformMasterLabels,
+    platformMasters.custom,
+    customPlatformMasterDetails,
+  ]);
 
   function updateActiveSong(patch: Partial<SongConfig>) {
     setSongs((prev) => {
@@ -556,6 +771,18 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
   function goToNextSong() {
     if (activeSongIndex >= songs.length - 1) return;
     goToSong(activeSongIndex + 1);
+  }
+
+  function goToFinalStep() {
+    if (!isPackageComplete) return;
+    setIsPackageFinalized(true);
+    setStep("delivery");
+  }
+
+  function returnToLastSongExtrasStep() {
+    setStep("songs");
+    setActiveSongIndex(Math.max(0, songs.length - 1));
+    setSongStep("addons");
   }
 
   return (
@@ -1605,7 +1832,11 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                           Next Song
                         </Button>
                       ) : (
-                        <Button type="button" disabled>
+                        <Button
+                          type="button"
+                          onClick={goToFinalStep}
+                          disabled={!isPackageComplete}
+                        >
                           Done
                         </Button>
                       )}
@@ -1617,11 +1848,206 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
             </section>
           </>
         )}
+
+        {step === "delivery" && (
+          <>
+            <div className="space-y-0.5">
+              <h2 className="text-xl font-semibold">Final Delivery Options</h2>
+              <p className="text-sm text-muted-foreground">
+                Select your preferred export formats and platform-specific masters before requesting this package. The '**' indicates sample rate matches uploaded files
+              </p>
+            </div>
+
+            <section className="space-y-5">
+              <div className="rounded-lg border border-border p-4 space-y-4">
+                <div className="space-y-3">
+                  <div className="text-sm font-medium">Export formats</div>
+
+                  <label className="flex items-start gap-3 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={deliveryFormats.standardDelivery}
+                      onChange={(e) =>
+                        setDeliveryFormats((prev) => ({
+                          ...prev,
+                          standardDelivery: e.target.checked,
+                        }))
+                      }
+                    />
+                    <span>{DELIVERY_FORMAT_LABELS.standardDelivery}</span>
+                  </label>
+
+                  <label className="flex items-start gap-3 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={deliveryFormats.cdMaster}
+                      onChange={(e) =>
+                        setDeliveryFormats((prev) => ({
+                          ...prev,
+                          cdMaster: e.target.checked,
+                        }))
+                      }
+                    />
+                    <span>{DELIVERY_FORMAT_LABELS.cdMaster}</span>
+                  </label>
+
+                  <label className="flex items-start gap-3 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={deliveryFormats.mp3_320}
+                      onChange={(e) =>
+                        setDeliveryFormats((prev) => ({
+                          ...prev,
+                          mp3_320: e.target.checked,
+                        }))
+                      }
+                    />
+                    <span>{DELIVERY_FORMAT_LABELS.mp3_320}</span>
+                  </label>
+
+                  <label className="flex items-start gap-3 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={deliveryFormats.flac24}
+                      onChange={(e) =>
+                        setDeliveryFormats((prev) => ({
+                          ...prev,
+                          flac24: e.target.checked,
+                        }))
+                      }
+                    />
+                    <span>{DELIVERY_FORMAT_LABELS.flac24}</span>
+                  </label>
+
+                  <label className="flex items-start gap-3 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={deliveryFormats.aiff24}
+                      onChange={(e) =>
+                        setDeliveryFormats((prev) => ({
+                          ...prev,
+                          aiff24: e.target.checked,
+                        }))
+                      }
+                    />
+                    <span>{DELIVERY_FORMAT_LABELS.aiff24}</span>
+                  </label>
+
+                  <label className="flex items-start gap-3 text-sm">
+                    <input
+                      type="checkbox"
+                      checked={deliveryFormats.custom}
+                      onChange={(e) =>
+                        setDeliveryFormats((prev) => ({
+                          ...prev,
+                          custom: e.target.checked,
+                        }))
+                      }
+                    />
+                    <span>{DELIVERY_FORMAT_LABELS.custom}</span>
+                  </label>
+
+                  {deliveryFormats.custom && (
+                    <div className="space-y-1">
+                      <label className="text-sm text-muted-foreground">Custom delivery details</label>
+                      <textarea
+                        value={customDeliveryDetails}
+                        onChange={(e) => setCustomDeliveryDetails(e.target.value)}
+                        className={textareaClassName + " h-24"}
+                        placeholder="Describe your required delivery format(s)."
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {hasMasteringOrMixAndMasterService && (
+                  <div className="space-y-3 border-t border-border pt-4">
+                    <div className="text-sm font-medium">Platform-specific masters</div>
+
+                    <label className="flex items-start gap-3 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={platformMasters.spotifyYoutube}
+                        onChange={(e) =>
+                          setPlatformMasters((prev) => ({
+                            ...prev,
+                            spotifyYoutube: e.target.checked,
+                          }))
+                        }
+                      />
+                      <span>{PLATFORM_MASTER_LABELS.spotifyYoutube}</span>
+                    </label>
+
+                    <label className="flex items-start gap-3 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={platformMasters.appleMusic}
+                        onChange={(e) =>
+                          setPlatformMasters((prev) => ({
+                            ...prev,
+                            appleMusic: e.target.checked,
+                          }))
+                        }
+                      />
+                      <span>{PLATFORM_MASTER_LABELS.appleMusic}</span>
+                    </label>
+
+                    <label className="flex items-start gap-3 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={platformMasters.deezer}
+                        onChange={(e) =>
+                          setPlatformMasters((prev) => ({
+                            ...prev,
+                            deezer: e.target.checked,
+                          }))
+                        }
+                      />
+                      <span>{PLATFORM_MASTER_LABELS.deezer}</span>
+                    </label>
+
+                    <label className="flex items-start gap-3 text-sm">
+                      <input
+                        type="checkbox"
+                        checked={platformMasters.custom}
+                        onChange={(e) =>
+                          setPlatformMasters((prev) => ({
+                            ...prev,
+                            custom: e.target.checked,
+                          }))
+                        }
+                      />
+                      <span>{PLATFORM_MASTER_LABELS.custom}</span>
+                    </label>
+
+                    {platformMasters.custom && (
+                      <div className="space-y-1">
+                        <label className="text-sm text-muted-foreground">Custom platform target details</label>
+                        <textarea
+                          value={customPlatformMasterDetails}
+                          onChange={(e) => setCustomPlatformMasterDetails(e.target.value)}
+                          className={textareaClassName + " h-24"}
+                          placeholder="Describe custom platform loudness / mastering targets."
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center justify-end gap-2">
+                <Button type="button" variant="ghost" onClick={returnToLastSongExtrasStep}>
+                  Back
+                </Button>
+              </div>
+            </section>
+          </>
+        )}
       </div>
 
       <PackageSummaryCard
         total={formatCurrency(total)}
-        showAddToCart={isPackageComplete}
+        canRequestPackage={canRequestFinalizedPackage}
         requestPackage={requestPackage}
       >
         <ul className="text-sm space-y-2">
@@ -1687,6 +2113,41 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                 <span className="font-semibold tabular-nums">{formatCurrency(activeSongBreakdown.songTotal)}</span>
               </div>
             </div>
+          </>
+        )}
+
+        {step === "delivery" && (
+          <>
+            <div className="h-px bg-border" />
+            <div className="space-y-2 text-sm">
+              <div className="text-sm font-semibold">Selected delivery</div>
+              <div className="space-y-1 text-muted-foreground">
+                {selectedDeliveryFormatLabels.length > 0 ? (
+                  selectedDeliveryFormatLabels.map((label) => <div key={label}>• {label}</div>)
+                ) : (
+                  <div>• —</div>
+                )}
+                {deliveryFormats.custom && customDeliveryDetails.trim() && (
+                  <div>• Custom: {customDeliveryDetails.trim()}</div>
+                )}
+              </div>
+            </div>
+
+            {hasMasteringOrMixAndMasterService && (
+              <div className="space-y-2 text-sm">
+                <div className="text-sm font-semibold">Platform masters</div>
+                <div className="space-y-1 text-muted-foreground">
+                  {selectedPlatformMasterLabels.length > 0 ? (
+                    selectedPlatformMasterLabels.map((label) => <div key={label}>• {label}</div>)
+                  ) : (
+                    <div>• —</div>
+                  )}
+                  {platformMasters.custom && customPlatformMasterDetails.trim() && (
+                    <div>• Custom: {customPlatformMasterDetails.trim()}</div>
+                  )}
+                </div>
+              </div>
+            )}
           </>
         )}
       </PackageSummaryCard>
