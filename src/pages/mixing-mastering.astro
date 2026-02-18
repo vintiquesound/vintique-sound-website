@@ -65,9 +65,9 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
 
         <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {services.map((service) => (
-            <Card class="border-2 hover:border-primary transition-all">
+            <Card class="relative border-2 hover:border-primary transition-all">
               {service.badge && (
-                <CardAction class="absolute -top-3 right-4">
+                <CardAction class="absolute -top-3 right-4 z-10">
                   <Badge
                     text={service.badge}
                   />
@@ -322,7 +322,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Accepted Formats -->
-            <Card class="border-2">
+            <Card class="border-2 hover:border-primary transition-all">
               <CardHeader>
                 <CardTitle class="flex items-center gap-2">
                   <Icon name={technicalDetails.acceptedFormats.icon} class={`h-5 w-5 ${technicalDetails.acceptedFormats.iconClassName}`} />
@@ -350,7 +350,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
             </Card>
 
             <!-- Delivery Formats -->
-            <Card class="border-2">
+            <Card class="border-2 hover:border-primary transition-all">
               <CardHeader>
                 <CardTitle class="flex items-center gap-2">
                   <Icon name={technicalDetails.deliveryFormats.icon} class={`h-5 w-5 ${technicalDetails.deliveryFormats.iconClassName}`} />
@@ -378,7 +378,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
             </Card>
 
             <!-- Quality Standards -->
-            <Card class="border-2">
+            <Card class="border-2 hover:border-primary transition-all">
               <CardHeader>
                 <CardTitle class="flex items-center gap-2">
                   <Icon name={technicalDetails.qualityStandards.icon} class={`h-5 w-5 ${technicalDetails.qualityStandards.iconClassName}`} />
@@ -412,7 +412,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
             </Card>
 
             <!-- Turnaround & Revisions -->
-            <Card class="border-2">
+            <Card class="border-2 hover:border-primary transition-all">
               <CardHeader>
                 <CardTitle class="flex items-center gap-2">
                   <Icon name={technicalDetails.turnaroundRevisions.icon} class={`h-5 w-5 ${technicalDetails.turnaroundRevisions.iconClassName}`} />

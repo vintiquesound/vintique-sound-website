@@ -163,7 +163,7 @@ export const processSteps = [
     icon: "lucide:download",
     title: "Final Delivery",
     description:
-      "Download your finished files in whatever formats you specify in your package. All finished files are ready for release.",
+      "Download the finished files in your requested format, ready for production or release.",
   },
 ];
 

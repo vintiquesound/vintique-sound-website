@@ -36,7 +36,7 @@ type EditingServiceConfig = {
   notes: string;
 };
 
-type RepairService = "hissRemoval" | "cracklingRemoval" | "clicksPopsRemoval" | "plosiveReduction" | "reverbReduction";
+type RepairService = "clippingRepair" | "clicksPopsRemoval" | "hissRemoval" | "cracklingRemoval" | "plosiveReduction" | "reverbReduction";
 
 type SongConfig = {
   name: string;
@@ -62,9 +62,10 @@ export type PackageBuilderProps = {
 };
 
 const REPAIR_SERVICE_LABELS: Record<RepairService, string> = {
+  clippingRepair: "Clipping repair",
+  clicksPopsRemoval: "Clicks / pops removal",
   hissRemoval: "Hiss removal",
   cracklingRemoval: "Crackling removal",
-  clicksPopsRemoval: "Clicks / pops removal",
   plosiveReduction: "Plosive reduction",
   reverbReduction: "Reverb reduction",
 } as const;
@@ -131,9 +132,10 @@ function createEmptySong(): SongConfig {
       cleanupNoiseRemoval: { enabled: false, trackCount: 1, notes: "" },
     },
     repairServices: {
+      clippingRepair: { enabled: false, trackCount: 1, notes: "" },
+      clicksPopsRemoval: { enabled: false, trackCount: 1, notes: "" },
       hissRemoval: { enabled: false, trackCount: 1, notes: "" },
       cracklingRemoval: { enabled: false, trackCount: 1, notes: "" },
-      clicksPopsRemoval: { enabled: false, trackCount: 1, notes: "" },
       plosiveReduction: { enabled: false, trackCount: 1, notes: "" },
       reverbReduction: { enabled: false, trackCount: 1, notes: "" },
     },
@@ -203,9 +205,10 @@ function cloneSongOptionsFromSource(source: SongConfig, name: string): SongConfi
       cleanupNoiseRemoval: { ...source.editingServices.cleanupNoiseRemoval },
     },
     repairServices: {
+      clippingRepair: { ...source.repairServices.clippingRepair },
+      clicksPopsRemoval: { ...source.repairServices.clicksPopsRemoval },
       hissRemoval: { ...source.repairServices.hissRemoval },
       cracklingRemoval: { ...source.repairServices.cracklingRemoval },
-      clicksPopsRemoval: { ...source.repairServices.clicksPopsRemoval },
       plosiveReduction: { ...source.repairServices.plosiveReduction },
       reverbReduction: { ...source.repairServices.reverbReduction },
     },

@@ -58,9 +58,10 @@ export const EDITING_SERVICE_PRICING = {
 } as const;
 
 export const REPAIR_SERVICE_PRICING = {
+  clippingRepair: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.clippingRepair) },
+  clicksPopsRemoval: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.clicksPopsRemoval) },
   hissRemoval: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.hissRemoval) },
   cracklingRemoval: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.cracklingRemoval) },
-  clicksPopsRemoval: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.clicksPopsRemoval) },
   plosiveReduction: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.plosiveReduction) },
   reverbReduction: { perTrack: cadCentsToDollars(REPAIR_SERVICE_PER_TRACK_CAD_CENTS.reverbReduction) },
 } as const;

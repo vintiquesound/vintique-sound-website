@@ -12,7 +12,7 @@ import { clampInt, EXTRAS_PRICING, formatCurrency, getLengthSurcharge, TRACK_LEN
 
 type BuilderStep = "tracks" | "track" | "services" | "extras";
 
-type ServiceKey = "hissRemoval" | "cracklingRemoval" | "clicksPopsRemoval" | "plosiveReduction" | "reverbReduction";
+type ServiceKey = "clippingRepair" | "clicksPopsRemoval" | "hissRemoval" | "cracklingRemoval" | "plosiveReduction" | "reverbReduction";
 
 type ServiceConfig = {
   enabled: boolean;
@@ -26,9 +26,10 @@ type TrackConfig = {
 };
 
 const SERVICE_LABELS: Record<ServiceKey, string> = {
+  clippingRepair: "Clipping repair",
+  clicksPopsRemoval: "Clicks / pops removal",
   hissRemoval: "Hiss removal",
   cracklingRemoval: "Crackling removal",
-  clicksPopsRemoval: "Clicks / pops removal",
   plosiveReduction: "Plosive reduction",
   reverbReduction: "Reverb reduction",
 };
@@ -40,9 +41,10 @@ function createEmptyTrack(): TrackConfig {
     name: "",
     lengthMinutes: null,
     services: {
+      clippingRepair: { enabled: false, notes: "" },
+      clicksPopsRemoval: { enabled: false, notes: "" },
       hissRemoval: { enabled: false, notes: "" },
       cracklingRemoval: { enabled: false, notes: "" },
-      clicksPopsRemoval: { enabled: false, notes: "" },
       plosiveReduction: { enabled: false, notes: "" },
       reverbReduction: { enabled: false, notes: "" },
     },

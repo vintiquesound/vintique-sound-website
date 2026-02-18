@@ -1,6 +1,6 @@
 import {
   EXTRAS_PRICING_CAD_CENTS,
-  TRACK_LENGTH_TIERS_CAD_CENTS,
+  EDITING_REPAIR_TRACK_LENGTH_TIERS_CAD_CENTS,
   cadCentsToDollars,
 } from "@/lib/pricing/catalog";
 import { getDisplayCurrency } from "@/lib/pricing/currency-preference";
@@ -10,7 +10,7 @@ export type LengthTier = { max: number; surcharge: number };
 
 // Reuses the same minute cutoffs as the mixing song-length tiers, but applied as a
 // per-track surcharge for Editing/Repair.
-export const TRACK_LENGTH_TIERS: readonly LengthTier[] = TRACK_LENGTH_TIERS_CAD_CENTS.map(
+export const TRACK_LENGTH_TIERS: readonly LengthTier[] = EDITING_REPAIR_TRACK_LENGTH_TIERS_CAD_CENTS.map(
   ({ max, surchargeCents }) => ({
     max,
     surcharge: cadCentsToDollars(surchargeCents),

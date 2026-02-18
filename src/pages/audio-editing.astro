@@ -16,10 +16,12 @@ import CardContent from "@/components/ui/card/CardContent.astro";
 import CardDescription from "@/components/ui/card/CardDescription.astro";
 import CardAction from "@/components/ui/card/CardAction.astro";
 import Badge from "@/components/ui/Badge.astro";
-import AudioComparison from "@/components/audio/AudioComparison.tsx";
+// import AudioComparison from "@/components/audio/AudioComparison.tsx";
+import PriceText from "@/components/ui/PriceText";
 
 // Local content and assets
 import { services, processSteps, idealClients, technicalDetails } from "@/content/webpage/audio-editing-data";
+import { genreExperience } from "@/content/webpage/mixing-mastering-data";
 ---
 
 <WebPageLayout title="Audio Editing Services" description="Professional audio editing services including time alignment, pitch correction, noise removal, and tuning.">
@@ -63,15 +65,17 @@ import { services, processSteps, idealClients, technicalDetails } from "@/conten
         </div>
         <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {services.map((service) => (
-            <Card class="border-2 hover:border-primary transition-all">
+            <Card class="relative border-2 hover:border-primary transition-all">
               {service.badge && (
-                <CardAction class="absolute -top-3 right-4">
+                <CardAction class="absolute -top-3 right-4 z-10">
                   <Badge text={service.badge} />
                 </CardAction>
               )}
               <CardHeader>
                 <CardTitle class="text-3xl">{service.title}</CardTitle>
-                <p class="mb-0 text-2xl font-bold text-primary">{service.price}</p>
+                <p class="mb-0 text-2xl font-bold text-primary">
+                  <PriceText client:idle cadCents={service.priceCadCents} prefixFrom suffixPerTrack />
+                </p>
               </CardHeader>
               <CardContent>
                 <CardDescription>{service.description}</CardDescription>
@@ -90,7 +94,7 @@ import { services, processSteps, idealClients, technicalDetails } from "@/conten
       </div>
     </section>
 
-    {/* AUDIO COMPARISON */}
+    <!-- {/* AUDIO COMPARISON */}
     <section class="py-20 bg-linear-to-br from-primary/20 to-secondary/20">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
@@ -116,6 +120,46 @@ import { services, processSteps, idealClients, technicalDetails } from "@/conten
               mastered: "/audio/comparisons/dear_rouge-nostalgia-mixed_and_mastered.mp3"
             }}
           />
+        </div>
+      </div>
+    </section> -->
+
+    {/* GENRE EXPERIENCE */}
+    <section class="py-20 bg-linear-to-br from-secondary/20 to-accent/20">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Genre Experience
+          </h2>
+          <p class="pb-0 mb-0 text-lg text-muted-foreground">
+            I work across a focused range of genres, with attention to the sonic details that define each style.
+          </p>
+          <i class="py-0 my-0 text-sm text-muted-foreground">
+            *If your genre isn't listed, that doesn't mean it's not a fit — feel free to
+            <a href="/contact" class="underline hover:text-secondary cursor-pointer transition-colors">reach out</a> with references.
+          </i>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {genreExperience.map((experience) => (
+            <Card class="border-2 hover:border-primary transition-all">
+              <CardHeader class="text-center border-b-2 pb-4">
+                <Icon name="lucide:music-2" class="text-secondary h-8 w-8 mx-auto mb-2" />
+                <CardTitle class="text-xl">{experience.genre}</CardTitle>
+              </CardHeader>
+              <CardContent class="space-y-4">
+                <CardDescription>
+                  <p class="text-lg text-muted-foreground text-center leading-relaxed">
+                    {experience.description}
+                  </p>
+                  <div class="flex items-start gap-2 pt-3 border-t border-border/50">
+                    <Icon name="lucide:list-music" class="text-primary h-4 w-4 shrink-0" />
+                    <p class="m-0 text-xs text-muted-foreground leading-relaxed">{experience.subgenres}</p>
+                  </div>
+                </CardDescription>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       </div>
     </section>
@@ -189,8 +233,10 @@ import { services, processSteps, idealClients, technicalDetails } from "@/conten
             <h2 class="text-3xl md:text-4xl font-bold mb-4">Technical Details & Delivery</h2>
             <p class="text-lg text-muted-foreground">Professional standards for optimal results.</p>
           </div>
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card class="border-2">
+            <!-- Accepted Formats -->
+            <Card class="border-2 hover:border-primary transition-all">
               <CardHeader>
                 <CardTitle class="flex items-center gap-2">
                   <Icon name={technicalDetails.acceptedFormats.icon} class={`h-5 w-5 ${technicalDetails.acceptedFormats.iconClassName}`} />
@@ -212,7 +258,9 @@ import { services, processSteps, idealClients, technicalDetails } from "@/conten
                 </div>
               </CardContent>
             </Card>
-            <Card class="border-2">
+
+            <!-- Delivery Formats -->
+            <Card class="border-2 hover:border-primary transition-all">
               <CardHeader>
                 <CardTitle class="flex items-center gap-2">
                   <Icon name={technicalDetails.deliveryFormats.icon} class={`h-5 w-5 ${technicalDetails.deliveryFormats.iconClassName}`} />
@@ -234,7 +282,9 @@ import { services, processSteps, idealClients, technicalDetails } from "@/conten
                 </div>
               </CardContent>
             </Card>
-            <Card class="border-2">
+
+            <!-- Quality Standards -->
+            <Card class="border-2 hover:border-primary transition-all">
               <CardHeader>
                 <CardTitle class="flex items-center gap-2">
                   <Icon name={technicalDetails.qualityStandards.icon} class={`h-5 w-5 ${technicalDetails.qualityStandards.iconClassName}`} />
@@ -252,7 +302,9 @@ import { services, processSteps, idealClients, technicalDetails } from "@/conten
                 </div>
               </CardContent>
             </Card>
-            <Card class="border-2">
+
+            <!-- Turnaround & Revisions -->
+            <Card class="border-2 hover:border-primary transition-all">
               <CardHeader>
                 <CardTitle class="flex items-center gap-2">
                   <Icon name={technicalDetails.turnaroundRevisions.icon} class={`h-5 w-5 ${technicalDetails.turnaroundRevisions.iconClassName}`} />

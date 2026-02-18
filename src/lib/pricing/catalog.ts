@@ -100,14 +100,18 @@ export const SERVICE_PRICING_CAD_CENTS: Record<
   },
 } as const;
 
-export const TRACK_LENGTH_TIERS_CAD_CENTS = [
+export const EDITING_REPAIR_TRACK_LENGTH_TIERS_CAD_CENTS = [
   { max: 1, surchargeCents: 0 },
   { max: 2, surchargeCents: 500 },
   { max: 4, surchargeCents: 1000 },
   { max: 6, surchargeCents: 1500 },
   { max: 8, surchargeCents: 2000 },
+  { max: 10, surchargeCents: 2500 },
   { max: 12, surchargeCents: 3000 },
+  { max: 14, surchargeCents: 3500 },
   { max: 16, surchargeCents: 4000 },
+  { max: 18, surchargeCents: 4500 },
+  { max: 20, surchargeCents: 5000 },
 ] as const;
 
 export const EXTRAS_PRICING_CAD_CENTS = {
@@ -134,9 +138,10 @@ export const EDITING_SERVICE_PER_TRACK_CAD_CENTS = {
 } as const;
 
 export const REPAIR_SERVICE_PER_TRACK_CAD_CENTS = {
+  clippingRepair: 1000,
+  clicksPopsRemoval: 1000,
   hissRemoval: 1000,
   cracklingRemoval: 1000,
-  clicksPopsRemoval: 1000,
   plosiveReduction: 1000,
   reverbReduction: 1000,
 } as const;

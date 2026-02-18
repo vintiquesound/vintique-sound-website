@@ -1,29 +1,55 @@
+import { EDITING_SERVICE_PER_TRACK_CAD_CENTS } from "src/lib/pricing/catalog.ts";
+
 export const services = [
   {
-    title: "Time Alignment & Comping",
+    title: "Time Alignment",
     description:
       "Align vocals, drums, and other tracks precisely with the beat, ensuring a tight rhythmic foundation.",
     features: [
       "Beat-mapping and grid locking",
       "Phase-coherent multi-track alignment",
       "Dynamic timing adjustment where needed",
-      "Comping of vocal and/or instrument tracks",
     ],
-    price: "from $10 per track",
+    priceCadCents: EDITING_SERVICE_PER_TRACK_CAD_CENTS.timeAlignment,
     color: "primary",
   },
   {
-    title: "Pitch Correction & Tuning",
+    title: "Comping",
     description:
-      "Subtle pitch correction to tighten vocals and instruments while maintaining natural expression.",
+      "Align vocals, drums, and other tracks precisely with the beat, ensuring a tight rhythmic foundation.",
     features: [
-      "AutoTune or Melodyne tuning",
+      "Comping of vocal and/or instrument tracks",
+      "Selecting the best takes for each track",
+    ],
+    priceCadCents: EDITING_SERVICE_PER_TRACK_CAD_CENTS.comping,
+    color: "primary",
+  },
+  {
+    title: "Instrument Pitch Correction",
+    description:
+      "Subtle pitch correction to instruments while maintaining natural expression.",
+    features: [
+      "Cubase VariAudio or Melodyne pitch correction",
       "Manual pitch correction",
       "Vibrato and formant preservation",
       "Stem-wise tuning for multi-instrument projects",
     ],
-    price: "from $10 per track",
+    priceCadCents: EDITING_SERVICE_PER_TRACK_CAD_CENTS.instrumentTuning,
     color: "secondary",
+  },
+  {
+    title: "Vocal Tuning",
+    description:
+      "Subtle tuning to tighten vocals while maintaining natural expression.",
+    features: [
+      "Cubase VariAudio or Melodyne tuning",
+      "Manual pitch correction",
+      "Vibrato and formant preservation",
+      "Stem-wise tuning for multi-instrument projects",
+    ],
+    priceCadCents: EDITING_SERVICE_PER_TRACK_CAD_CENTS.vocalTuning,
+    color: "secondary",
+    badge: "Most Popular",
   },
   {
     title: "Cleanup & Noise Removal",
@@ -35,21 +61,8 @@ export const services = [
       "Noise reduction (plosives, clicks, pops, hum, and hiss)",
       "Transient repair",
     ],
-    price: "from $10 per track",
+    priceCadCents: EDITING_SERVICE_PER_TRACK_CAD_CENTS.cleanupNoiseRemoval,
     color: "accent",
-  },
-  {
-    title: "Full Edit Package",
-    description:
-      "Everything from time alignment, tuning, and cleanup for the entire project.",
-    features: [
-      "All of the above services",
-      "Up to 3 revisions included",
-      "Fast turnaround (depends on complexity)",
-    ],
-    price: "from $25",
-    color: "primary",
-    badge: "Best Value",
   },
 ];
 
@@ -91,31 +104,32 @@ export const processSteps = [
     icon: "lucide:upload",
     title: "Project Upload",
     description:
+      // "Upload your Cubase, Ableton, or Bitwig project (or consolidated audio files) through my secure transfer system.",
       "Upload your Cubase, Ableton, or Bitwig project (or consolidated audio files) through my secure transfer system.",
   },
   {
     icon: "lucide:list-music",
-    title: "Review",
+    title: "Initial Review",
     description:
       "I carefully review each track, noting issues, targets, and editing goals.",
   },
   {
     icon: "lucide:audio-lines",
-    title: "Editing",
+    title: "Audio Editing",
     description:
-      "Precision editing with minimal side-effects to preserve sound quality. A high-quality preview is uplaoded for feedback.",
+      "Precision editing with minimal side-effects to preserve sound quality. A high-quality preview is uploaded for feedback.",
   },
   {
     icon: "lucide:rotate-ccw",
     title: "Revisions & Feedback",
     description:
-      "You can request changes. Up to 3 revisions are included. I refine the edits until they feel right to you.",
+      "You can request adjustments. Up to 3 revisions are included. I refine the edits until they feel right to you.",
   },
   {
     icon: "lucide:download",
     title: "Final Delivery",
     description:
-      "Dowanload your finished files in whatever formats you specify in your package. All finished files are ready for your project."
+      "Download the edited files in your requested format, ready for production or release."
   },
 ];
 
@@ -135,12 +149,12 @@ export const technicalDetails = {
     audioFiles: [
       "WAV, FLAC, or AIFF (FLAC preferred)",
       "16-bit / 44.1kHz or higher",
-      "Individual tracks or stems",
+      "Mono, stereo, or stem files",
     ],
     recommendations: [
       "24-bit / 48kHz for best results",
-      "Leave 3-6 dB of headroom",
-      "Provide clear and descriptive notes on what needs editing and how you want it improved",
+      "Avoid additional processing before export",
+      "Provide timestamps and notes on what needs editing and how you want it improved",
     ],
   },
 
@@ -180,11 +194,11 @@ export const technicalDetails = {
     title: "Turnaround & Revisions",
     contentClassName: "space-y-2",
     timeframes: [
-      { label: "Edit (single track):", value: "2-3 business days" },
-      { label: "Full Edit Package:", value: "3-5 business days" },
+      { label: "Single Edit (per track):", value: "2-3 business days" },
+      { label: "Full Suite of Edits:", value: "3-5 business days" },
     ],
     additionalAddons: [
-      "Rush service for 24 hours delivery (additional fee).",
+      "Rush service for 2-day delivery (additional fee).",
       "Unlimited revisions within 1 month of project start date (additional fee).",
     ],
   },
