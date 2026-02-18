@@ -120,6 +120,17 @@ export const gearCategories: GearCategory[] = [
 			{ name: "Universal Audio", details: "Mini Moog" },
 		],
 	},
+  {
+		icon: "lucide:keyboard-music",
+		title: "MIDI Controllers",
+		description:
+			"Studio workflow enhancements via MIDI controllers.",
+		items: [
+			{ name: "Native Instruments", details: "Komplete Kontrol S25" },
+			{ name: "Steinberg", details: "CMC PD/TP/CH" },
+			{ name: "Roland", details: "UM-ONE USB MIDI" },
+		],
+	},
 ];
 
 export const studioPhotoSlots: StudioPhotoSlot[] = [
