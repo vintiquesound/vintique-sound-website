@@ -1,15 +1,362 @@
 ---
+// Astro layout and section components
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
-import UnderConstructionSection from "@/layouts/sections/UnderConstructionSection.astro";
+import IntroSection from "@/layouts/sections/IntroSection.astro";
+import CtaSection from "@/layouts/sections/CtaSection.astro";
+
+// Third party libraries
+import { Icon } from "astro-icon/components"
+import { ArrowRight } from "lucide-astro";
+
+// Local UI components
+import Card from "@/components/ui/card/Card.astro";
+import CardHeader from "@/components/ui/card/CardHeader.astro";
+import CardTitle from "@/components/ui/card/CardTitle.astro";
+import CardContent from "@/components/ui/card/CardContent.astro";
+import CardDescription from "@/components/ui/card/CardDescription.astro";
+import CardAction from "@/components/ui/card/CardAction.astro";
+import Badge from "@/components/ui/Badge.astro";
+// import AudioComparison from "@/components/audio/AudioComparison.tsx";
+import PriceText from "@/components/ui/PriceText";
+
+// Local content and assets
+import { services, processSteps, idealClients, technicalDetails } from "@/content/webpage/audio-editing-data";
+import { genreExperience } from "@/content/webpage/mixing-mastering-data";
 ---
 
-<WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
-  <UnderConstructionSection
-    title="Page Under Construction"
-    subtitle="Sorry, this page isn’t quite ready yet."
-    image={{ src: "/src/assets/website/under_construction.png", alt: "Under Construction illustration" }}
-    imagePosition="right"
-    class="min-h-[70vh]"
-  />
-</WebPageLayout>
+<WebPageLayout title="Audio Editing Services" description="Professional audio editing services including time alignment, pitch correction, noise removal, and tuning.">
 
+    {/* INTRO */}
+    <IntroSection
+      bgColors="bg-linear-to-br from-primary/20 to-secondary/20"
+      badgeText="Audio Editing"
+      badgeColor="bg-primary text-primary-foreground"
+      title="Professional Audio Editing"
+      subtitle="Refine your recordings with precise time alignment, tuning, and cleanup."
+      solidButton={{
+        label: "Start Editing",
+        href: "/build-your-package",
+        icon: ArrowRight,
+        iconPosition: "right"
+      }}
+      outlineButton={{
+        label: "Ask A Question",
+        href: "/contact",
+        hoverBgColor: "white",
+        textColor: "foreground",
+        borderColor: "foreground"
+      }}
+      align="center"
+    />
+
+    {/* SERVICES */}
+    <section class="py-20 bg-muted">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Audio Editing Services
+          </h2>
+          <p class="pb-0 mb-0 text-lg text-muted-foreground">
+            Clear pricing, flexible options, and professional results.
+          </p>
+          <i class="pt-0 mt-0 text-sm text-muted-foreground">
+            *All packages include up to 3 revisions. Unlimited revisions are available as an optional add-on.
+          </i>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {services.map((service) => (
+            <Card class="relative border-2 hover:border-primary transition-all">
+              {service.badge && (
+                <CardAction class="absolute -top-3 right-4 z-10">
+                  <Badge text={service.badge} />
+                </CardAction>
+              )}
+              <CardHeader>
+                <CardTitle class="text-3xl">{service.title}</CardTitle>
+                <p class="mb-0 text-2xl font-bold text-primary">
+                  <PriceText client:idle cadCents={service.priceCadCents} prefixFrom suffixPerTrack />
+                </p>
+              </CardHeader>
+              <CardContent>
+                <CardDescription>{service.description}</CardDescription>
+                <ul class="mt-4 space-y-3">
+                  {service.features.map((feature) => (
+                    <li class="flex gap-2">
+                      <Icon name="lucide:check-circle" class="text-secondary h-5 w-5 shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- {/* AUDIO COMPARISON */}
+    <section class="py-20 bg-linear-to-br from-primary/20 to-secondary/20">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Hear The Difference
+          </h2>
+          <p class="pb-0 mb-0 text-lg text-muted-foreground">
+            Before and after examples from real editing projects.
+          </p>
+          <i class="py-0 my-0 text-sm text-muted-foreground">
+            *Here you can find a complete list of past
+            <a href="/clients-credits" class="underline hover:text-secondary cursor-pointer transition-colors">clients & credits</a>.
+          </i>
+        </div>
+
+        <div class="flex flex-col gap-6 max-w-4xl mx-auto">
+          <AudioComparison client:load
+            title="Multi-Track Drum Time Alignment"
+            description="Dear Rouge - Nostalgia"
+            samples={{
+              rawTracks: "/audio/comparisons/dear_rouge-nostalgia-untouched_raw_tracks.mp3",
+              mixed: "/audio/comparisons/dear_rouge-nostalgia-mixed.mp3",
+              mastered: "/audio/comparisons/dear_rouge-nostalgia-mixed_and_mastered.mp3"
+            }}
+          />
+        </div>
+      </div>
+    </section> -->
+
+    {/* GENRE EXPERIENCE */}
+    <section class="py-20 bg-linear-to-br from-secondary/20 to-accent/20">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Genre Experience
+          </h2>
+          <p class="pb-0 mb-0 text-lg text-muted-foreground">
+            I work across a focused range of genres, with attention to the sonic details that define each style.
+          </p>
+          <i class="py-0 my-0 text-sm text-muted-foreground">
+            *If your genre isn't listed, that doesn't mean it's not a fit — feel free to
+            <a href="/contact" class="underline hover:text-secondary cursor-pointer transition-colors">reach out</a> with references.
+          </i>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {genreExperience.map((experience) => (
+            <Card class="border-2 hover:border-primary transition-all">
+              <CardHeader class="text-center border-b-2 pb-4">
+                <Icon name="lucide:music-2" class="text-secondary h-8 w-8 mx-auto mb-2" />
+                <CardTitle class="text-xl">{experience.genre}</CardTitle>
+              </CardHeader>
+              <CardContent class="space-y-4">
+                <CardDescription>
+                  <p class="text-lg text-muted-foreground text-center leading-relaxed">
+                    {experience.description}
+                  </p>
+                  <div class="flex items-start gap-2 pt-3 border-t border-border/50">
+                    <Icon name="lucide:list-music" class="text-primary h-4 w-4 shrink-0" />
+                    <p class="m-0 text-xs text-muted-foreground leading-relaxed">{experience.subgenres}</p>
+                  </div>
+                </CardDescription>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* WHO ITS FOR */}
+    <section class="py-20 bg-muted">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            Is This Right for You?
+          </h2>
+          <p class="text-lg text-muted-foreground">
+            These services are designed for artists who care about their sound.
+          </p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          {idealClients.map((client) => (
+            <Card class="border-2 hover:border-primary transition-all">
+              <CardHeader class="flex flex-col items-center">
+                <Icon name={client.icon} class="h-6 w-6 text-primary mb-3" />
+                <CardTitle class="font-bold text-center">{client.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription class="text-center">{client.description}</CardDescription>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* HOW IT WORKS */}
+    <section class="py-20 bg-linear-to-br from-accent/20 to-primary/20">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">
+            How It Works
+          </h2>
+          <p class="text-lg text-muted-foreground">
+            A simple, collaborative process from upload to final delivery.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
+          {processSteps.map((step, i) => (
+            <Card class="border-2 hover:border-primary transition-all h-full min-w-60">
+              <CardHeader class="flex flex-col items-center text-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-linear-to-br from-primary to-secondary flex items-center justify-center">
+                  <Icon name={step.icon} class="h-6 w-6 text-white" />
+                </div>
+                <div class="space-y-1">
+                  <p class="text-xs uppercase tracking-wider text-muted-foreground">Step {i + 1}</p>
+                  <CardTitle class="text-lg">{step.title}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <CardDescription class="text-sm text-center leading-relaxed">
+                  {step.description}
+                </CardDescription>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* TECHNICAL DETAILS & DELIVERY */}
+    <section class="py-20 bg-muted">
+      <div class="container mx-auto px-4">
+        <div class="max-w-5xl mx-auto">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Technical Details & Delivery</h2>
+            <p class="text-lg text-muted-foreground">Professional standards for optimal results.</p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Accepted Formats -->
+            <Card class="border-2 hover:border-primary transition-all">
+              <CardHeader>
+                <CardTitle class="flex items-center gap-2">
+                  <Icon name={technicalDetails.acceptedFormats.icon} class={`h-5 w-5 ${technicalDetails.acceptedFormats.iconClassName}`} />
+                  {technicalDetails.acceptedFormats.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent class={technicalDetails.acceptedFormats.contentClassName}>
+                <div>
+                  <h4 class="font-semibold mb-2">Audio Files:</h4>
+                  <ul class="space-y-1 text-sm text-muted-foreground">
+                    {technicalDetails.acceptedFormats.audioFiles.map((item) => (<li>• {item}</li>))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold mb-2">Recommendations:</h4>
+                  <ul class="space-y-1 text-sm text-muted-foreground">
+                    {technicalDetails.acceptedFormats.recommendations.map((item) => (<li>• {item}</li>))}
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+
+            <!-- Delivery Formats -->
+            <Card class="border-2 hover:border-primary transition-all">
+              <CardHeader>
+                <CardTitle class="flex items-center gap-2">
+                  <Icon name={technicalDetails.deliveryFormats.icon} class={`h-5 w-5 ${technicalDetails.deliveryFormats.iconClassName}`} />
+                  {technicalDetails.deliveryFormats.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent class={technicalDetails.deliveryFormats.contentClassName}>
+                <div>
+                  <h4 class="font-semibold mb-2">Standard Delivery:</h4>
+                  <ul class="space-y-1 text-sm text-muted-foreground">
+                    {technicalDetails.deliveryFormats.standardDelivery.map((item) => (<li>• {item}</li>))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 class="font-semibold mb-2">Custom Delivery:</h4>
+                  <ul class="space-y-1 text-sm text-muted-foreground">
+                    {technicalDetails.deliveryFormats.customDelivery.map((item) => (<li>• {item}</li>))}
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+
+            <!-- Quality Standards -->
+            <Card class="border-2 hover:border-primary transition-all">
+              <CardHeader>
+                <CardTitle class="flex items-center gap-2">
+                  <Icon name={technicalDetails.qualityStandards.icon} class={`h-5 w-5 ${technicalDetails.qualityStandards.iconClassName}`} />
+                  {technicalDetails.qualityStandards.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent class={technicalDetails.qualityStandards.contentClassName}>
+                <div>
+                  <p class="font-semibold text-sm mb-1">Editing:</p>
+                  <ul class="space-y-2 text-sm text-muted-foreground">
+                    {technicalDetails.qualityStandards.editing.map((item) => (
+                      <li class="flex items-start gap-2"><Icon name="lucide:check-circle" class="h-4 w-4 text-secondary mt-0.5 shrink-0" /> <span>{item}</span></li>
+                    ))}
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+
+            <!-- Turnaround & Revisions -->
+            <Card class="border-2 hover:border-primary transition-all">
+              <CardHeader>
+                <CardTitle class="flex items-center gap-2">
+                  <Icon name={technicalDetails.turnaroundRevisions.icon} class={`h-5 w-5 ${technicalDetails.turnaroundRevisions.iconClassName}`} />
+                  {technicalDetails.turnaroundRevisions.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent class={technicalDetails.turnaroundRevisions.contentClassName}>
+                <div class="space-y-3">
+                  {technicalDetails.turnaroundRevisions.timeframes.map((fact) => (
+                    <div>
+                      <p class="font-semibold text-sm mb-1">{fact.label}</p>
+                      <p class="text-sm text-muted-foreground">{fact.value}</p>
+                    </div>
+                  ))}
+                  <div class="pt-2 border-t">
+                    <p class="font-semibold text-sm mb-1">Additional Addons:</p>
+                    {technicalDetails.turnaroundRevisions.additionalAddons.map((paragraph) => (
+                      <p class="text-xs text-muted-foreground">{paragraph}</p>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* CTA */}
+    <CtaSection
+      bgColors="bg-linear-to-br from-primary via-primary/80 to-accent"
+      title="Ready to Take Your Audio to the Next Level?"
+      subtitle="Professional audio editing that competes with industry releases."
+      solid={{
+        label: "Start Editing",
+        href: "/build-your-package",
+        icon: ArrowRight,
+        bgColor: "white",
+        hoverBgColor: "white",
+        textColor: "primary",
+        hoverTextColor: "primary",
+        iconPosition: "right"
+      }}
+      outline={{
+        label: "Ask a Question",
+        href: "/contact",
+        borderAlways: true,
+        borderColor: "white",
+        hoverBorderColor: "white",
+        hoverBgColor: "accent/60",
+        textColor: "white",
+        hoverTextColor: "white"
+      }}
+    />
+</WebPageLayout>

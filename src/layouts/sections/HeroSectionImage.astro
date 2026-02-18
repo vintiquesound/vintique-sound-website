@@ -5,17 +5,31 @@ import { Image } from "astro:assets";
 type HeroSectionImageProps = {
 	image: ImageMetadata;
 	imageAlt: string;
+	imageAspect?: "responsive" | "square";
+	imageSquareSizePx?: number;
 };
 
-const { image, imageAlt } = Astro.props as HeroSectionImageProps;
+const {
+	image,
+	imageAlt,
+	imageAspect = "responsive",
+	imageSquareSizePx,
+} = Astro.props as HeroSectionImageProps;
+const imageAspectClass = imageAspect === "square" ? "aspect-square" : "aspect-16/9 md:aspect-4/3";
+const sizeStyle = imageAspect === "square" && imageSquareSizePx
+	? `max-width: ${imageSquareSizePx}px;`
+	: undefined;
 ---
 
-<div class="relative w-full rounded-2xl overflow-hidden shadow-2xl">
+<div
+	class={`relative w-full ${imageAspectClass} rounded-2xl overflow-hidden shadow-2xl ${imageAspect === "square" ? "mx-auto" : ""}`.trim()}
+	style={sizeStyle}
+>
 	<Image
 		src={image}
 		alt={imageAlt}
-		width={500}
-		height={500}
+		width={640}
+		height={640}
 		class="block h-full w-full object-cover"
 	/>
 </div>

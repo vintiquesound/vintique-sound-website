@@ -1,15 +1,130 @@
 ---
+// Astro layout and section components
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
-import UnderConstructionSection from "@/layouts/sections/UnderConstructionSection.astro";
+import HeroSection from "@/layouts/sections/HeroSection.astro";
+import CtaSection from "@/layouts/sections/CtaSection.astro";
+
+// Third party libraries
+import { Icon } from "astro-icon/components";
+import { ArrowRight } from "lucide-astro";
+
+// Local UI components
+import Card from "@/components/ui/card/Card.astro";
+import Badge from "@/components/ui/Badge.astro";
+
+// Local content and assets
+import { stats, credentials, resume, philosophy } from "@/content/webpage/about-data";
+import KevinUlliacImage from "@/assets/website/about-kevin_ulliac-in_the_studio.jpg";
 ---
 
-<WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
-  <UnderConstructionSection
-    title="Page Under Construction"
-    subtitle="Sorry, this page isn’t quite ready yet."
-    image={{ src: "/src/assets/website/under_construction.png", alt: "Under Construction illustration" }}
-    imagePosition="right"
-    class="min-h-[70vh]"
-  />
-</WebPageLayout>
+<WebPageLayout title="About" description="About Kevin Ulliac" >
 
+  <!-- Hero -->
+  <HeroSection
+    bgColors="bg-linear-to-br from-accent/20 to-primary/20"
+    title="Meet Kevin Ulliac"
+    subtitle="With 15+ years in the music industry, I've dedicated my career to helping artists achieve their sonic vision. I help musicians, producers, and creators achieve professional-quality sound through audio engineering services, practical education, and purpose-built audio tools."
+    solidButton={{
+      label: "Get in Touch",
+      href: "/contact",
+      icon: ArrowRight,
+      iconPosition: "right"
+    }}
+    outlineButton={{
+      label: "View Services",
+      href: "/services",
+      hoverBgColor: "white",
+      textColor: "foreground",
+      borderColor: "foreground"
+    }}
+    textLink={{
+      label: "Read full biography",
+      href: "/biography"
+    }}
+    image={KevinUlliacImage
+  }
+    imagePosition="right"
+    imageAlt="Kevin Ulliac at work in the studio"
+  />
+
+  <!-- Stats | 4 Columns with Cards -->
+  <section class="py-20 bg-muted/50">
+    <div class="mx-auto max-w-6xl px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
+      {stats.map((stat) => (
+        <Card class="text-center border-2 hover:border-primary transition-colors">
+          <div class="pt-6">
+            <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+              <Icon name={stat.icon} class="h-8 w-8 text-primary" />
+            </div>
+            <div class="text-4xl font-bold mb-2">{stat.number}</div>
+            <div class="text-sm text-muted-foreground">{stat.label}</div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  </section>
+
+  <!-- Credentials -->
+  <section class="py-20">
+    <div class="mx-auto max-w-4xl px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Credentials & Certifications</h2>
+        <p class="text-lg text-muted-foreground">Professional qualifications and industry recognition</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {credentials.map((credential) => (
+          <div class="flex items-center gap-3 p-4 rounded-lg border-2 hover:border-secondary transition-colors">
+            <div class="w-2 h-2 rounded-full bg-secondary" />
+            <span class="font-medium">{credential}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Professional Journey -->
+  <section class="py-20 bg-muted/50">
+    <div class="mx-auto max-w-4xl px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Professional Journey</h2>
+        <p class="text-lg text-muted-foreground">A career built on passion and dedication</p>
+      </div>
+      <div class="space-y-16">
+        {resume.map((experience) => (
+          <div class="relative pl-8 border-l-2 border-primary">
+            <div class="absolute left-0 top-0 w-4 h-4 -translate-x-2.25 rounded-full bg-primary border-4 border-background" />
+            <div class="mb-2">
+              <Badge variant="outline" text={experience.year} size="sm" class="mb-2" />
+              {experience.context && (
+                <p class="text-xs text-muted-foreground">{experience.context}</p>
+              )}
+              <h3 class="text-xl font-bold mb-1">{experience.title}</h3>
+              <p class="text-secondary font-medium mb-2">{experience.company}</p>
+            </div>
+            <p class="text-muted-foreground">{experience.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- subtitle="Great audio engineering isn't just about technical perfection—it's about understanding the artist's vision and bringing it to life. Every mix tells a story, and my job is to make sure that story is heard exactly as intended." -->
+  <!-- Philosophy & CTA -->
+  <CtaSection
+    bgColors="bg-linear-to-br from-accent via-accent/80 to-secondary"
+    title="My Philosophy"
+    subtitle={philosophy}
+    solid={{
+        label: "Let's Work Together",
+        href: "/contact",
+        icon: ArrowRight,
+        iconPosition: "right",
+        bgColor: "primary",
+        hoverBgColor: "primary/90",
+        textColor: "primary-foreground",
+        hoverTextColor: "primary-foreground",
+        useHoverScale: true
+      }}
+  />
+
+</WebPageLayout>

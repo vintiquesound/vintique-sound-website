@@ -1,41 +1,111 @@
 ---
-import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
-import CtaSectionCopy from "@/layouts/sections/CtaSectionCopy.astro";
 import type { CtaButton } from "@/types/cta";
-import { buildBackgroundStyle, type BgColorToken } from "@/lib/backgrounds";
+import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
+import Button from "@/components/ui/Button.astro";
 
 type CtaSectionProps = {
+  bgColors?: string;
   title: string;
   subtitle?: string;
-  primary?: CtaButton;
-  secondary?: CtaButton;
-  align?: "center" | "left";
-  bgColors?: BgColorToken[];
-  class?: string;
+  solid?: CtaButton;
+  outline?: CtaButton;
+  align?: "center" | "left" | "right";
+  outerClass?: string;
+  containerOuterClass?: string;
 };
 
 const {
+  bgColors,
   title,
   subtitle,
-  primary,
-  secondary,
+  solid,
+  outline,
   align = "center",
-  bgColors,
-  class: outerClass = "",
+  outerClass,
+  containerOuterClass,
 } = Astro.props as CtaSectionProps;
 
-const backgroundStyle = buildBackgroundStyle(bgColors);
+const solidSize = solid?.size ?? "lg";
+const outlineSize = outline?.size ?? "lg";
+const alignment = align === "center" ? "items-center text-center" : "items-start text-left";
+const actionsJustify = align === "center" ? "justify-center" : "justify-start";
 ---
 
 <section class={`w-full relative overflow-hidden ${outerClass}`.trim()}>
-  <div class="absolute inset-0" style={backgroundStyle} />
-  <SingleColumnContainer innerClass="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12" extraInnerClass="relative z-10">
-    <CtaSectionCopy
-      title={title}
-      subtitle={subtitle}
-      primary={primary}
-      outline={secondary}
-      align={align}
-    />
+  <div class={`absolute inset-0 ${bgColors}`.trim()} />
+
+  <SingleColumnContainer
+    {...(containerOuterClass ? { outerClass: containerOuterClass } : {})}
+    innerClass="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12"
+  >
+
+    <div class={`flex flex-col gap-6 ${alignment}`}>
+      <div class="space-y-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-white">{title}</h2>
+        {subtitle && (
+          <span class="text-lg text-white/90 max-w-3xl" set:html={subtitle} />
+        )}
+      </div>
+
+      {(solid || outline) && (
+        <div class={`flex flex-wrap gap-4 ${actionsJustify}`}>
+          {solid && (
+            <Button
+              href={solid.href}
+              variant="solid"
+              size={solidSize}
+              fullWidth={solid.fullWidth}
+              icon={solid.icon}
+              iconPosition={solid.iconPosition}
+              iconClassName={solid.iconClassName}
+              bgColor={solid.bgColor}
+              hoverBgColor={solid.hoverBgColor}
+              textColor={solid.textColor}
+              hoverTextColor={solid.hoverTextColor}
+              borderColor={solid.borderColor}
+              hoverBorderColor={solid.hoverBorderColor}
+              borderMode={solid.borderMode}
+              borderNone={solid.borderNone}
+              borderHover={solid.borderHover}
+              borderAlways={solid.borderAlways}
+              hoverScale={solid.hoverScale}
+              pointerCursor={solid.pointerCursor}
+              className={solid.className}
+            >
+              {solid.label}
+            </Button>
+          )}
+          {outline && (
+            <Button
+              href={outline.href}
+              variant="outline"
+              size={outlineSize}
+              fullWidth={outline.fullWidth}
+              icon={outline.icon}
+              iconPosition={outline.iconPosition}
+              iconClassName={outline.iconClassName}
+              bgColor={outline.bgColor}
+              hoverBgColor={outline.hoverBgColor}
+              textColor={outline.textColor}
+              hoverTextColor={outline.hoverTextColor}
+              borderColor={outline.borderColor}
+              hoverBorderColor={outline.hoverBorderColor}
+              borderMode={outline.borderMode}
+              borderNone={outline.borderNone}
+              borderHover={outline.borderHover}
+              borderAlways={outline.borderAlways}
+              hoverScale={outline.hoverScale}
+              pointerCursor={outline.pointerCursor}
+              className={outline.className}
+            >
+              {outline.label}
+            </Button>
+          )}
+        </div>
+      )}
+
+    </div>
+
   </SingleColumnContainer>
+
 </section>

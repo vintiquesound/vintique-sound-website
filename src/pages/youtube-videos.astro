@@ -1,4 +1,5 @@
 ---
+// Astro layout and section components
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import UnderConstructionSection from "@/layouts/sections/UnderConstructionSection.astro";
 ---
@@ -6,9 +7,8 @@ import UnderConstructionSection from "@/layouts/sections/UnderConstructionSectio
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
   <UnderConstructionSection
     title="Page Under Construction"
-    subtitle="Sorry, this page isn’t quite ready yet."
+    subtitle="Sorry, this page isn't quite ready yet."
     image={{ src: "/src/assets/website/under_construction.png", alt: "Under Construction illustration" }}
-    imagePosition="right"
     class="min-h-[70vh]"
   />
 </WebPageLayout>

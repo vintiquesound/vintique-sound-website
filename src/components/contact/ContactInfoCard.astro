@@ -1,8 +1,10 @@
 ---
-import Card from "@/components/ui/card.astro";
 import { Mail, MapPin } from "lucide-astro";
-import { Icon } from "astro-icon/components";
-import { socials } from "@/lib/socials";
+
+import Card from "@/components/ui/card/Card.astro";
+import CardHeader from "@/components/ui/card/CardHeader.astro";
+import CardTitle from "@/components/ui/card/CardTitle.astro";
+import CardContent from "@/components/ui/card/CardContent.astro";
 
 const contactInfo = [
   {
@@ -18,28 +20,23 @@ const contactInfo = [
     href: "https://maps.google.com",
   },
 ];
-
-
 ---
 
-<div class="space-y-6">
-
-  <Card>
-    <div class="p-6 border-b">
-      <h5 class="m-0 font-semibold">Contact Information</h5>
-    </div>
-
-    <div class="p-6 space-y-4">
+<Card>
+  <CardHeader class="border-b pb-6">
+    <CardTitle>Contact Information</CardTitle>
+  </CardHeader>
+  <CardContent>
+    <div class="space-y-4">
       {contactInfo.map(({ icon: Icon, label, value, href }) => (
         <a
           href={href}
           target="_blank"
-          class="flex gap-3 p-3 rounded-lg hover:bg-muted transition"
+          class="flex gap-3 p-3 rounded-lg hover:bg-muted text-accent hover:text-secondary transition"
         >
-          <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+          <div class="w-10 h-10 min-w-10 min-h-10 rounded-lg bg-primary/10 flex items-center justify-center">
             <Icon class="w-5 h-5 text-primary" />
           </div>
-
           <div>
             <div class="text-sm text-muted-foreground">{label}</div>
             <div class="font-medium">{value}</div>
@@ -47,27 +44,5 @@ const contactInfo = [
         </a>
       ))}
     </div>
-  </Card>
-
-  <Card>
-    <div class="p-6 border-b">
-      <h5 class="m-0 font-semibold">Follow Us</h5>
-      <!-- <p class="m-0 text-sm text-muted-foreground">Stay connected</p> -->
-    </div>
-
-    <div class="p-6 space-y-3">
-      {socials.map(({ iconName, name, url }) => (
-        <a
-          href={url}
-          target="_blank"
-          class="flex items-center gap-3 p-3 rounded-lg hover:bg-muted transition text-accent hover:text-secondary"
-          aria-label={name}
-        >
-          <Icon name={iconName} size={20} />
-          <span class="font-medium">{name}</span>
-        </a>
-      ))}
-    </div>
-  </Card>
-
-</div>
+  </CardContent>
+</Card>

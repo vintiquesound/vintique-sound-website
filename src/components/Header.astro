@@ -1,23 +1,29 @@
 ---
-import { SITE_TITLE } from "../consts"
-import { Image } from "astro:assets"
+// Local components
+import HeaderNavMenu from "./HeaderNavMenu";
+import ThemeToggle from "./ThemeToggle.astro";
+import CurrencySelector from "./CurrencySelector.astro";
+import HeaderLink from "./HeaderLink.astro";
 
-import { navMenuGroups } from "@/lib/navigation"
+// Third party libraries
+import { Image } from "astro:assets";
 
-import ThemeToggle from "./ThemeToggle.astro"
-import HeaderLink from "./HeaderLink.astro"
+// Local content and assets
+import { SITE_TITLE } from "@/consts";
+import { navMenuGroups } from "@/lib/navigation";
+import logo from "@/assets/vintique_sound_logo-letters_only.png";
 
-import HeaderNavMenu from "./HeaderNavMenu"
-
-import logo from "../assets/vintique_sound_logo-letters_only.png"
-
+// Const definitions
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "")
-
 const mobileLinkBase =
   "block w-full py-3 px-4 text-base text-(--text) hover:text-accent no-underline transition-colors"
 ---
 
-<header class="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-lg supports-backdrop-filter:bg-background/80">
+<header class="sticky top-0 z-50 border-b border-border isolate">
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 -z-10 bg-background backdrop-blur-lg supports-backdrop-filter:bg-background/85"
+  ></div>
   <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
     <nav class="flex items-center justify-between">
       <a href="/" aria-label={SITE_TITLE} class="inline-block shrink-0 no-underline text-(--text)">
@@ -55,12 +61,18 @@ const mobileLinkBase =
           </svg>
         </button>
 
+        <CurrencySelector />
         <ThemeToggle />
       </div>
     </nav>
 
     <!-- Mobile nav menu, when hamburger menu is open -->
-    <div id="mobile-nav" class="md:hidden border-t border-border" hidden>
+    <div
+      id="mobile-nav"
+      class="md:hidden border-t border-border"
+      hidden
+      style="max-height: 60vh; overflow-y: auto;"
+    >
       <nav class="flex flex-col py-2">
         {navMenuGroups.map((group, idx) => (
           <div class="contents" data-nav-group={group.title}>
@@ -86,19 +98,27 @@ const mobileLinkBase =
   const panel = document.getElementById("mobile-nav");
 
   if (button instanceof HTMLButtonElement && panel) {
-    const setOpen = (open) => {
+    const setMenuOpen = (open) => {
       panel.hidden = !open;
       button.setAttribute("aria-expanded", String(open));
+      button.setAttribute("aria-label", open ? "Close menu" : "Open menu");
     };
 
-    setOpen(false);
+    setMenuOpen(false);
 
     button.addEventListener("click", () => {
-      setOpen(panel.hidden);
+      setMenuOpen(panel.hidden);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      if (panel.hidden) return;
+      setMenuOpen(false);
+      button.focus();
     });
 
     window.addEventListener("resize", () => {
-      if (window.matchMedia("(min-width: 768px)").matches) setOpen(false);
+      if (window.matchMedia("(min-width: 768px)").matches) setMenuOpen(false);
     });
   }
 </script>

@@ -1,0 +1,52 @@
+---
+type Props = {
+	/** Outer padding/spacing classes (default: py-20 md:py-32) */
+	outerClass?: string;
+	/** Extra classes appended to the outer wrapper */
+	extraOuterClass?: string;
+	/** Inner max-width/padding classes (default: max-w-6xl + responsive padding) */
+	innerClass?: string;
+	/** Extra classes appended to the inner wrapper */
+	extraInnerClass?: string;
+	/** Grid layout classes for the two-column wrapper */
+	gridClass?: string;
+	/** Extra classes appended to the grid wrapper */
+	extraGridClass?: string;
+};
+
+const defaultOuter = "py-20 md:py-32";
+const defaultExtraOuter = "";
+const defaultInner = "mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 xl:px-10 2xl:px-12";
+const defaultExtraInner = "";
+const defaultGrid = "grid grid-cols-1 md:grid-cols-2 gap-12 items-center";
+const defaultExtraGrid = "";
+
+const {
+	outerClass,
+	extraOuterClass,
+	innerClass,
+	extraInnerClass,
+	gridClass,
+	extraGridClass,
+} = Astro.props as Props;
+
+const outer = outerClass ?? defaultOuter;
+const extraOuter = extraOuterClass ?? defaultExtraOuter;
+const inner = innerClass ?? defaultInner;
+const extraInner = extraInnerClass ?? defaultExtraInner;
+const grid = gridClass ?? defaultGrid;
+const extraGrid = extraGridClass ?? defaultExtraGrid;
+---
+
+<div class={`relative w-full ${outer} ${extraOuter}`.trim()}>
+	<div class={`relative w-full z-10 ${inner} ${extraInner}`.trim()}>
+		<div class={`${grid} ${extraGrid}`.trim()}>
+			<div>
+				<slot name="left" />
+			</div>
+			<div>
+				<slot name="right" />
+			</div>
+		</div>
+	</div>
+</div>

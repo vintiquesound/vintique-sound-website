@@ -14,7 +14,8 @@ export const navMenuGroups = [
     children: [
       { label: "Mixing & Mastering", href: "/mixing-mastering" },
       { label: "Audio Editing", href: "/audio-editing" },
-      { label: "Audio Restoration", href: "/audio-restoration" },
+      { label: "Audio Repair", href: "/audio-repair" },
+      { label: "Build Your Package", href: "/build-your-package" },
     ],
   },
   {
@@ -22,7 +23,7 @@ export const navMenuGroups = [
     children: [
       { label: "Blog", href: "/blog" },
       { label: "YouTube Videos", href: "/youtube-videos" },
-      { label: "Tutorial Videos", href: "/tutorial-videos" },
+      { label: "Courses", href: "/courses" },
     ],
   },
   {
@@ -37,8 +38,8 @@ export const navMenuGroups = [
     title: "Company",
     children: [
       { label: "Studio", href: "/studio" },
+      { label: "FAQ", href: "/faq" },
       { label: "About", href: "/about" },
-      { label: "FAQs", href: "/faqs" },
       { label: "Contact", href: "/contact" },
     ],
   },

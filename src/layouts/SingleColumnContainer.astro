@@ -29,7 +29,7 @@ const extraInner = extraInnerClass ?? defaultExtraInner;
 ---
 
 <div class={`relative w-full ${outer} ${extraOuter}`.trim()}>
-	<div class={`w-full ${inner} ${extraInner}`.trim()}>
+	<div class={`relative w-full z-10 ${inner} ${extraInner}`.trim()}>
 		<slot />
 	</div>
 </div>

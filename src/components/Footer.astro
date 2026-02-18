@@ -1,19 +1,19 @@
 ---
-import { SITE_TITLE } from "../consts"
-import { Icon } from "astro-icon/components"
-import { Image } from "astro:assets"
+// Third party libraries
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
 
-import { navMenuGroups } from "@/lib/navigation"
-import { socials } from "@/lib/socials"
+// Local content and assets
+import { SITE_TITLE } from "@/consts";
+import { navMenuGroups } from "@/lib/navigation";
+import { socials } from "@/lib/socials";
+import logo from "@/assets/vintique_sound_logo-letters_only.png";
 
-import logo from "../assets/vintique_sound_logo-letters_only.png"
-
-const today = new Date()
+// Const definitions
+const today = new Date();
 ---
 
-
-<footer class="py-8 px-4 bg-background/95 border-t border-border text-(--text)">
-
+<footer class="py-8 px-4 bg-muted border-t border-border text-(--text)">
   <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
     <div class="grid gap-10 md:gap-2 lg:gap-10 items-start md:grid-rows-2 md:grid-cols-4 lg:grid-rows-1 lg:grid-cols-5">
       {/* Logo and text: full width on md, first col on lg */}
@@ -31,8 +31,8 @@ const today = new Date()
             class="block h-10 w-auto shrink-0"
           />
         </a>
-        <p class="m-0 text-left text-muted-foreground text-sm max-w-72">
-          Professional audio services and education for producers and engineers worldwide.
+        <p class="m-0 text-left text-muted-foreground text-sm">
+          Professional audio services, education, and products for producers and engineers worldwide.
         </p>
       </div>
 
@@ -62,10 +62,10 @@ const today = new Date()
   </div>
 
   <div class="flex justify-center mb-2">
-    <hr class="w-11/12 rounded-full border border-muted my-4" />
+    <hr class="w-11/12 rounded-full border border-muted-foreground/12 my-4" />
   </div>
 
-  <div class="text-center">
+  <div class="text-center text-muted-foreground">
     &copy; 2011 - {today.getFullYear()} Vintique Sound. All rights reserved.
     <div class="flex justify-center gap-4 mt-4 text-accent">
       {socials.map(({ name, url, iconName, label }) => (

@@ -1,0 +1,86 @@
+---
+// Astro layout and section components
+import WebPageLayout from "@/layouts/WebPageLayout.astro";
+import IntroSection from "@/layouts/sections/IntroSection.astro";
+import Accordion from "@/components/ui/Accordion.astro"
+import CtaSection from "@/layouts/sections/CtaSection.astro";
+
+// Third party libraries
+import { ArrowRight } from "lucide-astro";
+
+// Local content and assets
+import { faqData } from "@/content/webpage/faq-data";
+---
+
+<WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
+
+    {/* INTRO SECTION */}
+    <IntroSection
+      bgColors="bg-linear-to-br from-secondary/20 to-accent/20"
+      badgeText="FAQ"
+      badgeColor="bg-secondary text-secondary-foreground"
+      title="Frequently Asked Questions"
+      subtitle="Find answers to common questions about our services, courses, and products."
+      align="center"
+    />
+
+    {/* FAQ SECTION */}
+    <section class="py-20 bg-muted">
+      <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto space-y-12">
+
+          <!-- SERVICES -->
+          <Accordion
+            title="Services"
+            accentColor="primary"
+            items={faqData.services}
+            singleOpen={true}
+          />
+
+          <!-- EDUCATION -->
+           <Accordion
+            title="Education"
+            accentColor="secondary"
+            items={faqData.education}
+            singleOpen={true}
+          />
+
+          <!-- DIGITAL PRODUCTS -->
+          <Accordion
+            title="Digital Products"
+            accentColor="accent"
+            items={faqData.products}
+            singleOpen={true}
+          />
+
+          <!-- TECHNICAL -->
+          <Accordion
+            title="Technical Details"
+            accentColor="primary"
+            items={faqData.products}
+            singleOpen={true}
+          />
+
+        </div>
+      </div>
+    </section>
+
+    {/* CTA SECTION */}
+    <CtaSection
+      bgColors="bg-linear-to-br from-secondary via-secondary/80 to-primary"
+      title="Still have questions?"
+      subtitle="Can't find the answer you're looking for? I'm happy to help, just get in touch."
+      solid={{
+        label: "Contact Me",
+        href: "/contact",
+        icon: ArrowRight,
+        iconPosition: "right",
+        bgColor: "white",
+        hoverBgColor: "white/90",
+        textColor: "primary",
+        hoverTextColor: "primary",
+        useHoverScale: true
+      }}
+    />
+
+</WebPageLayout>

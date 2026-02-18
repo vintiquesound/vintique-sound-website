@@ -1,0 +1,122 @@
+---
+import type { CtaButton } from "@/types/cta";
+import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
+import Button from "@/components/ui/Button.astro";
+import Badge from "@/components/ui/Badge.astro";
+// IntroSectionProps: a simple, reusable hero-like section with badge, title, subtitle, and background colors
+// - badge: text for the badge
+// - badgeColor: Tailwind classes for badge background/text
+// - title: main heading
+// - subtitle: optional subheading
+// - bgColors: Tailwind background classes (string)
+// - align: "center" or "left" (default center)
+
+export type IntroSectionProps = {
+  bgColors?: string;
+  badgeText: string;
+  badgeColor?: string;
+  badgeSize?: "sm" | "md" | "lg";
+  title: string;
+  subtitle?: string;
+  solidButton?: CtaButton;
+  outlineButton?: CtaButton;
+  align?: "center" | "left" | "right";
+  outerClass?: string;
+};
+
+const {
+  bgColors,
+  badgeText,
+  badgeColor = "bg-primary text-primary-foreground",
+  badgeSize = "md",
+  title,
+  subtitle,
+  solidButton,
+  outlineButton,
+  align = "center",
+  outerClass,
+} = Astro.props as IntroSectionProps;
+
+const solidSize = solidButton?.size ?? "lg";
+const outlineSize = outlineButton?.size ?? "lg";
+const alignment = align === "center" ? "text-center items-center" : "text-left items-start";
+const actionsJustify = align === "center" ? "justify-center" : "justify-start";
+---
+
+<section class={`relative w-full overflow-hidden ${outerClass}`.trim()}>
+  <div class={`absolute inset-0 ${bgColors}`.trim()} />
+
+  <SingleColumnContainer
+    outerClass="py-20 md:py-32"
+    innerClass="flex flex-col max-w-3xl mx-auto px-4 gap-4"
+    extraInnerClass={alignment}
+  >
+
+    {badgeText && (
+      <Badge text={badgeText} bgColor={badgeColor} size={badgeSize} />
+    )}
+    <h1 class="mb-6 text-4xl md:text-5xl font-bold" set:html={title}></h1>
+    {subtitle && (
+      <p class="text-lg md:text-xl text-muted-foreground" set:html={subtitle}></p>
+    )}
+
+    {(solidButton || outlineButton) && (
+      <div class={`flex flex-wrap gap-4 ${actionsJustify}`}>
+        {solidButton && (
+          <Button
+            href={solidButton.href}
+            variant="solid"
+            size={solidSize}
+            fullWidth={solidButton.fullWidth}
+            icon={solidButton.icon}
+            iconPosition={solidButton.iconPosition}
+            iconClassName={solidButton.iconClassName}
+            bgColor={solidButton.bgColor}
+            hoverBgColor={solidButton.hoverBgColor}
+            textColor={solidButton.textColor}
+            hoverTextColor={solidButton.hoverTextColor}
+            borderColor={solidButton.borderColor}
+            hoverBorderColor={solidButton.hoverBorderColor}
+            borderMode={solidButton.borderMode}
+            borderNone={solidButton.borderNone}
+            borderHover={solidButton.borderHover}
+            borderAlways={solidButton.borderAlways}
+            hoverScale={solidButton.hoverScale}
+            pointerCursor={solidButton.pointerCursor}
+            className={solidButton.className}
+          >
+            {solidButton.label}
+          </Button>
+        )}
+        {outlineButton && (
+          <Button
+            href={outlineButton.href}
+            variant="outline"
+            size={outlineSize}
+            fullWidth={outlineButton.fullWidth}
+            icon={outlineButton.icon}
+            iconPosition={outlineButton.iconPosition}
+            iconClassName={outlineButton.iconClassName}
+            bgColor={outlineButton.bgColor}
+            hoverBgColor={outlineButton.hoverBgColor}
+            textColor={outlineButton.textColor}
+            hoverTextColor={outlineButton.hoverTextColor}
+            borderColor={outlineButton.borderColor}
+            hoverBorderColor={outlineButton.hoverBorderColor}
+            borderMode={outlineButton.borderMode}
+            borderNone={outlineButton.borderNone}
+            borderHover={outlineButton.borderHover}
+            borderAlways={outlineButton.borderAlways}
+            hoverScale={outlineButton.hoverScale}
+            pointerCursor={outlineButton.pointerCursor}
+            className={outlineButton.className}
+          >
+            {outlineButton.label}
+          </Button>
+        )}
+      </div>
+    )}
+
+  </SingleColumnContainer>
+
+</section>

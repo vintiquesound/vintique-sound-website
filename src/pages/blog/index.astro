@@ -1,10 +1,18 @@
 ---
+// Astro layout and section components
+import WebPageLayout from "../../layouts/WebPageLayout.astro";
+
+// Third party libraries
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+
+// Blog page imports
 import { BLOG_TITLE, BLOG_DESCRIPTION } from "@/consts";
-import WebPageLayout from "../../layouts/WebPageLayout.astro";
+
+// Types and utilities
 import FormattedDate from "../../components/FormattedDate.astro";
 
+// Const definitions
 const posts = (await getCollection("blog"))
 	.filter((p) => (p.data.draft ?? false) === false)
 	.filter((p) => (p.data.published ?? true) === true)

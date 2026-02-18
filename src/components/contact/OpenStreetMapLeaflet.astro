@@ -1,0 +1,76 @@
+---
+import { randomUUID } from "node:crypto";
+
+interface OpenStreeMapsProps {
+  lat: number;
+  lon: number;
+  zoom?: number;
+  height?: string;
+}
+
+const {
+  lat,
+  lon,
+  zoom = 15,
+  height = "400px",
+} = Astro.props as OpenStreeMapsProps;
+
+const mapId = `leaflet-map-${randomUUID()}`;
+---
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""
+/>
+
+<div class="w-full overflow-hidden rounded-xl border shadow-sm" style={`height: ${height}`}>
+  <div id={mapId} style="height: 100%; width: 100%; cursor: default"></div>
+</div>
+
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""
+></script>
+
+<script is:inline type="module" define:vars={{ mapId, lat, lon, zoom }}>
+  const mapElement = document.getElementById(mapId);
+  if (!mapElement || typeof window === "undefined" || !window.L) {
+    // Leaflet script not loaded yet or element missing.
+    // This prevents a blank/black box turning into runtime errors.
+    // The map will initialize on the next page load.
+  } else {
+    const map = window.L.map(mapElement, {
+      center: [lat, lon],
+      zoom,
+      zoomControl: false,
+      dragging: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      touchZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      tap: false,
+      attributionControl: true,
+    });
+
+    // Belt-and-suspenders: ensure interaction handlers stay disabled.
+    map.dragging.disable();
+    map.scrollWheelZoom.disable();
+    map.doubleClickZoom.disable();
+    map.touchZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
+
+    window.L
+      .tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      })
+      .addTo(map);
+
+    window.L.marker([lat, lon]).addTo(map);
+  }
+</script>

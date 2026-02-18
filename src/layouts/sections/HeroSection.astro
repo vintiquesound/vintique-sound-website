@@ -1,49 +1,67 @@
 ---
-import type { ImageMetadata } from "astro";
-import type { CtaButton } from "@/types/cta";
-import DualColumnContainer from "@/layouts/DualColumnContainer.astro";
+// Local layout components
+import DoubleColumnContainer from "@/layouts/DoubleColumnContainer.astro";
 import HeroSectionCopy from "@/layouts/sections/HeroSectionCopy.astro";
 import HeroSectionImage from "@/layouts/sections/HeroSectionImage.astro";
-import { buildBackgroundStyle, type BgColorToken } from "@/lib/backgrounds";
 
+// Types and utilities
+import type { ImageMetadata } from "astro";
+import type { CtaButton } from "@/types/cta";
+
+// Type definitions
 type HeroSectionProps = {
-	imagePosition?: "left" | "right";
+	bgColors?: string;
 	title: string;
 	subtitle?: string;
-  primary: CtaButton;
-  outline?: CtaButton;
+  solidButton: CtaButton;
+  outlineButton?: CtaButton;
+	textLink?: {
+		label: string;
+		href: string;
+	};
 	image: ImageMetadata;
+	imageAspect?: "responsive" | "square";
+	imageSquareSizePx?: number;
+	imagePosition?: "left" | "right";
 	imageAlt: string;
-	bgColors?: BgColorToken[];
 };
 
+// Const definitions
 const {
-	imagePosition = "right",
+	bgColors,
 	title,
 	subtitle,
-	primary,
-	outline,
+	solidButton,
+	outlineButton,
+	textLink,
 	image,
+	imageAspect,
+	imageSquareSizePx,
+	imagePosition = "right",
 	imageAlt,
-	bgColors,
 } = Astro.props as HeroSectionProps;
 
 const isImageLeft = imagePosition === "left";
-const backgroundStyle = buildBackgroundStyle(bgColors);
 ---
 
 <section class="w-full relative overflow-hidden">
-	<div class="absolute inset-0" style={backgroundStyle} />
-	<DualColumnContainer>
+	<div class={`absolute inset-0 ${bgColors}`.trim()} />
+	<DoubleColumnContainer>
 		<div slot="left">
 			{isImageLeft ? (
-				<HeroSectionImage image={image} imageAlt={imageAlt} />
+				<HeroSectionImage
+					image={image}
+					imageAlt={imageAlt}
+					{...(imageAspect ? { imageAspect } : {})}
+					{...(imageSquareSizePx ? { imageSquareSizePx } : {})}
+				/>
 			) : (
 				<HeroSectionCopy
 					title={title}
 					subtitle={subtitle}
-					primary={primary}
-					outline={outline}
+					solidButton={solidButton}
+					outlineButton={outlineButton}
+					textLink={textLink}
 				/>
 			)}
 		</div>
@@ -53,12 +71,18 @@ const backgroundStyle = buildBackgroundStyle(bgColors);
 				<HeroSectionCopy
 					title={title}
 					subtitle={subtitle}
-					primary={primary}
-					outline={outline}
+					solidButton={solidButton}
+					outlineButton={outlineButton}
+					textLink={textLink}
 				/>
 			) : (
-				<HeroSectionImage image={image} imageAlt={imageAlt} />
+				<HeroSectionImage
+					image={image}
+					imageAlt={imageAlt}
+					{...(imageAspect ? { imageAspect } : {})}
+					{...(imageSquareSizePx ? { imageSquareSizePx } : {})}
+				/>
 			)}
 		</div>
-	</DualColumnContainer>
+	</DoubleColumnContainer>
 </section>

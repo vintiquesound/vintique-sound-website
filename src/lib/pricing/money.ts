@@ -1,0 +1,68 @@
+import { fxWeeklySnapshot } from "@/lib/pricing/fx-weekly-snapshot";
+import type { CurrencyCode, FxRatesSnapshot } from "@/lib/pricing/types";
+
+type MoneyFormatOptions = {
+  locale?: string;
+  maximumFractionDigits?: number;
+};
+
+function normalizeCents(cents: number): number {
+  if (!Number.isFinite(cents)) return 0;
+  return Math.round(cents);
+}
+
+export function convertCadCentsToCurrencyCents(
+  cadCents: number,
+  currency: CurrencyCode,
+  snapshot: FxRatesSnapshot = fxWeeklySnapshot
+): number {
+  const normalizedCadCents = normalizeCents(cadCents);
+  if (currency === "CAD") return normalizedCadCents;
+  const rate = snapshot.rates[currency];
+  if (!Number.isFinite(rate) || rate <= 0) return normalizedCadCents;
+  return Math.round(normalizedCadCents * rate);
+}
+
+export function formatMoneyFromCents(
+  amountCents: number,
+  currency: CurrencyCode,
+  options: MoneyFormatOptions = {}
+): string {
+  const { locale, maximumFractionDigits = 0 } = options;
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    maximumFractionDigits,
+  }).format(normalizeCents(amountCents) / 100);
+}
+
+export function formatCadMoneyFromCents(
+  cadCents: number,
+  options: MoneyFormatOptions = {}
+): string {
+  return formatMoneyFromCents(cadCents, "CAD", options);
+}
+
+export function formatFromPriceFromCadCents(
+  cadCents: number,
+  currency: CurrencyCode,
+  snapshot: FxRatesSnapshot = fxWeeklySnapshot,
+  options: MoneyFormatOptions = {}
+): string {
+  const converted = convertCadCentsToCurrencyCents(cadCents, currency, snapshot);
+  return `from ${formatMoneyFromCents(converted, currency, options)}`;
+}
+
+export function getSupportedCheckoutCurrencies(
+  snapshot: FxRatesSnapshot = fxWeeklySnapshot
+): readonly CurrencyCode[] {
+  return snapshot.providerSupportedCurrencies;
+}
+
+export function getFxSnapshotMetadata(snapshot: FxRatesSnapshot = fxWeeklySnapshot) {
+  return {
+    fetchedAt: snapshot.fetchedAt,
+    validUntil: snapshot.validUntil,
+    provider: snapshot.provider,
+  };
+}

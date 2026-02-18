@@ -1,45 +1,53 @@
 ---
+// Astro layout and section components
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
-import ContactForm from "@/components/contact/ContactForm.astro";
+import IntroSection from "@/layouts/sections/IntroSection.astro";
+
+// Local UI components
+import ContactFormCard from "@/components/contact/ContactFormCard.astro";
 import ContactInfoCard from "@/components/contact/ContactInfoCard.astro";
-import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
+import ContactSocialsCard from "@/components/contact/ContactSocialsCard.astro";
+// import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
+import OpenStreetMapLeaflet from "@/components/contact/OpenStreetMapLeaflet.astro";
 ---
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
   <div class="flex flex-col">
-    <section class="relative py-20 md:py-32">
-      <div class="absolute inset-0 bg-linear-to-br from-primary/10 to-accent/10"></div>
-      <div class="container mx-auto px-4 relative z-10 text-center max-w-3xl">
-        <span class="inline-block mb-4 rounded-md bg-primary px-4 py-1 text-sm font-medium text-primary-foreground">
-          Contact
-        </span>
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">
-          Let's Create Something<br/>Awesome
-        </h1>
-        <p class="text-lg md:text-xl text-muted-foreground">
-          Have a project in mind? Want to learn more about our services?<br/>We'd love to hear from you.
-        </p>
-      </div>
-    </section>
-    <section class="py-20">
+
+    {/* Intro Section */}
+    <IntroSection
+      bgColors="bg-linear-to-br from-primary/20 to-accent/20"
+      badgeText="Contact"
+      badgeColor="bg-primary text-primary-foreground"
+      title="Let's Create Something<br/>Awesome"
+      subtitle="Have a project in mind? Want to learn more about my services?<br/>I'd love to hear from you."
+      align="center"
+    />
+
+    {/* Contact Section */}
+    <section class="py-20 bg-muted">
       <div class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div class="lg:col-span-2">
-          <ContactForm />
+          <ContactFormCard />
         </div>
-        <ContactInfoCard />
+        <div class="flex flex-col w-full gap-y-12 lg:col-span-1">
+          <ContactInfoCard />
+          <ContactSocialsCard />
+        </div>
       </div>
     </section>
-    <section class="py-20 bg-muted/50">
+
+    {/* Map Section */}
+    <section class="py-20 bg-background">
       <div class="container mx-auto px-4 max-w-4xl text-center">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Our Location</h2>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">My Location</h2>
         <p class="text-lg text-muted-foreground mb-8">
           Located in the heart of Edmonton AB
         </p>
-        <!-- <div class="h-100 rounded-2xl border bg-muted flex items-center justify-center">
-          <MapPin class="w-12 h-12 text-muted-foreground" />
-        </div> -->
-        <OpenStreetMapEmbed lat={53.54601} lon={-113.49143} offset={0.02} />
+        <!-- <OpenStreetMapEmbed lat={53.54601} lon={-113.49143} offset={0.02} /> -->
+        <OpenStreetMapLeaflet lat={53.543623} lon={-113.517814} zoom={13} />
       </div>
     </section>
+
   </div>
 </WebPageLayout>

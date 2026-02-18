@@ -13,10 +13,10 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        solid: "[--btn-bg:var(--primary)] [--btn-bg-hover:color-mix(in srgb,var(--primary) 90%,transparent)] [--btn-text:var(--primary-foreground)] [--btn-text-hover:var(--primary-foreground)] [--btn-border:transparent] [--btn-border-hover:transparent]",
-        outline: "[--btn-bg:transparent] [--btn-bg-hover:color-mix(in srgb,var(--primary) 10%,transparent)] [--btn-text:var(--foreground)] [--btn-text-hover:var(--primary)] [--btn-border:var(--border)] [--btn-border-hover:var(--primary)]",
-        destructive: "[--btn-bg:var(--destructive)] [--btn-bg-hover:color-mix(in srgb,var(--destructive) 90%,transparent)] [--btn-text:#fff] [--btn-text-hover:#fff] [--btn-border:transparent] [--btn-border-hover:transparent]",
-        ghost: "[--btn-bg:transparent] [--btn-bg-hover:color-mix(in srgb,var(--accent) 15%,transparent)] [--btn-text:var(--foreground)] [--btn-text-hover:var(--accent)] [--btn-border:transparent] [--btn-border-hover:transparent]",
+        solid: "[--btn-bg:var(--primary)] [--btn-bg-hover:color-mix(in_srgb,var(--primary)_90%,transparent)] [--btn-text:var(--primary-foreground)] [--btn-text-hover:var(--primary-foreground)] [--btn-border:transparent] [--btn-border-hover:transparent]",
+        outline: "[--btn-bg:transparent] [--btn-bg-hover:--primary-foreground] [--btn-text:var(--primary-foreground)] [--btn-text-hover:var(--primary)] [--btn-border:var(--primary-foreground)] [--btn-border-hover:var(--primary)]",
+        destructive: "[--btn-bg:var(--destructive)] [--btn-bg-hover:color-mix(in_srgb,var(--destructive)_90%,transparent)] [--btn-text:--primary-foreground] [--btn-text-hover:--primary-foreground] [--btn-border:transparent] [--btn-border-hover:transparent]",
+        ghost: "[--btn-bg:transparent] [--btn-bg-hover:color-mix(in_srgb,var(--accent)_15%,transparent)] [--btn-text:var(--foreground)] [--btn-text-hover:var(--accent)] [--btn-border:transparent] [--btn-border-hover:transparent]",
         text: "[--btn-bg:transparent] [--btn-bg-hover:transparent] [--btn-text:var(--foreground)] [--btn-text-hover:var(--primary)] [--btn-border:transparent] [--btn-border-hover:transparent]",
         link: "[--btn-bg:transparent] [--btn-bg-hover:transparent] [--btn-text:var(--primary)] [--btn-text-hover:var(--primary)] [--btn-border:transparent] [--btn-border-hover:transparent] underline-offset-4 hover:underline hover:scale-100",
       },

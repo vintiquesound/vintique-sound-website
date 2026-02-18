@@ -1,0 +1,77 @@
+---
+import { submitContact } from "@/actions/contact";
+import Button from "@/components/ui/Button.astro";
+import Input from "@/components/ui/input.astro";
+import Textarea from "@/components/ui/text-area.astro";
+import Label from "@/components/ui/label.astro";
+
+import Card from "@/components/ui/card/Card.astro";
+import CardHeader from "@/components/ui/card/CardHeader.astro";
+import CardTitle from "@/components/ui/card/CardTitle.astro";
+import CardDescription from "@/components/ui/card/CardDescription.astro";
+import CardContent from "@/components/ui/card/CardContent.astro";
+import CardFooter from "@/components/ui/card/CardFooter.astro";
+---
+
+<Card>
+  <form method="POST" action={submitContact} class="space-y-6">
+    <CardHeader class="border-b pb-6">
+      <CardTitle>Send me a Message</CardTitle>
+      <CardDescription>
+        I'll get back to you as soon as possible
+      </CardDescription>
+    </CardHeader>
+
+    <CardContent>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-2">
+          <Label>First Name *</Label>
+          <Input name="firstName" placeholder="John" required />
+        </div>
+        <div class="space-y-2">
+          <Label>Last Name *</Label>
+          <Input name="lastName" placeholder="Doe" required />
+        </div>
+      </div>
+      <div class="space-y-2 mt-6">
+        <Label>Email *</Label>
+        <Input name="email" type="email" placeholder="john@example.com" required />
+      </div>
+      <div class="space-y-2 mt-6">
+        <Label>Service or Product *</Label>
+        <select
+          name="service or product"
+          required
+          class="flex h-10 w-full rounded-md border border-input bg-input-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
+        >
+          <option value="">Select a service or product</option>
+          <option>Mixing & Mastering</option>
+          <option>Audio Editing</option>
+          <option>Audio Repair</option>
+          <option>Courses</option>
+          <option>Audio Tools</option>
+          <option>Plugins</option>
+          <option>Samples & Loops</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="space-y-2 mt-6">
+        <Label>Message *</Label>
+        <Textarea name="message" placeholder="Tell me about your project..." required />
+      </div>
+    </CardContent>
+
+    <CardFooter>
+      <Button
+        type="submit"
+        variant="solid"
+        bgColor="primary"
+        hoverBgColor="primary"
+        fullWidth={true}
+        hoverScale="103"
+      >
+        Send Message
+      </Button>
+    </CardFooter>
+  </form>
+</Card>
