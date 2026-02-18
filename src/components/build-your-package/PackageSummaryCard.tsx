@@ -10,16 +10,14 @@ export type RequestPackageConfig = {
 export type PackageSummaryCardProps = {
   children: React.ReactNode;
   total: string;
-  showAddToCart?: boolean;
-  onAddToCart?: () => void;
+  canRequestPackage?: boolean;
   requestPackage?: RequestPackageConfig;
 };
 
 export default function PackageSummaryCard({
   children,
   total,
-  showAddToCart,
-  onAddToCart,
+  canRequestPackage,
   requestPackage,
 }: PackageSummaryCardProps) {
   const [isRequestOpen, setIsRequestOpen] = React.useState(false);
@@ -92,13 +90,7 @@ export default function PackageSummaryCard({
         <span className="font-semibold">{total}</span>
       </div>
 
-      {showAddToCart && (
-        <Button type="button" className="w-full" onClick={onAddToCart}>
-          Add to Cart
-        </Button>
-      )}
-
-      {showAddToCart && requestPackage && (
+      {canRequestPackage && requestPackage && (
         <Button type="button" className="w-full" onClick={() => setIsRequestOpen(true)}>
           Request This Package
         </Button>
