@@ -22,7 +22,8 @@ export const navMenuGroups = [
     title: "Education",
     children: [
       { label: "Blog", href: "/blog" },
-      { label: "YouTube Videos", href: "/youtube-videos" },
+      // { label: "YouTube Videos", href: "/youtube-videos" },
+      { label: "YouTube Videos", href: "https://www.youtube.com/@VintiqueSound" }, // Tmp direct link, make embedded page in future
       { label: "Courses", href: "/courses" },
     ],
   },
@@ -30,7 +31,7 @@ export const navMenuGroups = [
     title: "Digital Products",
     children: [
       { label: "Audio Tools", href: "/audio-tools" },
-      { label: "Plugins", href: "/plugins" },
+      { label: "Audio Plugins", href: "/audio-plugins" },
       { label: "Samples & Loops", href: "/samples-loops" },
     ],
   },

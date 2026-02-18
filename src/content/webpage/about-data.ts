@@ -1,7 +1,7 @@
 export const stats = [
   { icon: "lucide:award", number: "15+", label: "Years Experience" },
   { icon: "lucide:users", number: "40+", label: "Satisfied Clients" },
-  { icon: "lucide:music", number: "240+", label: "Projects Completed" },
+  { icon: "lucide:music", number: "250+", label: "Projects Completed" },
   { icon: "simple-icons:youtube", number: "10K+", label: "YouTube Subscribers" }
 ];
 
