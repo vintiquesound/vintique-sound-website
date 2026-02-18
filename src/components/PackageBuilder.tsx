@@ -103,6 +103,8 @@ const PLATFORM_MASTER_LABELS: Record<PlatformMasterOption, string> = {
   custom: "Custom platform target",
 };
 
+const NON_CAD_CONVERSION_FEE_RATE = 0.03;
+
 function getSongLengthSurcharge(lengthMinutes: number | null, service?: ServiceSelection): number {
   if (lengthMinutes == null) return 0;
   if (!service) return 0;
@@ -441,6 +443,13 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
     songs,
   ]);
 
+  const displayCurrency = getDisplayCurrency();
+  const conversionFee = React.useMemo(
+    () => (displayCurrency === "CAD" ? 0 : total * NON_CAD_CONVERSION_FEE_RATE),
+    [displayCurrency, total]
+  );
+  const totalWithConversionFee = React.useMemo(() => total + conversionFee, [conversionFee, total]);
+
   const isPackageComplete = React.useMemo(() => {
     if (projectType === "single") {
       const first = songs[0];
@@ -525,6 +534,26 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
     () => (activeSong ? computeSongBreakdown(activeSong) : null),
     [activeSong]
   );
+
+  const selectedServiceSummary = React.useMemo(() => {
+    const counts = songs.reduce(
+      (acc, song) => {
+        if (!song.service) return acc;
+        acc[song.service] += 1;
+        return acc;
+      },
+      {
+        mix: 0,
+        master: 0,
+        mixAndMaster: 0,
+        stemMaster: 0,
+      } as Record<BaseService, number>
+    );
+
+    return (Object.keys(counts) as BaseService[])
+      .filter((service) => counts[service] > 0)
+      .map((service) => `${BASE_SERVICE_LABELS[service]} (x${counts[service]})`);
+  }, [songs]);
 
   const requestPackage = React.useMemo(() => {
     const lines: string[] = [];
@@ -659,7 +688,11 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
     lines.push(`- Repair services subtotal: ${formatCurrency(packageSubtotals.repair)}`);
     lines.push(`- Exports subtotal: ${formatCurrency(packageSubtotals.exports)}`);
     lines.push(`- Edits & extras subtotal: ${formatCurrency(packageSubtotals.addons)}`);
-    lines.push(`- Package total: ${formatCurrency(packageSubtotals.total)}`);
+    lines.push(`- Package subtotal: ${formatCurrency(packageSubtotals.total)}`);
+    lines.push(
+      `- Currency conversion fee (${displayCurrency === "CAD" ? "0" : `${Math.round(NON_CAD_CONVERSION_FEE_RATE * 100)}%`}): ${formatCurrency(conversionFee)}`
+    );
+    lines.push(`- Package total: ${formatCurrency(packageSubtotals.total + conversionFee)}`);
     lines.push("");
 
     lines.push("Delivery formats:");
@@ -704,6 +737,8 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
     selectedPlatformMasterLabels,
     platformMasters.custom,
     customPlatformMasterDetails,
+    displayCurrency,
+    conversionFee,
   ]);
 
   function updateActiveSong(patch: Partial<SongConfig>) {
@@ -2046,7 +2081,13 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
       </div>
 
       <PackageSummaryCard
-        total={formatCurrency(total)}
+        total={formatCurrency(totalWithConversionFee)}
+        {...(displayCurrency !== "CAD"
+          ? {
+              feeLabel: `Currency conversion fee (${Math.round(NON_CAD_CONVERSION_FEE_RATE * 100)}%)`,
+              feeAmount: formatCurrency(conversionFee),
+            }
+          : {})}
         canRequestPackage={canRequestFinalizedPackage}
         requestPackage={requestPackage}
       >
@@ -2055,6 +2096,9 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
           <li>Artist: {artistName.trim() || "—"}</li>
           {projectType === "album" && <li>Album: {albumName.trim() || "—"}</li>}
           <li>Songs: {projectType === "album" ? Math.max(2, songCount) : 1}</li>
+          {selectedServiceSummary.map((serviceLine) => (
+            <li key={serviceLine}>{serviceLine}</li>
+          ))}
         </ul>
 
         {projectType === "album" && songs.length > 1 && step === "songs" && activeSongIndex > 0 && (

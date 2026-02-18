@@ -70,6 +70,60 @@ All commands are run from the root of the project, from a terminal:
 - Scheduled refresh: `.github/workflows/fx-weekly.yml` runs weekly and commits the updated snapshot.
 - If live FX fetch fails, fallback rates are used by `scripts/update-fx-weekly.mjs` so builds remain stable.
 
+## Request Package Email Setup
+
+Use this checklist to configure and test the `Request This Package` email flow.
+
+### 1) Install dependency
+
+- `pnpm add nodemailer`
+
+### 2) Configure environment variables
+
+Add these keys in your local `.env` file:
+
+- `SMTP_HOST` (for Gmail: `smtp.gmail.com`)
+- `SMTP_PORT` (for Gmail TLS-start: `587`)
+- `SMTP_SECURE` (`false` for port 587, `true` for 465)
+- `SMTP_USER` (your authenticated sender mailbox)
+- `SMTP_PASS` (app password / SMTP password)
+- `SMTP_FROM` (sender identity, e.g. `Vintique Sound <your@email.com>`)
+- `REQUEST_PACKAGE_TO` (destination inbox for package requests)
+- `EMAIL_DRY_RUN` (`1` for safe local testing, `0` for real sends)
+
+Notes:
+
+- Keep real secrets only in `.env` (already git-ignored).
+- Keep placeholder values in `.env.example`.
+
+### 3) Dry-run test (no email sent)
+
+1. Set `EMAIL_DRY_RUN=1`.
+2. Start dev server: `pnpm dev`.
+3. Build a package in the UI and submit `Request This Package`.
+4. Expected result:
+	- UI shows dry-run success.
+	- Server logs include `Package request (dry run)` with request payload.
+
+### 4) Real send test
+
+1. Set `EMAIL_DRY_RUN=0`.
+2. Restart dev server: `pnpm dev`.
+3. Submit a new package request from the UI.
+4. Confirm email delivery in inbox/spam.
+
+### 5) Troubleshooting
+
+- If POST requests fail with static-endpoint warnings, ensure the API route has `export const prerender = false;` in `src/pages/api/request-package.ts`.
+- If you see sender auth errors, verify `SMTP_USER`/`SMTP_PASS` and provider SMTP host/port.
+- If Gmail app passwords are unavailable, use another SMTP provider (Brevo, Mailtrap, etc.) with the same env keys.
+- If UI shows a generic error, inspect the server response message in the modal and terminal logs.
+
+### 6) Security
+
+- If an app password is ever exposed, revoke and rotate it immediately.
+- Use separate credentials for local testing and production where possible.
+
 ## 👀 Want to learn more?
 
 Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).

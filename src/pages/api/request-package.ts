@@ -1,5 +1,26 @@
 import type { APIRoute } from "astro";
 
+// setting "prerender = false" enables POST on localhost/build without switching your whole site output mode
+export const prerender = false;
+
+type RequestBody = {
+  name?: string;
+  email?: string;
+  subject?: string;
+  summaryText?: string;
+  total?: string;
+  pageUrl?: string;
+  deliverToVintique?: boolean;
+  deliverToCustomer?: boolean;
+};
+
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 8;
+const DEDUPE_WINDOW_MS = 24 * 60 * 60 * 1000;
+
+const requestTimestampsByIp = new Map<string, number[]>();
+const recentRequestKeys = new Map<string, number>();
+
 function getEnv(key: string): string | undefined {
   // Prefer Astro's server env if available, then fall back to process.env.
   const metaEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env;
@@ -15,20 +36,93 @@ function escapeHtml(input: string): string {
     .replaceAll("'", "&#039;");
 }
 
+async function parseRequestBody(request: Request): Promise<RequestBody | null> {
+  const jsonClone = request.clone();
+  try {
+    const parsed = (await request.json()) as unknown;
+    if (parsed && typeof parsed === "object") return parsed as RequestBody;
+  } catch {
+    // Fall through to alternate body parsers.
+  }
+
+  try {
+    const formData = await jsonClone.formData();
+    if ([...formData.keys()].length > 0) {
+      return Object.fromEntries(formData.entries()) as RequestBody;
+    }
+  } catch {
+    // Ignore and continue to text fallback.
+  }
+
+  const textClone = request.clone();
+  const rawText = await textClone.text().catch(() => "");
+  if (!rawText.trim()) return null;
+
+  try {
+    const parsed = JSON.parse(rawText) as unknown;
+    if (parsed && typeof parsed === "object") return parsed as RequestBody;
+    return null;
+  } catch {
+    const params = new URLSearchParams(rawText);
+    if ([...params.keys()].length > 0) {
+      return Object.fromEntries(params.entries()) as RequestBody;
+    }
+  }
+
+  return null;
+}
+
+function getClientIp(request: Request): string {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0]?.trim() || "unknown";
+  }
+  return request.headers.get("x-real-ip") ?? "unknown";
+}
+
+function pruneRecentMaps(now: number) {
+  for (const [ip, timestamps] of requestTimestampsByIp.entries()) {
+    const recent = timestamps.filter((ts) => now - ts <= RATE_LIMIT_WINDOW_MS);
+    if (recent.length === 0) {
+      requestTimestampsByIp.delete(ip);
+    } else {
+      requestTimestampsByIp.set(ip, recent);
+    }
+  }
+
+  for (const [key, timestamp] of recentRequestKeys.entries()) {
+    if (now - timestamp > DEDUPE_WINDOW_MS) {
+      recentRequestKeys.delete(key);
+    }
+  }
+}
+
+function isRateLimited(ip: string, now: number): boolean {
+  const timestamps = requestTimestampsByIp.get(ip) ?? [];
+  const recent = timestamps.filter((ts) => now - ts <= RATE_LIMIT_WINDOW_MS);
+  if (recent.length >= RATE_LIMIT_MAX_REQUESTS) {
+    requestTimestampsByIp.set(ip, recent);
+    return true;
+  }
+  recent.push(now);
+  requestTimestampsByIp.set(ip, recent);
+  return false;
+}
+
+function isDuplicateRequest(requestKey: string, now: number): boolean {
+  const existing = recentRequestKeys.get(requestKey);
+  if (existing && now - existing <= DEDUPE_WINDOW_MS) {
+    return true;
+  }
+  recentRequestKeys.set(requestKey, now);
+  return false;
+}
+
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const body = (await request.json().catch(() => null)) as
-      | {
-          name?: string;
-          email?: string;
-          subject?: string;
-          summaryText?: string;
-          total?: string;
-          pageUrl?: string;
-        }
-      | null;
+    const body = await parseRequestBody(request);
 
-    if (!body) {
+    if (!body || typeof body !== "object") {
       return new Response(JSON.stringify({ ok: false, error: "Invalid JSON." }), { status: 400 });
     }
 
@@ -38,6 +132,12 @@ export const POST: APIRoute = async ({ request }) => {
     const summaryText = (body.summaryText ?? "").trim();
     const total = (body.total ?? "").trim();
     const pageUrl = (body.pageUrl ?? "").trim();
+    const deliverToVintique = body.deliverToVintique !== false;
+    const deliverToCustomer = body.deliverToCustomer === true;
+
+    if (!deliverToVintique && !deliverToCustomer) {
+      return new Response(JSON.stringify({ ok: false, error: "Select at least one delivery target." }), { status: 400 });
+    }
 
     if (!name) return new Response(JSON.stringify({ ok: false, error: "Name is required." }), { status: 400 });
     if (!email || !/.+@.+\..+/.test(email)) {
@@ -49,6 +149,32 @@ export const POST: APIRoute = async ({ request }) => {
 
     const to = getEnv("REQUEST_PACKAGE_TO") ?? "info@vintiquesound.com";
     const from = getEnv("SMTP_FROM") ?? to;
+
+    const now = Date.now();
+    pruneRecentMaps(now);
+
+    const ip = getClientIp(request);
+    if (isRateLimited(ip, now)) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "Too many requests. Please wait a few minutes and try again." }),
+        { status: 429 }
+      );
+    }
+
+    const dedupeKey = JSON.stringify({
+      email: email.toLowerCase(),
+      subject,
+      summaryText,
+      total,
+      deliverToVintique,
+      deliverToCustomer,
+    });
+    if (isDuplicateRequest(dedupeKey, now)) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "This request was already submitted recently." }),
+        { status: 409 }
+      );
+    }
 
     const dryRunEnv = (getEnv("EMAIL_DRY_RUN") ?? "").toLowerCase();
     const dryRun = dryRunEnv === "1" || dryRunEnv === "true";
@@ -79,8 +205,22 @@ export const POST: APIRoute = async ({ request }) => {
     const hasSmtp = Boolean(host) && Boolean(portRaw) && Boolean(user) && Boolean(pass);
 
     if (dryRun || !hasSmtp) {
-      console.log("Package request (dry run)", { to, from, subject, name, email, total, pageUrl, summaryText });
-      return new Response(JSON.stringify({ ok: true, dryRun: true }), { status: 200 });
+      console.log("Package request (dry run)", {
+        to,
+        from,
+        subject,
+        name,
+        email,
+        total,
+        pageUrl,
+        summaryText,
+        deliverToVintique,
+        deliverToCustomer,
+      });
+      return new Response(
+        JSON.stringify({ ok: true, dryRun: true, deliveredToVintique: deliverToVintique, deliveredToCustomer: deliverToCustomer }),
+        { status: 200 }
+      );
     }
 
     const port = Number(portRaw);
@@ -129,17 +269,36 @@ export const POST: APIRoute = async ({ request }) => {
       },
     });
 
-    await transporter.sendMail({
-      to,
-      from,
-      replyTo: email,
-      subject,
-      text: fullText,
-      html,
-    });
+    if (deliverToVintique) {
+      await transporter.sendMail({
+        to,
+        from,
+        replyTo: email,
+        subject,
+        text: fullText,
+        html,
+      });
+    }
 
-    return new Response(JSON.stringify({ ok: true, dryRun: false }), { status: 200 });
+    if (deliverToCustomer) {
+      await transporter.sendMail({
+        to: email,
+        from,
+        replyTo: to,
+        subject: `${subject} (Copy)`,
+        text: fullText,
+        html,
+      });
+    }
+
+    return new Response(
+      JSON.stringify({ ok: true, dryRun: false, deliveredToVintique: deliverToVintique, deliveredToCustomer: deliverToCustomer }),
+      { status: 200 }
+    );
   } catch (err) {
+    if (err instanceof SyntaxError) {
+      return new Response(JSON.stringify({ ok: false, error: "Invalid JSON." }), { status: 400 });
+    }
     console.error("Package request error", err);
     return new Response(JSON.stringify({ ok: false, error: "Server error." }), { status: 500 });
   }
