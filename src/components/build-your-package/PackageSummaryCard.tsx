@@ -10,6 +10,8 @@ export type RequestPackageConfig = {
 export type PackageSummaryCardProps = {
   children: React.ReactNode;
   total: string;
+  feeLabel?: string;
+  feeAmount?: string;
   canRequestPackage?: boolean;
   requestPackage?: RequestPackageConfig;
 };
@@ -17,6 +19,8 @@ export type PackageSummaryCardProps = {
 export default function PackageSummaryCard({
   children,
   total,
+  feeLabel,
+  feeAmount,
   canRequestPackage,
   requestPackage,
 }: PackageSummaryCardProps) {
@@ -24,16 +28,64 @@ export default function PackageSummaryCard({
   const [requestName, setRequestName] = React.useState("");
   const [requestEmail, setRequestEmail] = React.useState("");
   const [isSending, setIsSending] = React.useState(false);
+  const [sentToVintique, setSentToVintique] = React.useState(false);
+  const [sentToSelf, setSentToSelf] = React.useState(false);
   const [sendResult, setSendResult] = React.useState<
     | { kind: "idle" }
-    | { kind: "success"; dryRun: boolean }
+    | { kind: "success"; dryRun: boolean; deliveredToVintique: boolean; deliveredToCustomer: boolean }
     | { kind: "error"; message: string }
   >({ kind: "idle" });
 
+  const packageKey = React.useMemo(() => {
+    if (!requestPackage) return "";
+    return `${requestPackage.subject}::${requestPackage.summaryText}::${total}`;
+  }, [requestPackage, total]);
+
+  const vintiqueSentKey = React.useMemo(
+    () => (packageKey ? `package-request:vintique:${packageKey}` : ""),
+    [packageKey]
+  );
+
+  const selfSentKey = React.useMemo(
+    () => (packageKey ? `package-request:self:${packageKey}:${requestEmail.trim().toLowerCase()}` : ""),
+    [packageKey, requestEmail]
+  );
+
+  React.useEffect(() => {
+    if (!vintiqueSentKey || typeof window === "undefined") return;
+    setSentToVintique(window.localStorage.getItem(vintiqueSentKey) === "1");
+  }, [vintiqueSentKey]);
+
+  React.useEffect(() => {
+    if (!selfSentKey || typeof window === "undefined") return;
+    setSentToSelf(window.localStorage.getItem(selfSentKey) === "1");
+  }, [selfSentKey]);
+
   const canRequest = Boolean(requestName.trim()) && /.+@.+\..+/.test(requestEmail.trim());
 
-  async function submitRequest() {
+  function buildDownloadText() {
+    if (!requestPackage) return "";
+    return `Subject: ${requestPackage.subject}\nTotal: ${total}\n\nName: ${requestName.trim() || "—"}\nEmail: ${requestEmail.trim() || "—"}\n\n${requestPackage.summaryText}`;
+  }
+
+  function downloadRequestSummary() {
+    if (typeof window === "undefined" || !requestPackage) return;
+    const blob = new Blob([buildDownloadText()], { type: "text/plain;charset=utf-8" });
+    const url = window.URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    const timestamp = new Date().toISOString().slice(0, 19).replaceAll(":", "-");
+    anchor.href = url;
+    anchor.download = `package-request-${timestamp}.txt`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    window.URL.revokeObjectURL(url);
+  }
+
+  async function submitRequest(target: "vintique" | "self") {
     if (!requestPackage) return;
+    if (target === "vintique" && sentToVintique) return;
+    if (target === "self" && sentToSelf) return;
 
     setIsSending(true);
     setSendResult({ kind: "idle" });
@@ -51,21 +103,47 @@ export default function PackageSummaryCard({
           summaryText: requestPackage.summaryText,
           total,
           pageUrl: typeof window !== "undefined" ? window.location.href : undefined,
+          deliverToVintique: target === "vintique",
+          deliverToCustomer: target === "self",
         }),
       });
 
       const json = (await response.json().catch(() => null)) as
-        | { ok: true; dryRun: boolean }
+        | { ok: true; dryRun: boolean; deliveredToVintique: boolean; deliveredToCustomer: boolean }
         | { ok: false; error: string }
         | null;
 
-      if (!response.ok || !json) {
+      if (!json) {
         setSendResult({ kind: "error", message: "Request failed. Please try again." });
         return;
       }
 
+      if (!response.ok) {
+        setSendResult({ kind: "error", message: json.ok ? "Request failed. Please try again." : json.error || "Request failed. Please try again." });
+        return;
+      }
+
       if (json.ok) {
-        setSendResult({ kind: "success", dryRun: json.dryRun });
+        if (json.deliveredToVintique) {
+          setSentToVintique(true);
+          if (vintiqueSentKey && typeof window !== "undefined") {
+            window.localStorage.setItem(vintiqueSentKey, "1");
+          }
+        }
+
+        if (json.deliveredToCustomer) {
+          setSentToSelf(true);
+          if (selfSentKey && typeof window !== "undefined") {
+            window.localStorage.setItem(selfSentKey, "1");
+          }
+        }
+
+        setSendResult({
+          kind: "success",
+          dryRun: json.dryRun,
+          deliveredToVintique: json.deliveredToVintique,
+          deliveredToCustomer: json.deliveredToCustomer,
+        });
         return;
       }
 
@@ -84,6 +162,13 @@ export default function PackageSummaryCard({
       {children}
 
       <div className="h-px bg-border" />
+
+      {feeLabel && feeAmount && (
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-muted-foreground">{feeLabel}</span>
+          <span className="tabular-nums">{feeAmount}</span>
+        </div>
+      )}
 
       <div className="flex items-center justify-between">
         <span className="font-semibold">Total</span>
@@ -111,7 +196,7 @@ export default function PackageSummaryCard({
               <div className="space-y-1">
                 <div className="text-lg font-semibold">Request This Package</div>
                 <div className="text-sm text-muted-foreground">
-                  Enter your name + email, and I’ll receive your package details at info@vintiquesound.com.
+                  Enter your name + email, and I'll receive your package details at info@vintiquesound.com
                 </div>
               </div>
               <Button type="button" variant="ghost" onClick={() => setIsRequestOpen(false)}>
@@ -150,16 +235,18 @@ Total: ${total}
 
 ${requestPackage.summaryText}`}
               </pre>
-              <div className="text-xs text-muted-foreground">
-                Tip: Set `EMAIL_DRY_RUN=1` to test without sending.
+              <div className="flex justify-end">
+                <Button type="button" variant="ghost" onClick={downloadRequestSummary}>
+                  Download Request (.txt)
+                </Button>
               </div>
             </div>
 
             {sendResult.kind === "success" && (
               <div className="rounded-md border border-border bg-muted p-3 text-sm">
-                {sendResult.dryRun
-                  ? "Dry run: request received (email not sent)."
-                  : "Sent! I’ve received your package request."}
+                {sendResult.dryRun ? "Dry run: request received (email not sent)." : "Sent successfully."}
+                {sendResult.deliveredToVintique && " Sent to Vintique Sound."}
+                {sendResult.deliveredToCustomer && " Sent copy to your email."}
               </div>
             )}
 
@@ -173,8 +260,20 @@ ${requestPackage.summaryText}`}
               <Button type="button" variant="ghost" onClick={() => setIsRequestOpen(false)}>
                 Cancel
               </Button>
-              <Button type="button" disabled={!canRequest || isSending} onClick={submitRequest}>
-                {isSending ? "Sending…" : "Send"}
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={!canRequest || isSending || sentToSelf}
+                onClick={() => submitRequest("self")}
+              >
+                {sentToSelf ? "Already Sent to Me" : isSending ? "Sending…" : "Send Copy to Me"}
+              </Button>
+              <Button
+                type="button"
+                disabled={!canRequest || isSending || sentToVintique}
+                onClick={() => submitRequest("vintique")}
+              >
+                {sentToVintique ? "Already Sent to Vintique" : isSending ? "Sending…" : "Send to Vintique"}
               </Button>
             </div>
           </div>
