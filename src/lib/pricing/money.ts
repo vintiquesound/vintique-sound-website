@@ -6,6 +6,13 @@ type MoneyFormatOptions = {
   maximumFractionDigits?: number;
 };
 
+const CURRENCY_SYMBOL_FALLBACK: Record<CurrencyCode, string> = {
+  CAD: "$",
+  USD: "$",
+  EUR: "€",
+  GBP: "£",
+};
+
 function normalizeCents(cents: number): number {
   if (!Number.isFinite(cents)) return 0;
   return Math.round(cents);
@@ -34,6 +41,24 @@ export function formatMoneyFromCents(
     currency,
     maximumFractionDigits,
   }).format(normalizeCents(amountCents) / 100);
+}
+
+export function getCurrencySymbol(currency: CurrencyCode, locale?: string): string {
+  const symbol = new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  })
+    .formatToParts(0)
+    .find((part) => part.type === "currency")
+    ?.value;
+
+  return symbol?.trim() || CURRENCY_SYMBOL_FALLBACK[currency];
+}
+
+export function formatCurrencyCodeWithSymbol(currency: CurrencyCode, locale?: string): string {
+  return `${currency} ${getCurrencySymbol(currency, locale)}`;
 }
 
 export function formatCadMoneyFromCents(
