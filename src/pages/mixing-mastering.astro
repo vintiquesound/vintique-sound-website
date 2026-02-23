@@ -6,8 +6,7 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
 
 // Third party libraries
 import { Icon } from "astro-icon/components"
-// import { ArrowRight, Star } from "lucide-astro";
-import { ArrowRight } from "lucide-astro";
+import { ArrowRight, Star } from "lucide-astro";
 
 // Local UI components
 import Card from "@/components/ui/card/Card.astro";
@@ -21,8 +20,50 @@ import AudioComparison from "@/components/audio/AudioComparison.tsx";
 import PriceText from "@/components/ui/PriceText";
 
 // Local content and assets
-// import { services, genreExperience, processSteps, idealClients, technicalDetails, testimonials } from "@/content/webpage/mixing-mastering-data";
-import { services, genreExperience, processSteps, idealClients, technicalDetails } from "@/content/webpage/mixing-mastering-data";
+import { services, genreExperience, processSteps, idealClients, technicalDetails, testimonials } from "@/content/webpage/mixing-mastering-data";
+
+const TESTIMONIAL_PREVIEW_LIMIT = 244;
+const FALLBACK_GOOGLE_REVIEW_URL = "https://www.google.com/search?q=Vintique+Sound+Google+Reviews";
+const STAR_INDICES = [0, 1, 2, 3, 4] as const;
+const EXTERNAL_LINK_PROPS = {
+  target: "_blank",
+  rel: "noopener noreferrer",
+} as const;
+
+const getTestimonialPreview = (quote: string, maxCharacters = TESTIMONIAL_PREVIEW_LIMIT) => {
+  if (quote.length <= maxCharacters) {
+    return { text: quote, isTruncated: false };
+  }
+
+  const clipped = quote.slice(0, maxCharacters);
+  const safeClipped = clipped.slice(0, Math.max(clipped.lastIndexOf(" "), 0)).trim();
+
+  return {
+    text: safeClipped.length > 0 ? safeClipped : clipped.trim(),
+    isTruncated: true,
+  };
+};
+
+const getArtistMeta = (name: string) => {
+  const [artistNameRaw, ...artistDescriptionParts] = name.split(",");
+  return {
+    artistName: artistNameRaw?.trim() || name,
+    artistDescription: artistDescriptionParts.join(",").trim(),
+  };
+};
+
+const displayTestimonials = testimonials.map((testimonial) => {
+  const preview = getTestimonialPreview(testimonial.quote);
+  const { artistName, artistDescription } = getArtistMeta(testimonial.name);
+
+  return {
+    ...testimonial,
+    reviewUrl: testimonial.reviewUrl ?? FALLBACK_GOOGLE_REVIEW_URL,
+    preview,
+    artistName,
+    artistDescription,
+  };
+});
 ---
 
 <WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
@@ -114,7 +155,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
           </i>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {genreExperience.map((experience) => (
             <Card class="border-2 hover:border-primary transition-all">
               <CardHeader class="text-center border-b-2 pb-4">
@@ -174,14 +215,6 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
             }}
           /> -->
           <AudioComparison client:load
-            title="Rock & Alternative - Mix"
-            description="Manobra de Massa - Reencontro"
-            samples={{
-              rawTracks: "/audio/comparisons/manobra_de_massa-reencontro-preview-raw_tracks.mp3",
-              mixed: "/audio/comparisons/manobra_de_massa-reencontro-preview-mixed.mp3"
-            }}
-          />
-          <AudioComparison client:load
             title="Rock & Alternative - Stem Master"
             description="Jon Harris - My Little Lady"
             samples={{
@@ -189,7 +222,14 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
               stemMastered: "/audio/comparisons/jon_harris-my_little_lady-preview-stem_master.wav"
             }}
           />
-
+          <AudioComparison client:load
+            title="Rock & Alternative - Mix"
+            description="Manobra de Massa - Reencontro"
+            samples={{
+              rawTracks: "/audio/comparisons/manobra_de_massa-reencontro-preview-raw_tracks.mp3",
+              mixed: "/audio/comparisons/manobra_de_massa-reencontro-preview-mixed.mp3"
+            }}
+          />
           <!-- <AudioComparison client:load
             title="Hip-Hop & Rap - Mix and Master"
             samples={{
@@ -218,7 +258,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
       </div>
     </section>
 
-    <!-- {/* CLIENT TESTIMONIALS */}
+    {/* CLIENT TESTIMONIALS */}
     <section class="py-20 bg-linear-to-br from-primary/20 to-secondary/20">
       <div class="container mx-auto px-4">
         <div class="text-center mb-12">
@@ -228,25 +268,67 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
           <p class="pb-0 mb-0 text-lg text-muted-foreground">
             What artists say after working together.
           </p>
+          <a
+            href={FALLBACK_GOOGLE_REVIEW_URL}
+            {...EXTERNAL_LINK_PROPS}
+            class="inline-flex items-center gap-2 mt-4 text-sm font-semibold text-primary underline-offset-4 hover:underline transition-colors"
+          >
+            See all Google Reviews
+            <Icon name="lucide:external-link" class="h-4 w-4" />
+          </a>
         </div>
 
-        <div class="grid lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {testimonials.map((t) => (
-            <Card class="border-2 hover:border-primary transition-all">
-              <CardContent>
-                <div class="flex items-center mb-4">
-                  {[...Array(5)].map(() => (
-                    <Star class="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p class="text-muted-foreground italic mb-4">{t.quote}</p>
-                <p class="font-semibold">{t.name}</p>
-              </CardContent>
-            </Card>
+        <div class="flex flex-wrap justify-center gap-6 max-w-7xl mx-auto">
+          {displayTestimonials.map((t) => (
+              <Card class="w-full max-w-xl lg:max-w-sm border-2 hover:border-primary transition-all">
+                <CardContent class="flex flex-col h-full">
+                  <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-1">
+                      {STAR_INDICES.map(() => (
+                        <Star class="h-5 w-5 text-yellow-400 fill-current" />
+                      ))}
+                    </div>
+                    <span class="text-xs font-medium text-muted-foreground">Google Review</span>
+                  </div>
+
+                  <p class="text-muted-foreground italic mb-4 leading-relaxed grow">
+                    {t.preview.text}
+                    {t.preview.isTruncated && (
+                      <>
+                        {" "}
+                        <a
+                          href={t.reviewUrl}
+                          {...EXTERNAL_LINK_PROPS}
+                          class="font-semibold text-primary hover:underline not-italic"
+                        >
+                          [...] Read more
+                        </a>
+                      </>
+                    )}
+                  </p>
+
+                  <div class="pt-4 border-t border-border/60">
+                    <div class="flex items-baseline justify-between gap-3">
+                      <p class="m-0 font-semibold leading-none text-white">{t.artistName}</p>
+                      <a
+                        href={t.reviewUrl}
+                        {...EXTERNAL_LINK_PROPS}
+                        class="inline-flex min-w-30 shrink-0 items-baseline justify-end gap-1.5 whitespace-nowrap max-[420px]:whitespace-normal max-[420px]:text-right text-sm font-semibold leading-none text-primary hover:underline"
+                      >
+                        <span>Read review</span>
+                        <Icon name="lucide:external-link" class="h-3.5 w-3.5 shrink-0" />
+                      </a>
+                    </div>
+                    {t.artistDescription && (
+                      <p class="m-0 mt-1 text-xs text-muted-foreground">{t.artistDescription}</p>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
           ))}
         </div>
       </div>
-    </section> -->
+    </section>
 
     {/* WHO ITS FOR */}
     <section class="py-20 bg-muted">
@@ -260,7 +342,7 @@ import { services, genreExperience, processSteps, idealClients, technicalDetails
           </p>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
           {idealClients.map((client) => (
             <Card class="border-2 hover:border-primary transition-all">
               <CardHeader class="flex flex-col items-center">
