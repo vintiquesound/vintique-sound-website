@@ -94,16 +94,14 @@ export const genreExperience = [
 
 export const testimonials = [
   {
-    name: "Sarah Johnson, Indie Artist",
-    quote: "Working with this studio transformed my music. The attention to detail and expertise in mixing gave my album a professional polish that I never thought possible.",
+    name: "Anté Svircic, Composer and Multi Instrumentalist",
+    quote: "I have been using Vintique's mixing and mastering services for my piano and orchestral recordings for the last 6 years. I was never disappointed with Kevin's work. He is very patient and will work with me until I am satisfied with the outcome.",
+    reviewUrl: "https://maps.app.goo.gl/AiYjXrJ771PxgUNf9",
   },
   {
-    name: "Mike Rodriguez, Hip-Hop Producer",
-    quote: "The mastering service brought my track to life. The balance and clarity are perfect for radio play. I couldn't be happier with the results.",
-  },
-  {
-    name: "Emma Thompson, Classical Composer",
-    quote: "The studio environment was perfect for recording. The gear and atmosphere helped me capture exactly what I envisioned in my music.",
+    name: "Jon Harris, Solo Artist",
+    quote: "Kevin was the third mastering engineer I worked with on my album, and he went above and beyond to make it sound exceptional. He maintained open dialogue throughout the process to understand exactly what I was hearing in my head and ensured that vision translated across multiple systems. To this day, when I hear tracks from Parallel Heart in a car, on a PA, streaming online, or even on FM radio, I'm reminded how well the record translates. Having Kevin in my corner made all the difference. Highly recommended.",
+    reviewUrl: "https://maps.app.goo.gl/JcYQoE6sBDhvvCzR9",
   },
 ] as const;
 
