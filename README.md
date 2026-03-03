@@ -72,21 +72,28 @@ All commands are run from the root of the project, from a terminal:
 
 ## Environment strategy (production-safe)
 
-Use separate values for public contact identity and private SMTP credentials.
+Use separate values for public contact identities and private SMTP credentials.
 
-- `PUBLIC_CONTACT_EMAIL`: public-facing address shown on the site (keep this in source config, not in Netlify env vars).
-- `REQUEST_PACKAGE_TO`: inbox for incoming package requests.
+Public business emails are defined in `src/consts.ts` (`BUSINESS_EMAILS`):
+
+- `main`: primary business contact (example: `name@...`)
+- `requests`: service/package requests (example: `requests@...`)
+- `support`: digital product support (example: `support@...`)
+- `billing`: invoices and billing (example: `billing@...`)
+
+Private email transport credentials stay in environment variables:
+
 - `SMTP_USER` / `SMTP_PASS`: private SMTP login credentials.
+- `SMTP_HOST` / `SMTP_PORT` / `SMTP_SECURE`: SMTP transport settings.
 - `SMTP_FROM`: sender header value shown to recipients.
 
 Recommended policy:
 
-1. Keep `PUBLIC_CONTACT_EMAIL` public.
-2. Do not set `PUBLIC_CONTACT_EMAIL` as a Netlify environment variable.
-3. Do not reuse that same value for `SMTP_USER`.
-4. Do not set `REQUEST_PACKAGE_TO` to the same literal value as `PUBLIC_CONTACT_EMAIL`.
-5. Store real secrets only in host-managed environment variables (Netlify UI), never in repo files.
-6. Use `.env.example` as the contract and keep `.env` local only.
+1. Keep business contact addresses in source config (`src/consts.ts`) and treat them as public.
+2. Do not set public business emails as Netlify environment variables.
+3. Use a private SMTP identity for `SMTP_USER` (do not reuse public addresses).
+4. Store real secrets only in host-managed environment variables (Netlify UI), never in repo files.
+5. Use local `.env` only for development.
 
 Netlify notes:
 

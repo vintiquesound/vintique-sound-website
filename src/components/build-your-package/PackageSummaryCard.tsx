@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
-import { PUBLIC_CONTACT_EMAIL } from "@/consts";
+import { BUSINESS_EMAILS } from "@/consts";
 
 export type RequestPackageConfig = {
   subject: string;
@@ -197,7 +197,7 @@ export default function PackageSummaryCard({
               <div className="space-y-1">
                 <div className="text-lg font-semibold">Request This Package</div>
                 <div className="text-sm text-muted-foreground">
-                  Enter your name + email, and I'll receive your package details at {PUBLIC_CONTACT_EMAIL}
+                  Enter your name + email, and I'll receive your package details at {BUSINESS_EMAILS.requests}
                 </div>
               </div>
               <Button type="button" variant="ghost" onClick={() => setIsRequestOpen(false)}>

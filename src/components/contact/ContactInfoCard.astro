@@ -5,14 +5,26 @@ import Card from "@/components/ui/card/Card.astro";
 import CardHeader from "@/components/ui/card/CardHeader.astro";
 import CardTitle from "@/components/ui/card/CardTitle.astro";
 import CardContent from "@/components/ui/card/CardContent.astro";
-import { PUBLIC_CONTACT_EMAIL } from "@/consts";
+import { BUSINESS_EMAILS } from "@/consts";
 
 const contactInfo = [
   {
     icon: Mail,
-    label: "Email",
-    value: PUBLIC_CONTACT_EMAIL,
-    href: `mailto:${PUBLIC_CONTACT_EMAIL}`,
+    label: "Main Contact",
+    value: BUSINESS_EMAILS.generic,
+    href: `mailto:${BUSINESS_EMAILS.generic}`,
+  },
+  {
+    icon: Mail,
+    label: "Product Support",
+    value: BUSINESS_EMAILS.support,
+    href: `mailto:${BUSINESS_EMAILS.support}`,
+  },
+  {
+    icon: Mail,
+    label: "Billing",
+    value: BUSINESS_EMAILS.billing,
+    href: `mailto:${BUSINESS_EMAILS.billing}`,
   },
   {
     icon: MapPin,
