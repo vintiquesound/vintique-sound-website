@@ -22,9 +22,8 @@ const requestTimestampsByIp = new Map<string, number[]>();
 const recentRequestKeys = new Map<string, number>();
 
 function getEnv(key: string): string | undefined {
-  // Prefer Astro's server env if available, then fall back to process.env.
-  const metaEnv = (import.meta as unknown as { env?: Record<string, string | undefined> }).env;
-  return metaEnv?.[key] ?? process.env[key];
+  // Runtime-only env lookup to avoid build-time inlining of secrets.
+  return process.env[key];
 }
 
 function escapeHtml(input: string): string {
