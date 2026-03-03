@@ -6,6 +6,7 @@ import path from "path";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
+import node from "@astrojs/node";
 import tailwindcss from "@tailwindcss/vite";
 
 import icon from "astro-icon";
@@ -15,6 +16,10 @@ import favicons from "astro-favicons";
 // https://astro.build/config
 export default defineConfig({
   site: "https://www.vintiquesound.com",
+  output: "server",
+  adapter: node({
+    mode: "standalone",
+  }),
   integrations: [
     sitemap(),
     react(),

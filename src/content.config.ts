@@ -38,4 +38,10 @@ const blog = defineCollection({
 // Partials Content Collection (no schema needed)
 const partials = defineCollection({});
 
-export const collections = { blog, partials };
+// Explicitly define this collection to avoid auto-generation warnings.
+// Web page data is imported directly from TypeScript modules, so no content files are loaded here.
+const webpage = defineCollection({
+	loader: async () => [],
+});
+
+export const collections = { blog, partials, webpage };

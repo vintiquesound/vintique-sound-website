@@ -12,6 +12,8 @@ import FormattedDate from "../../../components/FormattedDate.astro";
 // Types and utilities
 import { slugifyTag } from "../../../lib/utils";
 
+export const prerender = true;
+
 function stripMarkup(input: string) {
 	let text = input;
 

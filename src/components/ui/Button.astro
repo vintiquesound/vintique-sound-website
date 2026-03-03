@@ -292,7 +292,7 @@ function shouldStripColorUtility(token: string) {
 
   const isArbitraryValue = token.includes("[")
 
-  // Tailwind color alpha syntax: `bg-primary/80`. Avoid stripping URLs like `bg-[url('/x')]`.
+  // Tailwind color alpha syntax: `bg-primary/80`. Avoid stripping URL-based arbitrary values.
   if (!isArbitraryValue && token.includes("/")) return true
 
   if (!token.includes("-")) return false
