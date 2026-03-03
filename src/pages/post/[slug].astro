@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+
+  const visiblePosts = posts
+    .filter((post) => (post.data.draft ?? false) === false)
+    .filter((post) => (post.data.published ?? true) === true);
+
+  const byLegacySlug = new Map<string, { slug: string; year: number }>();
+
+  for (const post of visiblePosts) {
+    const segments = post.slug.split("/").filter(Boolean);
+    const legacySlug = segments[segments.length - 1];
+    if (!legacySlug) continue;
+
+    const existing = byLegacySlug.get(legacySlug);
+    if (!existing || post.data.year > existing.year) {
+      byLegacySlug.set(legacySlug, { slug: post.slug, year: post.data.year });
+    }
+  }
+
+  return Array.from(byLegacySlug.entries()).map(([legacySlug, target]) => ({
+    params: { slug: legacySlug },
+    props: { targetPath: `/blog/${target.slug}/` },
+  }));
+}
+
+const { targetPath } = Astro.props as { targetPath: string };
+
+return Astro.redirect(targetPath, 301);
+---
