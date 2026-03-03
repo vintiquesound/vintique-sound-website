@@ -80,16 +80,7 @@ Use this checklist to configure and test the `Request This Package` email flow.
 
 ### 2) Configure environment variables
 
-Add these keys in your local `.env` file:
-
-- `SMTP_HOST` (for Gmail: `smtp.gmail.com`)
-- `SMTP_PORT` (for Gmail TLS-start: `587`)
-- `SMTP_SECURE` (`false` for port 587, `true` for 465)
-- `SMTP_USER` (your authenticated sender mailbox)
-- `SMTP_PASS` (app password / SMTP password)
-- `SMTP_FROM` (sender identity, e.g. `Vintique Sound <your@email.com>`)
-- `REQUEST_PACKAGE_TO` (destination inbox for package requests)
-- `EMAIL_DRY_RUN` (`1` for safe local testing, `0` for real sends)
+Add the standard set of SMTP keys in your local `.env` file:
 
 Notes:
 
