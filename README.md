@@ -84,8 +84,9 @@ Recommended policy:
 1. Keep `PUBLIC_CONTACT_EMAIL` public.
 2. Do not set `PUBLIC_CONTACT_EMAIL` as a Netlify environment variable.
 3. Do not reuse that same value for `SMTP_USER`.
-4. Store real secrets only in host-managed environment variables (Netlify UI), never in repo files.
-5. Use `.env.example` as the contract and keep `.env` local only.
+4. Do not set `REQUEST_PACKAGE_TO` to the same literal value as `PUBLIC_CONTACT_EMAIL`.
+5. Store real secrets only in host-managed environment variables (Netlify UI), never in repo files.
+6. Use `.env.example` as the contract and keep `.env` local only.
 
 Netlify notes:
 
