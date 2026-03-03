@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { PUBLIC_CONTACT_EMAIL } from "@/consts";
 
 // setting "prerender = false" enables POST on localhost/build without switching your whole site output mode
 export const prerender = false;
@@ -146,7 +147,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(JSON.stringify({ ok: false, error: "Package summary is required." }), { status: 400 });
     }
 
-    const to = getEnv("REQUEST_PACKAGE_TO") ?? "info@vintiquesound.com";
+    const to = getEnv("REQUEST_PACKAGE_TO") ?? PUBLIC_CONTACT_EMAIL;
     const from = getEnv("SMTP_FROM") ?? to;
 
     const now = Date.now();

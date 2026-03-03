@@ -70,50 +70,26 @@ All commands are run from the root of the project, from a terminal:
 - Scheduled refresh: `.github/workflows/fx-weekly.yml` runs weekly and commits the updated snapshot.
 - If live FX fetch fails, fallback rates are used by `scripts/update-fx-weekly.mjs` so builds remain stable.
 
-## Request Package Email Setup
+## Environment strategy (production-safe)
 
-Use this checklist to configure and test the `Request This Package` email flow.
+Use separate values for public contact identity and private SMTP credentials.
 
-### 1) Install dependency
+- `PUBLIC_CONTACT_EMAIL`: public-facing address shown on the site.
+- `REQUEST_PACKAGE_TO`: inbox for incoming package requests.
+- `SMTP_USER` / `SMTP_PASS`: private SMTP login credentials.
+- `SMTP_FROM`: sender header value shown to recipients.
 
-- `pnpm add nodemailer`
+Recommended policy:
 
-### 2) Configure environment variables
+1. Keep `PUBLIC_CONTACT_EMAIL` public.
+2. Do not reuse that same value for `SMTP_USER`.
+3. Store real secrets only in host-managed environment variables (Netlify UI), never in repo files.
+4. Use `.env.example` as the contract and keep `.env` local only.
 
-Add the standard set of SMTP keys in your local `.env` file:
+Netlify notes:
 
-Notes:
-
-- Keep real secrets only in `.env` (already git-ignored).
-- Keep placeholder values in `.env.example`.
-
-### 3) Dry-run test (no email sent)
-
-1. Set `EMAIL_DRY_RUN=1`.
-2. Start dev server: `pnpm dev`.
-3. Build a package in the UI and submit `Request This Package`.
-4. Expected result:
-	- UI shows dry-run success.
-	- Server logs include `Package request (dry run)` with request payload.
-
-### 4) Real send test
-
-1. Set `EMAIL_DRY_RUN=0`.
-2. Restart dev server: `pnpm dev`.
-3. Submit a new package request from the UI.
-4. Confirm email delivery in inbox/spam.
-
-### 5) Troubleshooting
-
-- If POST requests fail with static-endpoint warnings, ensure the API route has `export const prerender = false;` in `src/pages/api/request-package.ts`.
-- If you see sender auth errors, verify `SMTP_USER`/`SMTP_PASS` and provider SMTP host/port.
-- If Gmail app passwords are unavailable, use another SMTP provider (Brevo, Mailtrap, etc.) with the same env keys.
-- If UI shows a generic error, inspect the server response message in the modal and terminal logs.
-
-### 6) Security
-
-- If an app password is ever exposed, revoke and rotate it immediately.
-- Use separate credentials for local testing and production where possible.
+- Secrets scanning is value-based. If a secret key uses a value that is intentionally public, scans can fail by design.
+- For long-term safety, use a dedicated SMTP auth identity (for example `mailer@...`) so secret values do not appear in public content.
 
 ## 👀 Want to learn more?
 

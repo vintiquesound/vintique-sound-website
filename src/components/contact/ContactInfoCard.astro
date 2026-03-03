@@ -5,13 +5,14 @@ import Card from "@/components/ui/card/Card.astro";
 import CardHeader from "@/components/ui/card/CardHeader.astro";
 import CardTitle from "@/components/ui/card/CardTitle.astro";
 import CardContent from "@/components/ui/card/CardContent.astro";
+import { PUBLIC_CONTACT_EMAIL } from "@/consts";
 
 const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "info@vintiquesound.com",
-    href: "mailto:info@vintiquesound.com",
+    value: PUBLIC_CONTACT_EMAIL,
+    href: `mailto:${PUBLIC_CONTACT_EMAIL}`,
   },
   {
     icon: MapPin,
