@@ -5,6 +5,8 @@ import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
 // Types and utilities
 import { type CollectionEntry, getCollection, render } from "astro:content";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
 	const posts = await getCollection("blog");
 	return posts
