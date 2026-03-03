@@ -74,7 +74,7 @@ All commands are run from the root of the project, from a terminal:
 
 Use separate values for public contact identity and private SMTP credentials.
 
-- `PUBLIC_CONTACT_EMAIL`: public-facing address shown on the site.
+- `PUBLIC_CONTACT_EMAIL`: public-facing address shown on the site (keep this in source config, not in Netlify env vars).
 - `REQUEST_PACKAGE_TO`: inbox for incoming package requests.
 - `SMTP_USER` / `SMTP_PASS`: private SMTP login credentials.
 - `SMTP_FROM`: sender header value shown to recipients.
@@ -82,9 +82,10 @@ Use separate values for public contact identity and private SMTP credentials.
 Recommended policy:
 
 1. Keep `PUBLIC_CONTACT_EMAIL` public.
-2. Do not reuse that same value for `SMTP_USER`.
-3. Store real secrets only in host-managed environment variables (Netlify UI), never in repo files.
-4. Use `.env.example` as the contract and keep `.env` local only.
+2. Do not set `PUBLIC_CONTACT_EMAIL` as a Netlify environment variable.
+3. Do not reuse that same value for `SMTP_USER`.
+4. Store real secrets only in host-managed environment variables (Netlify UI), never in repo files.
+5. Use `.env.example` as the contract and keep `.env` local only.
 
 Netlify notes:
 
