@@ -6,7 +6,7 @@ import path from "path";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
-import node from "@astrojs/node";
+import netlify from "@astrojs/netlify";
 import tailwindcss from "@tailwindcss/vite";
 
 import icon from "astro-icon";
@@ -15,11 +15,9 @@ import favicons from "astro-favicons";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://www.vintiquesound.com",
+  site: "https://vintiquesound.netlify.app",
   output: "server",
-  adapter: node({
-    mode: "standalone",
-  }),
+  adapter: netlify(),
   integrations: [
     sitemap(),
     react(),
