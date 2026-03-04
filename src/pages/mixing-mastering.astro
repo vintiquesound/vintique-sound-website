@@ -223,6 +223,15 @@ const displayTestimonials = testimonials.map((testimonial) => {
             }}
           />
           <AudioComparison client:load
+            title="Stoner Rock - Mix and Master"
+            description="Leonard - Troll Blood"
+            samples={{
+              rawTracks: "/audio/comparisons/leonard-troll_blood-preview-raw_tracks.mp3",
+              mixed: "/audio/comparisons/leonard-troll_blood-preview-mixed.mp3",
+              mastered: "/audio/comparisons/leonard-troll_blood-preview-mixed_and_mastered.mp3"
+            }}
+          />
+          <AudioComparison client:load
             title="Rock & Alternative - Mix"
             description="Manobra de Massa - Reencontro"
             samples={{
@@ -309,7 +318,7 @@ const displayTestimonials = testimonials.map((testimonial) => {
 
                   <div class="pt-4 border-t border-border/60">
                     <div class="flex items-baseline justify-between gap-3">
-                      <p class="m-0 font-semibold leading-none text-white">{t.artistName}</p>
+                      <p class="m-0 font-semibold leading-none text-foreground">{t.artistName}</p>
                       <a
                         href={t.reviewUrl}
                         {...EXTERNAL_LINK_PROPS}
