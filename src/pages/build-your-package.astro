@@ -4,10 +4,11 @@ import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import IntroSection from "@/layouts/sections/IntroSection.astro";
 
 // Local UI components
+import { BUILD_PACKAGE_TITLE, BUILD_PACKAGE_DESCRIPTION } from "@/consts";
 import PackageBuilderIsland from "@/components/build-your-package/PackageBuilderIsland";
 ---
 
-<WebPageLayout title="Build Your Package" description="Build your own customized audio service, from mixing and mastering to editing and repairing.">
+<WebPageLayout title={BUILD_PACKAGE_TITLE} description={BUILD_PACKAGE_DESCRIPTION}>
 
   {/* INTRO SECTION */}
   <IntroSection

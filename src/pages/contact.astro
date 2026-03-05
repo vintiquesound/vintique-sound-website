@@ -9,9 +9,12 @@ import ContactInfoCard from "@/components/contact/ContactInfoCard.astro";
 import ContactSocialsCard from "@/components/contact/ContactSocialsCard.astro";
 // import OpenStreetMapEmbed from "@/components/contact/OpenStreetMapEmbed.astro";
 import OpenStreetMapLeaflet from "@/components/contact/OpenStreetMapLeaflet.astro";
+
+// Local content and assets
+import { CONTACT_TITLE, CONTACT_DESCRIPTION } from "@/consts";
 ---
 
-<WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
+<WebPageLayout title={CONTACT_TITLE} description={CONTACT_DESCRIPTION}>
   <div class="flex flex-col">
 
     {/* Intro Section */}

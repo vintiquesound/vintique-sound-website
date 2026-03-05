@@ -2,9 +2,12 @@
 // Astro layout and section components
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import UnderConstructionSection from "@/layouts/sections/UnderConstructionSection.astro";
+
+// Local content and assets
+import { AUDIO_PLUGINS_TITLE, AUDIO_PLUGINS_DESCRIPTION } from "@/consts";
 ---
 
-<WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
+<WebPageLayout title={AUDIO_PLUGINS_TITLE} description={AUDIO_PLUGINS_DESCRIPTION}>
   <UnderConstructionSection
     title="Page Under Construction"
     subtitle="Sorry, this page isn't quite ready yet."

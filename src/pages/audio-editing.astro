@@ -20,11 +20,12 @@ import Badge from "@/components/ui/Badge.astro";
 import PriceText from "@/components/ui/PriceText";
 
 // Local content and assets
+import { AUDIO_EDITING_TITLE, AUDIO_EDITING_DESCRIPTION } from "@/consts";
 import { services, processSteps, idealClients, technicalDetails } from "@/content/webpage/audio-editing-data";
 import { genreExperience } from "@/content/webpage/mixing-mastering-data";
 ---
 
-<WebPageLayout title="Audio Editing Services" description="Professional audio editing services including time alignment, pitch correction, noise removal, and tuning.">
+<WebPageLayout title={AUDIO_EDITING_TITLE} description={AUDIO_EDITING_DESCRIPTION}>
 
     {/* INTRO */}
     <IntroSection

@@ -19,11 +19,12 @@ import Badge from "@/components/ui/Badge.astro";
 import PriceText from "@/components/ui/PriceText";
 
 // Local content and assets
+import { AUDIO_REPAIR_TITLE, AUDIO_REPAIR_DESCRIPTION } from "@/consts";
 import { services, processSteps, idealClients, technicalDetails } from "@/content/webpage/audio-repair-data";
 import { genreExperience } from "@/content/webpage/mixing-mastering-data";
 ---
 
-<WebPageLayout title="Audio Repair" description="Audio repair services like hiss removal, clicks/pops removal, and more.">
+<WebPageLayout title={AUDIO_REPAIR_TITLE} description={AUDIO_REPAIR_DESCRIPTION}>
 
     {/* INTRO */}
     <IntroSection

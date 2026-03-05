@@ -12,6 +12,9 @@ import FormattedDate from "../../../components/FormattedDate.astro";
 // Types and utilities
 import { slugifyTag } from "../../../lib/utils";
 
+// Local content and assets
+import { BLOG_TAG_TITLE_PREFIX, BLOG_TAG_DESCRIPTION_PREFIX } from "@/consts";
+
 export const prerender = true;
 
 function stripMarkup(input: string) {
@@ -74,7 +77,7 @@ const allPosts = (await getCollection("blog"))
 const count = allPosts.length;
 ---
 
-<WebPageLayout title={tag} description={`Posts tagged ${tag}`}>
+<WebPageLayout title={`${BLOG_TAG_TITLE_PREFIX} ${tag} | Vintique Sound`} description={`${BLOG_TAG_DESCRIPTION_PREFIX} ${tag} on the Vintique Sound blog.`}>
 	<SingleColumnContainer outerClass="py-10 sm:py-12">
 		<h1 class="m-0 text-center text-accent">{tag}</h1>
 		<p class="mt-2 mb-0 text-center text-muted-foreground">

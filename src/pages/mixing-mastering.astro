@@ -20,6 +20,7 @@ import AudioComparison from "@/components/audio/AudioComparison.tsx";
 import PriceText from "@/components/ui/PriceText";
 
 // Local content and assets
+import { MIX_MASTER_TITLE, MIX_MASTER_DESCRIPTION } from "@/consts";
 import { services, genreExperience, processSteps, idealClients, technicalDetails, testimonials } from "@/content/webpage/mixing-mastering-data";
 
 const TESTIMONIAL_PREVIEW_LIMIT = 244;
@@ -66,7 +67,7 @@ const displayTestimonials = testimonials.map((testimonial) => {
 });
 ---
 
-<WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
+<WebPageLayout title={MIX_MASTER_TITLE} description={MIX_MASTER_DESCRIPTION}>
 
     {/* INTRO */}
     <IntroSection

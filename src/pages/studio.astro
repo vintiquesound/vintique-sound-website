@@ -16,13 +16,11 @@ import CardTitle from "@/components/ui/card/CardTitle.astro";
 import CardContent from "@/components/ui/card/CardContent.astro";
 
 // Local content and assets
+import { STUDIO_TITLE, STUDIO_DESCRIPTION } from "@/consts";
 import { gearCategories, studioPhotoSlots } from "@/content/webpage/studio-data";
 ---
 
-<WebPageLayout
-  title="Studio Gear"
-  description="A breakdown of the monitoring, hardware, and software used to deliver professional mixes and masters at Vintique Sound."
->
+<WebPageLayout title={STUDIO_TITLE} description={STUDIO_DESCRIPTION}>
 
   {/* INTRO */}
   <IntroSection
