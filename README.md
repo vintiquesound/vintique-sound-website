@@ -1,5 +1,5 @@
 # vintique-sound-website
-This is an Astro/Shadcn UI React components/Tailwind CSS/MDX/NestJS/PostgreSQL DB/Prism based website for my music business "Vintique Sound."
+This is an NodeJS/Astro/Shadcn UI React components/Tailwind CSS/MDX/Zod/Supabase PostgreSQL DB and auth/Drizzle ORM, and pnpm based website for my music business "Vintique Sound."
 
 
 # Astro Starter Kit: Blog
