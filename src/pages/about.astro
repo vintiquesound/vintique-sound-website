@@ -13,11 +13,12 @@ import Card from "@/components/ui/card/Card.astro";
 import Badge from "@/components/ui/Badge.astro";
 
 // Local content and assets
+import { ABOUT_TITLE, ABOUT_DESCRIPTION } from "@/consts";
 import { stats, credentials, resume, philosophy } from "@/content/webpage/about-data";
 import KevinUlliacImage from "@/assets/website/about-kevin_ulliac-in_the_studio.jpg";
 ---
 
-<WebPageLayout title="About" description="About Kevin Ulliac" >
+<WebPageLayout title={ABOUT_TITLE} description={ABOUT_DESCRIPTION} >
 
   <!-- Hero -->
   <HeroSection

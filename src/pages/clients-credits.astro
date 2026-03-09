@@ -8,6 +8,7 @@ import Card from "@/components/ui/card/Card.astro";
 import ClientsCreditsTable from "@/components/clients-credits/ClientsCreditsTable";
 
 // Local utilities
+import { CLIENTS_CREDITS_TITLE, CLIENTS_CREDITS_DESCRIPTION } from "@/consts";
 import { csvToTable } from "@/lib/csv";
 
 // Const definitions
@@ -51,7 +52,7 @@ const uniqueClients = clientKey
   : 0;
 ---
 
-<WebPageLayout title="Clients & Credits" description="A selection of past clients and credits.">
+<WebPageLayout title={CLIENTS_CREDITS_TITLE} description={CLIENTS_CREDITS_DESCRIPTION}>
   <section class="bg-linear-to-br from-secondary/20 to-accent/20">
     <SingleColumnContainer outerClass="py-14 sm:py-18">
       <div class="text-center">

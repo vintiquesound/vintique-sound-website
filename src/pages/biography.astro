@@ -1,4 +1,5 @@
 ---
+// Astro layout and section components
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
 import HeroSection from "@/layouts/sections/HeroSection.astro";
 import CtaSection from "@/layouts/sections/CtaSection.astro";
@@ -6,21 +7,26 @@ import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
 import DoubleColumnContainer from "@/layouts/DoubleColumnContainer.astro";
 import TripleColumnContainer from "@/layouts/TripleColumnContainer.astro";
 
+// Third party libraries
+import Badge from "@/components/ui/Badge.astro";
+import { ArrowLeft, ArrowRight, Drum, Guitar, Headphones, Plane, Users, GraduationCap } from "lucide-astro";
+
+// Local UI components
 import Card from "@/components/ui/card/Card.astro";
 import CardContent from "@/components/ui/card/CardContent.astro";
 import CardHeader from "@/components/ui/card/CardHeader.astro";
 import CardTitle from "@/components/ui/card/CardTitle.astro";
 import CardDescription from "@/components/ui/card/CardDescription.astro";
 
-import Badge from "@/components/ui/Badge.astro";
-import { ArrowLeft, ArrowRight, Drum, Guitar, Headphones, Plane, Users, GraduationCap } from "lucide-astro";
+// Local content and assets
+import { BIOGRAPHY_TITLE, BIOGRAPHY_DESCRIPTION } from "@/consts";
 import KevinAtSteinbergImage from "@/assets/website/biography-kevano_at_steinberg_headquarters.jpeg";
 import KevinStudioImage from "@/assets/website/about-kevin_ulliac-in_the_studio.jpg";
 import KevinFestivalImage from "@/assets/website/biography-kevano_evano-moon_landing.jpg";
 import KevinMountainImage from "@/assets/website/biography-kevano-snowboard_mountain.jpg";
 ---
 
-<WebPageLayout title="Biography" description="Biography of Kevin Ulliac">
+<WebPageLayout title={BIOGRAPHY_TITLE} description={BIOGRAPHY_DESCRIPTION}>
   <HeroSection
     bgColors="bg-linear-to-br from-accent/20 to-primary/20"
     title="Biography"

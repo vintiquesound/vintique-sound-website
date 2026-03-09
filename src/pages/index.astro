@@ -10,9 +10,10 @@ import { Headphones, CheckCircle, GraduationCap, Package, ArrowRight } from "luc
 
 // Local content and assets
 import HeroMixerImage from "@/assets/website/audio_mixer-unsplash.jpg";
+import { HOME_TITLE, HOME_DESCRIPTION } from "@/consts";
 ---
 
-<WebPageLayout >
+<WebPageLayout title={HOME_TITLE} description={HOME_DESCRIPTION}>
 	<div class="flex flex-col">
     {/* Hero Section */}
 		<HeroSection

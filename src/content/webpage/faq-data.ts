@@ -10,7 +10,7 @@ export const faqData = {
     },
     {
       question: "What file formats do you accept and deliver?",
-      answer: "Accepted lossless audio formats include WAV, FLAC (preferred), and AIFF. It is recommended to use at least 24-bit / 41.1 kHz or higher for best results. Final output files can be delivered in any requested format, including WAV, FLAC, AIFF, MP3, and streaming-optimized files. Platform-specific masters can also be provided for services such as Spotify, Apple Music, and other streaming platforms."
+      answer: "Accepted lossless audio formats include WAV (preferred), FLAC, and AIFF. It is recommended to use at least 24-bit / 44.1 kHz or higher for best results. Final output files can be delivered in any requested format, including WAV, FLAC, AIFF, MP3, and streaming-optimized files. Platform-specific masters can also be provided for services such as Spotify, Apple Music, and other streaming platforms."
     },
     {
       question: "How many revisions are included?",

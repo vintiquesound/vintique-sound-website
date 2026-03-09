@@ -9,10 +9,11 @@ import CtaSection from "@/layouts/sections/CtaSection.astro";
 import { ArrowRight } from "lucide-astro";
 
 // Local content and assets
+import { FAQ_TITLE, FAQ_DESCRIPTION } from "@/consts";
 import { faqData } from "@/content/webpage/faq-data";
 ---
 
-<WebPageLayout title="Contact" description="Reach out to Vintique Sound for audio services, lessons, or questions.">
+<WebPageLayout title={FAQ_TITLE} description={FAQ_DESCRIPTION}>
 
     {/* INTRO SECTION */}
     <IntroSection
@@ -57,7 +58,7 @@ import { faqData } from "@/content/webpage/faq-data";
           <Accordion
             title="Technical Details"
             accentColor="primary"
-            items={faqData.products}
+            items={faqData.technical}
             singleOpen={true}
           />
 
