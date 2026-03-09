@@ -4,3 +4,9 @@ publish = "dist"
 
 [build.environment]
 NODE_VERSION = "20"
+
+[[redirects]]
+from = "/post/mixing-tip-subtractive-eq-first-additive-eq-second"
+to = "/blog/2022/subtractive-eq-first-additive-eq-second"
+status = 301
+force = true
