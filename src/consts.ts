@@ -40,12 +40,12 @@ export const BLOG_DESCRIPTION = "Read practical audio engineering articles, tuto
 export const BLOG_TAG_TITLE_PREFIX = "Blog Tag:";
 export const BLOG_TAG_DESCRIPTION_PREFIX = "Browse blog posts tagged";
 
-export const EDUCATION_TITLE = "Music Education: Mixing, Mastering & Cubase | Vintique Sound";
-export const EDUCATION_DESCRIPTION = "Learn professional mixing and mastering techniques, Cubase workflows, and practical audio engineering methods through Vintique Sound education content.";
-export const COURSES_TITLE = "Courses | Vintique Sound";
-export const COURSES_DESCRIPTION = "Explore audio engineering courses from Vintique Sound covering mixing, mastering, and music production workflows. New course content is coming soon.";
 export const YOUTUBE_VIDEOS_TITLE = "YouTube Videos | Vintique Sound";
 export const YOUTUBE_VIDEOS_DESCRIPTION = "Watch Vintique Sound YouTube videos focused on audio engineering, mixing, mastering, and production workflows. New videos are coming soon.";
+export const COURSES_TITLE = "Courses | Vintique Sound";
+export const COURSES_DESCRIPTION = "Explore audio engineering courses from Vintique Sound covering mixing, mastering, and music production workflows. New course content is coming soon.";
+export const TRAINING_TITLE = "1-on-1 Training: Mixing, Mastering & Cubase | Vintique Sound";
+export const TRAINING_DESCRIPTION = "Learn professional mixing and mastering techniques, Cubase workflows, and practical audio engineering methods through Vintique Sound 1-on-1 training.";
 
 export const AUDIO_TOOLS_TITLE = "Audio Tools | Vintique Sound";
 export const AUDIO_TOOLS_DESCRIPTION = "Discover premium digital audio tools from Vintique Sound designed to improve creativity, workflow, and production quality.";
