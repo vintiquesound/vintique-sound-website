@@ -1,27 +1,25 @@
 ---
 import DoubleColumnContainer from "@/layouts/DoubleColumnContainer.astro";
-import Image from "astro/components/Image.astro";
+// import Image from "astro/components/Image.astro";
+import { Image } from 'astro:assets';
+import constructionImage from "@/assets/website/under_construction.png";
+const constructionImageAlt = "Under Construction illustration";
 
 type Props = {
   /** Title text for the section */
   title: string;
   /** Subtitle/description text */
   subtitle?: string;
-  /** Image component or URL for construction image */
-  image?: { src: string; alt: string };
   /** Extra classes for the section */
   class?: string;
 };
 
-const { title, subtitle, image, class: outerClass = "" } = Astro.props as Props;
+const { title, subtitle, class: outerClass = "" } = Astro.props as Props;
 
-const hasImage = !!image;
-const gridClass = hasImage
-  ? "grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
-  : "grid grid-cols-1 gap-12 items-center";
+const gridClass = "grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
 ---
 
-<section class={`relative overflow-hidden w-full bg-linear-to-br from-accent/30 via-secondary/30 to-primary/30 dark:from-neutral-900 dark:via-zinc-900 dark:to-neutral-900 ${outerClass}`.trim()}>
+<section class={`relative overflow-hidden w-full bg-linear-to-br from-accent/30 via-secondary/30 to-primary/30 ${outerClass}`.trim()}>
   <DoubleColumnContainer gridClass={gridClass}>
     <div slot="left">
       <div class="relative z-10 text-center md:text-left space-y-7 md:space-y-10 px-1 md:px-0 animate-fade-in">
@@ -47,21 +45,19 @@ const gridClass = hasImage
 
     <div slot="right">
       <div class="flex justify-center md:justify-end">
-        {hasImage && image && (
-          <figure class="relative w-full max-w-80 max-h-80 md:max-w-120 md:max-h-120 aspect-square rounded-2xl shadow-2xl">
-            <Image
-              src={image.src}
-              alt={image.alt}
-              width={480}
-              height={480}
-              class="block h-full w-full object-cover aspect-square"
-              loading="eager"
-            />
-            <figcaption class="absolute right-2 bottom-2 text-xs text-zinc-500/70 italic hidden md:block">
-              Illustration by <a href="https://unsplash.com/@publicdomainvectors?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Public domain vectors</a> on <a href="https://unsplash.com/illustrations/construction-site-with-hazard-barrier-and-unfinished-building-V7D6s4B-LP4?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-            </figcaption>
-          </figure>
-        )}
+        <figure class="relative w-full max-w-80 max-h-80 md:max-w-120 md:max-h-120 aspect-square rounded-2xl shadow-2xl">
+          <Image
+            src={constructionImage}
+            alt={constructionImageAlt}
+            width={480}
+            height={480}
+            class="block h-full w-full object-cover aspect-square"
+            loading="eager"
+          />
+          <figcaption class="absolute right-2 bottom-2 text-xs text-zinc-500/70 italic hidden md:block">
+            Illustration by <a href="https://unsplash.com/@publicdomainvectors?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Public domain vectors</a> on <a href="https://unsplash.com/illustrations/construction-site-with-hazard-barrier-and-unfinished-building-V7D6s4B-LP4?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </DoubleColumnContainer>

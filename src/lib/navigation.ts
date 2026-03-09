@@ -24,7 +24,8 @@ export const navMenuGroups = [
       { label: "Blog", href: "/blog" },
       // { label: "YouTube Videos", href: "/youtube-videos" },
       { label: "YouTube Videos", href: "https://www.youtube.com/@VintiqueSound" }, // Tmp direct link, make embedded page in future
-      { label: "Courses", href: "/courses" },
+      { label: "Online Courses", href: "/courses" },
+      { label: "1-on-1 Training", href: "/training" },
     ],
   },
   {
