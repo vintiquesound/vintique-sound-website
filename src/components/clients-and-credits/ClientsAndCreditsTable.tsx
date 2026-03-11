@@ -21,7 +21,7 @@ function toSearchableText(row: Record<string, string>, columns: string[]): strin
     .toLowerCase()
 }
 
-export default function ClientsCreditsTable({
+export default function ClientsAndCreditsTable({
   columns,
   rows,
   initialSortKey,

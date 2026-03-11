@@ -2,15 +2,16 @@ import * as React from "react";
 
 import AudioEditingBuilder from "@/components/build-your-package/AudioEditingBuilder";
 import AudioRepairBuilder from "@/components/build-your-package/AudioRepairBuilder";
-import MixingMasteringBuilder from "@/components/build-your-package/MixingMasteringBuilder";
+import MixingAndMasteringBuilder from "@/components/build-your-package/MixingAndMasteringBuilder";
 import ChangeCategoryButton from "@/components/build-your-package/ChangeCategoryButton";
 
-type BuilderCategory = "mixingMastering" | "audioEditing" | "audioRepair";
+type BuilderCategory = "mixingAndMastering" | "audioEditing" | "audioRepair";
 
-const CATEGORY_META: Record<BuilderCategory, { title: string; description: string }> = {
-  mixingMastering: {
+const CATEGORY_META: Record<BuilderCategory, { title: string; description: string; badge?: string }> = {
+  mixingAndMastering: {
     title: "Mixing & Mastering",
     description: "Full package builder for singles/albums, editing add-ons, exports, and extras.",
+    badge: "Most Popular",
   },
   audioEditing: {
     title: "Audio Editing",
@@ -50,8 +51,13 @@ export default function PackageBuilderIsland() {
                   setActiveCategory(key);
                   setIsChoosingCategory(false);
                 }}
-                className="rounded-xl border border-border p-5 text-left hover:bg-muted/40 hover:border-primary cursor-pointer transition"
+                className="relative rounded-xl border border-border p-5 text-left hover:bg-muted/40 hover:border-primary cursor-pointer transition"
               >
+                {CATEGORY_META[key].badge && (
+                  <span className="absolute -top-3 right-4 z-10 inline-block rounded-md bg-primary px-4 py-1 text-sm font-medium text-primary-foreground">
+                    {CATEGORY_META[key].badge}
+                  </span>
+                )}
                 <div className="space-y-1">
                   <div className="font-semibold">{CATEGORY_META[key].title}</div>
                   <div className="text-sm text-muted-foreground">{CATEGORY_META[key].description}</div>
@@ -71,8 +77,8 @@ export default function PackageBuilderIsland() {
       )}
 
       <div className={isChoosingCategory ? "hidden" : "block"}>
-        <div className={activeCategory === "mixingMastering" ? "block" : "hidden"}>
-          <MixingMasteringBuilder onChangeCategory={onChangeCategory} />
+        <div className={activeCategory === "mixingAndMastering" ? "block" : "hidden"}>
+          <MixingAndMasteringBuilder onChangeCategory={onChangeCategory} />
         </div>
         <div className={activeCategory === "audioEditing" ? "block" : "hidden"}>
           <AudioEditingBuilder onChangeCategory={onChangeCategory} />

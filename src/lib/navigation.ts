@@ -12,7 +12,7 @@ export const navMenuGroups = [
   {
     title: "Services",
     children: [
-      { label: "Mixing & Mastering", href: "/mixing-mastering" },
+      { label: "Mixing & Mastering", href: "/mixing-and-mastering" },
       { label: "Audio Editing", href: "/audio-editing" },
       { label: "Audio Repair", href: "/audio-repair" },
       { label: "Build Your Package", href: "/build-your-package" },
@@ -24,8 +24,8 @@ export const navMenuGroups = [
       { label: "Blog", href: "/blog" },
       // { label: "YouTube Videos", href: "/youtube-videos" },
       { label: "YouTube Videos", href: "https://www.youtube.com/@VintiqueSound" }, // Tmp direct link, make embedded page in future
-      { label: "Online Courses", href: "/courses" },
-      { label: "1-on-1 Training", href: "/training" },
+      { label: "Online Courses", href: "/online-courses" },
+      { label: "1-on-1 Training", href: "/one-on-one-training" },
     ],
   },
   {
@@ -33,7 +33,8 @@ export const navMenuGroups = [
     children: [
       { label: "Audio Tools", href: "/audio-tools" },
       { label: "Audio Plugins", href: "/audio-plugins" },
-      { label: "Samples & Loops", href: "/samples-loops" },
+      { label: "Presets & Templates", href: "/presets-and-templates" },
+      { label: "Samples & Loops", href: "/samples-and-loops" },
     ],
   },
   {

@@ -1,9 +1,9 @@
 import PackageBuilder from "@/components/PackageBuilder";
 
-export type MixingMasteringBuilderProps = {
+export type MixingAndMasteringBuilderProps = {
   onChangeCategory?: () => void;
 };
 
-export default function MixingMasteringBuilder({ onChangeCategory }: MixingMasteringBuilderProps) {
+export default function MixingAndMasteringBuilder({ onChangeCategory }: MixingAndMasteringBuilderProps) {
   return <PackageBuilder {...(onChangeCategory ? { onChangeCategory } : {})} />;
 }

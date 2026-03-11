@@ -1,0 +1,17 @@
+---
+// Astro layout and section components
+import WebPageLayout from "@/layouts/WebPageLayout.astro";
+import UnderConstructionSection from "@/layouts/sections/UnderConstructionSection.astro";
+
+// Local content and assets
+import { ONLINE_COURSES_TITLE, ONLINE_COURSES_DESCRIPTION } from "@/consts";
+---
+
+<WebPageLayout title={ONLINE_COURSES_TITLE} description={ONLINE_COURSES_DESCRIPTION}>
+  <UnderConstructionSection
+    title="Page Under Construction"
+    subtitle="Sorry, this page isn't quite ready yet."
+    class="min-h-[70vh]"
+  />
+</WebPageLayout>
+
