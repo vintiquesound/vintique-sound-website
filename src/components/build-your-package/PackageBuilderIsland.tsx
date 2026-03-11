@@ -7,6 +7,12 @@ import ChangeCategoryButton from "@/components/build-your-package/ChangeCategory
 
 type BuilderCategory = "mixingAndMastering" | "audioEditing" | "audioRepair";
 
+const CATEGORY_HASH_TO_KEY: Record<string, BuilderCategory> = {
+  "mixing-and-mastering": "mixingAndMastering",
+  "audio-editing": "audioEditing",
+  "audio-repair": "audioRepair",
+};
+
 const CATEGORY_META: Record<BuilderCategory, { title: string; description: string; badge?: string }> = {
   mixingAndMastering: {
     title: "Mixing & Mastering",
@@ -26,6 +32,27 @@ const CATEGORY_META: Record<BuilderCategory, { title: string; description: strin
 export default function PackageBuilderIsland() {
   const [activeCategory, setActiveCategory] = React.useState<BuilderCategory | null>(null);
   const [isChoosingCategory, setIsChoosingCategory] = React.useState(true);
+
+  const syncCategoryFromHash = React.useCallback(() => {
+    const hash = window.location.hash.replace(/^#/, "").trim().toLowerCase();
+    const matchingCategory = CATEGORY_HASH_TO_KEY[hash];
+
+    if (!matchingCategory) {
+      return;
+    }
+
+    setActiveCategory(matchingCategory);
+    setIsChoosingCategory(false);
+  }, []);
+
+  React.useEffect(() => {
+    syncCategoryFromHash();
+    window.addEventListener("hashchange", syncCategoryFromHash);
+
+    return () => {
+      window.removeEventListener("hashchange", syncCategoryFromHash);
+    };
+  }, [syncCategoryFromHash]);
 
   const onChangeCategory = React.useCallback(() => {
     setIsChoosingCategory(true);

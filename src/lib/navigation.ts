@@ -19,11 +19,11 @@ const isNavigationItem = (item: SiteTaxonomyItem): item is SiteTaxonomyItem & { 
 export const navMenuGroups: NavGroup[] = (siteTaxonomy as readonly SiteTaxonomyGroup[])
   .filter((group) => hasSurface(group.surfaces, "navigation"))
   .map((group) => ({
-    title: group.title,
+    title: group.shortTitle,
     children: group.items
       .filter(isNavigationItem)
       .map((item) => ({
-        label: item.title,
+        label: item.shortSubtitle,
         href: item.href,
       })),
   }))
