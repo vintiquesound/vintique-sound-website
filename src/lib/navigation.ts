@@ -8,45 +8,25 @@ export type NavGroup = {
   children: NavItem[]
 }
 
-export const navMenuGroups = [
-  {
-    title: "Services",
-    children: [
-      { label: "Mixing & Mastering", href: "/mixing-and-mastering" },
-      { label: "Audio Editing", href: "/audio-editing" },
-      { label: "Audio Repair", href: "/audio-repair" },
-      { label: "Build Your Package", href: "/build-your-package" },
-    ],
-  },
-  {
-    title: "Education",
-    children: [
-      { label: "Blog", href: "/blog" },
-      // { label: "YouTube Videos", href: "/youtube-videos" },
-      { label: "YouTube Videos", href: "https://www.youtube.com/@VintiqueSound" }, // Tmp direct link, make embedded page in future
-      { label: "Online Courses", href: "/online-courses" },
-      { label: "1-on-1 Training", href: "/one-on-one-training" },
-    ],
-  },
-  {
-    title: "Digital Products",
-    children: [
-      { label: "Audio Tools", href: "/audio-tools" },
-      { label: "Audio Plugins", href: "/audio-plugins" },
-      { label: "Presets & Templates", href: "/presets-and-templates" },
-      { label: "Samples & Loops", href: "/samples-and-loops" },
-    ],
-  },
-  {
-    title: "Company",
-    children: [
-      { label: "Studio", href: "/studio" },
-      { label: "FAQ", href: "/faq" },
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
-    ],
-  },
-] as const satisfies NavGroup[]
+import { siteTaxonomy, type SiteSurface, type SiteTaxonomyGroup, type SiteTaxonomyItem } from "@/lib/site-taxonomy"
+
+const hasSurface = (surfaces: readonly SiteSurface[], surface: SiteSurface) => surfaces.includes(surface)
+
+const isNavigationItem = (item: SiteTaxonomyItem): item is SiteTaxonomyItem & { href: string } => {
+  return hasSurface(item.surfaces, "navigation") && typeof item.href === "string"
+}
+
+export const navMenuGroups: NavGroup[] = (siteTaxonomy as readonly SiteTaxonomyGroup[])
+  .filter((group) => hasSurface(group.surfaces, "navigation"))
+  .map((group) => ({
+    title: group.title,
+    children: group.items
+      .filter(isNavigationItem)
+      .map((item) => ({
+        label: item.title,
+        href: item.href,
+      })),
+  }))
 
 export function isNavLinkActive(pathname: string, href: string) {
   const normalized = pathname.replace(/\/$/, "") || "/"
