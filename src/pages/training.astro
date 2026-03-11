@@ -32,9 +32,16 @@ import {
   trainingDetails,
   whyTrainWithKevin,
 } from "@/content/webpage/training-data";
+
+const trainingPackageGuidance = packageGuidance as readonly (
+  | { text: string }
+  | { beforeLink: string; linkLabel: string; href: string; afterLink: string }
+)[];
 ---
 
 <WebPageLayout title={TRAINING_TITLE} description={TRAINING_DESCRIPTION}>
+
+  {/* INTRO */}
   <IntroSection
     bgColors="bg-linear-to-br from-primary/20 to-secondary/20"
     badgeText="1-on-1 Training"
@@ -57,6 +64,7 @@ import {
     align="center"
   />
 
+  {/* TRAINING */}
   <section class="py-20 bg-muted">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12 max-w-3xl mx-auto">
@@ -94,6 +102,7 @@ import {
     </div>
   </section>
 
+  {/* WHY TRAIN WITH KEVIN */}
   <section class="py-20 bg-linear-to-br from-secondary/20 to-accent/20">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12 max-w-4xl mx-auto">
@@ -159,6 +168,7 @@ import {
     </div>
   </section>
 
+  {/* WHO IT'S FOR */}
   <section class="py-20 bg-muted">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12 max-w-3xl mx-auto">
@@ -186,6 +196,7 @@ import {
     </div>
   </section>
 
+  {/* TRAINING FORMAT */}
   <section id="training-packages" class="py-20 bg-linear-to-br from-primary/20 to-secondary/20 scroll-mt-24">
     <div class="container mx-auto px-4">
       <div class="text-center mb-12 max-w-4xl mx-auto">
@@ -207,7 +218,7 @@ import {
               </CardAction>
             )}
             <CardHeader>
-              <CardTitle class="text-3xl">{option.title}</CardTitle>
+              <CardTitle class="text-3xl mt-4">{option.title}</CardTitle>
             </CardHeader>
             <CardContent class="flex flex-col gap-5 h-full">
               <CardDescription class="text-base leading-relaxed">
@@ -240,10 +251,20 @@ import {
         </CardHeader>
         <CardContent>
           <ul class="space-y-3">
-            {packageGuidance.map((item) => (
+            {trainingPackageGuidance.map((item) => (
               <li class="flex items-start gap-2">
                 <Icon name="lucide:arrow-right" class="text-secondary h-5 w-5 mt-0.5 shrink-0" />
-                <span>{item}</span>
+                <span>
+                  {"text" in item ? (
+                    item.text
+                  ) : (
+                    <>
+                      {item.beforeLink}
+                      <a href={item.href} class="font-medium text-accent underline underline-offset-4 hover:text-accent/80 transition-colors">{item.linkLabel}</a>
+                      {item.afterLink}
+                    </>
+                  )}
+                </span>
               </li>
             ))}
           </ul>

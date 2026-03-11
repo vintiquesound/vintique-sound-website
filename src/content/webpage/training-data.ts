@@ -133,9 +133,18 @@ export const packageOptions = [
 ] as const;
 
 export const packageGuidance = [
-  "If you're unsure where to start, send a short description of your goals and current experience level.",
-  "I will recommend the right training format based on whether you need project feedback, Cubase help, or a deeper mixing/mastering plan.",
-  "Every package is tailored, so the final quote depends on scope, number of sessions, and how customized the training needs to be.",
+  {
+    beforeLink: "If you're unsure where to start, ",
+    linkLabel: "send",
+    href: "/contact#one-on-one-training",
+    afterLink: " a short description of your goals and current experience level.",
+  },
+  {
+    text: "I will recommend the right training format based on whether you need project feedback, Cubase help, or a deeper mixing/mastering plan.",
+  },
+  {
+    text: "Every package is tailored, so the final quote depends on scope, number of sessions, and how customized the training needs to be.",
+  },
 ] as const;
 
 export const processSteps = [
