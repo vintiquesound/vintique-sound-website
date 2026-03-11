@@ -12,12 +12,6 @@ status = 301
 force = true
 
 [[redirects]]
-from = "/samples-loops"
-to = "/samples-and-loops"
-status = 301
-force = true
-
-[[redirects]]
 from = "/clients-credits"
 to = "/clients-and-credits"
 status = 301
