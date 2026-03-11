@@ -51,7 +51,7 @@ import { contactTopicGroups } from "@/lib/contact";
           required
           class="flex h-10 w-full rounded-md border border-input bg-input-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <option value="">Select one of the options</option>
+          <option value="">Select an option</option>
           {contactTopicGroups.map((group) => (
             <optgroup label={group.label}>
               {group.options.map((option) => (
@@ -63,7 +63,7 @@ import { contactTopicGroups } from "@/lib/contact";
       </div>
       <div class="space-y-2 mt-6">
         <Label>Message *</Label>
-        <Textarea name="message" placeholder="Tell me about your project..." required />
+        <Textarea name="message" placeholder="Tell me a bit about what you need, what you're interested in, or how I can help..." required />
       </div>
     </CardContent>
 
@@ -94,6 +94,7 @@ import { contactTopicGroups } from "@/lib/contact";
     if (!matchingOption) return;
 
     select.value = matchingOption.value;
+    select.scrollIntoView({ behavior: "auto", block: "center" });
   };
 
   syncContactCategoryFromHash();
