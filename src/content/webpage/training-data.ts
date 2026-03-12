@@ -103,7 +103,7 @@ export const trainingBuilderTopics = {
 export const projectFeedbackDawOptions = ["Cubase", "Ableton", "Bitwig"] as const;
 
 export const projectFeedbackFocusAreas = [
-  "Track-by-track feedback on mix",
+  "Mixing session track-by-track feedback",
   "Mastering session feedback",
   "DAW-specific feedback",
 ] as const;

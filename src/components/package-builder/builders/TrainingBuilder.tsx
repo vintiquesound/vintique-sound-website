@@ -14,9 +14,12 @@ import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
 
 export type TrainingBuilderProps = {
   onChangeCategory?: () => void;
+  initialRequestType?: TrainingRequestType;
 };
 
-type RequestType = "" | "oneOnOneTraining" | "projectFeedback";
+export type TrainingRequestType = "oneOnOneTraining" | "projectFeedback";
+
+type RequestType = "" | TrainingRequestType;
 type TrainingTopicKey = keyof typeof trainingBuilderTopics;
 type ProjectFeedbackDaw = "" | (typeof projectFeedbackDawOptions)[number];
 type TrainingStepId = "requestType" | "trainingTopics" | TrainingTopicKey | "projectFeedback" | "review";
@@ -60,10 +63,10 @@ function createEmptyFocusSelections(): Record<TrainingTopicKey, string[]> {
   };
 }
 
-export default function TrainingBuilder({ onChangeCategory: _onChangeCategory }: TrainingBuilderProps) {
+export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, initialRequestType }: TrainingBuilderProps) {
   useDisplayCurrency();
 
-  const [requestType, setRequestType] = React.useState<RequestType>("");
+  const [requestType, setRequestType] = React.useState<RequestType>(initialRequestType ?? "");
   const [selectedTopics, setSelectedTopics] = React.useState<Record<TrainingTopicKey, boolean>>(
     createEmptyTopicSelection
   );
@@ -79,10 +82,16 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory }:
     [selectedTopics]
   );
 
+  React.useEffect(() => {
+    setRequestType(initialRequestType ?? "");
+  }, [initialRequestType]);
+
+  const isRequestTypeLocked = Boolean(initialRequestType);
+
   const steps = React.useMemo<StepConfig[]>(() => {
     if (requestType === "oneOnOneTraining") {
       return [
-        DEFAULT_STEP,
+        ...(isRequestTypeLocked ? [] : [DEFAULT_STEP]),
         {
           id: "trainingTopics",
           title: "Training Topics",
@@ -103,7 +112,7 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory }:
 
     if (requestType === "projectFeedback") {
       return [
-        DEFAULT_STEP,
+        ...(isRequestTypeLocked ? [] : [DEFAULT_STEP]),
         {
           id: "projectFeedback",
           title: "Project Feedback Details",
@@ -118,7 +127,7 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory }:
     }
 
     return [DEFAULT_STEP];
-  }, [requestType, selectedTopicKeys]);
+  }, [isRequestTypeLocked, requestType, selectedTopicKeys]);
 
   const {
     currentStepIndex,

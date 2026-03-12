@@ -40,9 +40,9 @@ export const siteTaxonomy = [
       },
       {
         shortSubtitle: "Build Your Package",
-        fullSubtitle: "Build Your Package",
-        href: "/build-your-package",
-        surfaces: ["navigation", "contact"],
+        fullSubtitle: "Build Your Package for Audio Services",
+        href: "/build-your-package#audio-services",
+        surfaces: ["navigation"],
       },
     ],
   },
@@ -51,12 +51,6 @@ export const siteTaxonomy = [
     fullTitle: "Audio Education",
     surfaces: ["navigation", "contact"],
     items: [
-      {
-        shortSubtitle: "Blog",
-        fullSubtitle: "Blog Content",
-        href: "/blog",
-        surfaces: ["navigation", "contact"],
-      },
       {
         shortSubtitle: "YouTube Videos",
         fullSubtitle: "YouTube Videos",
@@ -75,6 +69,12 @@ export const siteTaxonomy = [
         fullSubtitle: "1-on-1 Training",
         href: "/one-on-one-training",
         surfaces: ["navigation", "contact"],
+      },
+      {
+        shortSubtitle: "Build Your Package",
+        fullSubtitle: "Build Your Package for 1-on-1 Training",
+        href: "/build-your-package#training",
+        surfaces: ["navigation"],
       },
     ],
   },
@@ -118,6 +118,25 @@ export const siteTaxonomy = [
       { shortSubtitle: "FAQ", fullSubtitle: "FAQ", href: "/faq", surfaces: ["navigation"] },
       { shortSubtitle: "About", fullSubtitle: "About", href: "/about", surfaces: ["navigation"] },
       { shortSubtitle: "Contact", fullSubtitle: "Contact", href: "/contact", surfaces: ["navigation"] },
+    ],
+  },
+  {
+    shortTitle: "Blog",
+    fullTitle: "Blog Content",
+    surfaces: ["navigation"],
+    items: [
+      {
+        shortSubtitle: "Blog Home",
+        fullSubtitle: "Blog Home",
+        href: "/blog",
+        surfaces: ["navigation"],
+      },
+      {
+        shortSubtitle: "All Tags",
+        fullSubtitle: "All Blog Tags",
+        href: "/blog/tags",
+        surfaces: ["navigation"],
+      },
     ],
   },
   {

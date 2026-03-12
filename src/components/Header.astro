@@ -82,7 +82,7 @@ const mobileLinkBase =
               {group.title}
             </div>
             {group.children.map((item) => (
-              <HeaderLink href={item.href} class={mobileLinkBase}>
+              <HeaderLink href={item.href} class={mobileLinkBase} data-nav-href={item.href}>
                 {item.label}
               </HeaderLink>
             ))}
@@ -97,6 +97,42 @@ const mobileLinkBase =
   const button = document.querySelector("[data-mobile-menu-button]");
   const panel = document.getElementById("mobile-nav");
 
+  const normalizePath = (value) => value.replace(/\/$/, "") || "/";
+  const normalizeHash = (value) => value.replace(/^#/, "").trim().toLowerCase();
+
+  const isNavItemActive = (pathname, hash, href) => {
+    if (!href.startsWith("/")) return false;
+
+    const hrefPath = normalizePath(href.split(/[?#]/, 1)[0] ?? href);
+    const hrefHash = href.includes("#") ? normalizeHash(href.split("#")[1] ?? "") : "";
+    const normalizedPath = normalizePath(pathname);
+    const subpath = normalizedPath.match(/[^/]+/g);
+    const pathMatches = hrefPath === normalizedPath || hrefPath === "/" + (subpath?.[0] || "");
+
+    if (!pathMatches) return false;
+    if (!hrefHash) return true;
+    if (!hash) return true;
+
+    return hrefHash === hash;
+  };
+
+  const syncMobileNavActiveState = () => {
+    if (!panel) return;
+
+    const currentPath = window.location.pathname;
+    const currentHash = normalizeHash(window.location.hash);
+
+    panel.querySelectorAll("[data-nav-href]").forEach((link) => {
+      if (!(link instanceof HTMLAnchorElement)) return;
+
+      const href = link.dataset.navHref ?? "";
+      const active = isNavItemActive(currentPath, currentHash, href);
+
+      link.classList.toggle("font-bold", active);
+      link.classList.toggle("underline", active);
+    });
+  };
+
   if (button instanceof HTMLButtonElement && panel) {
     const setMenuOpen = (open) => {
       panel.hidden = !open;
@@ -105,10 +141,13 @@ const mobileLinkBase =
     };
 
     setMenuOpen(false);
+    syncMobileNavActiveState();
 
     button.addEventListener("click", () => {
       setMenuOpen(panel.hidden);
     });
+
+    window.addEventListener("hashchange", syncMobileNavActiveState);
 
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;

@@ -29,7 +29,7 @@ export const AUDIO_EDITING_DESCRIPTION = "Professional audio editing services in
 export const AUDIO_REPAIR_TITLE = "Audio Repair Services | Vintique Sound";
 export const AUDIO_REPAIR_DESCRIPTION = "Professional audio repair services including clipping repair, clicks and pops removal, hiss reduction, crackle cleanup, and plosive or reverb reduction.";
 export const BUILD_PACKAGE_TITLE = "Build Your Package | Vintique Sound";
-export const BUILD_PACKAGE_DESCRIPTION = "Build a custom audio service package by combining mixing, mastering, audio editing, and repair options tailored to your project.";
+export const BUILD_PACKAGE_DESCRIPTION = "Build a custom package for audio engineering services or 1-on-1 training, with tailored options for your project and goals.";
 export const STUDIO_TITLE = "Studio Gear & Monitoring | Vintique Sound";
 export const STUDIO_DESCRIPTION = "Explore the studio setup behind Vintique Sound, including monitoring, room acoustics, workflow, and software tools used for consistent results.";
 export const CLIENTS_AND_CREDITS_TITLE = "Clients & Credits | Vintique Sound";
@@ -37,6 +37,8 @@ export const CLIENTS_AND_CREDITS_DESCRIPTION = "Browse a searchable list of clie
 
 export const BLOG_TITLE = "Blog | Vintique Sound";
 export const BLOG_DESCRIPTION = "Read practical audio engineering articles, tutorials, and insights on mixing, mastering, production workflow, and digital audio tools.";
+export const BLOG_TAGS_TITLE = "All Blog Tags | Vintique Sound";
+export const BLOG_TAGS_DESCRIPTION = "Browse every blog tag on Vintique Sound to explore articles by topic, workflow, and audio engineering focus.";
 export const BLOG_TAG_TITLE_PREFIX = "Blog Tag:";
 export const BLOG_TAG_DESCRIPTION_PREFIX = "Browse blog posts tagged";
 

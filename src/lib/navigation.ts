@@ -28,9 +28,33 @@ export const navMenuGroups: NavGroup[] = (siteTaxonomy as readonly SiteTaxonomyG
       })),
   }))
 
-export function isNavLinkActive(pathname: string, href: string) {
+const NAV_HASH_SCOPES: Record<string, readonly string[]> = {
+  "audio-services": ["audio-services", "mixing-and-mastering", "audio-editing", "audio-repair"],
+  training: ["training", "education", "one-on-one-training", "project-feedback"],
+}
+
+function normalizeNavHref(href: string) {
+  if (!href.startsWith("/")) return href
+  const withoutQueryOrHash = href.split(/[?#]/, 1)[0] ?? href
+  return withoutQueryOrHash.replace(/\/$/, "") || "/"
+}
+
+function normalizeNavHash(hash?: string) {
+  return (hash ?? "").replace(/^#/, "").trim().toLowerCase()
+}
+
+export function isNavLinkActive(pathname: string, href: string, currentHash?: string) {
   const normalized = pathname.replace(/\/$/, "") || "/"
   const subpath = normalized.match(/[^/]+/g)
+  const normalizedHref = normalizeNavHref(href)
+  const normalizedCurrentHash = normalizeNavHash(currentHash)
+  const hrefHash = href.includes("#") ? normalizeNavHash(href.split("#")[1]) : ""
 
-  return href === normalized || href === "/" + (subpath?.[0] || "")
+  const pathMatches = normalizedHref === normalized || normalizedHref === "/" + (subpath?.[0] || "")
+
+  if (!pathMatches) return false
+  if (!hrefHash) return true
+  if (!normalizedCurrentHash) return true
+
+  return (NAV_HASH_SCOPES[hrefHash] ?? [hrefHash]).includes(normalizedCurrentHash)
 }

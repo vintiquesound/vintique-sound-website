@@ -1,0 +1,58 @@
+---
+import WebPageLayout from "../../layouts/WebPageLayout.astro";
+import SingleColumnContainer from "../../layouts/SingleColumnContainer.astro";
+
+import { getCollection } from "astro:content";
+
+import {
+  BLOG_TAGS_DESCRIPTION,
+  BLOG_TAGS_TITLE,
+} from "@/consts";
+import { slugifyTag } from "@/lib/utils";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => (post.data.draft ?? false) === false)
+  .filter((post) => (post.data.published ?? true) === true);
+
+const tagCounts = posts.reduce((acc, post) => {
+  for (const tag of post.data.tags ?? []) {
+    acc.set(tag, (acc.get(tag) ?? 0) + 1);
+  }
+
+  return acc;
+}, new Map<string, number>());
+
+const tags = Array.from(tagCounts.entries()).sort(([left], [right]) => left.localeCompare(right));
+---
+
+<WebPageLayout title={BLOG_TAGS_TITLE} description={BLOG_TAGS_DESCRIPTION}>
+  <SingleColumnContainer outerClass="py-10 sm:py-12">
+    <h1 class="m-0 text-center text-accent">All Blog Tags</h1>
+    <p class="mt-2 mb-0 text-center text-muted-foreground">
+      Browse {tags.length} tag{tags.length === 1 ? "" : "s"} across {posts.length} published post{posts.length === 1 ? "" : "s"}.
+    </p>
+    <div class="flex justify-center mb-2">
+      <hr class="w-16 h-1 rounded-full border-0 bg-accent my-4" />
+    </div>
+
+    {tags.length === 0 ? (
+      <p class="text-center text-muted-foreground">No blog tags are available yet.</p>
+    ) : (
+      <ul class="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
+        {tags.map(([tag, count]) => (
+          <li>
+            <a
+              href={`/blog/tag/${slugifyTag(tag)}/`}
+              class="flex items-center justify-between gap-4 rounded-xl border border-border px-4 py-3 no-underline transition hover:border-primary hover:bg-muted/40"
+            >
+              <span class="font-medium text-foreground uppercase">{tag}</span>
+              <span class="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">
+                {count} post{count === 1 ? "" : "s"}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </SingleColumnContainer>
+</WebPageLayout>
