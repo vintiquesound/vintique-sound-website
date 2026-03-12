@@ -11,19 +11,33 @@ export type RequestPackageConfig = {
 export type PackageSummaryCardProps = {
   children: React.ReactNode;
   total: string;
+  title?: string;
+  totalLabel?: string;
   feeLabel?: string;
   feeAmount?: string;
   canRequestPackage?: boolean;
   requestPackage?: RequestPackageConfig;
+  requestButtonLabel?: string;
+  requestDialogTitle?: string;
+  requestDialogDescription?: string;
+  downloadButtonLabel?: string;
+  downloadFilePrefix?: string;
 };
 
 export default function PackageSummaryCard({
   children,
   total,
+  title = "Package Summary",
+  totalLabel = "Total",
   feeLabel,
   feeAmount,
   canRequestPackage,
   requestPackage,
+  requestButtonLabel = "Request This Package",
+  requestDialogTitle = "Request This Package",
+  requestDialogDescription = `Enter your name + email, and I'll receive your package details at ${BUSINESS_EMAILS.requests}`,
+  downloadButtonLabel = "Download Request (.txt)",
+  downloadFilePrefix = "package-request",
 }: PackageSummaryCardProps) {
   const [isRequestOpen, setIsRequestOpen] = React.useState(false);
   const [requestName, setRequestName] = React.useState("");
@@ -66,7 +80,7 @@ export default function PackageSummaryCard({
 
   function buildDownloadText() {
     if (!requestPackage) return "";
-    return `Subject: ${requestPackage.subject}\nTotal: ${total}\n\nName: ${requestName.trim() || "—"}\nEmail: ${requestEmail.trim() || "—"}\n\n${requestPackage.summaryText}`;
+    return `Subject: ${requestPackage.subject}\n${totalLabel}: ${total}\n\nName: ${requestName.trim() || "—"}\nEmail: ${requestEmail.trim() || "—"}\n\n${requestPackage.summaryText}`;
   }
 
   function downloadRequestSummary() {
@@ -76,7 +90,7 @@ export default function PackageSummaryCard({
     const anchor = document.createElement("a");
     const timestamp = new Date().toISOString().slice(0, 19).replaceAll(":", "-");
     anchor.href = url;
-    anchor.download = `package-request-${timestamp}.txt`;
+    anchor.download = `${downloadFilePrefix}-${timestamp}.txt`;
     document.body.appendChild(anchor);
     anchor.click();
     anchor.remove();
@@ -158,7 +172,7 @@ export default function PackageSummaryCard({
 
   return (
     <aside className="space-y-4 rounded-lg border border-border p-6">
-      <h3 className="text-lg font-semibold">Package Summary</h3>
+      <h3 className="text-lg font-semibold">{title}</h3>
 
       {children}
 
@@ -172,13 +186,13 @@ export default function PackageSummaryCard({
       )}
 
       <div className="flex items-center justify-between">
-        <span className="font-semibold">Total</span>
+        <span className="font-semibold">{totalLabel}</span>
         <span className="font-semibold">{total}</span>
       </div>
 
       {canRequestPackage && requestPackage && (
         <Button type="button" className="w-full" onClick={() => setIsRequestOpen(true)}>
-          Request This Package
+          {requestButtonLabel}
         </Button>
       )}
 
@@ -195,10 +209,8 @@ export default function PackageSummaryCard({
           <div className="w-full max-w-lg rounded-lg border border-border bg-card p-5 shadow-lg space-y-4">
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-1">
-                <div className="text-lg font-semibold">Request This Package</div>
-                <div className="text-sm text-muted-foreground">
-                  Enter your name + email, and I'll receive your package details at {BUSINESS_EMAILS.requests}
-                </div>
+                <div className="text-lg font-semibold">{requestDialogTitle}</div>
+                <div className="text-sm text-muted-foreground">{requestDialogDescription}</div>
               </div>
               <Button type="button" variant="ghost" onClick={() => setIsRequestOpen(false)}>
                 Close
@@ -232,13 +244,13 @@ export default function PackageSummaryCard({
               <div className="text-sm font-medium">Email preview</div>
               <pre className="max-h-56 overflow-auto rounded-md border border-border bg-muted p-3 text-xs whitespace-pre-wrap">
 {`Subject: ${requestPackage.subject}
-Total: ${total}
+${totalLabel}: ${total}
 
 ${requestPackage.summaryText}`}
               </pre>
               <div className="flex justify-end">
                 <Button type="button" variant="ghost" onClick={downloadRequestSummary}>
-                  Download Request (.txt)
+                  {downloadButtonLabel}
                 </Button>
               </div>
             </div>

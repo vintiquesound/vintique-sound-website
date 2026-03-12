@@ -45,6 +45,69 @@ export const learningTopics = [
   },
 ] as const;
 
+export const trainingBuilderTopics = {
+  cubase: {
+    label: "Cubase",
+    description: "Focus your training around Cubase workflow, tools, and session management.",
+    focusAreas: [
+      "Session organization",
+      "Templates",
+      "Navigation",
+      "Routing",
+      "Group Editing",
+      "Automation",
+      "VariAudio",
+      "Groove Agent",
+      "Halion",
+      "Sampler Track",
+      "Workflow shortcuts",
+      "Project cleanup",
+      "Export best practices",
+      "Other/custom topic",
+    ],
+  },
+  mixing: {
+    label: "Mixing",
+    description: "Build clearer mixing instincts and a more reliable decision-making process.",
+    focusAreas: [
+      "EQ",
+      "Compression",
+      "Saturation",
+      "Effects",
+      "Automation",
+      "Balance",
+      "Depth",
+      "Width",
+      "Arrangement-aware decision making",
+      "Genre-specific strategies",
+      "Other/custom topic",
+    ],
+  },
+  mastering: {
+    label: "Mastering",
+    description: "Learn the mastering concepts and workflow needed for release-ready results.",
+    focusAreas: [
+      "Tonal balance",
+      "Loudness",
+      "Limiting",
+      "Translation",
+      "Reference-based decision making",
+      "Platform considerations",
+      "Master bus workflow",
+      "Avoiding common mastering mistakes",
+      "Other/custom topic",
+    ],
+  },
+} as const;
+
+export const projectFeedbackDawOptions = ["Cubase", "Ableton", "Bitwig"] as const;
+
+export const projectFeedbackFocusAreas = [
+  "Track-by-track feedback on mix",
+  "Mastering session feedback",
+  "DAW-specific feedback",
+] as const;
+
 export const whyTrainWithKevin = {
   eyebrow: "Why Learn With Kevin",
   title: "Real-world training from an active engineer.",
@@ -230,6 +293,6 @@ export const trainingDetails = {
 export const requestPlaceholder = {
   title: "Ready to start learning?",
   description:
-    "Training requests and scheduling will be expanded with a dedicated booking flow later. For now, this page is structured so you can review the options and request the right training format soon.",
-  buttonLabel: "Training Request Form Coming Soon",
+    "Use the training request builder to choose 1-on-1 training or project feedback, select your focus areas, and send a detailed request.",
+  buttonLabel: "Build Your Training Request",
 } as const;

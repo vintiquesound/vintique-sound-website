@@ -50,7 +50,7 @@ const trainingPackageGuidance = packageGuidance as readonly (
     subtitle="Private online training tailored to your goals, your workflow, and your music. Learn Cubase, sharpen your mixes, understand mastering, or combine everything into a custom plan."
     solidButton={{
       label: "Start Learning",
-      href: "#request-training",
+      href: "/build-your-package?group=training#one-on-one-training",
       icon: ArrowRight,
       iconPosition: "right",
     }}
@@ -351,11 +351,10 @@ const trainingPackageGuidance = packageGuidance as readonly (
           </p>
           <div class="flex justify-center">
             <Button
-              type="button"
+              href="/build-your-package?group=training#one-on-one-training"
               variant="solid"
               bgColor="primary"
               hoverBgColor="primary"
-              pointerCursor={false}
             >
               {requestPlaceholder.buttonLabel}
             </Button>
@@ -371,7 +370,7 @@ const trainingPackageGuidance = packageGuidance as readonly (
     subtitle="Get custom 1-on-1 guidance for Cubase, mixing, mastering, or a combination of all three."
     solid={{
       label: "Request Training",
-      href: "#request-training",
+      href: "/build-your-package?group=training#one-on-one-training",
       icon: ArrowRight,
       bgColor: "white",
       hoverBgColor: "white",
