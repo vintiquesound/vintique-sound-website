@@ -48,7 +48,7 @@ const GROUP_META: Record<BuilderGroup, { title: string; description: string }> =
     description: "Build a custom package for mixing & mastering, audio editing, or audio repair.",
   },
   training: {
-    title: "1-on-1 Training",
+    title: "Training & Feedback",
     description: "Build a tailored request for 1-on-1 training or project feedback.",
   },
 };
@@ -72,12 +72,12 @@ const AUDIO_CATEGORY_META: Record<AudioCategory, { title: string; description: s
 const TRAINING_CATEGORY_META: Record<TrainingCategory, { title: string; description: string; badge?: string }> = {
   oneOnOneTraining: {
     title: "One-on-One Training",
-    description: "Build a tailored private coaching request for Cubase, mixing, mastering, and workflow development.",
+    description: "Build a tailored private training request for a focused lesson, project-based session, or broader development plan.",
     badge: "Most Popular",
   },
   projectFeedback: {
     title: "Project Feedback",
-    description: "Request focused feedback on your mix, master, production choices, and next-step improvements.",
+    description: "Request a recorded, live, or deep-dive walkthrough of your mix, master, workflow, and next-step priorities.",
   },
 };
 
@@ -206,7 +206,7 @@ export default function PackageBuilderIsland() {
           <div className="space-y-1">
             <h2 className="text-2xl font-semibold">Choose a builder</h2>
             <p className="text-muted-foreground">
-              Start by selecting whether you want an audio service package or a training request.
+              Start by selecting whether you want an audio service package or a training / feedback request.
             </p>
           </div>
 
@@ -263,9 +263,9 @@ export default function PackageBuilderIsland() {
       {activeGroup === "training" && !activeCategory && (
         <div className="space-y-6">
           <div className="space-y-1">
-            <h2 className="text-2xl font-semibold">Choose a training service</h2>
+            <h2 className="text-2xl font-semibold">Choose a training or feedback service</h2>
             <p className="text-muted-foreground">
-              Start by selecting whether you want private 1-on-1 training or detailed project feedback.
+              Start by selecting whether you want private 1-on-1 training or a project walkthrough with detailed feedback.
             </p>
           </div>
 

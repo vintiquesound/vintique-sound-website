@@ -6,10 +6,15 @@ import PackageSummaryCard from "@/components/package-builder/components/PackageS
 import { useStepFlow } from "@/components/package-builder/hooks/useStepFlow";
 import { inputClassName, textareaClassName } from "@/components/package-builder/utils/field-styles";
 import {
+  packageOptions,
+  trainingRecordingAddOn,
+  trainingBuilderTopics,
+} from "@/content/webpage/one-on-one-training-data";
+import {
+  feedbackPackageOptions,
   projectFeedbackDawOptions,
   projectFeedbackFocusAreas,
-  trainingBuilderTopics,
-} from "@/content/webpage/training-data";
+} from "@/content/webpage/project-feedback-data";
 import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
 
 export type TrainingBuilderProps = {
@@ -21,8 +26,17 @@ export type TrainingRequestType = "oneOnOneTraining" | "projectFeedback";
 
 type RequestType = "" | TrainingRequestType;
 type TrainingTopicKey = keyof typeof trainingBuilderTopics;
+type TrainingPackage = "" | (typeof packageOptions)[number]["title"];
+type ProjectFeedbackPackage = "" | (typeof feedbackPackageOptions)[number]["title"];
 type ProjectFeedbackDaw = "" | (typeof projectFeedbackDawOptions)[number];
-type TrainingStepId = "requestType" | "trainingTopics" | TrainingTopicKey | "projectFeedback" | "review";
+type TrainingStepId =
+  | "requestType"
+  | "trainingPackage"
+  | "trainingTopics"
+  | TrainingTopicKey
+  | "projectFeedbackPackage"
+  | "projectFeedback"
+  | "review";
 
 type StepConfig = {
   id: TrainingStepId;
@@ -67,12 +81,15 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
   useDisplayCurrency();
 
   const [requestType, setRequestType] = React.useState<RequestType>(initialRequestType ?? "");
+  const [trainingPackage, setTrainingPackage] = React.useState<TrainingPackage>("");
+  const [trainingRecordingRequested, setTrainingRecordingRequested] = React.useState(false);
   const [selectedTopics, setSelectedTopics] = React.useState<Record<TrainingTopicKey, boolean>>(
     createEmptyTopicSelection
   );
   const [topicFocusSelections, setTopicFocusSelections] = React.useState<Record<TrainingTopicKey, string[]>>(
     createEmptyFocusSelections
   );
+  const [projectFeedbackPackage, setProjectFeedbackPackage] = React.useState<ProjectFeedbackPackage>("");
   const [projectFeedbackDaw, setProjectFeedbackDaw] = React.useState<ProjectFeedbackDaw>("");
   const [projectFeedbackSelections, setProjectFeedbackSelections] = React.useState<string[]>([]);
   const [additionalNotes, setAdditionalNotes] = React.useState("");
@@ -92,6 +109,11 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     if (requestType === "oneOnOneTraining") {
       return [
         ...(isRequestTypeLocked ? [] : [DEFAULT_STEP]),
+        {
+          id: "trainingPackage",
+          title: "Training Format",
+          description: "Choose how you want your 1-on-1 training structured.",
+        },
         {
           id: "trainingTopics",
           title: "Training Topics",
@@ -114,9 +136,14 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
       return [
         ...(isRequestTypeLocked ? [] : [DEFAULT_STEP]),
         {
+          id: "projectFeedbackPackage",
+          title: "Walkthrough Format",
+          description: "Choose how you want the project walkthrough delivered.",
+        },
+        {
           id: "projectFeedback",
           title: "Project Feedback Details",
-          description: "Tell me which DAW you use and what kind of feedback you want.",
+          description: "Tell me which DAW you use and what you want me to focus on during the walkthrough.",
         },
         {
           id: "review",
@@ -143,8 +170,12 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     switch (currentStep.id) {
       case "requestType":
         return Boolean(requestType);
+      case "trainingPackage":
+        return Boolean(trainingPackage);
       case "trainingTopics":
         return selectedTopicKeys.length > 0;
+      case "projectFeedbackPackage":
+        return Boolean(projectFeedbackPackage);
       case "projectFeedback":
         return Boolean(projectFeedbackDaw) && projectFeedbackSelections.length > 0;
       case "review":
@@ -152,19 +183,38 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
       default:
         return topicFocusSelections[currentStep.id].length > 0;
     }
-  }, [currentStep, projectFeedbackDaw, projectFeedbackSelections.length, requestType, selectedTopicKeys.length, topicFocusSelections]);
+  }, [
+    currentStep,
+    projectFeedbackDaw,
+    projectFeedbackPackage,
+    projectFeedbackSelections.length,
+    requestType,
+    selectedTopicKeys.length,
+    topicFocusSelections,
+    trainingPackage,
+  ]);
 
   const isRequestComplete = React.useMemo(() => {
     if (requestType === "oneOnOneTraining") {
-      return selectedTopicKeys.length > 0 && selectedTopicKeys.every((topic) => topicFocusSelections[topic].length > 0);
+      return Boolean(trainingPackage)
+        && selectedTopicKeys.length > 0
+        && selectedTopicKeys.every((topic) => topicFocusSelections[topic].length > 0);
     }
 
     if (requestType === "projectFeedback") {
-      return Boolean(projectFeedbackDaw) && projectFeedbackSelections.length > 0;
+      return Boolean(projectFeedbackPackage) && Boolean(projectFeedbackDaw) && projectFeedbackSelections.length > 0;
     }
 
     return false;
-  }, [projectFeedbackDaw, projectFeedbackSelections.length, requestType, selectedTopicKeys, topicFocusSelections]);
+  }, [
+    projectFeedbackDaw,
+    projectFeedbackPackage,
+    projectFeedbackSelections.length,
+    requestType,
+    selectedTopicKeys,
+    topicFocusSelections,
+    trainingPackage,
+  ]);
 
   const requestPackage = React.useMemo(() => {
     const lines: string[] = [];
@@ -179,6 +229,8 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     lines.push(`Request type: ${REQUEST_TYPE_LABELS[requestType]}`);
 
     if (requestType === "oneOnOneTraining") {
+      lines.push(`Training format: ${trainingPackage || "—"}`);
+      lines.push(`Recorded session add-on: ${trainingRecordingRequested ? "Yes" : "No"}`);
       lines.push("");
       lines.push("Training topics:");
       selectedTopicKeys.forEach((topic) => {
@@ -190,9 +242,10 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     }
 
     if (requestType === "projectFeedback") {
+      lines.push(`Walkthrough format: ${projectFeedbackPackage || "—"}`);
       lines.push(`DAW: ${projectFeedbackDaw || "—"}`);
       lines.push("");
-      lines.push("Requested feedback:");
+      lines.push("Walkthrough focus:");
       projectFeedbackSelections.forEach((selection) => {
         lines.push(`- ${selection}`);
       });
@@ -205,16 +258,29 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     }
 
     return {
-      subject: `Training Request — ${REQUEST_TYPE_LABELS[requestType]}`,
+      subject: `Service Request — ${REQUEST_TYPE_LABELS[requestType]}`,
       summaryText: lines.join("\n"),
     };
-  }, [additionalNotes, projectFeedbackDaw, projectFeedbackSelections, requestType, selectedTopicKeys, topicFocusSelections]);
+  }, [
+    additionalNotes,
+    projectFeedbackDaw,
+    projectFeedbackPackage,
+    projectFeedbackSelections,
+    requestType,
+    selectedTopicKeys,
+    topicFocusSelections,
+    trainingPackage,
+    trainingRecordingRequested,
+  ]);
 
   const canRequestPackage = currentStep.id === "review" && isRequestComplete && Boolean(requestPackage.summaryText);
 
   function updateRequestType(nextValue: RequestType) {
     setRequestType(nextValue);
     setCurrentStepIndex(0);
+    setTrainingPackage("");
+    setTrainingRecordingRequested(false);
+    setProjectFeedbackPackage("");
 
     if (nextValue === "oneOnOneTraining") {
       setProjectFeedbackDaw("");
@@ -266,14 +332,14 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
 
   const summary = (
     <PackageSummaryCard
-      title="Training Request Summary"
+      title="Request Summary"
       totalLabel="Pricing"
       total="Custom quote after review"
       canRequestPackage={canRequestPackage}
       requestPackage={requestPackage}
       requestButtonLabel={requestType === "projectFeedback" ? "Request Project Feedback" : "Request Training"}
       requestDialogTitle={requestType === "projectFeedback" ? "Request Project Feedback" : "Request Training"}
-      requestDialogDescription="Enter your name + email, and I'll receive your training request details so I can review the scope and follow up with the best next step."
+      requestDialogDescription="Enter your name + email, and I'll receive your request details so I can review the scope and follow up with the best next step."
       downloadFilePrefix="training-request"
     >
       <ul className="text-sm space-y-2">
@@ -281,9 +347,11 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
 
         {requestType === "oneOnOneTraining" && (
           <>
+            <li>Format: {trainingPackage || "—"}</li>
             <li>
               Topics: {selectedTopicKeys.length > 0 ? selectedTopicKeys.map((topic) => trainingBuilderTopics[topic].label).join(", ") : "—"}
             </li>
+            <li>Recorded session add-on: {trainingRecordingRequested ? "Yes" : "No"}</li>
             {selectedTopicKeys.map((topic) => (
               <li key={topic}>
                 {trainingBuilderTopics[topic].label}: {topicFocusSelections[topic].length > 0 ? topicFocusSelections[topic].join("; ") : "—"}
@@ -294,9 +362,10 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
 
         {requestType === "projectFeedback" && (
           <>
+            <li>Walkthrough: {projectFeedbackPackage || "—"}</li>
             <li>DAW: {projectFeedbackDaw || "—"}</li>
             <li>
-              Feedback: {projectFeedbackSelections.length > 0 ? projectFeedbackSelections.join(", ") : "—"}
+              Focus: {projectFeedbackSelections.length > 0 ? projectFeedbackSelections.join(", ") : "—"}
             </li>
           </>
         )}
@@ -358,6 +427,43 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
           </div>
         )}
 
+        {currentStep.id === "trainingPackage" && (
+          <div className="rounded-lg border border-border p-4 space-y-5">
+            <div className="space-y-3">
+              {packageOptions.map((option) => (
+                <label key={option.title} className="flex items-start gap-3 rounded-md border border-border p-4 text-sm">
+                  <input
+                    type="radio"
+                    name="training-package"
+                    checked={trainingPackage === option.title}
+                    onChange={() => setTrainingPackage(option.title)}
+                  />
+                  <span className="space-y-1">
+                    <span className="block font-medium">{option.title}</span>
+                    <span className="block text-muted-foreground">{option.description}</span>
+                    <span className="block text-xs text-primary">{option.fit}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
+
+            <div className="rounded-md border border-border bg-muted/40 p-4 space-y-3">
+              <div className="text-sm font-medium">Optional add-on</div>
+              <label className="flex items-start gap-3 text-sm">
+                <input
+                  type="checkbox"
+                  checked={trainingRecordingRequested}
+                  onChange={(e) => setTrainingRecordingRequested(e.target.checked)}
+                />
+                <span className="space-y-1">
+                  <span className="block font-medium">{trainingRecordingAddOn.label}</span>
+                  <span className="block text-muted-foreground">{trainingRecordingAddOn.description}</span>
+                </span>
+              </label>
+            </div>
+          </div>
+        )}
+
         {TOPIC_ORDER.includes(currentStep.id as TrainingTopicKey) && currentStep.id in trainingBuilderTopics && (
           <div className="rounded-lg border border-border p-4 space-y-4">
             <div className="text-sm text-muted-foreground">
@@ -373,6 +479,28 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
                     onChange={(e) => toggleTopicFocusArea(currentStep.id as TrainingTopicKey, focusArea, e.target.checked)}
                   />
                   <span>{focusArea}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {currentStep.id === "projectFeedbackPackage" && (
+          <div className="rounded-lg border border-border p-4 space-y-5">
+            <div className="space-y-3">
+              {feedbackPackageOptions.map((option) => (
+                <label key={option.title} className="flex items-start gap-3 rounded-md border border-border p-4 text-sm">
+                  <input
+                    type="radio"
+                    name="project-feedback-package"
+                    checked={projectFeedbackPackage === option.title}
+                    onChange={() => setProjectFeedbackPackage(option.title)}
+                  />
+                  <span className="space-y-1">
+                    <span className="block font-medium">{option.title}</span>
+                    <span className="block text-muted-foreground">{option.description}</span>
+                    <span className="block text-xs text-primary">{option.fit}</span>
+                  </span>
                 </label>
               ))}
             </div>
@@ -398,7 +526,7 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
             </div>
 
             <div className="space-y-3">
-              <div className="text-sm font-medium">What kind of feedback do you want?</div>
+              <div className="text-sm font-medium">What should I focus on during the walkthrough?</div>
               {projectFeedbackFocusAreas.map((focusArea) => (
                 <label key={focusArea} className="flex items-start gap-3 rounded-md border border-border p-4 text-sm">
                   <input
@@ -428,7 +556,7 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
                 value={additionalNotes}
                 onChange={(e) => setAdditionalNotes(e.target.value)}
                 className={textareaClassName + " h-28"}
-                placeholder="Anything else you'd like me to know about your goals, current skill level, or project?"
+                placeholder="Anything else you'd like me to know about your goals, current skill level, project scope, or timeline?"
               />
             </div>
           </div>

@@ -1,7 +1,7 @@
 export const learningTopics = [
   {
     icon: "lucide:app-window",
-    title: "Cubase Training",
+    title: "Cubase",
     description:
       "Learn the Cubase workflow from the ground up or focus on the exact features slowing you down in real projects.",
     points: [
@@ -12,7 +12,7 @@ export const learningTopics = [
   },
   {
     icon: "lucide:sliders-horizontal",
-    title: "Mixing Training",
+    title: "Mixing",
     description:
       "Build reliable mixing instincts so your sessions sound clearer, punchier, and more emotionally intentional.",
     points: [
@@ -23,24 +23,13 @@ export const learningTopics = [
   },
   {
     icon: "lucide:waves",
-    title: "Mastering Training",
+    title: "Mastering",
     description:
       "Understand what mastering actually is, how it differs from mixing, and how to prepare release-ready masters.",
     points: [
       "Tonal balance, loudness, limiting, and translation",
       "Reference-based decision making and platform considerations",
       "Master bus workflow and avoiding common mastering mistakes",
-    ],
-  },
-  {
-    icon: "lucide:message-square-more",
-    title: "Project Feedback & Problem Solving",
-    description:
-      "Bring your own session and get focused guidance on the exact issues holding your mix, master, or workflow back.",
-    points: [
-      "Track-by-track feedback on your current project",
-      "Live troubleshooting for mix problems, routing issues, or workflow bottlenecks",
-      "Custom training that combines Cubase, mixing, and mastering topics",
     ],
   },
 ] as const;
@@ -100,14 +89,6 @@ export const trainingBuilderTopics = {
   },
 } as const;
 
-export const projectFeedbackDawOptions = ["Cubase", "Ableton", "Bitwig"] as const;
-
-export const projectFeedbackFocusAreas = [
-  "Mixing session track-by-track feedback",
-  "Mastering session feedback",
-  "DAW-specific feedback",
-] as const;
-
 export const whyTrainWithKevin = {
   eyebrow: "Why Learn With Kevin",
   title: "Real-world training from an active engineer.",
@@ -125,7 +106,7 @@ export const whyTrainWithKevin = {
   stats: [
     { label: "Years Experience", value: "15+" },
     { label: "Projects Completed", value: "250+" },
-    { label: "YouTube Audience", value: "10K+" },
+    { label: "YouTube Subscribers", value: "10K+" },
   ],
 } as const;
 
@@ -158,40 +139,40 @@ export const idealStudents = [
 
 export const packageOptions = [
   {
-    title: "Single Session",
-    badge: "Best for quick wins",
+    title: "Topic Intensive Session",
+    badge: "Best for focused help",
     description:
-      "A focused 1-on-1 session built around one problem, one workflow bottleneck, or one project review.",
+      "A focused training session built around one clearly defined goal in Cubase, mixing, or mastering.",
     includes: [
-      "Ideal for mix feedback, Cubase troubleshooting, or mastering Q&A",
-      "Focused curriculum based on your goals before the session",
-      "Great if you want clarity fast without committing to a longer package",
+      "Ideal for Cubase troubleshooting, focused mixing or mastering techniques, or one bottleneck inside your workflow",
+      "We stay tightly focused on the topic that will help you move forward fastest",
+      "Great when you want clarity in one session without mapping out a longer plan",
     ],
-    fit: "Choose this if you need targeted help on one project or one skill area.",
+    fit: "Choose this if you want one focused hour on a specific problem, tool, or technique.",
   },
   {
-    title: "Multi-Session",
-    badge: "Most flexible",
+    title: "Project-Based Session",
+    badge: "Most practical",
     description:
-      "A short custom training plan for students who want to improve a full workflow across multiple sessions.",
+      "A working session built directly around your own song, session, mix, or master so the training stays immediately useful.",
     includes: [
-      "Ideal for learning Cubase, mixing fundamentals, or mastering step by step",
-      "Lets us apply concepts, review progress, and build momentum",
-      "Best when you want structure without committing to long-term coaching",
+      "Ideal when you learn best by opening a real project and solving problems in context",
+      "Perfect for Cubase workflow help, mix troubleshooting, or mastering decisions inside your material",
+      "Learning outcomes are achieved through real examples instead of abstract demonstrations",
     ],
-    fit: "Choose this if you want guided progress across several sessions.",
+    fit: "Choose this if you want hands-on coaching inside your own project files.",
   },
   {
-    title: "Ongoing Mentorship",
-    badge: "Best for long-term growth",
+    title: "Guided Development Plan",
+    badge: "Best for structured progress",
     description:
-      "A deeper coaching relationship for producers or artists who want continued feedback, accountability, and development.",
+      "A structured training direction for students who want to move beyond signle sessions and into a bigger learning plan.",
     includes: [
-      "Recurring support for mixes, masters, workflow, and release prep",
-      "Curriculum evolves as your skills and projects evolve",
-      "Excellent for serious students building a repeatable professional process",
+      "Best when you want to combine Cubase, mixing, and mastering into a personalized roadmap",
+      "We identify the right sequence of hourly sessions based on your current level and goals",
+      "Useful when you want momentum, progression, and a clearer long-term skill-building path",
     ],
-    fit: "Choose this if you want continued support, feedback, and long-term growth.",
+    fit: "Choose this if you want a custom progression instead of a one-off lesson.",
   },
 ] as const;
 
@@ -203,43 +184,49 @@ export const packageGuidance = [
     afterLink: " a short description of your goals and current experience level.",
   },
   {
-    text: "I will recommend the right training format based on whether you need project feedback, Cubase help, or a deeper mixing/mastering plan.",
+    text: "I will recommend the right format based on whether you need one focused topic session, a project-based session inside your own material, or a broader development plan built from multiple hourly sessions.",
   },
   {
-    text: "Every package is tailored, so the final quote depends on scope, number of sessions, and how customized the training needs to be.",
+    text: "Training is provided in 1-hour increments, so the final quote depends on how many sessions you want, how specialized the topic is, and whether you add session recording delivery.",
   },
 ] as const;
+
+export const trainingRecordingAddOn = {
+  label: "Recorded session delivery",
+  description:
+    "Add recording + delivery if you want a copy of the lesson to revisit afterward. This is offered as an extra-cost add-on.",
+} as const;
 
 export const processSteps = [
   {
     icon: "lucide:message-square",
     title: "Submit Your Request",
     description:
-      "Tell me what you want to learn, what DAW you use, your experience level, and whether you want help with Cubase, mixing, mastering, or all three.",
+      "Tell me what you want to learn, what DAW you use, whether you want a focused lesson or project-based session, and the topics you want to cover.",
   },
   {
     icon: "lucide:file-text",
     title: "Receive a Quote & Plan",
     description:
-      "I send you a quote and outline the best session format. Once the deposit is handled, we choose a start date and I build a custom curriculum around your needs.",
+      "I take your request and build a structured learning plan along with a quote based on the topics, number of hours, and package you requested.",
   },
   {
     icon: "lucide:monitor",
     title: "Train 1-on-1 Online",
     description:
-      "Sessions are delivered live online and tailored to your pace, questions, and current skill level. We can work from examples or directly inside your own projects.",
+      "Sessions are delivered live online in 1-hour increments and tailored to your pace, questions, and current level. We can work from examples or directly inside your own projects.",
   },
   {
     icon: "lucide:folder-open",
-    title: "Apply It To Real Projects",
+    title: "Work In Context",
     description:
-      "We use your songs, sessions, or mastering chain whenever possible so the training stays practical and immediately useful.",
+      "Whenever possible, we work from your own songs, sessions, or mastering chain so the lesson turns into something you can apply immediately.",
   },
   {
     icon: "lucide:arrow-up-right",
-    title: "Keep Improving",
+    title: "Add More Support If Needed",
     description:
-      "Choose a single session, a short intensive, or ongoing mentorship depending on how much support and accountability you want.",
+      "If you want to keep going, we can add more hourly sessions, map out a development plan, or include recording delivery as an add-on.",
   },
 ] as const;
 
@@ -250,9 +237,9 @@ export const trainingDetails = {
     title: "Session Format",
     contentClassName: "space-y-3",
     items: [
-      "Private 1-on-1 online training",
-      "Sessions tailored to your pace, questions, and goals",
-      "Cubase-specific or broader mixing/mastering training",
+      "Private 1-on-1 online training delivered in 1-hour increments",
+      "Available as a focused topic session, a project-based working session, or a broader development plan",
+      "Session recording can be added as an extra-cost deliverable",
     ],
   },
   whatYouCanBring: {
@@ -274,7 +261,7 @@ export const trainingDetails = {
     items: [
       "Clear explanations of what to do and why it works",
       "Direct feedback on your decisions, workflow, and sonic results",
-      "A custom path that can combine Cubase, mixing, mastering, and project critique",
+      "A custom path that can combine Cubase, mixing, and mastering topics around your goals",
     ],
   },
   curriculum: {
@@ -283,9 +270,9 @@ export const trainingDetails = {
     title: "Curriculum & Scope",
     contentClassName: "space-y-3",
     items: [
-      "Training can be broad or highly focused",
-      "Curriculum is custom-built after learning your goals and current level",
-      "You can start with one topic or combine multiple areas into a guided roadmap",
+      "Training can be broad or highly focused depending on the session format you choose",
+      "Curriculum is custom-built after learning your goals, level, and project context",
+      "You can book one or more hours, work directly on a project, or build a guided roadmap from multiple sessions",
     ],
   },
 } as const;
@@ -293,6 +280,6 @@ export const trainingDetails = {
 export const requestPlaceholder = {
   title: "Ready to start learning?",
   description:
-    "Use the training request builder to choose 1-on-1 training or project feedback, select your focus areas, and send a detailed request.",
+    "Use the training request builder to choose your format, select your focus areas, and send a detailed 1-on-1 training request.",
   buttonLabel: "Build Your Training Request",
 } as const;

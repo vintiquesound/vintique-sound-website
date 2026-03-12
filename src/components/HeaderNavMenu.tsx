@@ -16,25 +16,27 @@ type HeaderNavMenuProps = {
 
 export default function HeaderNavMenu({ pathname }: HeaderNavMenuProps) {
   const [currentHash, setCurrentHash] = React.useState("")
+  const [currentSearch, setCurrentSearch] = React.useState("")
 
   React.useEffect(() => {
     if (typeof window === "undefined") return undefined
 
-    const syncHash = () => {
+    const syncLocationState = () => {
       setCurrentHash(window.location.hash)
+      setCurrentSearch(window.location.search)
     }
 
-    syncHash()
-    window.addEventListener("hashchange", syncHash)
+    syncLocationState()
+    window.addEventListener("hashchange", syncLocationState)
 
     return () => {
-      window.removeEventListener("hashchange", syncHash)
+      window.removeEventListener("hashchange", syncLocationState)
     }
   }, [])
 
   const isActive = React.useCallback(
-    (href: string) => isNavLinkActive(pathname, href, currentHash),
-    [currentHash, pathname]
+    (href: string) => isNavLinkActive(pathname, href, currentHash, currentSearch),
+    [currentHash, currentSearch, pathname]
   )
 
   const dropdownLinkBase =

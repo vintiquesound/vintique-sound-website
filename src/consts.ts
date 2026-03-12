@@ -29,11 +29,12 @@ export const AUDIO_EDITING_DESCRIPTION = "Professional audio editing services in
 export const AUDIO_REPAIR_TITLE = "Audio Repair Services | Vintique Sound";
 export const AUDIO_REPAIR_DESCRIPTION = "Professional audio repair services including clipping repair, clicks and pops removal, hiss reduction, crackle cleanup, and plosive or reverb reduction.";
 export const BUILD_PACKAGE_TITLE = "Build Your Package | Vintique Sound";
-export const BUILD_PACKAGE_DESCRIPTION = "Build a custom package for audio engineering services or 1-on-1 training, with tailored options for your project and goals.";
+export const BUILD_PACKAGE_DESCRIPTION = "Build a custom package for audio engineering services, 1-on-1 training, or project feedback with tailored options for your project and goals.";
 export const STUDIO_TITLE = "Studio Gear & Monitoring | Vintique Sound";
 export const STUDIO_DESCRIPTION = "Explore the studio setup behind Vintique Sound, including monitoring, room acoustics, workflow, and software tools used for consistent results.";
 export const CLIENTS_AND_CREDITS_TITLE = "Clients & Credits | Vintique Sound";
 export const CLIENTS_AND_CREDITS_DESCRIPTION = "Browse a searchable list of clients and credits, including projects, roles, and years across mixing, mastering, and audio restoration work.";
+export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@VintiqueSound";
 
 export const BLOG_TITLE = "Blog | Vintique Sound";
 export const BLOG_DESCRIPTION = "Read practical audio engineering articles, tutorials, and insights on mixing, mastering, production workflow, and digital audio tools.";
@@ -42,12 +43,12 @@ export const BLOG_TAGS_DESCRIPTION = "Browse every blog tag on Vintique Sound to
 export const BLOG_TAG_TITLE_PREFIX = "Blog Tag:";
 export const BLOG_TAG_DESCRIPTION_PREFIX = "Browse blog posts tagged";
 
-export const YOUTUBE_VIDEOS_TITLE = "YouTube Videos | Vintique Sound";
-export const YOUTUBE_VIDEOS_DESCRIPTION = "Watch Vintique Sound YouTube videos focused on audio engineering, mixing, mastering, and production workflows. New videos are coming soon.";
 export const ONLINE_COURSES_TITLE = "Online Courses | Vintique Sound";
 export const ONLINE_COURSES_DESCRIPTION = "Explore online audio engineering courses from Vintique Sound covering mixing, mastering, and music production workflows. New course content is coming soon.";
 export const ONE_ON_ONE_TRAINING_TITLE = "1-on-1 Training: Mixing, Mastering & Cubase | Vintique Sound";
 export const ONE_ON_ONE_TRAINING_DESCRIPTION = "Learn professional mixing and mastering techniques, Cubase workflows, and practical audio engineering methods through Vintique Sound 1-on-1 training.";
+export const PROJECT_FEEDBACK_TITLE = "Project Feedback for Mixes, Masters & Workflow | Vintique Sound";
+export const PROJECT_FEEDBACK_DESCRIPTION = "Get focused project feedback on your mix, master, arrangement, and workflow with practical next steps tailored to your music and production goals.";
 
 export const AUDIO_TOOLS_TITLE = "Audio Tools | Vintique Sound";
 export const AUDIO_TOOLS_DESCRIPTION = "Discover premium digital audio tools from Vintique Sound designed to improve creativity, workflow, and production quality.";

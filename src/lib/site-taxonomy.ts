@@ -52,13 +52,6 @@ export const siteTaxonomy = [
     surfaces: ["navigation", "contact"],
     items: [
       {
-        shortSubtitle: "YouTube Videos",
-        fullSubtitle: "YouTube Videos",
-        href: "https://www.youtube.com/@VintiqueSound",
-        // href: "/youtube-videos",
-        surfaces: ["navigation", "contact"],
-      },
-      {
         shortSubtitle: "Online Courses",
         fullSubtitle: "Online Courses",
         href: "/online-courses",
@@ -71,8 +64,14 @@ export const siteTaxonomy = [
         surfaces: ["navigation", "contact"],
       },
       {
+        shortSubtitle: "Project Feedback",
+        fullSubtitle: "Project Feedback",
+        href: "/project-feedback",
+        surfaces: ["navigation", "contact"],
+      },
+      {
         shortSubtitle: "Build Your Package",
-        fullSubtitle: "Build Your Package for 1-on-1 Training",
+        fullSubtitle: "Build Your Package for Training & Feedback",
         href: "/build-your-package#training",
         surfaces: ["navigation"],
       },

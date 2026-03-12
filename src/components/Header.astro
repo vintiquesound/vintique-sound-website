@@ -99,21 +99,32 @@ const mobileLinkBase =
 
   const normalizePath = (value) => value.replace(/\/$/, "") || "/";
   const normalizeHash = (value) => value.replace(/^#/, "").trim().toLowerCase();
+  const getSearchGroup = (search) => new URLSearchParams(search).get("group")?.trim().toLowerCase() ?? "";
+  const navQueryScopes = {
+    audio: ["audio", "audio-services", "mixing-and-mastering", "audio-editing", "audio-repair"],
+    training: ["training", "education", "one-on-one-training", "project-feedback"],
+  };
+  const navHashScopes = {
+    "audio-services": ["audio-services", "mixing-and-mastering", "audio-editing", "audio-repair"],
+    training: ["training", "education", "one-on-one-training", "project-feedback"],
+  };
 
-  const isNavItemActive = (pathname, hash, href) => {
+  const isNavItemActive = (pathname, hash, search, href) => {
     if (!href.startsWith("/")) return false;
 
     const hrefPath = normalizePath(href.split(/[?#]/, 1)[0] ?? href);
     const hrefHash = href.includes("#") ? normalizeHash(href.split("#")[1] ?? "") : "";
     const normalizedPath = normalizePath(pathname);
+    const searchGroup = getSearchGroup(search);
     const subpath = normalizedPath.match(/[^/]+/g);
     const pathMatches = hrefPath === normalizedPath || hrefPath === "/" + (subpath?.[0] || "");
 
     if (!pathMatches) return false;
     if (!hrefHash) return true;
-    if (!hash) return true;
+    if (hash) return (navHashScopes[hrefHash] ?? [hrefHash]).includes(hash);
+    if (searchGroup) return (navQueryScopes[searchGroup] ?? [searchGroup]).includes(hrefHash);
 
-    return hrefHash === hash;
+    return true;
   };
 
   const syncMobileNavActiveState = () => {
@@ -121,12 +132,13 @@ const mobileLinkBase =
 
     const currentPath = window.location.pathname;
     const currentHash = normalizeHash(window.location.hash);
+    const currentSearch = window.location.search;
 
     panel.querySelectorAll("[data-nav-href]").forEach((link) => {
       if (!(link instanceof HTMLAnchorElement)) return;
 
       const href = link.dataset.navHref ?? "";
-      const active = isNavItemActive(currentPath, currentHash, href);
+      const active = isNavItemActive(currentPath, currentHash, currentSearch, href);
 
       link.classList.toggle("font-bold", active);
       link.classList.toggle("underline", active);
