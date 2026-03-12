@@ -8,8 +8,6 @@ import { convertCadCentsToCurrencyCents, formatMoneyFromCents } from "@/lib/pric
 
 export type LengthTier = { max: number; surcharge: number };
 
-// Reuses the same minute cutoffs as the mixing song-length tiers, but applied as a
-// per-track surcharge for Editing/Repair.
 export const TRACK_LENGTH_TIERS: readonly LengthTier[] = EDITING_REPAIR_TRACK_LENGTH_TIERS_CAD_CENTS.map(
   ({ max, surchargeCents }) => ({
     max,

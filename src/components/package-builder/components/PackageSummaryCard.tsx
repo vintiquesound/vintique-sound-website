@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import { BUSINESS_EMAILS } from "@/consts";
+import { inputClassName } from "@/components/package-builder/utils/field-styles";
 
 export type RequestPackageConfig = {
   subject: string;
@@ -134,7 +135,10 @@ export default function PackageSummaryCard({
       }
 
       if (!response.ok) {
-        setSendResult({ kind: "error", message: json.ok ? "Request failed. Please try again." : json.error || "Request failed. Please try again." });
+        setSendResult({
+          kind: "error",
+          message: json.ok ? "Request failed. Please try again." : json.error || "Request failed. Please try again.",
+        });
         return;
       }
 
@@ -223,7 +227,7 @@ export default function PackageSummaryCard({
                 <input
                   value={requestName}
                   onChange={(e) => setRequestName(e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-input bg-input-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className={inputClassName}
                   placeholder="Your name"
                 />
               </div>
@@ -234,7 +238,7 @@ export default function PackageSummaryCard({
                   type="email"
                   value={requestEmail}
                   onChange={(e) => setRequestEmail(e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-input bg-input-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className={inputClassName}
                   placeholder="you@example.com"
                 />
               </div>
