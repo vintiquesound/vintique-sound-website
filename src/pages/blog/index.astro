@@ -1,6 +1,6 @@
 ---
 // Astro layout and section components
-import WebPageLayout from "../../layouts/WebPageLayout.astro";
+import WebPageLayout from "@/layouts/WebPageLayout.astro";
 
 // Third party libraries
 import { Image } from "astro:assets";
@@ -10,7 +10,7 @@ import { getCollection } from "astro:content";
 import { BLOG_TITLE, BLOG_DESCRIPTION } from "@/consts";
 
 // Types and utilities
-import FormattedDate from "../../components/FormattedDate.astro";
+import FormattedDate from "@/components/FormattedDate.astro";
 
 // Const definitions
 const posts = (await getCollection("blog"))

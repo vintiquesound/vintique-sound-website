@@ -1,28 +1,40 @@
 ---
+
+// Local layout components
+import BaseHead from "@/components/BaseHead.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import FormattedDate from "@/components/FormattedDate.astro";
+import Tag from "@/components/blog/Tag.astro";
+
+// Types and utilities
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import { slugifyTag } from "../lib/utils";
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
-import FormattedDate from "../components/FormattedDate.astro";
-import Tag from "../components/blog/Tag.astro";
-import "../styles/global.css";
+import { slugifyTag } from "@/lib/utils";
+
+// Local content and assets
+import "@/styles/global.css";
 
 type Props = CollectionEntry<"blog">["data"];
 
-const { heroImage, title, description, pubDate, revisedDate, tags, quote } = Astro.props;
+const { heroImage, title, description, pubDate, revisedDate, tags } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/+$/, "");
 
 // Find related posts by tag
 const allPosts = await getCollection("blog");
-const relatedPosts = allPosts.filter(
-	(p) =>
-		p.data.tags &&
-		tags &&
-		p.data.tags.some((tag) => tags.includes(tag))
-).slice(0, 3);
-
+const relatedPosts = allPosts
+	.filter((p) => (p.data.draft ?? false) === false)
+	.filter((p) => (p.data.published ?? true) === true)
+	.filter(
+		(p) =>
+			p.data.tags &&
+			tags &&
+			p.data.tags.some((tag) => tags.includes(tag))
+	)
+	.filter((p) => `/blog/${p.slug}` !== currentPath)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 3);
 ---
 
 <html lang="en">
@@ -53,19 +65,20 @@ const relatedPosts = allPosts.filter(
 				font-weight: normal;
 			}
 			body .prose p {
-				margin-bottom: 1.25em !important;
-			}
-			body .prose ul,
-			body .prose ol {
-				margin-top: 0 !important;
-				margin-bottom: 1.25em !important;
-				padding-left: 1.25em !important;
+				/* margin-bottom: 1.25em !important; */
 			}
 			@supports selector(p:has(+ ul)) {
 				.prose p:has(+ ul),
 				.prose p:has(+ ol) {
 					margin-bottom: 0.25em;
 				}
+			}
+			.prose .blog-body > :last-child {
+				margin-bottom: 0 !important;
+			}
+			.prose .related-posts-list {
+				margin-top: 0.875rem;
+				margin-bottom: 0.875rem;
 			}
 		</style>
 	</head>
@@ -103,22 +116,53 @@ const relatedPosts = allPosts.filter(
 										<Tag label={tag} href={`/blog/tag/${slugifyTag(tag)}/`} />
 									))}
 								</div>
-								<hr class="my-6 border-0 h-1 w-full bg-accent rounded-full" />
 							</>
 						)}
-						{quote && (
-							<p class="mt-0 mb-6 text-base">{quote}</p>
+						{description && (
+              <p class="my-6 text-md italic">{description}</p>
+              <hr class="mt-6 mb-12 border-0 h-1 w-full bg-accent rounded-full" />
 						)}
 					</div>
 					<hr />
-					<slot />
+					<div class="blog-body">
+						<slot />
+					</div>
+					{tags && tags.length > 0 && (
+						<div class="not-prose mt-4 mb-6 flex flex-wrap items-center gap-2">
+							<span class="text-md font-semibold">Tags:</span>
+							{tags.map((tag) => (
+								<Tag label={tag} href={`/blog/tag/${slugifyTag(tag)}/`} />
+							))}
+						</div>
+					)}
+					<div class="not-prose mt-2 mb-8">
+						<a
+							href="/blog/"
+							class="inline-flex items-center rounded-md border border-accent pl-2 pr-4 py-2 text-sm font-semibold text-accent no-underline transition-colors hover:border-secondary hover:text-secondary"
+						>
+							← Back To Blog
+						</a>
+					</div>
 					{relatedPosts.length > 0 && (
-						<section>
-							<h3>Related Posts</h3>
-							<ul>
+						<section class="not-prose mt-10 border-t border-border pt-8">
+							<h2 class="m-0 text-2xl uppercase">Related Posts</h2>
+							<ul class="related-posts-list list-none p-0 space-y-2">
 								{relatedPosts.map((post) => (
 									<li>
-										<a href={`/blog/${post.slug}`}>{post.data.title}</a>
+										<a
+											href={`/blog/${post.slug}/`}
+											class="group block rounded-xl border border-border bg-muted/20 px-4 py-2 no-underline transition-colors hover:border-secondary/60 hover:bg-muted/40"
+										>
+											<div class="flex items-start justify-between gap-3">
+												<h3 class="mt-2 text-base font-semibold leading-tight text-accent transition-colors group-hover:text-secondary">
+													{post.data.title}
+												</h3>
+												<span aria-hidden="true" class="text-secondary transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+											</div>
+											<p class="mb-2 text-sm text-muted-foreground">
+												<FormattedDate date={post.data.pubDate} />
+											</p>
+										</a>
 									</li>
 								))}
 							</ul>
