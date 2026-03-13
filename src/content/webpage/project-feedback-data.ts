@@ -87,7 +87,7 @@ export const idealFeedbackClients = [
   },
   {
     icon: "lucide:message-square-more",
-    title: "Self-Taught Engineers",
+    title: "Self-Taught Engineers & Producers",
     description:
       "You want direct, honest feedback that helps you improve faster than trial-and-error alone.",
   },
@@ -165,7 +165,7 @@ export const feedbackProcessSteps = [
   },
   {
     icon: "lucide:file-text",
-    title: "Receive a Quote & Review Plan",
+    title: "Receive Quote & Plan",
     description:
       "I take your request and build a structured feedback plan along with a quote based on the topics, number of hours, and package you requested.",
   },
@@ -177,7 +177,7 @@ export const feedbackProcessSteps = [
   },
   {
     icon: "lucide:video",
-    title: "Receive The Walkthrough",
+    title: "Receive The Review",
     description:
       "I walk through the project, identify what is working, what is holding it back, and explain which changes will make the biggest difference.",
   },

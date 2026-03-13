@@ -125,13 +125,13 @@ export const idealStudents = [
   },
   {
     icon: "lucide:laptop-minimal",
-    title: "Cubase Users",
+    title: "Beginner to Intermediate Cubase Users",
     description:
       "You want to move faster in Cubase, understand its deeper features, or stop feeling overwhelmed by the workflow.",
   },
   {
     icon: "lucide:graduation-cap",
-    title: "Self-Taught Producers",
+    title: "Self-Taught Engineers & Producers",
     description:
       "You've learned from videos and trial-and-error, and now want direct feedback tailored to your own music.",
   },
@@ -148,7 +148,7 @@ export const packageOptions = [
       "We stay tightly focused on the topic that will help you move forward fastest",
       "Great when you want clarity in one session without mapping out a longer plan",
     ],
-    fit: "Choose this if you want one focused hour on a specific problem, tool, or technique.",
+    fit: "Choose this if you want to focus on a specific problem, tool, or technique.",
   },
   {
     title: "Project-Based Session",
@@ -164,7 +164,7 @@ export const packageOptions = [
   },
   {
     title: "Guided Development Plan",
-    badge: "Best for structured progress",
+    badge: "Best for long term success",
     description:
       "A structured training direction for students who want to move beyond signle sessions and into a bigger learning plan.",
     includes: [
@@ -206,7 +206,7 @@ export const processSteps = [
   },
   {
     icon: "lucide:file-text",
-    title: "Receive a Quote & Plan",
+    title: "Receive Quote & Plan",
     description:
       "I take your request and build a structured learning plan along with a quote based on the topics, number of hours, and package you requested.",
   },
