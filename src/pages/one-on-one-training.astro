@@ -1,0 +1,393 @@
+---
+// Astro layout and section components
+import WebPageLayout from "@/layouts/WebPageLayout.astro";
+import IntroSection from "@/layouts/sections/IntroSection.astro";
+import CtaSection from "@/layouts/sections/CtaSection.astro";
+
+// Third party libraries
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import { ArrowRight } from "lucide-astro";
+
+// Local UI components
+import Button from "@/components/ui/Button.astro";
+import Badge from "@/components/ui/Badge.astro";
+import Card from "@/components/ui/card/Card.astro";
+import CardAction from "@/components/ui/card/CardAction.astro";
+import CardContent from "@/components/ui/card/CardContent.astro";
+import CardDescription from "@/components/ui/card/CardDescription.astro";
+import CardHeader from "@/components/ui/card/CardHeader.astro";
+import CardTitle from "@/components/ui/card/CardTitle.astro";
+
+// Local content and assets
+import { ONE_ON_ONE_TRAINING_TITLE, ONE_ON_ONE_TRAINING_DESCRIPTION } from "@/consts";
+import KevinUlliacImage from "@/assets/website/about-kevin_ulliac-in_the_studio.jpg";
+import {
+  idealStudents,
+  learningTopics,
+  packageGuidance,
+  packageOptions,
+  processSteps,
+  requestPlaceholder,
+  trainingDetails,
+  whyTrainWithKevin,
+} from "@/content/webpage/one-on-one-training-data";
+
+const trainingPackageGuidance = packageGuidance as readonly (
+  | { text: string }
+  | { beforeLink: string; linkLabel: string; href: string; afterLink: string }
+)[];
+---
+
+<WebPageLayout title={ONE_ON_ONE_TRAINING_TITLE} description={ONE_ON_ONE_TRAINING_DESCRIPTION}>
+
+  {/* INTRO */}
+  <IntroSection
+    bgColors="bg-linear-to-br from-primary/20 to-secondary/20"
+    badgeText="1-on-1 Training"
+    badgeColor="bg-primary text-primary-foreground"
+    title="Learn Cubase, Mixing, and Mastering"
+    subtitle="Private online training delivered in 1-hour sessions and tailored to your goals, your workflow, and your music. Book a focused lesson, work directly inside your own project, or build a broader development plan."
+    solidButton={{
+      label: "Start Learning",
+      href: "/build-your-package#one-on-one-training",
+      icon: ArrowRight,
+      iconPosition: "right",
+    }}
+    outlineButton={{
+      label: "See Training Options",
+      href: "#training-packages",
+      hoverBgColor: "white",
+      textColor: "foreground",
+      borderColor: "foreground",
+    }}
+    align="center"
+  />
+
+  {/* TRAINING */}
+  <section class="py-20 bg-muted">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-3xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">What You Can Learn</h2>
+        <p class="text-lg text-muted-foreground">
+          Training is tailored to your current level, your questions, and the exact skills you want to build.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {learningTopics.map((topic) => (
+          <Card class="border-2 hover:border-primary transition-all h-full">
+            <CardHeader>
+              <CardTitle class="text-3xl flex items-center gap-3">
+                <Icon name={topic.icon} class="h-6 w-6 shrink-0 text-primary" />
+                {topic.title}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription class="text-base leading-relaxed">
+                {topic.description}
+              </CardDescription>
+              <ul class="mt-4 space-y-3">
+                {topic.points.map((point) => (
+                  <li class="flex items-start gap-2">
+                    <Icon name="lucide:check-circle" class="text-secondary h-5 w-5 mt-0.5 shrink-0" />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* WHY TRAIN WITH KEVIN */}
+  <section class="py-20 bg-linear-to-br from-secondary/20 to-accent/20">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-4xl mx-auto">
+        <div class="mb-6 flex justify-center">
+          <Badge text={whyTrainWithKevin.eyebrow} />
+        </div>
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">{whyTrainWithKevin.title}</h2>
+        <p class="text-lg text-muted-foreground leading-relaxed max-w-3xl mx-auto">
+          {whyTrainWithKevin.subtitle}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 xl:gap-12 items-start max-w-6xl mx-auto">
+        <div>
+          <p class="text-lg text-muted-foreground leading-relaxed mb-4">
+            {whyTrainWithKevin.description}
+          </p>
+          <p class="text-lg text-muted-foreground leading-relaxed mb-8">
+            {whyTrainWithKevin.secondaryDescription}
+          </p>
+
+          <ul class="space-y-3 mb-8">
+            {whyTrainWithKevin.highlights.map((highlight) => (
+              <li class="flex items-start gap-3">
+                <Icon name="lucide:check-circle" class="text-secondary h-5 w-5 mt-0.5 shrink-0" />
+                <span>{highlight}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <Card class="overflow-hidden border-2 hover:border-primary transition-all pt-0">
+          <div class="aspect-4/3 bg-muted/60 overflow-hidden">
+            <Image
+              src={KevinUlliacImage}
+              alt="Kevin Ulliac in the studio"
+              width={960}
+              height={720}
+              class="block h-full w-full object-cover"
+              loading="lazy"
+            />
+          </div>
+          <CardContent class="space-y-3">
+            <p class="font-semibold text-lg mb-0">Practical training built around real sessions</p>
+            <p class="m-0 text-muted-foreground leading-relaxed">
+              Instead of only covering theory, we can work directly from your own songs, your own Cubase sessions,
+              and the exact problems you want to solve.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto mt-10">
+        {whyTrainWithKevin.stats.map((stat) => (
+          <Card class="text-center border-2 hover:border-primary transition-colors">
+            <CardContent class="pt-6 pb-6">
+              <div class="text-4xl font-bold mb-2 text-primary">{stat.value}</div>
+              <div class="text-sm text-muted-foreground">{stat.label}</div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* WHO IT'S FOR */}
+  <section class="py-20 bg-muted">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-3xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Who It's For</h2>
+        <p class="text-lg text-muted-foreground">
+          This training is designed for people who want clearer guidance, faster progress, and personalized coaching.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+        {idealStudents.map((student) => (
+          <Card class="border-2 hover:border-primary transition-all h-full">
+            <CardHeader class="flex flex-col items-center text-center gap-3">
+              <Icon name={student.icon} class="h-6 w-6 text-primary" />
+              <CardTitle class="text-xl">{student.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription class="text-center leading-relaxed">
+                {student.description}
+              </CardDescription>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* TRAINING FORMAT */}
+  <section id="training-packages" class="py-20 bg-linear-to-br from-primary/20 to-secondary/20 scroll-mt-24">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Choose Your Training Format</h2>
+        <p class="text-lg text-muted-foreground mb-3">
+          Choose the training format that fits the way you want to learn. Sessions are delivered in 1-hour increments and can stay tightly focused or build into a broader plan.
+        </p>
+        <i class="text-sm text-muted-foreground">
+          Final quotes depend on scope, number of hours, and whether you want extras like session recording delivery.
+        </i>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {packageOptions.map((option) => (
+          <Card class="relative border-2 hover:border-primary transition-all h-full">
+            {option.badge && (
+              <CardAction class="absolute -top-3 right-4 z-10">
+                <Badge text={option.badge} />
+              </CardAction>
+            )}
+            <CardHeader>
+              <CardTitle class="text-3xl mt-4">{option.title}</CardTitle>
+            </CardHeader>
+            <CardContent class="flex flex-col gap-5 h-full">
+              <CardDescription class="text-base leading-relaxed">
+                {option.description}
+              </CardDescription>
+
+              <ul class="space-y-3">
+                {option.includes.map((item) => (
+                  <li class="flex items-start gap-2">
+                    <Icon name="lucide:check-circle" class="text-secondary h-5 w-5 mt-0.5 shrink-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div class="pt-4 border-t border-border/60 mt-auto">
+                <p class="m-0 text-sm font-medium text-primary">{option.fit}</p>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <Card class="border-2 hover:border-primary transition-all max-w-5xl mx-auto mt-8">
+        <CardHeader>
+          <CardTitle class="text-2xl flex items-center gap-2">
+            <Icon name="lucide:compass" class="h-5 w-5 text-primary" />
+            How to Choose the Right Training Format
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul class="space-y-3">
+            {trainingPackageGuidance.map((item) => (
+              <li class="flex items-start gap-2">
+                <Icon name="lucide:arrow-right" class="text-secondary h-5 w-5 mt-0.5 shrink-0" />
+                <span>
+                  {"text" in item ? (
+                    item.text
+                  ) : (
+                    <>
+                      {item.beforeLink}
+                      <a href={item.href} class="font-medium text-accent underline underline-offset-4 hover:text-accent/80 transition-colors">{item.linkLabel}</a>
+                      {item.afterLink}
+                    </>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+    </div>
+  </section>
+
+  <section class="py-20 bg-muted">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+        <p class="text-lg text-muted-foreground">
+          A simple process designed to make each hour focused, practical, and customized.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
+        {processSteps.map((step, i) => (
+          <Card class="border-2 hover:border-primary transition-all h-full min-w-60">
+            <CardHeader class="flex flex-col items-center text-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-linear-to-br from-primary to-secondary flex items-center justify-center">
+                <Icon name={step.icon} class="h-6 w-6 text-white" />
+              </div>
+              <div class="space-y-1">
+                <p class="text-xs uppercase tracking-wider text-muted-foreground">Step {i + 1}</p>
+                <CardTitle class="text-lg">{step.title}</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <CardDescription class="text-sm text-center leading-relaxed">
+                {step.description}
+              </CardDescription>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-linear-to-br from-accent/20 to-primary/20">
+    <div class="container mx-auto px-4">
+      <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">Training Details</h2>
+          <p class="text-lg text-muted-foreground">
+            Everything is tailored to your level, but these are the core details you can expect from the training experience.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {Object.values(trainingDetails).map((detail) => (
+            <Card class="border-2 hover:border-primary transition-all h-full">
+              <CardHeader>
+                <CardTitle class="flex items-center gap-2">
+                  <Icon name={detail.icon} class={`h-5 w-5 ${detail.iconClassName}`} />
+                  {detail.title}
+                </CardTitle>
+              </CardHeader>
+              <CardContent class={detail.contentClassName}>
+                <ul class="space-y-2 text-sm text-muted-foreground">
+                  {detail.items.map((item) => (
+                    <li class="flex items-start gap-2">
+                      <Icon name="lucide:check-circle" class="h-4 w-4 text-secondary mt-0.5 shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="request-training" class="py-20 bg-muted scroll-mt-24">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <Card class="border-2 hover:border-primary transition-all">
+        <CardContent class="py-12 px-6 md:px-10 text-center">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">{requestPlaceholder.title}</h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
+            {requestPlaceholder.description}
+          </p>
+          <div class="flex justify-center">
+            <Button
+              href="/build-your-package#one-on-one-training"
+              variant="solid"
+              bgColor="primary"
+              hoverBgColor="primary"
+            >
+              {requestPlaceholder.buttonLabel}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  </section>
+
+  <CtaSection
+    bgColors="bg-linear-to-br from-primary via-primary/80 to-accent"
+    title="Want Training That Matches Your Actual Goals?"
+    subtitle="Get focused 1-on-1 help for Cubase, mixing, mastering, or real project work in a format that fits how you learn best."
+    solid={{
+      label: "Request Training",
+      href: "/build-your-package#one-on-one-training",
+      icon: ArrowRight,
+      bgColor: "white",
+      hoverBgColor: "white",
+      textColor: "primary",
+      hoverTextColor: "primary",
+      iconPosition: "right",
+    }}
+    outline={{
+      label: "Learn More About Kevin",
+      href: "/about",
+      borderAlways: true,
+      borderColor: "white",
+      hoverBorderColor: "white",
+      hoverBgColor: "accent/60",
+      textColor: "white",
+      hoverTextColor: "white",
+    }}
+  />
+</WebPageLayout>
+

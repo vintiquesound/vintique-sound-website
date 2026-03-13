@@ -100,7 +100,7 @@ const count = allPosts.length;
 							<h2 class="m-0">
                 <a
                   href={`/blog/${post.slug}/`}
-                  class="inline-flex items-center gap-2 text-foreground hover:text-accent uppercase"
+									class="inline-flex items-center gap-2 text-foreground hover:text-secondary uppercase"
                 >
                   {post.data.title}
                 </a>
@@ -116,7 +116,7 @@ const count = allPosts.length;
 							<p class="mt-3 mb-0">
 								<a
 									href={`/blog/${post.slug}/`}
-									class="inline-flex items-center gap-2 text-sm text-accent uppercase hover:text-black"
+									class="inline-flex items-center gap-2 text-sm text-accent uppercase hover:text-secondary"
 								>
 									Read more <span aria-hidden="true">→</span>
 								</a>
@@ -126,6 +126,14 @@ const count = allPosts.length;
 					);
 				})}
 			</div>
+      <div class="not-prose pt-8 border-t border-border text-center">
+        <a
+          href="/blog/tags/"
+          class="inline-flex items-center rounded-md border border-accent pl-2 pr-4 py-2 text-sm font-semibold text-accent no-underline transition-colors hover:border-secondary hover:text-secondary"
+        >
+          ← Back To All Tags
+        </a>
+      </div>
 		)}
 	</SingleColumnContainer>
 </WebPageLayout>

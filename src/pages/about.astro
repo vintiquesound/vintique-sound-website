@@ -13,7 +13,7 @@ import Card from "@/components/ui/card/Card.astro";
 import Badge from "@/components/ui/Badge.astro";
 
 // Local content and assets
-import { ABOUT_TITLE, ABOUT_DESCRIPTION } from "@/consts";
+import { ABOUT_TITLE, ABOUT_DESCRIPTION, YOUTUBE_CHANNEL_URL } from "@/consts";
 import { stats, credentials, resume, philosophy } from "@/content/webpage/about-data";
 import KevinUlliacImage from "@/assets/website/about-kevin_ulliac-in_the_studio.jpg";
 ---
@@ -63,6 +63,18 @@ import KevinUlliacImage from "@/assets/website/about-kevin_ulliac-in_the_studio.
         </Card>
       ))}
     </div>
+    <div class="mx-auto mt-8 max-w-3xl px-4 text-center">
+      <p class="m-0 text-base text-muted-foreground">
+        I share practical Cubase and audio engineering tutorials on
+        <a
+          href={YOUTUBE_CHANNEL_URL}
+          target="_blank"
+          rel="noreferrer"
+          class="font-medium text-accent underline underline-offset-4 hover:text-secondary transition-colors"
+        >YouTube</a>
+        if you want to see how I teach and solve problems in real sessions.
+      </p>
+    </div>
   </section>
 
   <!-- Credentials -->
@@ -89,6 +101,16 @@ import KevinUlliacImage from "@/assets/website/about-kevin_ulliac-in_the_studio.
       <div class="text-center mb-12">
         <h2 class="text-3xl md:text-4xl font-bold mb-4">Professional Journey</h2>
         <p class="text-lg text-muted-foreground">A career built on passion and dedication</p>
+        <p class="mt-3 text-sm text-muted-foreground">
+          You can browse my
+          <a
+            href={YOUTUBE_CHANNEL_URL}
+            target="_blank"
+            rel="noreferrer"
+            class="font-medium text-accent underline underline-offset-4 hover:text-secondary transition-colors"
+          >YouTube channel</a>
+          for free Cubase tutorials, workflow guidance, and audio engineering insights.
+        </p>
       </div>
       <div class="space-y-16">
         {resume.map((experience) => (

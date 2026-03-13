@@ -348,13 +348,29 @@
   }
   main a:hover,
   .prose a:hover {
-    color: var(--accent);
+    color: var(--secondary);
   }
   p {
   margin-bottom: 1em;
   }
   .prose p {
   margin-bottom: 2em;
+  }
+  .prose .blog-body ul,
+  .prose .blog-body ol {
+    list-style-position: outside;
+    margin-top: 0;
+    margin-bottom: 1.25em;
+    padding-left: 1.25em;
+  }
+  .prose .blog-body ul {
+    list-style-type: disc;
+  }
+  .prose .blog-body ol {
+    list-style-type: decimal;
+  }
+  .prose .blog-body li {
+    display: list-item;
   }
   textarea {
   width: 100%;

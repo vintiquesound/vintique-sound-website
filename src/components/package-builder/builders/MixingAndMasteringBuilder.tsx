@@ -1,13 +1,19 @@
 import * as React from "react";
 
+import BuilderStepFooter from "@/components/package-builder/components/BuilderStepFooter";
 import { Button } from "@/components/ui/button";
 
-import PackageSummaryCard from "@/components/build-your-package/PackageSummaryCard";
-import PagedItemNav from "@/components/build-your-package/PagedItemNav";
+import PackageSummaryCard from "@/components/package-builder/components/PackageSummaryCard";
+import PagedItemNav from "@/components/package-builder/components/PagedItemNav";
 import {
   EDITING_SERVICE_NOTE_PLACEHOLDERS,
   REPAIR_SERVICE_NOTE_PLACEHOLDERS,
-} from "@/components/build-your-package/service-note-placeholders";
+} from "@/components/package-builder/config/service-note-placeholders";
+import {
+  inputClassName,
+  narrowInputClassName,
+  textareaClassName,
+} from "@/components/package-builder/utils/field-styles";
 import {
   type BaseService,
 } from "@/lib/pricing/catalog";
@@ -38,6 +44,14 @@ type EditingServiceConfig = {
   notes: string;
 };
 
+type ServiceFlowConfig = {
+  visibleSongSteps: readonly SongStep[];
+  supportsEditingServices: boolean;
+  supportsSongLevelExports: boolean;
+  supportsAdditionalEdits: boolean;
+  visibleRepairServices: readonly RepairService[];
+};
+
 type RepairService = "clippingRepair" | "clicksPopsRemoval" | "hissRemoval" | "cracklingRemoval" | "plosiveReduction" | "reverbReduction";
 
 type SongConfig = {
@@ -59,7 +73,7 @@ type SongConfig = {
   unlimitedRevisions1Month: boolean;
 };
 
-export type PackageBuilderProps = {
+export type MixingAndMasteringBuilderProps = {
   onChangeCategory?: () => void;
 };
 
@@ -103,7 +117,180 @@ const PLATFORM_MASTER_LABELS: Record<PlatformMasterOption, string> = {
   custom: "Custom platform target",
 };
 
+const EDITING_SERVICE_KEYS = Object.keys(EDITING_SERVICE_LABELS) as Array<keyof SongConfig["editingServices"]>;
+const REPAIR_SERVICE_KEYS = Object.keys(REPAIR_SERVICE_LABELS) as RepairService[];
+
 const NON_CAD_CONVERSION_FEE_RATE = 0.03;
+
+const SONG_STEP_ORDER: readonly SongStep[] = ["details", "base", "editing", "repair", "exports", "addons"];
+const DEFAULT_VISIBLE_SONG_STEPS: readonly SongStep[] = ["details", "base"];
+const FULL_VISIBLE_SONG_STEPS: readonly SongStep[] = ["details", "base", "editing", "repair", "exports", "addons"];
+const MASTER_VISIBLE_SONG_STEPS: readonly SongStep[] = ["details", "base", "repair", "addons"];
+const MASTER_VISIBLE_REPAIR_SERVICES: readonly RepairService[] = [
+  "clippingRepair",
+  "clicksPopsRemoval",
+  "hissRemoval",
+  "cracklingRemoval",
+];
+
+const DEFAULT_SERVICE_FLOW_CONFIG: ServiceFlowConfig = {
+  visibleSongSteps: DEFAULT_VISIBLE_SONG_STEPS,
+  supportsEditingServices: false,
+  supportsSongLevelExports: false,
+  supportsAdditionalEdits: false,
+  visibleRepairServices: REPAIR_SERVICE_KEYS,
+};
+
+const SERVICE_FLOW_CONFIG: Record<BaseService, ServiceFlowConfig> = {
+  mix: {
+    visibleSongSteps: FULL_VISIBLE_SONG_STEPS,
+    supportsEditingServices: true,
+    supportsSongLevelExports: true,
+    supportsAdditionalEdits: true,
+    visibleRepairServices: REPAIR_SERVICE_KEYS,
+  },
+  master: {
+    visibleSongSteps: MASTER_VISIBLE_SONG_STEPS,
+    supportsEditingServices: false,
+    supportsSongLevelExports: false,
+    supportsAdditionalEdits: false,
+    visibleRepairServices: MASTER_VISIBLE_REPAIR_SERVICES,
+  },
+  mixAndMaster: {
+    visibleSongSteps: FULL_VISIBLE_SONG_STEPS,
+    supportsEditingServices: true,
+    supportsSongLevelExports: true,
+    supportsAdditionalEdits: true,
+    visibleRepairServices: REPAIR_SERVICE_KEYS,
+  },
+  stemMaster: {
+    visibleSongSteps: FULL_VISIBLE_SONG_STEPS,
+    supportsEditingServices: true,
+    supportsSongLevelExports: true,
+    supportsAdditionalEdits: true,
+    visibleRepairServices: REPAIR_SERVICE_KEYS,
+  },
+};
+
+function getServiceFlowConfig(service: ServiceSelection): ServiceFlowConfig {
+  if (!service) return DEFAULT_SERVICE_FLOW_CONFIG;
+  return SERVICE_FLOW_CONFIG[service];
+}
+
+function supportsEditingServices(service: ServiceSelection) {
+  return getServiceFlowConfig(service).supportsEditingServices;
+}
+
+function supportsRepairService(service: ServiceSelection, repairService: RepairService) {
+  return getServiceFlowConfig(service).visibleRepairServices.includes(repairService);
+}
+
+function supportsSongLevelExports(service: ServiceSelection) {
+  return getServiceFlowConfig(service).supportsSongLevelExports;
+}
+
+function supportsAdditionalEdits(service: ServiceSelection) {
+  return getServiceFlowConfig(service).supportsAdditionalEdits;
+}
+
+function getVisibleSongSteps(service: ServiceSelection) {
+  return getServiceFlowConfig(service).visibleSongSteps;
+}
+
+function getNearestVisibleSongStep(step: SongStep, visibleSteps: readonly SongStep[]) {
+  const currentOrderIndex = SONG_STEP_ORDER.indexOf(step);
+  for (let index = currentOrderIndex; index >= 0; index -= 1) {
+    const candidate = SONG_STEP_ORDER[index];
+    if (!candidate) continue;
+    if (visibleSteps.includes(candidate)) return candidate;
+  }
+  return visibleSteps[0] ?? "details";
+}
+
+function getSongStepTitle(step: SongStep, supportsAdditionalEditsForSong: boolean) {
+  switch (step) {
+    case "details":
+      return "Song Details";
+    case "base":
+      return "Base Services";
+    case "editing":
+      return "Editing Services";
+    case "repair":
+      return "Repair Services";
+    case "exports":
+      return "Exports";
+    case "addons":
+      return supportsAdditionalEditsForSong ? "Edits & Extras" : "Extras";
+  }
+}
+
+function getSongStepDescription(step: SongStep, supportsAdditionalEditsForSong: boolean) {
+  switch (step) {
+    case "details":
+      return "Name this song so we can label your package.";
+    case "base":
+      return "Choose the core service, track count, and song length.";
+    case "editing":
+      return "Optional editing services priced per track.";
+    case "repair":
+      return "Optional repair services priced per track.";
+    case "exports":
+      return "Optional exports for your final deliverables.";
+    case "addons":
+      return supportsAdditionalEditsForSong
+        ? "Optional edits and extras for turnaround and revisions."
+        : "Optional extras for turnaround and revisions.";
+  }
+}
+
+function normalizeSongForSelectedService(song: SongConfig): SongConfig {
+  const normalizedTrackCount = normalizeTrackCountForService(song.service, song.trackCount);
+  const effectiveTrackCount = song.service === "master" ? 1 : normalizedTrackCount ?? 1;
+  const emptySong = createEmptySong();
+
+  const clampEditingConfig = (config: EditingServiceConfig): EditingServiceConfig => ({
+    ...config,
+    trackCount: clampInt(config.trackCount, 1, effectiveTrackCount),
+  });
+
+  const editingServices = Object.fromEntries(
+    EDITING_SERVICE_KEYS.map((key) => {
+      const currentConfig = clampEditingConfig(song.editingServices[key]);
+      return [
+        key,
+        supportsEditingServices(song.service)
+          ? currentConfig
+          : { ...emptySong.editingServices[key] },
+      ];
+    })
+  ) as SongConfig["editingServices"];
+
+  const repairServices = Object.fromEntries(
+    REPAIR_SERVICE_KEYS.map((key) => {
+      const currentConfig = clampEditingConfig(song.repairServices[key]);
+      return [
+        key,
+        supportsRepairService(song.service, key)
+          ? currentConfig
+          : { ...emptySong.repairServices[key] },
+      ];
+    })
+  ) as SongConfig["repairServices"];
+
+  return {
+    ...song,
+    trackCount: normalizedTrackCount,
+    editingServices,
+    repairServices,
+    multitrackExport: supportsSongLevelExports(song.service) ? song.multitrackExport : false,
+    additionalMixVersions: {
+      instrumental: supportsSongLevelExports(song.service) ? song.additionalMixVersions.instrumental : false,
+      acapella: supportsSongLevelExports(song.service) ? song.additionalMixVersions.acapella : false,
+      radioEdit: supportsAdditionalEdits(song.service) ? song.additionalMixVersions.radioEdit : false,
+      cleanVersion: supportsAdditionalEdits(song.service) ? song.additionalMixVersions.cleanVersion : false,
+    },
+  };
+}
 
 function getSongLengthSurcharge(lengthMinutes: number | null, service?: ServiceSelection): number {
   if (lengthMinutes == null) return 0;
@@ -269,7 +456,9 @@ function getAdditionalEditsPrice(versions: Record<AdditionalMixVersion, boolean>
 }
 
 function getEditingServicesTotal(song: SongConfig) {
-  const effectiveTrackCount = song.service === "master" ? 1 : song.trackCount ?? 1;
+  if (!supportsEditingServices(song.service)) return 0;
+
+  const effectiveTrackCount = song.trackCount ?? 1;
 
   const calc = (cfg: EditingServiceConfig, perTrack: number) =>
     cfg.enabled ? perTrack * clampInt(cfg.trackCount, 1, effectiveTrackCount) : 0;
@@ -290,11 +479,16 @@ function getRepairServicesTotal(song: SongConfig) {
     cfg.enabled ? perTrack * clampInt(cfg.trackCount, 1, effectiveTrackCount) : 0;
 
   return (
+    calc(song.repairServices.clippingRepair, REPAIR_SERVICE_PRICING.clippingRepair.perTrack) +
     calc(song.repairServices.hissRemoval, REPAIR_SERVICE_PRICING.hissRemoval.perTrack) +
     calc(song.repairServices.cracklingRemoval, REPAIR_SERVICE_PRICING.cracklingRemoval.perTrack) +
     calc(song.repairServices.clicksPopsRemoval, REPAIR_SERVICE_PRICING.clicksPopsRemoval.perTrack) +
-    calc(song.repairServices.plosiveReduction, REPAIR_SERVICE_PRICING.plosiveReduction.perTrack) +
-    calc(song.repairServices.reverbReduction, REPAIR_SERVICE_PRICING.reverbReduction.perTrack)
+    (supportsRepairService(song.service, "plosiveReduction")
+      ? calc(song.repairServices.plosiveReduction, REPAIR_SERVICE_PRICING.plosiveReduction.perTrack)
+      : 0) +
+    (supportsRepairService(song.service, "reverbReduction")
+      ? calc(song.repairServices.reverbReduction, REPAIR_SERVICE_PRICING.reverbReduction.perTrack)
+      : 0)
   );
 }
 
@@ -309,9 +503,15 @@ function computeSongPrice(song: SongConfig) {
   const editingServicesTotal = getEditingServicesTotal(song);
   const repairServicesTotal = getRepairServicesTotal(song);
 
-  const multitrackExportPrice = song.multitrackExport ? EXPORTS_PRICING.multitrackExportFlat : 0;
-  const additionalExportsPrice = getAdditionalExportsPrice(song.additionalMixVersions);
-  const additionalEditsPrice = getAdditionalEditsPrice(song.additionalMixVersions);
+  const multitrackExportPrice = supportsSongLevelExports(song.service) && song.multitrackExport
+    ? EXPORTS_PRICING.multitrackExportFlat
+    : 0;
+  const additionalExportsPrice = supportsSongLevelExports(song.service)
+    ? getAdditionalExportsPrice(song.additionalMixVersions)
+    : 0;
+  const additionalEditsPrice = supportsAdditionalEdits(song.service)
+    ? getAdditionalEditsPrice(song.additionalMixVersions)
+    : 0;
   const rushPrice = song.rushService2Days ? EXTRAS_PRICING.rushService2Days : 0;
   const revisionsPrice = song.unlimitedRevisions1Month ? EXTRAS_PRICING.unlimitedRevisions1Month : 0;
 
@@ -357,9 +557,15 @@ function computeSongBreakdown(song: SongConfig) {
   const editingSubtotal = getEditingServicesTotal(song);
   const repairSubtotal = getRepairServicesTotal(song);
 
-  const multitrackExportPrice = song.multitrackExport ? EXPORTS_PRICING.multitrackExportFlat : 0;
-  const additionalExportsPrice = getAdditionalExportsPrice(song.additionalMixVersions);
-  const additionalEditsPrice = getAdditionalEditsPrice(song.additionalMixVersions);
+  const multitrackExportPrice = supportsSongLevelExports(song.service) && song.multitrackExport
+    ? EXPORTS_PRICING.multitrackExportFlat
+    : 0;
+  const additionalExportsPrice = supportsSongLevelExports(song.service)
+    ? getAdditionalExportsPrice(song.additionalMixVersions)
+    : 0;
+  const additionalEditsPrice = supportsAdditionalEdits(song.service)
+    ? getAdditionalEditsPrice(song.additionalMixVersions)
+    : 0;
   const rushPrice = song.rushService2Days ? EXTRAS_PRICING.rushService2Days : 0;
   const revisionsPrice = song.unlimitedRevisions1Month ? EXTRAS_PRICING.unlimitedRevisions1Month : 0;
 
@@ -378,7 +584,7 @@ function computeSongBreakdown(song: SongConfig) {
   };
 }
 
-export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: PackageBuilderProps) {
+export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeCategory }: MixingAndMasteringBuilderProps) {
   useDisplayCurrency();
 
   const [step, setStep] = React.useState<BuilderStep>("project");
@@ -408,13 +614,6 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
   const [songs, setSongs] = React.useState<SongConfig[]>(() => [createEmptySong()]);
   const [activeSongIndex, setActiveSongIndex] = React.useState(0);
 
-  const inputClassName =
-    "flex h-10 w-full rounded-md border border-input bg-input-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
-  const narrowInputClassName =
-    "flex h-10 w-24 rounded-md border border-input bg-input-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
-  const textareaClassName =
-    "flex w-full rounded-md border border-input bg-input-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50";
-
   React.useEffect(() => {
     if (projectType === "single") {
       setSongCount(1);
@@ -431,13 +630,18 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
   }, [projectType, songCount]);
 
   React.useEffect(() => {
-    if (step !== "songs") return;
-    setSongStep("details");
-  }, [activeSongIndex, step]);
-
-  React.useEffect(() => {
     setIsPackageFinalized(false);
-  }, [projectType, songCount, artistName, albumName, songs]);
+  }, [
+    projectType,
+    songCount,
+    artistName,
+    albumName,
+    songs,
+    deliveryFormats,
+    customDeliveryDetails,
+    platformMasters,
+    customPlatformMasterDetails,
+  ]);
 
   const total = React.useMemo(() => songs.reduce((sum, song) => sum + computeSongPrice(song), 0), [
     songs,
@@ -462,13 +666,13 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
     return songs.every(isSongConfigured);
   }, [projectType, songs, songCount]);
 
-  const hasMasteringOrMixAndMasterService = React.useMemo(
-    () => songs.some((song) => song.service === "master" || song.service === "mixAndMaster"),
+  const hasPlatformMasterEligibleService = React.useMemo(
+    () => songs.some((song) => song.service === "master" || song.service === "mixAndMaster" || song.service === "stemMaster"),
     [songs]
   );
 
   React.useEffect(() => {
-    if (hasMasteringOrMixAndMasterService) return;
+    if (hasPlatformMasterEligibleService) return;
     setPlatformMasters({
       spotifyYoutube: false,
       appleMusic: false,
@@ -476,7 +680,7 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
       custom: false,
     });
     setCustomPlatformMasterDetails("");
-  }, [hasMasteringOrMixAndMasterService]);
+  }, [hasPlatformMasterEligibleService]);
 
   const hasAtLeastOneDeliveryFormat = React.useMemo(
     () => (Object.keys(deliveryFormats) as DeliveryFormat[]).some((key) => deliveryFormats[key]),
@@ -485,14 +689,16 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
 
   const hasValidCustomDeliveryDetails = !deliveryFormats.custom || customDeliveryDetails.trim().length > 0;
   const hasValidCustomPlatformDetails = !platformMasters.custom || customPlatformMasterDetails.trim().length > 0;
+  const canFinalizeOnDelivery =
+    hasAtLeastOneDeliveryFormat &&
+    hasValidCustomDeliveryDetails &&
+    hasValidCustomPlatformDetails;
 
   const canRequestFinalizedPackage =
     isPackageComplete &&
     isPackageFinalized &&
     step === "delivery" &&
-    hasAtLeastOneDeliveryFormat &&
-    hasValidCustomDeliveryDetails &&
-    hasValidCustomPlatformDetails;
+    canFinalizeOnDelivery;
 
   const selectedDeliveryFormatLabels = React.useMemo(
     () =>
@@ -517,6 +723,35 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
   }, [artistName, albumName, projectType]);
 
   const activeSong = songs[activeSongIndex];
+  const activeSongVisibleSteps = React.useMemo(
+    () => getVisibleSongSteps(activeSong?.service ?? ""),
+    [activeSong?.service]
+  );
+  const resolvedSongStep = React.useMemo(
+    (): SongStep => (
+      activeSongVisibleSteps.includes(songStep)
+        ? songStep
+        : getNearestVisibleSongStep(songStep, activeSongVisibleSteps)
+    ),
+    [activeSongVisibleSteps, songStep]
+  );
+
+  React.useEffect(() => {
+    if (step !== "songs") return;
+    if (songStep === resolvedSongStep) return;
+    setSongStep(resolvedSongStep);
+  }, [resolvedSongStep, songStep, step]);
+
+  const activeSongStepIndex = React.useMemo(
+    () => Math.max(0, activeSongVisibleSteps.indexOf(resolvedSongStep)),
+    [activeSongVisibleSteps, resolvedSongStep]
+  );
+  const activeSongTotalSteps = activeSongVisibleSteps.length;
+  const activeSongSupportsSongLevelExports = supportsSongLevelExports(activeSong?.service ?? "");
+  const activeSongSupportsAdditionalEdits = supportsAdditionalEdits(activeSong?.service ?? "");
+  const activeSongVisibleRepairServices = REPAIR_SERVICE_KEYS.filter((key) =>
+    supportsRepairService(activeSong?.service ?? "", key)
+  );
   const activeSongTrackCount = activeSong?.service === "master" ? 1 : activeSong?.trackCount ?? 1;
   const canGoNextFromSongDetails = React.useMemo(() => {
     const songNameOk = (activeSong?.name ?? "").trim().length > 0;
@@ -583,10 +818,14 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
 
       lines.push("- Price breakdown:");
       lines.push(`  - Base service (${BASE_SERVICE_LABELS[song.service]}): ${formatCurrency(pricing.base)}`);
-      lines.push(`  - Track-count surcharge: ${formatCurrency(trackSurcharge)}`);
-      lines.push(`  - Song-length surcharge: ${formatCurrency(lengthSurcharge)}`);
+      if (trackSurcharge > 0) {
+        lines.push(`  - Track-count surcharge: ${formatCurrency(trackSurcharge)}`);
+      }
+      if (lengthSurcharge > 0) {
+        lines.push(`  - Song-length surcharge: ${formatCurrency(lengthSurcharge)}`);
+      }
 
-      const editingLineItems = (Object.keys(song.editingServices) as Array<keyof SongConfig["editingServices"]>)
+      const editingLineItems = EDITING_SERVICE_KEYS
         .filter((key) => song.editingServices[key].enabled)
         .map((key) => {
           const cfg = song.editingServices[key];
@@ -602,10 +841,8 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
           };
         });
 
-      lines.push("  - Editing services:");
-      if (editingLineItems.length === 0) {
-        lines.push("    - —");
-      } else {
+      if (supportsEditingServices(song.service) && editingLineItems.length > 0) {
+        lines.push("  - Editing services:");
         editingLineItems.forEach((item) => {
           lines.push(
             `    - ${item.label}: ${formatCurrency(item.perTrack)} × ${item.units} = ${formatCurrency(item.amount)}${item.notes ? ` — ${item.notes}` : ""}`
@@ -613,7 +850,8 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
         });
       }
 
-      const repairLineItems = (Object.keys(song.repairServices) as RepairService[])
+      const repairLineItems = REPAIR_SERVICE_KEYS
+        .filter((key) => supportsRepairService(song.service, key))
         .filter((key) => song.repairServices[key].enabled)
         .map((key) => {
           const cfg = song.repairServices[key];
@@ -629,10 +867,8 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
           };
         });
 
-      lines.push("  - Repair services:");
-      if (repairLineItems.length === 0) {
-        lines.push("    - —");
-      } else {
+      if (repairLineItems.length > 0) {
+        lines.push("  - Repair services:");
         repairLineItems.forEach((item) => {
           lines.push(
             `    - ${item.label}: ${formatCurrency(item.perTrack)} × ${item.units} = ${formatCurrency(item.amount)}${item.notes ? ` — ${item.notes}` : ""}`
@@ -640,31 +876,72 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
         });
       }
 
-      const multitrackExportPrice = song.multitrackExport ? EXPORTS_PRICING.multitrackExportFlat : 0;
-      const instrumentalPrice = song.additionalMixVersions.instrumental ? EXPORTS_PRICING.additionalExports.instrumental : 0;
-      const acapellaPrice = song.additionalMixVersions.acapella ? EXPORTS_PRICING.additionalExports.acapella : 0;
-      lines.push("  - Exports:");
-      lines.push(`    - Multitrack export: ${formatCurrency(multitrackExportPrice)}`);
-      lines.push(`    - Instrumental version: ${formatCurrency(instrumentalPrice)}`);
-      lines.push(`    - Acapella version: ${formatCurrency(acapellaPrice)}`);
+      const multitrackExportPrice = supportsSongLevelExports(song.service) && song.multitrackExport
+        ? EXPORTS_PRICING.multitrackExportFlat
+        : 0;
+      const instrumentalPrice = supportsSongLevelExports(song.service) && song.additionalMixVersions.instrumental
+        ? EXPORTS_PRICING.additionalExports.instrumental
+        : 0;
+      const acapellaPrice = supportsSongLevelExports(song.service) && song.additionalMixVersions.acapella
+        ? EXPORTS_PRICING.additionalExports.acapella
+        : 0;
+      const exportLineItems: Array<{ label: string; price: number }> = [];
+      if (multitrackExportPrice > 0) {
+        exportLineItems.push({ label: "Multitrack export", price: multitrackExportPrice });
+      }
+      if (instrumentalPrice > 0) {
+        exportLineItems.push({ label: "Instrumental version", price: instrumentalPrice });
+      }
+      if (acapellaPrice > 0) {
+        exportLineItems.push({ label: "Acapella version", price: acapellaPrice });
+      }
 
-      const radioEditPrice = song.additionalMixVersions.radioEdit ? EXPORTS_PRICING.additionalExports.radioEdit : 0;
-      const cleanEditPrice = song.additionalMixVersions.cleanVersion ? EXPORTS_PRICING.additionalExports.cleanVersion : 0;
+      if (supportsSongLevelExports(song.service) && exportLineItems.length > 0) {
+        lines.push("  - Exports:");
+        exportLineItems.forEach((item) => {
+          lines.push(`    - ${item.label}: ${formatCurrency(item.price)}`);
+        });
+      }
+
+      const radioEditPrice = supportsAdditionalEdits(song.service) && song.additionalMixVersions.radioEdit
+        ? EXPORTS_PRICING.additionalExports.radioEdit
+        : 0;
+      const cleanEditPrice = supportsAdditionalEdits(song.service) && song.additionalMixVersions.cleanVersion
+        ? EXPORTS_PRICING.additionalExports.cleanVersion
+        : 0;
       const rushPrice = song.rushService2Days ? EXTRAS_PRICING.rushService2Days : 0;
       const revisionsPrice = song.unlimitedRevisions1Month ? EXTRAS_PRICING.unlimitedRevisions1Month : 0;
-      lines.push("  - Edits & extras:");
-      lines.push(`    - Radio edit: ${formatCurrency(radioEditPrice)}`);
-      lines.push(`    - Clean edit: ${formatCurrency(cleanEditPrice)}`);
-      lines.push(`    - Rush service (2 days): ${formatCurrency(rushPrice)}`);
-      lines.push(`    - Unlimited revisions (1 month): ${formatCurrency(revisionsPrice)}`);
+      const addonLineItems: Array<{ label: string; price: number }> = [];
+      if (supportsAdditionalEdits(song.service)) {
+        if (radioEditPrice > 0) {
+          addonLineItems.push({ label: "Radio edit", price: radioEditPrice });
+        }
+        if (cleanEditPrice > 0) {
+          addonLineItems.push({ label: "Clean edit", price: cleanEditPrice });
+        }
+      }
+      if (rushPrice > 0) {
+        addonLineItems.push({ label: "Rush service (2 days)", price: rushPrice });
+      }
+      if (revisionsPrice > 0) {
+        addonLineItems.push({ label: "Unlimited revisions (1 month)", price: revisionsPrice });
+      }
+
+      if (addonLineItems.length > 0) {
+        lines.push(`  - ${supportsAdditionalEdits(song.service) ? "Edits & extras" : "Extras"}:`);
+        addonLineItems.forEach((item) => {
+          lines.push(`    - ${item.label}: ${formatCurrency(item.price)}`);
+        });
+      }
 
       const breakdown = computeSongBreakdown(song);
-      lines.push(`  - Song subtotal (base + surcharges): ${formatCurrency(breakdown.detailsSubtotal)}`);
-      lines.push(`  - Song subtotal (editing): ${formatCurrency(breakdown.editingSubtotal)}`);
-      lines.push(`  - Song subtotal (repair): ${formatCurrency(breakdown.repairSubtotal)}`);
-      lines.push(`  - Song subtotal (exports): ${formatCurrency(breakdown.exportsSubtotal)}`);
-      lines.push(`  - Song subtotal (edits & extras): ${formatCurrency(breakdown.addonsSubtotal)}`);
-      lines.push(`  - Song total: ${formatCurrency(breakdown.songTotal)}`);
+      lines.push("- Song subtotal:");
+      lines.push(`  - base + surcharges: ${formatCurrency(breakdown.detailsSubtotal)}`);
+      if (breakdown.editingSubtotal > 0) lines.push(`  - editing: ${formatCurrency(breakdown.editingSubtotal)}`);
+      if (breakdown.repairSubtotal > 0) lines.push(`  - repair: ${formatCurrency(breakdown.repairSubtotal)}`);
+      if (breakdown.exportsSubtotal > 0) lines.push(`  - exports: ${formatCurrency(breakdown.exportsSubtotal)}`);
+      if (breakdown.addonsSubtotal > 0) lines.push(`  - edits & extras: ${formatCurrency(breakdown.addonsSubtotal)}`);
+      lines.push(`- Song total: ${formatCurrency(breakdown.songTotal)}`);
       lines.push("");
     });
 
@@ -684,14 +961,23 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
       { details: 0, editing: 0, repair: 0, exports: 0, addons: 0, total: 0 }
     );
     lines.push(`- Base + surcharges subtotal: ${formatCurrency(packageSubtotals.details)}`);
-    lines.push(`- Editing services subtotal: ${formatCurrency(packageSubtotals.editing)}`);
-    lines.push(`- Repair services subtotal: ${formatCurrency(packageSubtotals.repair)}`);
-    lines.push(`- Exports subtotal: ${formatCurrency(packageSubtotals.exports)}`);
-    lines.push(`- Edits & extras subtotal: ${formatCurrency(packageSubtotals.addons)}`);
-    lines.push(`- Package subtotal: ${formatCurrency(packageSubtotals.total)}`);
-    lines.push(
-      `- Currency conversion fee (${displayCurrency === "CAD" ? "0" : `${Math.round(NON_CAD_CONVERSION_FEE_RATE * 100)}%`}): ${formatCurrency(conversionFee)}`
-    );
+    if (packageSubtotals.editing > 0) {
+      lines.push(`- Editing services subtotal: ${formatCurrency(packageSubtotals.editing)}`);
+    }
+    if (packageSubtotals.repair > 0) {
+      lines.push(`- Repair services subtotal: ${formatCurrency(packageSubtotals.repair)}`);
+    }
+    if (packageSubtotals.exports > 0) {
+      lines.push(`- Exports subtotal: ${formatCurrency(packageSubtotals.exports)}`);
+    }
+    if (packageSubtotals.addons > 0) {
+      lines.push(`- Edits & extras subtotal: ${formatCurrency(packageSubtotals.addons)}`);
+    }
+    if (conversionFee > 0) {
+      lines.push(
+        `- Currency conversion fee (${Math.round(NON_CAD_CONVERSION_FEE_RATE * 100)}%): ${formatCurrency(conversionFee)}`
+      );
+    }
     lines.push(`- Package total: ${formatCurrency(packageSubtotals.total + conversionFee)}`);
     lines.push("");
 
@@ -706,7 +992,7 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
       lines.push(`- Custom delivery details: ${customDeliveryDetails.trim() || "—"}`);
     }
 
-    if (hasMasteringOrMixAndMasterService) {
+    if (hasPlatformMasterEligibleService) {
       lines.push("");
       lines.push("Platform-specific masters:");
       if (selectedPlatformMasterLabels.length === 0) {
@@ -733,7 +1019,7 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
     selectedDeliveryFormatLabels,
     deliveryFormats.custom,
     customDeliveryDetails,
-    hasMasteringOrMixAndMasterService,
+    hasPlatformMasterEligibleService,
     selectedPlatformMasterLabels,
     platformMasters.custom,
     customPlatformMasterDetails,
@@ -745,33 +1031,7 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
     setSongs((prev) => {
       const next = prev.slice();
       const current = next[activeSongIndex] ?? createEmptySong();
-      let merged = { ...current, ...patch };
-
-      merged.trackCount = normalizeTrackCountForService(merged.service, merged.trackCount);
-      const effectiveTrackCount = merged.service === "master" ? 1 : merged.trackCount ?? 1;
-
-      const clampEditingCfg = (cfg: EditingServiceConfig): EditingServiceConfig => ({
-        ...cfg,
-        trackCount: clampInt(cfg.trackCount, 1, effectiveTrackCount),
-      });
-
-      merged.editingServices = {
-        ...merged.editingServices,
-        timeAlignment: clampEditingCfg(merged.editingServices.timeAlignment),
-        vocalTuning: clampEditingCfg(merged.editingServices.vocalTuning),
-        comping: clampEditingCfg(merged.editingServices.comping),
-        instrumentTuning: clampEditingCfg(merged.editingServices.instrumentTuning),
-        cleanupNoiseRemoval: clampEditingCfg(merged.editingServices.cleanupNoiseRemoval),
-      };
-
-      merged.repairServices = {
-        ...merged.repairServices,
-        hissRemoval: clampEditingCfg(merged.repairServices.hissRemoval),
-        cracklingRemoval: clampEditingCfg(merged.repairServices.cracklingRemoval),
-        clicksPopsRemoval: clampEditingCfg(merged.repairServices.clicksPopsRemoval),
-        plosiveReduction: clampEditingCfg(merged.repairServices.plosiveReduction),
-        reverbReduction: clampEditingCfg(merged.repairServices.reverbReduction),
-      };
+      const merged = normalizeSongForSelectedService({ ...current, ...patch });
 
       next[activeSongIndex] = merged;
       return next;
@@ -805,12 +1065,23 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
 
   function goToNextSong() {
     if (activeSongIndex >= songs.length - 1) return;
+    setSongStep("details");
     goToSong(activeSongIndex + 1);
+  }
+
+  function goToPreviousSongStep() {
+    if (activeSongStepIndex <= 0) return;
+    setSongStep(activeSongVisibleSteps[activeSongStepIndex - 1] ?? resolvedSongStep);
+  }
+
+  function goToNextSongStep() {
+    if (activeSongStepIndex >= activeSongVisibleSteps.length - 1) return;
+    setSongStep(activeSongVisibleSteps[activeSongStepIndex + 1] ?? resolvedSongStep);
   }
 
   function goToFinalStep() {
     if (!isPackageComplete) return;
-    setIsPackageFinalized(true);
+    setIsPackageFinalized(false);
     setStep("delivery");
   }
 
@@ -904,37 +1175,15 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
           <>
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="space-y-0.5">
-                <h2 className="text-xl font-semibold">
-                  {songStep === "details"
-                    ? "Song Details"
-                    : songStep === "base"
-                      ? "Base Services"
-                    : songStep === "editing"
-                      ? "Editing Services"
-                    : songStep === "repair"
-                      ? "Repair Services"
-                      : songStep === "exports"
-                        ? "Exports"
-                        : "Edits & Extras"}
-                </h2>
+                <h2 className="text-xl font-semibold">{getSongStepTitle(resolvedSongStep, activeSongSupportsAdditionalEdits)}</h2>
                 <p className="text-sm text-muted-foreground mb-1">
-                  {songStep === "details"
-                    ? "Name this song so we can label your package."
-                    : songStep === "base"
-                      ? "Choose the core service, track count, and song length."
-                    : songStep === "editing"
-                      ? "Optional editing services priced per track."
-                    : songStep === "repair"
-                      ? "Optional repair services priced per track."
-                    : songStep === "exports"
-                      ? "Optional exports for your final deliverables."
-                    : "Optional edits and extras for turnaround and revisions."}
+                  {getSongStepDescription(resolvedSongStep, activeSongSupportsAdditionalEdits)}
                 </p>
               </div>
             </div>
 
             <section className="space-y-5">
-              {songStep === "details" && (
+              {resolvedSongStep === "details" && (
                 <>
                   <div className="rounded-lg border border-border p-4 space-y-4">
                     <div className="flex items-center justify-between gap-4">
@@ -967,31 +1216,17 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm text-muted-foreground self-end">
-                      Step 1 of 6
-                    </p>
-                    <div className="flex items-center justify-end gap-2 mt-0">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={() => setStep("project")}
-                      >
-                        Back
-                      </Button>
-                      <Button
-                        type="button"
-                        onClick={() => setSongStep("base")}
-                        disabled={!canGoNextFromSongDetails}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                  </div>
+                  <BuilderStepFooter
+                    currentStep={activeSongStepIndex + 1}
+                    totalSteps={activeSongTotalSteps}
+                    onBack={() => setStep("project")}
+                    onNext={goToNextSongStep}
+                    nextDisabled={!canGoNextFromSongDetails}
+                  />
                 </>
               )}
 
-              {songStep === "base" && (
+              {resolvedSongStep === "base" && (
                 <>
                   <div className="rounded-lg border border-border p-4 space-y-4">
                     <div className="flex items-center justify-between gap-4">
@@ -1093,6 +1328,10 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                                 ...activeSong.repairServices.clicksPopsRemoval,
                                 trackCount: clampInt(activeSong.repairServices.clicksPopsRemoval.trackCount, 1, nextValue ?? 1),
                               },
+                              clippingRepair: {
+                                ...activeSong.repairServices.clippingRepair,
+                                trackCount: clampInt(activeSong.repairServices.clippingRepair.trackCount, 1, nextValue ?? 1),
+                              },
                               plosiveReduction: {
                                 ...activeSong.repairServices.plosiveReduction,
                                 trackCount: clampInt(activeSong.repairServices.plosiveReduction.trackCount, 1, nextValue ?? 1),
@@ -1146,31 +1385,17 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                       </select>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm text-muted-foreground self-end">
-                      Step 2 of 6
-                    </p>
-                    <div className="flex items-center justify-end gap-2 mt-0">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={() => setSongStep("details")}
-                      >
-                        Back
-                      </Button>
-                      <Button
-                        type="button"
-                        onClick={() => setSongStep("editing")}
-                        disabled={!canGoNextFromBase}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                  </div>
+                  <BuilderStepFooter
+                    currentStep={activeSongStepIndex + 1}
+                    totalSteps={activeSongTotalSteps}
+                    onBack={goToPreviousSongStep}
+                    onNext={goToNextSongStep}
+                    nextDisabled={!canGoNextFromBase}
+                  />
                 </>
               )}
 
-              {songStep === "editing" && (
+              {resolvedSongStep === "editing" && (
                 <>
                   <div className="rounded-lg border border-border p-4 space-y-4">
                     <div className="flex items-center justify-between gap-4">
@@ -1537,28 +1762,16 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
 
                   </div>
 
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm text-muted-foreground self-end">
-                      Step 3 of 6
-                    </p>
-                    <div className="flex items-center justify-end gap-2 mt-0">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={() => setSongStep("base")}
-                      >
-                        Back
-                      </Button>
-                      <Button type="button" onClick={() => setSongStep("repair")}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                  </div>
+                  <BuilderStepFooter
+                    currentStep={activeSongStepIndex + 1}
+                    totalSteps={activeSongTotalSteps}
+                    onBack={goToPreviousSongStep}
+                    onNext={goToNextSongStep}
+                  />
                 </>
               )}
 
-              {songStep === "repair" && (
+              {resolvedSongStep === "repair" && (
                 <>
                   <div className="rounded-lg border border-border p-4 space-y-4">
                     <div className="flex items-center justify-between gap-4">
@@ -1581,7 +1794,7 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                     </div>
 
                     <div className="space-y-4">
-                      {(Object.keys(REPAIR_SERVICE_LABELS) as RepairService[]).map((key) => {
+                      {activeSongVisibleRepairServices.map((key) => {
                         const cfg = activeSong.repairServices[key];
                         return (
                           <div key={key}>
@@ -1657,28 +1870,16 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm text-muted-foreground self-end">
-                      Step 4 of 6
-                    </p>
-                    <div className="flex items-center justify-end gap-2 mt-0">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={() => setSongStep("editing")}
-                      >
-                        Back
-                      </Button>
-                      <Button type="button" onClick={() => setSongStep("exports")}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                  </div>
+                  <BuilderStepFooter
+                    currentStep={activeSongStepIndex + 1}
+                    totalSteps={activeSongTotalSteps}
+                    onBack={goToPreviousSongStep}
+                    onNext={goToNextSongStep}
+                  />
                 </>
               )}
 
-              {songStep === "exports" && (
+              {resolvedSongStep === "exports" && activeSongSupportsSongLevelExports && (
                 <>
                   <div className="rounded-lg border border-border p-4 space-y-4">
                     <div className="flex items-center justify-between gap-4">
@@ -1748,29 +1949,17 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                     </label>
                   </div>
 
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm text-muted-foreground self-end">
-                      Step 5 of 6
-                    </p>
-                    <div className="flex items-center justify-end gap-2 mt-0">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={() => setSongStep("repair")}
-                      >
-                        Back
-                      </Button>
-                      <Button type="button" onClick={() => setSongStep("addons")}
-                      >
-                        Next
-                      </Button>
-                    </div>
-                  </div>
+                  <BuilderStepFooter
+                    currentStep={activeSongStepIndex + 1}
+                    totalSteps={activeSongTotalSteps}
+                    onBack={goToPreviousSongStep}
+                    onNext={goToNextSongStep}
+                  />
                   </div>
                 </>
               )}
 
-              {songStep === "addons" && (
+              {resolvedSongStep === "addons" && (
                 <>
                   <div className="rounded-lg border border-border p-4 space-y-4">
                     <div className="flex items-center justify-between gap-4">
@@ -1792,41 +1981,43 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                       />
                     </div>
 
-                  <div className="space-y-3">
-                    <div className="text-sm font-medium">Additional Edits</div>
-                    <label className="flex items-center gap-3 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={activeSong.additionalMixVersions.radioEdit}
-                        onChange={(e) =>
-                          updateActiveSong({
-                            additionalMixVersions: {
-                              ...activeSong.additionalMixVersions,
-                              radioEdit: e.target.checked,
-                            },
-                          })
-                        }
-                      />
-                      Radio Edit
-                      <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(EXPORTS_PRICING.additionalExports.radioEdit)})</span>
-                    </label>
-                    <label className="flex items-center gap-3 text-sm">
-                      <input
-                        type="checkbox"
-                        checked={activeSong.additionalMixVersions.cleanVersion}
-                        onChange={(e) =>
-                          updateActiveSong({
-                            additionalMixVersions: {
-                              ...activeSong.additionalMixVersions,
-                              cleanVersion: e.target.checked,
-                            },
-                          })
-                        }
-                      />
-                      Clean Edit
-                      <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(EXPORTS_PRICING.additionalExports.cleanVersion)})</span>
-                    </label>
-                  </div>
+                  {activeSongSupportsAdditionalEdits && (
+                    <div className="space-y-3">
+                      <div className="text-sm font-medium">Additional Edits</div>
+                      <label className="flex items-center gap-3 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={activeSong.additionalMixVersions.radioEdit}
+                          onChange={(e) =>
+                            updateActiveSong({
+                              additionalMixVersions: {
+                                ...activeSong.additionalMixVersions,
+                                radioEdit: e.target.checked,
+                              },
+                            })
+                          }
+                        />
+                        Radio Edit
+                        <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(EXPORTS_PRICING.additionalExports.radioEdit)})</span>
+                      </label>
+                      <label className="flex items-center gap-3 text-sm">
+                        <input
+                          type="checkbox"
+                          checked={activeSong.additionalMixVersions.cleanVersion}
+                          onChange={(e) =>
+                            updateActiveSong({
+                              additionalMixVersions: {
+                                ...activeSong.additionalMixVersions,
+                                cleanVersion: e.target.checked,
+                              },
+                            })
+                          }
+                        />
+                        Clean Edit
+                        <span className="ml-2 text-xs text-muted-foreground">(+{formatCurrency(EXPORTS_PRICING.additionalExports.cleanVersion)})</span>
+                      </label>
+                    </div>
+                  )}
 
                   <div className="space-y-3">
                     <div className="text-sm font-medium">Extras</div>
@@ -1850,33 +2041,14 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                     </label>
                   </div>
 
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm text-muted-foreground self-end">
-                      Step 6 of 6
-                    </p>
-                    <div className="flex items-center justify-end gap-2 mt-0">
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        onClick={() => setSongStep("exports")}
-                      >
-                        Back
-                      </Button>
-                      {projectType === "album" && activeSongIndex < songs.length - 1 ? (
-                        <Button type="button" onClick={goToNextSong}>
-                          Next Song
-                        </Button>
-                      ) : (
-                        <Button
-                          type="button"
-                          onClick={goToFinalStep}
-                          disabled={!isPackageComplete}
-                        >
-                          Done
-                        </Button>
-                      )}
-                    </div>
-                  </div>
+                  <BuilderStepFooter
+                    currentStep={activeSongStepIndex + 1}
+                    totalSteps={activeSongTotalSteps}
+                    onBack={goToPreviousSongStep}
+                    onNext={projectType === "album" && activeSongIndex < songs.length - 1 ? goToNextSong : goToFinalStep}
+                    nextLabel={projectType === "album" && activeSongIndex < songs.length - 1 ? "Next Song" : "Next"}
+                    nextDisabled={projectType === "album" && activeSongIndex < songs.length - 1 ? false : !isPackageComplete}
+                  />
                   </div>
                 </>
               )}
@@ -1995,7 +2167,7 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
                   )}
                 </div>
 
-                {hasMasteringOrMixAndMasterService && (
+                {hasPlatformMasterEligibleService && (
                   <div className="space-y-3 border-t border-border pt-4">
                     <div className="text-sm font-medium">Platform-specific masters</div>
 
@@ -2073,6 +2245,13 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
               <div className="flex items-center justify-end gap-2">
                 <Button type="button" variant="ghost" onClick={returnToLastSongExtrasStep}>
                   Back
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => setIsPackageFinalized(true)}
+                  disabled={!canFinalizeOnDelivery}
+                >
+                  Done
                 </Button>
               </div>
             </section>
@@ -2177,7 +2356,7 @@ export default function PackageBuilder({ onChangeCategory: _onChangeCategory }: 
               </div>
             </div>
 
-            {hasMasteringOrMixAndMasterService && (
+            {hasPlatformMasterEligibleService && (
               <div className="space-y-2 text-sm">
                 <div className="text-sm font-semibold">Platform masters</div>
                 <div className="space-y-1 text-muted-foreground">

@@ -6,6 +6,18 @@ publish = "dist"
 NODE_VERSION = "20"
 
 [[redirects]]
+from = "/mixing-mastering"
+to = "/mixing-and-mastering"
+status = 301
+force = true
+
+[[redirects]]
+from = "/clients-credits"
+to = "/clients-and-credits"
+status = 301
+force = true
+
+[[redirects]]
 from = "/post/mixing-tip-subtractive-eq-first-additive-eq-second"
 to = "/blog/2022/subtractive-eq-first-additive-eq-second"
 status = 301

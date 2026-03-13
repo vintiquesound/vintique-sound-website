@@ -8,7 +8,7 @@ type Props = Omit<HTMLAttributes<"a">, "href"> & {
 
 const { href, class: className, ...props } = Astro.props
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "")
-const isActive = isNavLinkActive(pathname, href)
+const isActive = isNavLinkActive(pathname, href, undefined, Astro.url.search)
 ---
 
 <a

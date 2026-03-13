@@ -82,7 +82,7 @@ const mobileLinkBase =
               {group.title}
             </div>
             {group.children.map((item) => (
-              <HeaderLink href={item.href} class={mobileLinkBase}>
+              <HeaderLink href={item.href} class={mobileLinkBase} data-nav-href={item.href}>
                 {item.label}
               </HeaderLink>
             ))}
@@ -97,6 +97,54 @@ const mobileLinkBase =
   const button = document.querySelector("[data-mobile-menu-button]");
   const panel = document.getElementById("mobile-nav");
 
+  const normalizePath = (value) => value.replace(/\/$/, "") || "/";
+  const normalizeHash = (value) => value.replace(/^#/, "").trim().toLowerCase();
+  const getSearchGroup = (search) => new URLSearchParams(search).get("group")?.trim().toLowerCase() ?? "";
+  const navQueryScopes = {
+    audio: ["audio", "audio-services", "mixing-and-mastering", "audio-editing", "audio-repair"],
+    training: ["training", "education", "one-on-one-training", "project-feedback"],
+  };
+  const navHashScopes = {
+    "audio-services": ["audio-services", "mixing-and-mastering", "audio-editing", "audio-repair"],
+    training: ["training", "education", "one-on-one-training", "project-feedback"],
+  };
+
+  const isNavItemActive = (pathname, hash, search, href) => {
+    if (!href.startsWith("/")) return false;
+
+    const hrefPath = normalizePath(href.split(/[?#]/, 1)[0] ?? href);
+    const hrefHash = href.includes("#") ? normalizeHash(href.split("#")[1] ?? "") : "";
+    const normalizedPath = normalizePath(pathname);
+    const searchGroup = getSearchGroup(search);
+    const subpath = normalizedPath.match(/[^/]+/g);
+    const pathMatches = hrefPath === normalizedPath || hrefPath === "/" + (subpath?.[0] || "");
+
+    if (!pathMatches) return false;
+    if (!hrefHash) return true;
+    if (hash) return (navHashScopes[hrefHash] ?? [hrefHash]).includes(hash);
+    if (searchGroup) return (navQueryScopes[searchGroup] ?? [searchGroup]).includes(hrefHash);
+
+    return true;
+  };
+
+  const syncMobileNavActiveState = () => {
+    if (!panel) return;
+
+    const currentPath = window.location.pathname;
+    const currentHash = normalizeHash(window.location.hash);
+    const currentSearch = window.location.search;
+
+    panel.querySelectorAll("[data-nav-href]").forEach((link) => {
+      if (!(link instanceof HTMLAnchorElement)) return;
+
+      const href = link.dataset.navHref ?? "";
+      const active = isNavItemActive(currentPath, currentHash, currentSearch, href);
+
+      link.classList.toggle("font-bold", active);
+      link.classList.toggle("underline", active);
+    });
+  };
+
   if (button instanceof HTMLButtonElement && panel) {
     const setMenuOpen = (open) => {
       panel.hidden = !open;
@@ -105,10 +153,13 @@ const mobileLinkBase =
     };
 
     setMenuOpen(false);
+    syncMobileNavActiveState();
 
     button.addEventListener("click", () => {
       setMenuOpen(panel.hidden);
     });
+
+    window.addEventListener("hashchange", syncMobileNavActiveState);
 
     document.addEventListener("keydown", (event) => {
       if (event.key !== "Escape") return;

@@ -1,16 +1,22 @@
 ---
+// Astro components
 import { submitContact } from "@/actions/contact";
+
+// Local UI components
 import Button from "@/components/ui/Button.astro";
 import Input from "@/components/ui/input.astro";
 import Textarea from "@/components/ui/text-area.astro";
 import Label from "@/components/ui/label.astro";
 
+// Local Card components
 import Card from "@/components/ui/card/Card.astro";
 import CardHeader from "@/components/ui/card/CardHeader.astro";
 import CardTitle from "@/components/ui/card/CardTitle.astro";
 import CardDescription from "@/components/ui/card/CardDescription.astro";
 import CardContent from "@/components/ui/card/CardContent.astro";
 import CardFooter from "@/components/ui/card/CardFooter.astro";
+
+import { contactTopicGroups } from "@/lib/contact";
 ---
 
 <Card>
@@ -38,26 +44,26 @@ import CardFooter from "@/components/ui/card/CardFooter.astro";
         <Input name="email" type="email" placeholder="john@example.com" required />
       </div>
       <div class="space-y-2 mt-6">
-        <Label>Service or Product *</Label>
+        <Label>What are you contacting me about? *</Label>
         <select
-          name="service or product"
+          id="contact-service"
+          name="service"
           required
           class="flex h-10 w-full rounded-md border border-input bg-input-background px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <option value="">Select a service or product</option>
-          <option>Mixing & Mastering</option>
-          <option>Audio Editing</option>
-          <option>Audio Repair</option>
-          <option>Courses</option>
-          <option>Audio Tools</option>
-          <option>Plugins</option>
-          <option>Samples & Loops</option>
-          <option>Other</option>
+          <option value="">Select an option</option>
+          {contactTopicGroups.map((group) => (
+            <optgroup label={group.label}>
+              {group.options.map((option) => (
+                <option value={option.label} data-hash={option.slug}>{option.label}</option>
+              ))}
+            </optgroup>
+          ))}
         </select>
       </div>
       <div class="space-y-2 mt-6">
         <Label>Message *</Label>
-        <Textarea name="message" placeholder="Tell me about your project..." required />
+        <Textarea name="message" placeholder="Tell me a bit about what you need, what you're interested in, or how I can help..." required />
       </div>
     </CardContent>
 
@@ -75,3 +81,22 @@ import CardFooter from "@/components/ui/card/CardFooter.astro";
     </CardFooter>
   </form>
 </Card>
+
+<script>
+  const syncContactCategoryFromHash = () => {
+    const selectedHash = window.location.hash.replace(/^#/, "").trim().toLowerCase();
+    if (!selectedHash) return;
+
+    const select = document.getElementById("contact-service");
+    if (!(select instanceof HTMLSelectElement)) return;
+
+    const matchingOption = Array.from(select.options).find((option) => option.dataset.hash?.toLowerCase() === selectedHash);
+    if (!matchingOption) return;
+
+    select.value = matchingOption.value;
+    select.scrollIntoView({ behavior: "auto", block: "center" });
+  };
+
+  syncContactCategoryFromHash();
+  window.addEventListener("hashchange", syncContactCategoryFromHash);
+</script>

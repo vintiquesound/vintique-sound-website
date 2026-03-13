@@ -19,7 +19,7 @@ export const resume = [
     title: "Founder & Lead Engineer",
     company: "Vintique Sound",
     description:
-      "Founded and led an independent audio production company focused on high-end mixing, mastering, and audio education. Oversaw all technical, creative, and business operations. This role formed the foundation of my professional identity as an audio engineer and educator."
+      "Founded Vintique Sound as an independent audio production company focused on high-end mixing, mastering, and audio education. Oversaw all technical, creative, and business operations. This role formed the foundation of my professional identity as an audio engineer and educator."
   },
   {
     year: "2022 - 2025",

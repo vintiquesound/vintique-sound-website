@@ -20,7 +20,7 @@ import AudioComparison from "@/components/audio/AudioComparison.tsx";
 import PriceText from "@/components/ui/PriceText";
 
 // Local content and assets
-import { MIX_MASTER_TITLE, MIX_MASTER_DESCRIPTION } from "@/consts";
+import { MIXING_AND_MASTERING_TITLE, MIXING_AND_MASTERING_DESCRIPTION } from "@/consts";
 import { services, genreExperience, processSteps, idealClients, technicalDetails, testimonials } from "@/content/webpage/mixing-mastering-data";
 
 const TESTIMONIAL_PREVIEW_LIMIT = 244;
@@ -67,7 +67,7 @@ const displayTestimonials = testimonials.map((testimonial) => {
 });
 ---
 
-<WebPageLayout title={MIX_MASTER_TITLE} description={MIX_MASTER_DESCRIPTION}>
+<WebPageLayout title={MIXING_AND_MASTERING_TITLE} description={MIXING_AND_MASTERING_DESCRIPTION}>
 
     {/* INTRO */}
     <IntroSection
@@ -78,13 +78,13 @@ const displayTestimonials = testimonials.map((testimonial) => {
       subtitle="Unlock the full potential of your music with professional mixing and mastering tailored to your genre and vision."
       solidButton={{
         label: "Build Your Package",
-        href: "/build-your-package",
+        href: "/build-your-package#mixing-and-mastering",
         icon: ArrowRight,
         iconPosition: "right"
       }}
       outlineButton={{
         label: "Ask A Question",
-        href: "/contact",
+        href: "/contact#mixing-and-mastering",
         hoverBgColor: "white",
         textColor: "foreground",
         borderColor: "foreground"
@@ -112,9 +112,7 @@ const displayTestimonials = testimonials.map((testimonial) => {
             <Card class="relative border-2 hover:border-primary transition-all">
               {service.badge && (
                 <CardAction class="absolute -top-3 right-4 z-10">
-                  <Badge
-                    text={service.badge}
-                  />
+                  <Badge text={service.badge} />
                 </CardAction>
               )}
               <CardHeader>
@@ -152,7 +150,7 @@ const displayTestimonials = testimonials.map((testimonial) => {
           </p>
           <i class="py-0 my-0 text-sm text-muted-foreground">
             *If your genre isn't listed, that doesn't mean it's not a fit — feel free to
-            <a href="/contact" class="underline hover:text-secondary cursor-pointer transition-colors">reach out</a> with references.
+            <a href="/contact#mixing-and-mastering" class="underline hover:text-secondary cursor-pointer transition-colors">reach out</a> with references.
           </i>
         </div>
 
@@ -192,7 +190,7 @@ const displayTestimonials = testimonials.map((testimonial) => {
           </p>
           <i class="py-0 my-0 text-sm text-muted-foreground">
             *Here you can find a complete list of past
-            <a href="/clients-credits" class="underline hover:text-secondary cursor-pointer transition-colors">clients & credits</a>.
+            <a href="/clients-and-credits" class="underline hover:text-secondary cursor-pointer transition-colors">clients & credits</a>.
           </i>
         </div>
 
@@ -542,7 +540,7 @@ const displayTestimonials = testimonials.map((testimonial) => {
       subtitle="Professional mixing and mastering that competes with industry releases."
       solid={{
         label: "Build Your Package",
-        href: "/build-your-package",
+        href: "/build-your-package#mixing-and-mastering",
         icon: ArrowRight,
         bgColor: "white",
         hoverBgColor: "white",
@@ -552,7 +550,7 @@ const displayTestimonials = testimonials.map((testimonial) => {
       }}
       outline={{
         label: "Ask a Question",
-        href: "/contact",
+        href: "/contact#mixing-and-mastering",
         borderAlways: true,
         borderColor: "white",
         hoverBorderColor: "white",

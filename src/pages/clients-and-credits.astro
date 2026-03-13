@@ -5,10 +5,10 @@ import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
 
 // Local UI components
 import Card from "@/components/ui/card/Card.astro";
-import ClientsCreditsTable from "@/components/clients-credits/ClientsCreditsTable";
+import ClientsAndCreditsTable from "@/components/clients-and-credits/ClientsAndCreditsTable";
 
 // Local utilities
-import { CLIENTS_CREDITS_TITLE, CLIENTS_CREDITS_DESCRIPTION } from "@/consts";
+import { CLIENTS_AND_CREDITS_TITLE, CLIENTS_AND_CREDITS_DESCRIPTION } from "@/consts";
 import { csvToTable } from "@/lib/csv";
 
 // Const definitions
@@ -52,7 +52,7 @@ const uniqueClients = clientKey
   : 0;
 ---
 
-<WebPageLayout title={CLIENTS_CREDITS_TITLE} description={CLIENTS_CREDITS_DESCRIPTION}>
+<WebPageLayout title={CLIENTS_AND_CREDITS_TITLE} description={CLIENTS_AND_CREDITS_DESCRIPTION}>
   <section class="bg-linear-to-br from-secondary/20 to-accent/20">
     <SingleColumnContainer outerClass="py-14 sm:py-18">
       <div class="text-center">
@@ -82,7 +82,7 @@ const uniqueClients = clientKey
 
   <section class="bg-background">
     <SingleColumnContainer outerClass="py-12 sm:py-16" innerClass="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-      <ClientsCreditsTable client:visible columns={headers} rows={rows} initialSortKey="Year" initialSortDir="desc" />
+      <ClientsAndCreditsTable client:visible columns={headers} rows={rows} initialSortKey="Year" initialSortDir="desc" />
     </SingleColumnContainer>
   </section>
 </WebPageLayout>
