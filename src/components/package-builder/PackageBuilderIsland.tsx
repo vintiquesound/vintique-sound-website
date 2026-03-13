@@ -197,7 +197,7 @@ export default function PackageBuilderIsland() {
       : AUDIO_CATEGORY_META[activeCategory as AudioCategory]
     : null;
 
-  const showChangeCategoryButton = Boolean(activeCategory && (activeGroup === "audio" || lockedGroup !== "training"));
+  const showChangeCategoryButton = Boolean(activeCategory);
 
   return (
     <div className="space-y-6">

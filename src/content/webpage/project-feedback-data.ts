@@ -93,7 +93,7 @@ export const idealFeedbackClients = [
   },
 ] as const;
 
-export const projectFeedbackDawOptions = ["Cubase", "Ableton", "Bitwig"] as const;
+export const projectFeedbackDawOptions = ["Cubase", "Ableton", "Bitwig", "Logic", "Pro Tools", "Studio One", "FL Studio", "WaveLab", "Other"] as const;
 
 export const projectFeedbackFocusAreas = [
   "Mix feedback and revision priorities",

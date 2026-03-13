@@ -93,6 +93,7 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
   const [projectFeedbackDaw, setProjectFeedbackDaw] = React.useState<ProjectFeedbackDaw>("");
   const [projectFeedbackSelections, setProjectFeedbackSelections] = React.useState<string[]>([]);
   const [additionalNotes, setAdditionalNotes] = React.useState("");
+  const [isPackageFinalized, setIsPackageFinalized] = React.useState(false);
 
   const selectedTopicKeys = React.useMemo(
     () => TOPIC_ORDER.filter((topic) => selectedTopics[topic]),
@@ -216,6 +217,20 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     trainingPackage,
   ]);
 
+  React.useEffect(() => {
+    setIsPackageFinalized(false);
+  }, [
+    additionalNotes,
+    projectFeedbackDaw,
+    projectFeedbackPackage,
+    projectFeedbackSelections,
+    requestType,
+    selectedTopicKeys,
+    topicFocusSelections,
+    trainingPackage,
+    trainingRecordingRequested,
+  ]);
+
   const requestPackage = React.useMemo(() => {
     const lines: string[] = [];
 
@@ -229,26 +244,40 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     lines.push(`Request type: ${REQUEST_TYPE_LABELS[requestType]}`);
 
     if (requestType === "oneOnOneTraining") {
-      lines.push(`Training format: ${trainingPackage || "—"}`);
-      lines.push(`Recorded session add-on: ${trainingRecordingRequested ? "Yes" : "No"}`);
-      lines.push("");
-      lines.push("Training topics:");
-      selectedTopicKeys.forEach((topic) => {
-        lines.push(`- ${trainingBuilderTopics[topic].label}`);
-        topicFocusSelections[topic].forEach((focusArea) => {
-          lines.push(`  - ${focusArea}`);
+      if (trainingPackage) {
+        lines.push(`Training format: ${trainingPackage}`);
+      }
+      if (trainingRecordingRequested) {
+        lines.push("Recorded session add-on: Yes");
+      }
+
+      if (selectedTopicKeys.length > 0) {
+        lines.push("");
+        lines.push("Training topics:");
+        selectedTopicKeys.forEach((topic) => {
+          lines.push(`- ${trainingBuilderTopics[topic].label}`);
+          topicFocusSelections[topic].forEach((focusArea) => {
+            lines.push(`  - ${focusArea}`);
+          });
         });
-      });
+      }
     }
 
     if (requestType === "projectFeedback") {
-      lines.push(`Walkthrough format: ${projectFeedbackPackage || "—"}`);
-      lines.push(`DAW: ${projectFeedbackDaw || "—"}`);
-      lines.push("");
-      lines.push("Walkthrough focus:");
-      projectFeedbackSelections.forEach((selection) => {
-        lines.push(`- ${selection}`);
-      });
+      if (projectFeedbackPackage) {
+        lines.push(`Walkthrough format: ${projectFeedbackPackage}`);
+      }
+      if (projectFeedbackDaw) {
+        lines.push(`DAW: ${projectFeedbackDaw}`);
+      }
+
+      if (projectFeedbackSelections.length > 0) {
+        lines.push("");
+        lines.push("Walkthrough focus:");
+        projectFeedbackSelections.forEach((selection) => {
+          lines.push(`- ${selection}`);
+        });
+      }
     }
 
     if (additionalNotes.trim()) {
@@ -273,7 +302,11 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     trainingRecordingRequested,
   ]);
 
-  const canRequestPackage = currentStep.id === "review" && isRequestComplete && Boolean(requestPackage.summaryText);
+  const canRequestPackage =
+    currentStep.id === "review" &&
+    isPackageFinalized &&
+    isRequestComplete &&
+    Boolean(requestPackage.summaryText);
 
   function updateRequestType(nextValue: RequestType) {
     setRequestType(nextValue);
@@ -567,9 +600,10 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
           totalSteps={totalSteps}
           onBack={goToPreviousStep}
           backDisabled={isFirstStep}
-          nextDisabled={!isCurrentStepComplete}
-          hideNext={currentStep.id === "review"}
-          {...(currentStep.id !== "review" ? { onNext: goToNextStep } : {})}
+          nextDisabled={currentStep.id === "review" ? !isRequestComplete : !isCurrentStepComplete}
+          hideNext={false}
+          nextLabel={currentStep.id === "review" ? "Done" : "Next"}
+          onNext={currentStep.id === "review" ? () => setIsPackageFinalized(true) : goToNextStep}
         />
       </section>
     </BuilderShell>

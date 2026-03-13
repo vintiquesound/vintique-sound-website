@@ -144,11 +144,11 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
 
       lines.push("- Price breakdown:");
       lines.push(`  - Per-service base: ${formatCurrency(perServiceBase)}`);
-      lines.push(`  - Length surcharge (per service): ${formatCurrency(lengthSurcharge)}`);
-      lines.push("  - Selected services:");
-      if (enabledServices.length === 0) {
-        lines.push("    - —");
-      } else {
+      if (lengthSurcharge > 0) {
+        lines.push(`  - Length surcharge (per service): ${formatCurrency(lengthSurcharge)}`);
+      }
+      if (enabledServices.length > 0) {
+        lines.push("  - Selected services:");
         enabledServices.forEach(({ label, notes, amount }) => {
           lines.push(
             `    - ${label}: ${formatCurrency(perServiceBase)} + ${formatCurrency(lengthSurcharge)} = ${formatCurrency(amount)}${notes ? ` — ${notes}` : ""}`
@@ -157,18 +157,37 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
       }
 
       lines.push("- Track subtotal:");
-      lines.push(`  - services: ${formatCurrency(trackServicesSubtotal)}`);
-      lines.push(`  - extras: ${formatCurrency(0)} (extras are package-level)`);
+      if (trackServicesSubtotal > 0) {
+        lines.push(`  - services: ${formatCurrency(trackServicesSubtotal)}`);
+      }
       lines.push(`- Track total: ${formatCurrency(trackServicesSubtotal)}`);
     });
 
+    const extrasLineItems: Array<{ label: string; amount: number }> = [];
+    if (rushService2Days) {
+      extrasLineItems.push({ label: "Rush service (2 days)", amount: EXTRAS_PRICING.rushService2Days });
+    }
+    if (unlimitedRevisions1Month) {
+      extrasLineItems.push({ label: "Unlimited revisions (1 month)", amount: EXTRAS_PRICING.unlimitedRevisions1Month });
+    }
+
+    if (extrasLineItems.length > 0) {
+      lines.push("");
+      lines.push("Extras:");
+      extrasLineItems.forEach((item) => {
+        lines.push(`- ${item.label}: ${formatCurrency(item.amount)}`);
+      });
+      lines.push(`- Extras total: ${formatCurrency(extrasSubtotal)}`);
+    }
+
     lines.push("");
     lines.push("Package pricing summary:");
-    lines.push(`- Services subtotal: ${formatCurrency(servicesSubtotal)}`);
-    lines.push("- Extras:");
-    lines.push(`  - Rush service (2 days): ${formatCurrency(rushService2Days ? EXTRAS_PRICING.rushService2Days : 0)}`);
-    lines.push(`  - Unlimited revisions (1 month): ${formatCurrency(unlimitedRevisions1Month ? EXTRAS_PRICING.unlimitedRevisions1Month : 0)}`);
-    lines.push(`- Extras subtotal: ${formatCurrency(extrasSubtotal)}`);
+    if (servicesSubtotal > 0) {
+      lines.push(`- Services subtotal: ${formatCurrency(servicesSubtotal)}`);
+    }
+    if (extrasSubtotal > 0) {
+      lines.push(`- Extras subtotal: ${formatCurrency(extrasSubtotal)}`);
+    }
     lines.push(`- Package total: ${formatCurrency(total)}`);
 
     return {

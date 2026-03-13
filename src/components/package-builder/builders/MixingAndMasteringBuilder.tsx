@@ -631,7 +631,17 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
 
   React.useEffect(() => {
     setIsPackageFinalized(false);
-  }, [projectType, songCount, artistName, albumName, songs]);
+  }, [
+    projectType,
+    songCount,
+    artistName,
+    albumName,
+    songs,
+    deliveryFormats,
+    customDeliveryDetails,
+    platformMasters,
+    customPlatformMasterDetails,
+  ]);
 
   const total = React.useMemo(() => songs.reduce((sum, song) => sum + computeSongPrice(song), 0), [
     songs,
@@ -656,13 +666,13 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
     return songs.every(isSongConfigured);
   }, [projectType, songs, songCount]);
 
-  const hasMasteringOrMixAndMasterService = React.useMemo(
-    () => songs.some((song) => song.service === "master" || song.service === "mixAndMaster"),
+  const hasPlatformMasterEligibleService = React.useMemo(
+    () => songs.some((song) => song.service === "master" || song.service === "mixAndMaster" || song.service === "stemMaster"),
     [songs]
   );
 
   React.useEffect(() => {
-    if (hasMasteringOrMixAndMasterService) return;
+    if (hasPlatformMasterEligibleService) return;
     setPlatformMasters({
       spotifyYoutube: false,
       appleMusic: false,
@@ -670,7 +680,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
       custom: false,
     });
     setCustomPlatformMasterDetails("");
-  }, [hasMasteringOrMixAndMasterService]);
+  }, [hasPlatformMasterEligibleService]);
 
   const hasAtLeastOneDeliveryFormat = React.useMemo(
     () => (Object.keys(deliveryFormats) as DeliveryFormat[]).some((key) => deliveryFormats[key]),
@@ -679,14 +689,16 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
 
   const hasValidCustomDeliveryDetails = !deliveryFormats.custom || customDeliveryDetails.trim().length > 0;
   const hasValidCustomPlatformDetails = !platformMasters.custom || customPlatformMasterDetails.trim().length > 0;
+  const canFinalizeOnDelivery =
+    hasAtLeastOneDeliveryFormat &&
+    hasValidCustomDeliveryDetails &&
+    hasValidCustomPlatformDetails;
 
   const canRequestFinalizedPackage =
     isPackageComplete &&
     isPackageFinalized &&
     step === "delivery" &&
-    hasAtLeastOneDeliveryFormat &&
-    hasValidCustomDeliveryDetails &&
-    hasValidCustomPlatformDetails;
+    canFinalizeOnDelivery;
 
   const selectedDeliveryFormatLabels = React.useMemo(
     () =>
@@ -806,8 +818,12 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
 
       lines.push("- Price breakdown:");
       lines.push(`  - Base service (${BASE_SERVICE_LABELS[song.service]}): ${formatCurrency(pricing.base)}`);
-      lines.push(`  - Track-count surcharge: ${formatCurrency(trackSurcharge)}`);
-      lines.push(`  - Song-length surcharge: ${formatCurrency(lengthSurcharge)}`);
+      if (trackSurcharge > 0) {
+        lines.push(`  - Track-count surcharge: ${formatCurrency(trackSurcharge)}`);
+      }
+      if (lengthSurcharge > 0) {
+        lines.push(`  - Song-length surcharge: ${formatCurrency(lengthSurcharge)}`);
+      }
 
       const editingLineItems = EDITING_SERVICE_KEYS
         .filter((key) => song.editingServices[key].enabled)
@@ -825,17 +841,13 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
           };
         });
 
-      if (supportsEditingServices(song.service)) {
+      if (supportsEditingServices(song.service) && editingLineItems.length > 0) {
         lines.push("  - Editing services:");
-        if (editingLineItems.length === 0) {
-          lines.push("    - —");
-        } else {
-          editingLineItems.forEach((item) => {
-            lines.push(
-              `    - ${item.label}: ${formatCurrency(item.perTrack)} × ${item.units} = ${formatCurrency(item.amount)}${item.notes ? ` — ${item.notes}` : ""}`
-            );
-          });
-        }
+        editingLineItems.forEach((item) => {
+          lines.push(
+            `    - ${item.label}: ${formatCurrency(item.perTrack)} × ${item.units} = ${formatCurrency(item.amount)}${item.notes ? ` — ${item.notes}` : ""}`
+          );
+        });
       }
 
       const repairLineItems = REPAIR_SERVICE_KEYS
@@ -855,10 +867,8 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
           };
         });
 
-      lines.push("  - Repair services:");
-      if (repairLineItems.length === 0) {
-        lines.push("    - —");
-      } else {
+      if (repairLineItems.length > 0) {
+        lines.push("  - Repair services:");
         repairLineItems.forEach((item) => {
           lines.push(
             `    - ${item.label}: ${formatCurrency(item.perTrack)} × ${item.units} = ${formatCurrency(item.amount)}${item.notes ? ` — ${item.notes}` : ""}`
@@ -875,11 +885,22 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
       const acapellaPrice = supportsSongLevelExports(song.service) && song.additionalMixVersions.acapella
         ? EXPORTS_PRICING.additionalExports.acapella
         : 0;
-      if (supportsSongLevelExports(song.service)) {
+      const exportLineItems: Array<{ label: string; price: number }> = [];
+      if (multitrackExportPrice > 0) {
+        exportLineItems.push({ label: "Multitrack export", price: multitrackExportPrice });
+      }
+      if (instrumentalPrice > 0) {
+        exportLineItems.push({ label: "Instrumental version", price: instrumentalPrice });
+      }
+      if (acapellaPrice > 0) {
+        exportLineItems.push({ label: "Acapella version", price: acapellaPrice });
+      }
+
+      if (supportsSongLevelExports(song.service) && exportLineItems.length > 0) {
         lines.push("  - Exports:");
-        lines.push(`    - Multitrack export: ${formatCurrency(multitrackExportPrice)}`);
-        lines.push(`    - Instrumental version: ${formatCurrency(instrumentalPrice)}`);
-        lines.push(`    - Acapella version: ${formatCurrency(acapellaPrice)}`);
+        exportLineItems.forEach((item) => {
+          lines.push(`    - ${item.label}: ${formatCurrency(item.price)}`);
+        });
       }
 
       const radioEditPrice = supportsAdditionalEdits(song.service) && song.additionalMixVersions.radioEdit
@@ -890,21 +911,36 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
         : 0;
       const rushPrice = song.rushService2Days ? EXTRAS_PRICING.rushService2Days : 0;
       const revisionsPrice = song.unlimitedRevisions1Month ? EXTRAS_PRICING.unlimitedRevisions1Month : 0;
-      lines.push(`  - ${supportsAdditionalEdits(song.service) ? "Edits & extras" : "Extras"}:`);
+      const addonLineItems: Array<{ label: string; price: number }> = [];
       if (supportsAdditionalEdits(song.service)) {
-        lines.push(`    - Radio edit: ${formatCurrency(radioEditPrice)}`);
-        lines.push(`    - Clean edit: ${formatCurrency(cleanEditPrice)}`);
+        if (radioEditPrice > 0) {
+          addonLineItems.push({ label: "Radio edit", price: radioEditPrice });
+        }
+        if (cleanEditPrice > 0) {
+          addonLineItems.push({ label: "Clean edit", price: cleanEditPrice });
+        }
       }
-      lines.push(`    - Rush service (2 days): ${formatCurrency(rushPrice)}`);
-      lines.push(`    - Unlimited revisions (1 month): ${formatCurrency(revisionsPrice)}`);
+      if (rushPrice > 0) {
+        addonLineItems.push({ label: "Rush service (2 days)", price: rushPrice });
+      }
+      if (revisionsPrice > 0) {
+        addonLineItems.push({ label: "Unlimited revisions (1 month)", price: revisionsPrice });
+      }
+
+      if (addonLineItems.length > 0) {
+        lines.push(`  - ${supportsAdditionalEdits(song.service) ? "Edits & extras" : "Extras"}:`);
+        addonLineItems.forEach((item) => {
+          lines.push(`    - ${item.label}: ${formatCurrency(item.price)}`);
+        });
+      }
 
       const breakdown = computeSongBreakdown(song);
       lines.push("- Song subtotal:");
       lines.push(`  - base + surcharges: ${formatCurrency(breakdown.detailsSubtotal)}`);
-      lines.push(`  - editing: ${formatCurrency(breakdown.editingSubtotal)}`);
-      lines.push(`  - repair: ${formatCurrency(breakdown.repairSubtotal)}`);
-      lines.push(`  - exports: ${formatCurrency(breakdown.exportsSubtotal)}`);
-      lines.push(`  - edits & extras: ${formatCurrency(breakdown.addonsSubtotal)}`);
+      if (breakdown.editingSubtotal > 0) lines.push(`  - editing: ${formatCurrency(breakdown.editingSubtotal)}`);
+      if (breakdown.repairSubtotal > 0) lines.push(`  - repair: ${formatCurrency(breakdown.repairSubtotal)}`);
+      if (breakdown.exportsSubtotal > 0) lines.push(`  - exports: ${formatCurrency(breakdown.exportsSubtotal)}`);
+      if (breakdown.addonsSubtotal > 0) lines.push(`  - edits & extras: ${formatCurrency(breakdown.addonsSubtotal)}`);
       lines.push(`- Song total: ${formatCurrency(breakdown.songTotal)}`);
       lines.push("");
     });
@@ -925,14 +961,23 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
       { details: 0, editing: 0, repair: 0, exports: 0, addons: 0, total: 0 }
     );
     lines.push(`- Base + surcharges subtotal: ${formatCurrency(packageSubtotals.details)}`);
-    lines.push(`- Editing services subtotal: ${formatCurrency(packageSubtotals.editing)}`);
-    lines.push(`- Repair services subtotal: ${formatCurrency(packageSubtotals.repair)}`);
-    lines.push(`- Exports subtotal: ${formatCurrency(packageSubtotals.exports)}`);
-    lines.push(`- Edits & extras subtotal: ${formatCurrency(packageSubtotals.addons)}`);
-    lines.push(`- Package subtotal: ${formatCurrency(packageSubtotals.total)}`);
-    lines.push(
-      `- Currency conversion fee (${displayCurrency === "CAD" ? "0" : `${Math.round(NON_CAD_CONVERSION_FEE_RATE * 100)}%`}): ${formatCurrency(conversionFee)}`
-    );
+    if (packageSubtotals.editing > 0) {
+      lines.push(`- Editing services subtotal: ${formatCurrency(packageSubtotals.editing)}`);
+    }
+    if (packageSubtotals.repair > 0) {
+      lines.push(`- Repair services subtotal: ${formatCurrency(packageSubtotals.repair)}`);
+    }
+    if (packageSubtotals.exports > 0) {
+      lines.push(`- Exports subtotal: ${formatCurrency(packageSubtotals.exports)}`);
+    }
+    if (packageSubtotals.addons > 0) {
+      lines.push(`- Edits & extras subtotal: ${formatCurrency(packageSubtotals.addons)}`);
+    }
+    if (conversionFee > 0) {
+      lines.push(
+        `- Currency conversion fee (${Math.round(NON_CAD_CONVERSION_FEE_RATE * 100)}%): ${formatCurrency(conversionFee)}`
+      );
+    }
     lines.push(`- Package total: ${formatCurrency(packageSubtotals.total + conversionFee)}`);
     lines.push("");
 
@@ -947,7 +992,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
       lines.push(`- Custom delivery details: ${customDeliveryDetails.trim() || "—"}`);
     }
 
-    if (hasMasteringOrMixAndMasterService) {
+    if (hasPlatformMasterEligibleService) {
       lines.push("");
       lines.push("Platform-specific masters:");
       if (selectedPlatformMasterLabels.length === 0) {
@@ -974,7 +1019,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
     selectedDeliveryFormatLabels,
     deliveryFormats.custom,
     customDeliveryDetails,
-    hasMasteringOrMixAndMasterService,
+    hasPlatformMasterEligibleService,
     selectedPlatformMasterLabels,
     platformMasters.custom,
     customPlatformMasterDetails,
@@ -1036,7 +1081,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
 
   function goToFinalStep() {
     if (!isPackageComplete) return;
-    setIsPackageFinalized(true);
+    setIsPackageFinalized(false);
     setStep("delivery");
   }
 
@@ -2001,7 +2046,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
                     totalSteps={activeSongTotalSteps}
                     onBack={goToPreviousSongStep}
                     onNext={projectType === "album" && activeSongIndex < songs.length - 1 ? goToNextSong : goToFinalStep}
-                    nextLabel={projectType === "album" && activeSongIndex < songs.length - 1 ? "Next Song" : "Done"}
+                    nextLabel={projectType === "album" && activeSongIndex < songs.length - 1 ? "Next Song" : "Next"}
                     nextDisabled={projectType === "album" && activeSongIndex < songs.length - 1 ? false : !isPackageComplete}
                   />
                   </div>
@@ -2122,7 +2167,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
                   )}
                 </div>
 
-                {hasMasteringOrMixAndMasterService && (
+                {hasPlatformMasterEligibleService && (
                   <div className="space-y-3 border-t border-border pt-4">
                     <div className="text-sm font-medium">Platform-specific masters</div>
 
@@ -2200,6 +2245,13 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
               <div className="flex items-center justify-end gap-2">
                 <Button type="button" variant="ghost" onClick={returnToLastSongExtrasStep}>
                   Back
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => setIsPackageFinalized(true)}
+                  disabled={!canFinalizeOnDelivery}
+                >
+                  Done
                 </Button>
               </div>
             </section>
@@ -2304,7 +2356,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
               </div>
             </div>
 
-            {hasMasteringOrMixAndMasterService && (
+            {hasPlatformMasterEligibleService && (
               <div className="space-y-2 text-sm">
                 <div className="text-sm font-semibold">Platform masters</div>
                 <div className="space-y-1 text-muted-foreground">
