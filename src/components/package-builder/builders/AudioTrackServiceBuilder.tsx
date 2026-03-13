@@ -127,36 +127,67 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
 
     tracks.forEach((track, idx) => {
       lines.push("");
-      lines.push(`Track ${idx + 1}${track.name.trim() ? ` — ${track.name.trim()}` : ""}`);
-      lines.push(`Length: ${track.lengthMinutes == null ? "—" : `Up to ${track.lengthMinutes} min`}`);
+      lines.push(`Track ${idx + 1}: ${track.name.trim() || "(unnamed)"}`);
+      lines.push(`- Length: ${track.lengthMinutes == null ? "—" : `Up to ${track.lengthMinutes} min`}`);
+
+      const lengthSurcharge = getLengthSurcharge(track.lengthMinutes, TRACK_LENGTH_TIERS);
 
       const enabledServices = serviceDefinitions
         .filter((service) => track.services[service.key].enabled)
         .map((service) => ({
           label: service.label,
           notes: track.services[service.key].notes.trim(),
+          amount: perServiceBase + lengthSurcharge,
         }));
 
+      const trackServicesSubtotal = enabledServices.reduce((sum, service) => sum + service.amount, 0);
+
+      lines.push("- Price breakdown:");
+      lines.push(`  - Per-service base: ${formatCurrency(perServiceBase)}`);
+      lines.push(`  - Length surcharge (per service): ${formatCurrency(lengthSurcharge)}`);
+      lines.push("  - Selected services:");
       if (enabledServices.length === 0) {
-        lines.push("Services: —");
+        lines.push("    - —");
       } else {
-        lines.push("Services:");
-        enabledServices.forEach(({ label, notes }) => {
-          lines.push(`- ${label}${notes ? ` — ${notes}` : ""}`);
+        enabledServices.forEach(({ label, notes, amount }) => {
+          lines.push(
+            `    - ${label}: ${formatCurrency(perServiceBase)} + ${formatCurrency(lengthSurcharge)} = ${formatCurrency(amount)}${notes ? ` — ${notes}` : ""}`
+          );
         });
       }
+
+      lines.push("- Track subtotal:");
+      lines.push(`  - services: ${formatCurrency(trackServicesSubtotal)}`);
+      lines.push(`  - extras: ${formatCurrency(0)} (extras are package-level)`);
+      lines.push(`- Track total: ${formatCurrency(trackServicesSubtotal)}`);
     });
 
     lines.push("");
-    lines.push("Extras:");
-    lines.push(`- Rush service (2 days): ${rushService2Days ? "Yes" : "No"}`);
-    lines.push(`- Unlimited revisions (1 month): ${unlimitedRevisions1Month ? "Yes" : "No"}`);
+    lines.push("Package pricing summary:");
+    lines.push(`- Services subtotal: ${formatCurrency(servicesSubtotal)}`);
+    lines.push("- Extras:");
+    lines.push(`  - Rush service (2 days): ${formatCurrency(rushService2Days ? EXTRAS_PRICING.rushService2Days : 0)}`);
+    lines.push(`  - Unlimited revisions (1 month): ${formatCurrency(unlimitedRevisions1Month ? EXTRAS_PRICING.unlimitedRevisions1Month : 0)}`);
+    lines.push(`- Extras subtotal: ${formatCurrency(extrasSubtotal)}`);
+    lines.push(`- Package total: ${formatCurrency(total)}`);
 
     return {
       subject: copy.requestSubject,
       summaryText: lines.join("\n"),
     };
-  }, [copy.requestServiceName, copy.requestSubject, rushService2Days, serviceDefinitions, trackCount, tracks, unlimitedRevisions1Month]);
+  }, [
+    copy.requestServiceName,
+    copy.requestSubject,
+    extrasSubtotal,
+    perServiceBase,
+    rushService2Days,
+    serviceDefinitions,
+    servicesSubtotal,
+    total,
+    trackCount,
+    tracks,
+    unlimitedRevisions1Month,
+  ]);
 
   const canGoNextFromTrack = Boolean(activeTrack?.lengthMinutes != null);
 

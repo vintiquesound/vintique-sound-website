@@ -899,12 +899,13 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
       lines.push(`    - Unlimited revisions (1 month): ${formatCurrency(revisionsPrice)}`);
 
       const breakdown = computeSongBreakdown(song);
-      lines.push(`  - Song subtotal (base + surcharges): ${formatCurrency(breakdown.detailsSubtotal)}`);
-      lines.push(`  - Song subtotal (editing): ${formatCurrency(breakdown.editingSubtotal)}`);
-      lines.push(`  - Song subtotal (repair): ${formatCurrency(breakdown.repairSubtotal)}`);
-      lines.push(`  - Song subtotal (exports): ${formatCurrency(breakdown.exportsSubtotal)}`);
-      lines.push(`  - Song subtotal (edits & extras): ${formatCurrency(breakdown.addonsSubtotal)}`);
-      lines.push(`  - Song total: ${formatCurrency(breakdown.songTotal)}`);
+      lines.push("- Song subtotal:");
+      lines.push(`  - base + surcharges: ${formatCurrency(breakdown.detailsSubtotal)}`);
+      lines.push(`  - editing: ${formatCurrency(breakdown.editingSubtotal)}`);
+      lines.push(`  - repair: ${formatCurrency(breakdown.repairSubtotal)}`);
+      lines.push(`  - exports: ${formatCurrency(breakdown.exportsSubtotal)}`);
+      lines.push(`  - edits & extras: ${formatCurrency(breakdown.addonsSubtotal)}`);
+      lines.push(`- Song total: ${formatCurrency(breakdown.songTotal)}`);
       lines.push("");
     });
 
