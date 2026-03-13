@@ -58,15 +58,15 @@ export const siteTaxonomy = [
         surfaces: ["navigation", "contact"],
       },
       {
-        shortSubtitle: "1-on-1 Training",
-        fullSubtitle: "1-on-1 Training",
-        href: "/one-on-one-training",
-        surfaces: ["navigation", "contact"],
-      },
-      {
         shortSubtitle: "Project Feedback",
         fullSubtitle: "Project Feedback",
         href: "/project-feedback",
+        surfaces: ["navigation", "contact"],
+      },
+      {
+        shortSubtitle: "1-on-1 Training",
+        fullSubtitle: "1-on-1 Training",
+        href: "/one-on-one-training",
         surfaces: ["navigation", "contact"],
       },
       {

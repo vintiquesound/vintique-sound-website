@@ -1,6 +1,7 @@
 ---
 // Astro layout and section components
 import WebPageLayout from "@/layouts/WebPageLayout.astro";
+import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
 
 // Third party libraries
 import { Image } from "astro:assets";
@@ -21,7 +22,16 @@ const posts = (await getCollection("blog"))
 
 <WebPageLayout title={BLOG_TITLE} description={BLOG_DESCRIPTION}>
 	<section class="w-full">
-		<div class="my-8 mx-auto w-full max-w-200 px-4 sm:px-6 lg:px-8">
+    <SingleColumnContainer outerClass="py-10">
+      <h1 class="m-0 text-center text-accent">Vintique Sound</h1>
+      <p class="mt-2 mb-0 text-center text-muted-foreground">
+        Tutorials, tips & tricks, reviews, and more.
+      </p>
+      <div class="flex justify-center">
+        <hr class="w-16 h-1 rounded-full border-0 bg-accent my-4" />
+      </div>
+    </SingleColumnContainer>
+		<div class="mb-8 mx-auto w-full max-w-200 px-4 sm:px-6 lg:px-8">
 			<ul class="grid list-none grid-cols-1 gap-2 p-0 md:grid-cols-2 md:gap-8">
 			{
 				posts.map((post, idx) => (

@@ -70,14 +70,14 @@ const AUDIO_CATEGORY_META: Record<AudioCategory, { title: string; description: s
 };
 
 const TRAINING_CATEGORY_META: Record<TrainingCategory, { title: string; description: string; badge?: string }> = {
-  oneOnOneTraining: {
-    title: "One-on-One Training",
-    description: "Build a tailored private training request for a focused lesson, project-based session, or broader development plan.",
-    badge: "Most Popular",
-  },
   projectFeedback: {
     title: "Project Feedback",
     description: "Request a recorded, live, or deep-dive walkthrough of your mix, master, workflow, and next-step priorities.",
+    badge: "Most Popular",
+  },
+  oneOnOneTraining: {
+    title: "One-on-One Training",
+    description: "Build a tailored private training request for a focused lesson, project-based session, or broader development plan.",
   },
 };
 
