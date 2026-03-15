@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { BUSINESS_EMAILS } from "@/consts";
+import { getServerEnv, isTruthyEnv } from "@/lib/server-env";
 
 // setting "prerender = false" enables POST on localhost/build without switching your whole site output mode
 export const prerender = false;
@@ -21,11 +22,6 @@ const DEDUPE_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 const requestTimestampsByIp = new Map<string, number[]>();
 const recentRequestKeys = new Map<string, number>();
-
-function getEnv(key: string): string | undefined {
-  // Runtime-only env lookup to avoid build-time inlining of secrets.
-  return process.env[key];
-}
 
 function escapeHtml(input: string): string {
   return input
@@ -120,6 +116,7 @@ function isDuplicateRequest(requestKey: string, now: number): boolean {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    const emailDebugEnabled = isTruthyEnv(getServerEnv("EMAIL_DEBUG_ENABLED"));
     const body = await parseRequestBody(request);
 
     if (!body || typeof body !== "object") {
@@ -148,7 +145,6 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const to = BUSINESS_EMAILS.requests;
-    const from = getEnv("SMTP_FROM") ?? to;
 
     const now = Date.now();
     pruneRecentMaps(now);
@@ -176,8 +172,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    const dryRunEnv = (getEnv("EMAIL_DRY_RUN") ?? "").toLowerCase();
-    const dryRun = dryRunEnv === "1" || dryRunEnv === "true";
+    const dryRun = isTruthyEnv(getServerEnv("EMAIL_DRY_RUN"));
 
     const fullText = [
       `Name: ${name}`,
@@ -197,14 +192,16 @@ export const POST: APIRoute = async ({ request }) => {
   <pre style="white-space: pre-wrap; background: #f6f6f6; padding: 12px; border-radius: 8px; border: 1px solid #ddd;">${escapeHtml(summaryText)}</pre>
 </div>`;
 
-    const host = getEnv("SMTP_HOST");
-    const portRaw = getEnv("SMTP_PORT");
-    const user = getEnv("SMTP_USER");
-    const pass = getEnv("SMTP_PASS");
+    const host = (getServerEnv("SMTP_HOST") ?? "").trim();
+    const portRaw = (getServerEnv("SMTP_PORT") ?? "").trim();
+    const user = (getServerEnv("SMTP_USER") ?? "").trim();
+    const pass = (getServerEnv("SMTP_PASS") ?? "").trim();
+    const smtpFromRaw = (getServerEnv("SMTP_FROM") ?? "").trim();
+    const from = smtpFromRaw || user || to;
 
     const hasSmtp = Boolean(host) && Boolean(portRaw) && Boolean(user) && Boolean(pass);
 
-    if (dryRun || !hasSmtp) {
+    if (dryRun) {
       console.log("Package request (dry run)", {
         to,
         from,
@@ -223,8 +220,37 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    if (!hasSmtp) {
+      const smtpConfigDebug = {
+        smtpHostSet: Boolean(host),
+        smtpPortSet: Boolean(portRaw),
+        smtpUserSet: Boolean(user),
+        smtpPassSet: Boolean(pass),
+        smtpFromSet: Boolean(smtpFromRaw),
+        emailDryRun: dryRun,
+      };
+
+      console.error("Package request SMTP misconfigured", smtpConfigDebug);
+
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          error: "Email is not configured correctly (missing SMTP_* settings).",
+          ...(emailDebugEnabled ? { debug: smtpConfigDebug } : {}),
+        }),
+        { status: 500 }
+      );
+    }
+
     const port = Number(portRaw);
-    const secure = (getEnv("SMTP_SECURE") ?? "").toLowerCase() === "true" || port === 465;
+    if (!Number.isFinite(port) || port <= 0) {
+      return new Response(
+        JSON.stringify({ ok: false, error: "Email is not configured correctly (invalid SMTP_PORT)." }),
+        { status: 500 }
+      );
+    }
+    const secure = (getServerEnv("SMTP_SECURE") ?? "").toLowerCase() === "true" || port === 465;
+    const sender = user && from.toLowerCase() !== user.toLowerCase() ? user : undefined;
 
     let nodemailerModule: unknown;
     try {
@@ -235,7 +261,7 @@ export const POST: APIRoute = async ({ request }) => {
       return new Response(
         JSON.stringify({
           ok: false,
-          error: "Email is not configured (missing nodemailer). Set EMAIL_DRY_RUN=1 for testing, or install nodemailer and configure SMTP_* env vars.",
+          error: "Email is not configured (missing nodemailer). Set EMAIL_DRY_RUN=1 for testing, or install nodemailer and configure SMTP_* settings.",
         }),
         { status: 500 }
       );
@@ -251,6 +277,7 @@ export const POST: APIRoute = async ({ request }) => {
         sendMail: (opts: {
           to: string;
           from: string;
+          sender?: string;
           replyTo: string;
           subject: string;
           text: string;
@@ -269,26 +296,64 @@ export const POST: APIRoute = async ({ request }) => {
       },
     });
 
-    if (deliverToVintique) {
-      await transporter.sendMail({
-        to,
-        from,
-        replyTo: email,
-        subject,
-        text: fullText,
-        html,
-      });
-    }
+    try {
+      if (deliverToVintique) {
+        await transporter.sendMail({
+          to,
+          from,
+          ...(sender ? { sender } : {}),
+          replyTo: email,
+          subject,
+          text: fullText,
+          html,
+        });
+      }
 
-    if (deliverToCustomer) {
-      await transporter.sendMail({
-        to: email,
+      if (deliverToCustomer) {
+        await transporter.sendMail({
+          to: email,
+          from,
+          ...(sender ? { sender } : {}),
+          replyTo: to,
+          subject: `${subject} (Copy)`,
+          text: fullText,
+          html,
+        });
+      }
+    } catch (err) {
+      const smtpErr = err as {
+        code?: string;
+        command?: string;
+        response?: string;
+        message?: string;
+      };
+
+      const smtpErrorDebug = {
+        code: smtpErr.code,
+        command: smtpErr.command,
+        response: smtpErr.response,
+        message: smtpErr.message,
+      };
+
+      console.error("Package request SMTP send failed", {
+        ...smtpErrorDebug,
+        host,
+        port,
+        secure,
         from,
-        replyTo: to,
-        subject: `${subject} (Copy)`,
-        text: fullText,
-        html,
+        sender,
       });
+
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          error: "Email send failed. Please try again later.",
+          ...(emailDebugEnabled ? { debug: smtpErrorDebug } : {}),
+        }),
+        {
+          status: 502,
+        }
+      );
     }
 
     return new Response(
