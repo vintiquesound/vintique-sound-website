@@ -116,6 +116,7 @@ function isDuplicateRequest(requestKey: string, now: number): boolean {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    const emailDebugEnabled = isTruthyEnv(getServerEnv("EMAIL_DEBUG_ENABLED"));
     const body = await parseRequestBody(request);
 
     if (!body || typeof body !== "object") {
@@ -220,17 +221,23 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     if (!hasSmtp) {
-      console.error("Package request SMTP misconfigured", {
+      const smtpConfigDebug = {
         smtpHostSet: Boolean(host),
         smtpPortSet: Boolean(portRaw),
         smtpUserSet: Boolean(user),
         smtpPassSet: Boolean(pass),
         smtpFromSet: Boolean(smtpFromRaw),
         emailDryRun: dryRun,
-      });
+      };
+
+      console.error("Package request SMTP misconfigured", smtpConfigDebug);
 
       return new Response(
-        JSON.stringify({ ok: false, error: "Email is not configured correctly (missing SMTP_* settings)." }),
+        JSON.stringify({
+          ok: false,
+          error: "Email is not configured correctly (missing SMTP_* settings).",
+          ...(emailDebugEnabled ? { debug: smtpConfigDebug } : {}),
+        }),
         { status: 500 }
       );
     }
@@ -321,11 +328,15 @@ export const POST: APIRoute = async ({ request }) => {
         message?: string;
       };
 
-      console.error("Package request SMTP send failed", {
+      const smtpErrorDebug = {
         code: smtpErr.code,
         command: smtpErr.command,
         response: smtpErr.response,
         message: smtpErr.message,
+      };
+
+      console.error("Package request SMTP send failed", {
+        ...smtpErrorDebug,
         host,
         port,
         secure,
@@ -333,9 +344,16 @@ export const POST: APIRoute = async ({ request }) => {
         sender,
       });
 
-      return new Response(JSON.stringify({ ok: false, error: "Email send failed. Please try again later." }), {
-        status: 502,
-      });
+      return new Response(
+        JSON.stringify({
+          ok: false,
+          error: "Email send failed. Please try again later.",
+          ...(emailDebugEnabled ? { debug: smtpErrorDebug } : {}),
+        }),
+        {
+          status: 502,
+        }
+      );
     }
 
     return new Response(
