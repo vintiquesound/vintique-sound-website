@@ -12,6 +12,12 @@ status = 301
 force = true
 
 [[redirects]]
+from = "/education"
+to = "/project-feedback"
+status = 301
+force = true
+
+[[redirects]]
 from = "/clients-credits"
 to = "/clients-and-credits"
 status = 301
