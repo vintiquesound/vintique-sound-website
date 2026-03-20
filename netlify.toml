@@ -28,3 +28,15 @@ from = "/post/mixing-tip-subtractive-eq-first-additive-eq-second"
 to = "/blog/2022/subtractive-eq-first-additive-eq-second"
 status = 301
 force = true
+
+[[context.test.headers]]
+for = "/*"
+
+[context.test.headers.values]
+X-Robots-Tag = "noindex, nofollow"
+
+[[context.test.redirects]]
+from = "/robots.txt"
+to = "/robots-test.txt"
+status = 200
+force = true
