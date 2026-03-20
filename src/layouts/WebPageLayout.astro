@@ -1,15 +1,9 @@
 ---
 // Local layout components
-import BaseHead from "@/components/BaseHead.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 
 // Types and utilities
 import type { ImageMetadata } from "astro";
-
-// Local content and assets
-import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
-import "@/styles/global.css";
 
 // Type definitions
 type Props = {
@@ -20,21 +14,8 @@ type Props = {
 
 // Const definitions
 const { title, description, image } = Astro.props;
-const finalTitle = title ? `${title} | ${SITE_TITLE}` : SITE_TITLE;
-const finalDescription = description ?? SITE_DESCRIPTION;
-const baseHeadImageProps = image ? { image } : {};
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={finalTitle} description={finalDescription} {...baseHeadImageProps} />
-  </head>
-  <body>
-    <Header />
-    <main class="w-full max-w-full m-0">
-      <slot />
-    </main>
-    <Footer />
-  </body>
-</html>
+<BaseLayout title={title} description={description} image={image}>
+  <slot />
+</BaseLayout>

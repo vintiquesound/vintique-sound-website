@@ -1,0 +1,87 @@
+---
+import type { ImageMetadata } from "astro";
+
+import BaseHead from "@/components/BaseHead.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+
+// Types and utilities
+import { getServerEnv } from "@/lib/server-env";
+
+// Local content and assets
+import { SITE_DESCRIPTION, SITE_TITLE } from "@/consts";
+import "@/styles/global.css";
+
+type Props = {
+  title?: string | undefined;
+  description?: string | undefined;
+  image?: ImageMetadata | undefined;
+  mainClass?: string | undefined;
+};
+
+const {
+  title,
+  description,
+  image,
+} = Astro.props;
+
+const finalTitle = title ? `${title} | ${SITE_TITLE}` : SITE_TITLE;
+const finalDescription = description ?? SITE_DESCRIPTION;
+const baseHeadImageProps = image ? { image } : {};
+
+const gtmId = getServerEnv("PUBLIC_GTM_ID")?.trim();
+const hasGtm = Boolean(gtmId);
+const showGtmMissingWarning = !hasGtm && import.meta.env.DEV;
+
+if (showGtmMissingWarning) {
+  console.warn("[analytics] PUBLIC_GTM_ID is missing. Google Tag Manager is not loaded.");
+}
+
+const gtmMissingClientWarning = showGtmMissingWarning
+  ? "console.warn('[analytics] PUBLIC_GTM_ID is missing. Google Tag Manager is not loaded.');"
+  : "";
+
+const gtmScript = hasGtm
+  ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','${gtmId}');`
+  : "";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={finalTitle} description={finalDescription} {...baseHeadImageProps} />
+    {hasGtm && (
+      <>
+        <!-- Google Tag Manager -->
+        <script is:inline set:html={gtmScript}></script>
+        <!-- End Google Tag Manager -->
+      </>
+    )}
+    {showGtmMissingWarning && <script is:inline set:html={gtmMissingClientWarning}></script>}
+    <slot name="head" />
+  </head>
+  <body>
+    {hasGtm && (
+      <!-- Google Tag Manager (noscript) -->
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+          height="0"
+          width="0"
+          style="display:none;visibility:hidden"
+          title="Google Tag Manager"
+        ></iframe>
+      </noscript>
+      <!-- End Google Tag Manager (noscript) -->
+    )}
+    <Header />
+    <main class="w-full max-w-full m-0">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
