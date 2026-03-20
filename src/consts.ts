@@ -58,3 +58,6 @@ export const PRESETS_AND_TEMPLATES_TITLE = "Presets & Templates | Vintique Sound
 export const PRESETS_AND_TEMPLATES_DESCRIPTION = "Explore free and paid presets and templates for Cubase, Universal Audio, and Native Instruments, including plugin presets, chains, and project templates from Vintique Sound.";
 export const SAMPLES_AND_LOOPS_TITLE = "Samples & Loops | Vintique Sound";
 export const SAMPLES_AND_LOOPS_DESCRIPTION = "Browse Vintique Sound sample packs and loops for music production. New royalty-free sample content is coming soon.";
+
+export const CONTESTS_TITLE = "Contests | Vintique Sound";
+export const CONTESTS_DESCRIPTION = "Check for active Vintique Sound contests, giveaways, and community challenges. There are no live contests right now—check back soon for new opportunities.";
