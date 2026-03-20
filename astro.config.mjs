@@ -15,11 +15,13 @@ import favicons from "astro-favicons";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://vintiquesound.netlify.app",
+  site: "https://vintiquesound.com",
   output: "server",
   adapter: netlify(),
   integrations: [
-    sitemap(),
+    sitemap({
+      filter: (page) => !page.includes("/post/"),
+    }),
     react(),
     mdx(),
     icon(),

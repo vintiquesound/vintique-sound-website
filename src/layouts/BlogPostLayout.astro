@@ -1,9 +1,6 @@
 ---
-
 // Local layout components
-import BaseHead from "@/components/BaseHead.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 import Tag from "@/components/blog/Tag.astro";
 
@@ -12,9 +9,6 @@ import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import { slugifyTag } from "@/lib/utils";
-
-// Local content and assets
-import "@/styles/global.css";
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -37,9 +31,8 @@ const relatedPosts = allPosts
 	.slice(0, 3);
 ---
 
-<html lang="en">
-	<head>
-		<BaseHead title={title} description={description} />
+<BaseLayout title={title} description={description} mainClass="w-full m-0">
+	<Fragment slot="head">
 		<style>
 			/* Tailwind handles layout/spacing; keeping only content selectors as inline styles since Tailwind can't express well. */
 			body .prose p > img,
@@ -81,12 +74,8 @@ const relatedPosts = allPosts
 				margin-bottom: 0.875rem;
 			}
 		</style>
-	</head>
-
-	<body>
-		<Header />
-		<main class="w-full m-0">
-			<article class="mx-auto w-full max-w-200 px-4 sm:px-6 lg:px-8">
+	</Fragment>
+	<article class="mx-auto w-full max-w-200 px-4 sm:px-6 lg:px-8">
 				{heroImage && (
 					<div class="mt-8 mb-4">
 						<Image
@@ -170,7 +159,4 @@ const relatedPosts = allPosts
 					)}
 				</div>
 			</article>
-		</main>
-		<Footer />
-	</body>
-</html>
+</BaseLayout>
