@@ -1,5 +1,6 @@
 ---
 import { Check, Monitor, Moon, Sun } from "lucide-astro"
+import DropdownMenu from "@/components/ui/DropdownMenu.astro"
 
 const THEME_STORAGE_KEY = "theme-mode"
 const THEME_OPTIONS = [
@@ -9,77 +10,50 @@ const THEME_OPTIONS = [
 ] as const
 ---
 
-<div class="relative" data-theme-selector>
-  <button
-    id="theme-selector-trigger"
-    type="button"
-    class="inline-flex items-center justify-center py-4 px-2 bg-transparent border-0 text-(--text) border-b-4 border-transparent transition-colors hover:text-accent focus:text-accent cursor-pointer focus-visible:outline-none"
-    aria-haspopup="menu"
-    aria-controls="theme-selector-menu"
-    aria-label="Theme Selector"
-    aria-expanded="false"
-    data-theme-trigger
-  >
+<DropdownMenu
+  id="theme-selector"
+  ariaLabel="Theme Selector"
+  menuAriaLabel="Theme options"
+  selectedValue="system"
+  menuClassName="min-w-36"
+>
+  <Fragment slot="trigger">
     {THEME_OPTIONS.map(({ value, Icon }) => (
       <span class={`hidden leading-none in-data-[theme-mode=${value}]:inline-flex`} aria-hidden="true" data-theme-icon={value}>
         <Icon class="size-4.5" />
       </span>
     ))}
-  </button>
+  </Fragment>
 
-  <div
-    id="theme-selector-menu"
-    class="p-1 rounded-[10px] border border-border shadow-md z-30 text-(--text) bg-background backdrop-blur-lg supports-backdrop-filter:bg-background/85 absolute right-0 mt-2 min-w-40"
-    role="menu"
-    aria-labelledby="theme-selector-trigger"
-    aria-label="Theme options"
-    aria-orientation="vertical"
-    data-theme-menu
-    hidden
-  >
-    {THEME_OPTIONS.map((option) => (
-      <button
-        id={`theme-option-${option.value}`}
-        type="button"
-        class="flex w-full items-center justify-between gap-3 py-[0.6rem] px-3 rounded-lg cursor-pointer text-left text-sm hover:text-accent"
-        role="menuitemradio"
-        aria-checked="false"
-        tabindex="-1"
-        data-theme-option={option.value}
-      >
-        <span class="flex items-center gap-2">
-          <span class="inline-flex leading-none" aria-hidden="true">
-            <option.Icon class="size-4.5 text-muted-foreground" />
-          </span>
-          <span>{option.label}</span>
+  {THEME_OPTIONS.map((option) => (
+    <button
+      id={`theme-option-${option.value}`}
+      type="button"
+      class="flex w-full items-center justify-between gap-3 py-[0.6rem] px-3 rounded-lg cursor-pointer text-left text-sm hover:text-accent"
+      role="menuitemradio"
+      aria-checked="false"
+      tabindex="-1"
+      data-dropdown-item
+      data-value={option.value}
+    >
+      <span class="flex items-center gap-2">
+        <span class="inline-flex leading-none" aria-hidden="true">
+          <option.Icon class="size-4.5 text-muted-foreground" />
         </span>
-        <span aria-hidden="true" data-theme-check={option.value} hidden>
-          <Check class="size-4" />
-        </span>
-      </button>
-    ))}
-  </div>
-</div>
+        <span>{option.label}</span>
+      </span>
+      <span aria-hidden="true" data-dropdown-selected-indicator hidden>
+        <Check class="size-4" />
+      </span>
+    </button>
+  ))}
+</DropdownMenu>
 
 <!-- Ensure the correct theme mode is set ASAP -->
 <script is:inline define:vars={{ storageKey: THEME_STORAGE_KEY }}>
   (() => {
-    const root = document.querySelector("[data-theme-selector]");
+    const root = document.querySelector('[data-dropdown-id="theme-selector"]');
     if (!(root instanceof HTMLElement)) return;
-
-    const trigger = root.querySelector("[data-theme-trigger]");
-    const menu = root.querySelector("[data-theme-menu]");
-    const options = Array.from(root.querySelectorAll("[data-theme-option]"));
-    const checks = Array.from(root.querySelectorAll("[data-theme-check]"));
-    const optionButtons = options.filter(
-      (option) => option instanceof HTMLButtonElement
-    );
-
-    if (!(trigger instanceof HTMLButtonElement)) return;
-    if (!(menu instanceof HTMLElement)) return;
-    if (optionButtons.length === 0) return;
-
-    let activeIndex = 0;
 
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -88,39 +62,12 @@ const THEME_OPTIONS = [
       return "system";
     };
 
-    const setOpen = (open) => {
-      menu.hidden = !open;
-      trigger.setAttribute("aria-expanded", String(open));
-
-      if (!open) return;
-
-      const selected = normalize(localStorage.getItem(storageKey) || "system");
-      const selectedIndex = optionButtons.findIndex(
-        (button) => button.dataset.themeOption === selected
-      );
-      setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
-      focusActiveOption();
-    };
-
-    const setActiveIndex = (nextIndex) => {
-      const bounded = ((nextIndex % optionButtons.length) + optionButtons.length) % optionButtons.length;
-      activeIndex = bounded;
-
-      optionButtons.forEach((button, index) => {
-        button.tabIndex = index === bounded ? 0 : -1;
-      });
-    };
-
-    const focusActiveOption = () => {
-      optionButtons[activeIndex]?.focus();
-    };
-
     const applyThemeClass = (mode) => {
       const isDark = mode === "dark" || (mode === "system" && mql.matches);
       document.documentElement.classList.toggle("dark", isDark);
     };
 
-    const setThemeMode = (next, { persist = true } = {}) => {
+    const setThemeMode = (next, { persist = true, syncDropdown = true } = {}) => {
       const mode = normalize(next);
 
       if (persist) {
@@ -130,112 +77,26 @@ const THEME_OPTIONS = [
       document.documentElement.dataset.themeMode = mode;
       applyThemeClass(mode);
 
-      options.forEach((option) => {
-        if (!(option instanceof HTMLElement)) return;
-        const isActive = option.dataset.themeOption === mode;
-        option.classList.toggle("font-semibold", isActive);
-        option.setAttribute("aria-checked", String(isActive));
-      });
-
-      checks.forEach((check) => {
-        if (!(check instanceof HTMLElement)) return;
-        check.hidden = check.dataset.themeCheck !== mode;
-      });
+      if (syncDropdown) {
+        root.dispatchEvent(new CustomEvent("dropdown-set-value", {
+          detail: { value: mode },
+          bubbles: true,
+        }));
+      }
     };
 
     const initialMode = normalize(localStorage.getItem(storageKey) || "system");
     setThemeMode(initialMode, { persist: true });
-
-    const initialIndex = optionButtons.findIndex(
-      (button) => button.dataset.themeOption === initialMode
-    );
-    setActiveIndex(initialIndex >= 0 ? initialIndex : 0);
 
     mql.addEventListener("change", () => {
       if (document.documentElement.dataset.themeMode !== "system") return;
       applyThemeClass("system");
     });
 
-    trigger.addEventListener("click", () => {
-      setOpen(menu.hidden);
-    });
-
-    trigger.addEventListener("keydown", (event) => {
-      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-        event.preventDefault();
-        if (menu.hidden) {
-          setOpen(true);
-          if (event.key === "ArrowUp") setActiveIndex(optionButtons.length - 1);
-          focusActiveOption();
-          return;
-        }
-
-        setActiveIndex(activeIndex + (event.key === "ArrowDown" ? 1 : -1));
-        focusActiveOption();
-      }
-
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        if (menu.hidden) setOpen(true);
-      }
-    });
-
-    optionButtons.forEach((option, index) => {
-      option.addEventListener("focus", () => {
-        setActiveIndex(index);
-      });
-
-      option.addEventListener("click", () => {
-        const next = option.dataset.themeOption || "system";
-        setThemeMode(next);
-        setOpen(false);
-        trigger.focus();
-      });
-
-      option.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowDown") {
-          event.preventDefault();
-          setActiveIndex(activeIndex + 1);
-          focusActiveOption();
-        } else if (event.key === "ArrowUp") {
-          event.preventDefault();
-          setActiveIndex(activeIndex - 1);
-          focusActiveOption();
-        } else if (event.key === "Home") {
-          event.preventDefault();
-          setActiveIndex(0);
-          focusActiveOption();
-        } else if (event.key === "End") {
-          event.preventDefault();
-          setActiveIndex(optionButtons.length - 1);
-          focusActiveOption();
-        } else if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          const next = option.dataset.themeOption || "system";
-          setThemeMode(next);
-          setOpen(false);
-          trigger.focus();
-        } else if (event.key === "Escape") {
-          event.preventDefault();
-          setOpen(false);
-          trigger.focus();
-        } else if (event.key === "Tab") {
-          setOpen(false);
-        }
-      });
-    });
-
-    document.addEventListener("click", (event) => {
-      if (root.contains(event.target)) return;
-      setOpen(false);
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape") return;
-      if (menu.hidden) return;
-      event.preventDefault();
-      setOpen(false);
-      trigger.focus();
+    root.addEventListener("dropdown-select", (event) => {
+      const selected = event.detail?.value;
+      if (typeof selected !== "string") return;
+      setThemeMode(selected, { persist: true, syncDropdown: false });
     });
   })();
 </script>
