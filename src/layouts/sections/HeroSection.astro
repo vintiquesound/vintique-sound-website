@@ -24,6 +24,7 @@ type HeroSectionProps = {
 	imageSquareSizePx?: number;
 	imagePosition?: "left" | "right";
 	imageAlt: string;
+	imageIsPriority?: boolean;
 };
 
 // Const definitions
@@ -39,6 +40,7 @@ const {
 	imageSquareSizePx,
 	imagePosition = "right",
 	imageAlt,
+	imageIsPriority = false,
 } = Astro.props as HeroSectionProps;
 
 const isImageLeft = imagePosition === "left";
@@ -52,6 +54,7 @@ const isImageLeft = imagePosition === "left";
 				<HeroSectionImage
 					image={image}
 					imageAlt={imageAlt}
+					isPriority={imageIsPriority}
 					{...(imageAspect ? { imageAspect } : {})}
 					{...(imageSquareSizePx ? { imageSquareSizePx } : {})}
 				/>
@@ -79,6 +82,7 @@ const isImageLeft = imagePosition === "left";
 				<HeroSectionImage
 					image={image}
 					imageAlt={imageAlt}
+					isPriority={imageIsPriority}
 					{...(imageAspect ? { imageAspect } : {})}
 					{...(imageSquareSizePx ? { imageSquareSizePx } : {})}
 				/>
