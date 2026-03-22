@@ -189,10 +189,14 @@ export default function PackageSummaryCard({
         </div>
       )}
 
-      <div className="flex items-center justify-between">
-        <span className="font-semibold">{totalLabel}</span>
-        <span className="font-semibold">{total}</span>
-      </div>
+      {total.trim() ? (
+        <div className="flex items-center justify-between">
+          <span className="font-semibold">{totalLabel}</span>
+          <span className="font-semibold">{total}</span>
+        </div>
+      ) : (
+        <div className="font-semibold whitespace-pre-line">{totalLabel}</div>
+      )}
 
       {canRequestPackage && requestPackage && (
         <Button type="button" className="w-full" onClick={() => setIsRequestOpen(true)}>

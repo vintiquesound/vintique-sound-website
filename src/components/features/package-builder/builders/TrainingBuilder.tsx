@@ -366,8 +366,8 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
   const summary = (
     <PackageSummaryCard
       title="Request Summary"
-      totalLabel="Pricing"
-      total="Custom quote after review"
+      totalLabel={"Pricing - Custom quote after review"}
+      total=""
       canRequestPackage={canRequestPackage}
       requestPackage={requestPackage}
       requestButtonLabel={requestType === "projectFeedback" ? "Request Project Feedback" : "Request Training"}
