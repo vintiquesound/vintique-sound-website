@@ -52,6 +52,7 @@ const actionsJustify = align === "center" ? "justify-center" : "justify-start";
           {solid && (
             <Button
               href={solid.href}
+              aria-label={solid.ariaLabel}
               variant="solid"
               size={solidSize}
               fullWidth={solid.fullWidth}
@@ -78,6 +79,7 @@ const actionsJustify = align === "center" ? "justify-center" : "justify-start";
           {outline && (
             <Button
               href={outline.href}
+              aria-label={outline.ariaLabel}
               variant="outline"
               size={outlineSize}
               fullWidth={outline.fullWidth}

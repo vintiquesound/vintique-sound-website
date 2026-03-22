@@ -31,6 +31,12 @@
 - Follow class-variance-authority (cva) pattern for component variants
 - Use `cn()` utility for conditional class merging
 - Components accept `className` prop for customization
+- Keep `src/components/ui/` for foundational primitives/building blocks
+- Keep `src/components/ui/card/` for card composition primitives only (`Card*` parts)
+- Keep `src/components/cards/` for composed/domain-specific card components
+- Organize `src/components/ui/` by primitive families when helpful:
+	- `ui/form/` for form primitives (Input/Label/TextArea/Field)
+	- `ui/navigation/` for navigation/dropdown primitives used by nav UI
 
 ### Astro Files
 - Use frontmatter dashes (`---`) for script sections

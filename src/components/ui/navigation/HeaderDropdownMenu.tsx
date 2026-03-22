@@ -4,12 +4,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/navigation/DropdownMenu"
 import {
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation/NavigationMenu"
 import { cn } from "@/lib/utils"
 
 type HeaderMenuSharedProps = {

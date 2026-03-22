@@ -1,0 +1,321 @@
+---
+type Props = {
+  id: string
+  ariaLabel: string
+  menuAriaLabel?: string
+  selectedValue?: string
+  triggerClassName?: string
+  menuClassName?: string
+  selectedItemClassName?: string
+  selectedItemUnderline?: boolean
+  smoothTransition?: boolean
+  transitionMs?: number
+  transitionEasing?: string
+}
+
+const {
+  id,
+  ariaLabel,
+  menuAriaLabel,
+  selectedValue = "",
+  triggerClassName = "",
+  menuClassName = "",
+  selectedItemClassName = "font-semibold",
+  selectedItemUnderline = false,
+  smoothTransition = true,
+  transitionMs = 300,
+  transitionEasing = "cubic-bezier(0.22, 1, 0.36, 1)",
+} = Astro.props
+
+const triggerId = `${id}-trigger`
+const menuId = `${id}-menu`
+
+const defaultTriggerClass =
+  "inline-flex items-center justify-center py-4 px-2 bg-transparent border-0 text-(--text) border-b-4 border-transparent transition-colors hover:text-accent focus:text-accent cursor-pointer focus-visible:outline-none"
+
+const defaultMenuClass =
+  "p-1 rounded-[10px] border border-border shadow-md z-30 text-(--text) bg-background backdrop-blur-lg supports-backdrop-filter:bg-background/85 absolute right-0 mt-2"
+---
+
+<div
+  class="relative"
+  data-dropdown-root
+  data-dropdown-id={id}
+  data-selected-value={selectedValue}
+  data-selected-class={selectedItemClassName}
+  data-selected-underline={selectedItemUnderline ? "true" : "false"}
+  data-smooth-transition={smoothTransition ? "true" : "false"}
+  data-transition-ms={String(Math.max(0, transitionMs))}
+  data-transition-easing={transitionEasing}
+>
+  <button
+    id={triggerId}
+    type="button"
+    class:list={[defaultTriggerClass, triggerClassName]}
+    aria-haspopup="menu"
+    aria-controls={menuId}
+    aria-label={ariaLabel}
+    aria-expanded="false"
+    data-dropdown-trigger
+  >
+    <slot name="trigger" />
+  </button>
+
+  <div
+    id={menuId}
+    class:list={[defaultMenuClass, menuClassName]}
+    role="menu"
+    aria-labelledby={triggerId}
+    aria-label={menuAriaLabel}
+    aria-orientation="vertical"
+    data-dropdown-menu
+    hidden
+  >
+    <slot />
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const ROOT_SELECTOR = "[data-dropdown-root]";
+
+    const setActiveIndex = (items, nextIndex) => {
+      const bounded = ((nextIndex % items.length) + items.length) % items.length;
+      items.forEach((item, index) => {
+        item.tabIndex = index === bounded ? 0 : -1;
+      });
+      return bounded;
+    };
+
+    const initRoot = (root) => {
+      if (!(root instanceof HTMLElement)) return;
+      if (root.dataset.dropdownReady === "true") return;
+
+      const trigger = root.querySelector("[data-dropdown-trigger]");
+      const menu = root.querySelector("[data-dropdown-menu]");
+      const itemNodes = Array.from(root.querySelectorAll("[data-dropdown-item]"));
+      const items = itemNodes.filter((item) => item instanceof HTMLButtonElement);
+
+      if (!(trigger instanceof HTMLButtonElement)) return;
+      if (!(menu instanceof HTMLElement)) return;
+      if (items.length === 0) return;
+
+      root.dataset.dropdownReady = "true";
+
+      const selectedClass = root.dataset.selectedClass || "font-semibold";
+      const selectedUnderline = root.dataset.selectedUnderline === "true";
+      const smoothTransition = root.dataset.smoothTransition !== "false";
+      const transitionMs = Number.parseInt(root.dataset.transitionMs || "300", 10);
+      const transitionEasing = root.dataset.transitionEasing || "cubic-bezier(0.22, 1, 0.36, 1)";
+
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const resolvedTransitionMs = smoothTransition && !prefersReducedMotion
+        ? Math.max(0, Number.isFinite(transitionMs) ? transitionMs : 300)
+        : 0;
+
+      const CLOSE_OFFSET_PX = 4;
+      let closeTimeoutId = null;
+
+      if (resolvedTransitionMs > 0) {
+        menu.style.transitionProperty = "opacity, transform";
+        menu.style.transitionDuration = `${resolvedTransitionMs}ms`;
+        menu.style.transitionTimingFunction = transitionEasing;
+        menu.style.willChange = "opacity, transform";
+      }
+
+      menu.dataset.state = "closed";
+      menu.style.opacity = "0";
+      menu.style.transform = `translateY(-${CLOSE_OFFSET_PX}px) scale(0.98)`;
+      menu.style.pointerEvents = "none";
+
+      let activeIndex = 0;
+
+      const getCurrentValue = () => root.dataset.selectedValue || items[0]?.dataset.value || "";
+
+      const applySelection = (value, { emit = true } = {}) => {
+        const nextValue = typeof value === "string" && value.length > 0
+          ? value
+          : items[0]?.dataset.value || "";
+
+        root.dataset.selectedValue = nextValue;
+
+        items.forEach((item) => {
+          const isSelected = item.dataset.value === nextValue;
+          item.setAttribute("aria-checked", String(isSelected));
+          item.classList.toggle(selectedClass, isSelected);
+          if (selectedUnderline) {
+            item.classList.toggle("underline", isSelected);
+          }
+
+          const indicators = item.querySelectorAll("[data-dropdown-selected-indicator]");
+          indicators.forEach((indicator) => {
+            if (!(indicator instanceof HTMLElement)) return;
+            indicator.hidden = !isSelected;
+          });
+        });
+
+        const selectedIndex = items.findIndex((item) => item.dataset.value === nextValue);
+        activeIndex = setActiveIndex(items, selectedIndex >= 0 ? selectedIndex : 0);
+
+        if (emit) {
+          root.dispatchEvent(new CustomEvent("dropdown-select", {
+            bubbles: true,
+            detail: {
+              id: root.dataset.dropdownId || "",
+              value: nextValue,
+            },
+          }));
+        }
+      };
+
+      const focusActiveItem = () => {
+        items[activeIndex]?.focus();
+      };
+
+      const setOpen = (open) => {
+        trigger.setAttribute("aria-expanded", String(open));
+
+        if (closeTimeoutId !== null) {
+          window.clearTimeout(closeTimeoutId);
+          closeTimeoutId = null;
+        }
+
+        if (!open) {
+          menu.dataset.state = "closed";
+          menu.style.opacity = "0";
+          menu.style.transform = `translateY(-${CLOSE_OFFSET_PX}px) scale(0.98)`;
+          menu.style.pointerEvents = "none";
+
+          if (resolvedTransitionMs > 0) {
+            closeTimeoutId = window.setTimeout(() => {
+              menu.hidden = true;
+              closeTimeoutId = null;
+            }, resolvedTransitionMs);
+          } else {
+            menu.hidden = true;
+          }
+
+          return;
+        }
+
+        menu.hidden = false;
+        menu.dataset.state = "open";
+        menu.style.pointerEvents = "auto";
+
+        window.requestAnimationFrame(() => {
+          menu.style.opacity = "1";
+          menu.style.transform = "translateY(0) scale(1)";
+        });
+
+        const currentValue = getCurrentValue();
+        const selectedIndex = items.findIndex((item) => item.dataset.value === currentValue);
+        activeIndex = setActiveIndex(items, selectedIndex >= 0 ? selectedIndex : 0);
+        focusActiveItem();
+      };
+
+      const closeMenu = ({ focusTrigger = false } = {}) => {
+        if (menu.hidden) return;
+        setOpen(false);
+        if (focusTrigger) trigger.focus();
+      };
+
+      applySelection(getCurrentValue(), { emit: false });
+
+      trigger.addEventListener("click", () => {
+        setOpen(menu.hidden);
+      });
+
+      trigger.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+          event.preventDefault();
+          if (menu.hidden) {
+            setOpen(true);
+            if (event.key === "ArrowUp") {
+              activeIndex = setActiveIndex(items, items.length - 1);
+              focusActiveItem();
+            }
+            return;
+          }
+
+          activeIndex = setActiveIndex(items, activeIndex + (event.key === "ArrowDown" ? 1 : -1));
+          focusActiveItem();
+          return;
+        }
+
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          if (menu.hidden) setOpen(true);
+        }
+      });
+
+      items.forEach((item, index) => {
+        item.addEventListener("focus", () => {
+          activeIndex = setActiveIndex(items, index);
+        });
+
+        item.addEventListener("click", () => {
+          applySelection(item.dataset.value || "");
+          closeMenu({ focusTrigger: true });
+        });
+
+        item.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            activeIndex = setActiveIndex(items, activeIndex + 1);
+            focusActiveItem();
+          } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+            activeIndex = setActiveIndex(items, activeIndex - 1);
+            focusActiveItem();
+          } else if (event.key === "Home") {
+            event.preventDefault();
+            activeIndex = setActiveIndex(items, 0);
+            focusActiveItem();
+          } else if (event.key === "End") {
+            event.preventDefault();
+            activeIndex = setActiveIndex(items, items.length - 1);
+            focusActiveItem();
+          } else if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            applySelection(item.dataset.value || "");
+            closeMenu({ focusTrigger: true });
+          } else if (event.key === "Escape") {
+            event.preventDefault();
+            closeMenu({ focusTrigger: true });
+          } else if (event.key === "Tab") {
+            closeMenu();
+          }
+        });
+      });
+
+      root.addEventListener("dropdown-set-value", (event) => {
+        const customEvent = event;
+        const value = customEvent?.detail?.value;
+        if (typeof value !== "string") return;
+        applySelection(value, { emit: false });
+      });
+
+      document.addEventListener("click", (event) => {
+        if (root.contains(event.target)) return;
+        closeMenu();
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key !== "Escape") return;
+        if (menu.hidden) return;
+        event.preventDefault();
+        closeMenu({ focusTrigger: true });
+      });
+    };
+
+    const initAll = () => {
+      document.querySelectorAll(ROOT_SELECTOR).forEach((root) => initRoot(root));
+    };
+
+    initAll();
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", initAll, { once: true });
+    }
+  })();
+</script>

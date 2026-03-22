@@ -17,6 +17,9 @@ import favicons from "astro-favicons";
 export default defineConfig({
   site: "https://vintiquesound.com",
   output: "server",
+  build: {
+    inlineStylesheets: "auto",
+  },
   adapter: netlify(),
   integrations: [
     sitemap({

@@ -1,25 +1,119 @@
 ---
-import ThemeToggleMenu from "./ThemeToggleMenu";
+// Third party libraries
+import { Check, Monitor, Moon, Sun } from "lucide-astro"
+
+// Local UI components
+import DropdownMenu from "@/components/ui/DropdownMenu.astro"
+
+const THEME_STORAGE_KEY = "theme-mode"
+const THEME_OPTIONS = [
+  { value: "light", label: "Light", Icon: Sun },
+  { value: "dark", label: "Dark", Icon: Moon },
+  { value: "system", label: "System", Icon: Monitor },
+] as const
 ---
 
-<!-- Ensure the correct icon mode is set ASAP (before React hydrates) -->
-<script is:inline>
+<DropdownMenu
+  id="theme-selector"
+  ariaLabel="Theme Selector"
+  menuAriaLabel="Theme options"
+  selectedValue="system"
+  menuClassName="min-w-36"
+>
+  <Fragment slot="trigger">
+    {THEME_OPTIONS.map(({ value, Icon }) => (
+      <span
+        class="inline-flex leading-none"
+        aria-hidden="true"
+        data-theme-icon={value}
+        hidden={value !== "system"}
+      >
+        <Icon class="size-4.5" />
+      </span>
+    ))}
+  </Fragment>
+
+  {THEME_OPTIONS.map((option) => (
+    <button
+      id={`theme-option-${option.value}`}
+      type="button"
+      class="flex w-full items-center justify-between gap-3 py-[0.6rem] px-3 rounded-lg cursor-pointer text-left text-sm hover:text-accent"
+      role="menuitemradio"
+      aria-checked="false"
+      tabindex="-1"
+      data-dropdown-item
+      data-value={option.value}
+    >
+      <span class="flex items-center gap-2">
+        <span class="inline-flex leading-none" aria-hidden="true">
+          <option.Icon class="size-4.5 text-muted-foreground" />
+        </span>
+        <span>{option.label}</span>
+      </span>
+      <span aria-hidden="true" data-dropdown-selected-indicator hidden>
+        <Check class="size-4" />
+      </span>
+    </button>
+  ))}
+</DropdownMenu>
+
+<!-- Ensure the correct theme mode is set ASAP -->
+<script is:inline define:vars={{ storageKey: THEME_STORAGE_KEY }}>
   (() => {
-    const STORAGE_KEY = "theme-mode";
-    const mode = localStorage.getItem(STORAGE_KEY) || "system";
-    document.documentElement.dataset.themeMode = mode;
+    const root = document.querySelector('[data-dropdown-id="theme-selector"]');
+    if (!(root instanceof HTMLElement)) return;
 
     const mql = window.matchMedia("(prefers-color-scheme: dark)");
-    const apply = () => {
+
+    const normalize = (value) => {
+      if (value === "light" || value === "dark" || value === "system") return value;
+      return "system";
+    };
+
+    const applyThemeClass = (mode) => {
       const isDark = mode === "dark" || (mode === "system" && mql.matches);
       document.documentElement.classList.toggle("dark", isDark);
     };
 
-    apply();
-    if (mode === "system") {
-      mql.addEventListener("change", apply);
-    }
+    const syncThemeIcons = (mode) => {
+      root.querySelectorAll("[data-theme-icon]").forEach((node) => {
+        if (!(node instanceof HTMLElement)) return;
+        const iconMode = node.dataset.themeIcon;
+        node.hidden = iconMode !== mode;
+      });
+    };
+
+    const setThemeMode = (next, { persist = true, syncDropdown = true } = {}) => {
+      const mode = normalize(next);
+
+      if (persist) {
+        localStorage.setItem(storageKey, mode);
+      }
+
+      document.documentElement.dataset.themeMode = mode;
+      applyThemeClass(mode);
+      syncThemeIcons(mode);
+
+      if (syncDropdown) {
+        root.dispatchEvent(new CustomEvent("dropdown-set-value", {
+          detail: { value: mode },
+          bubbles: true,
+        }));
+      }
+    };
+
+    const initialMode = normalize(localStorage.getItem(storageKey) || "system");
+    setThemeMode(initialMode, { persist: true });
+
+    mql.addEventListener("change", () => {
+      if (document.documentElement.dataset.themeMode !== "system") return;
+      applyThemeClass("system");
+    });
+
+    root.addEventListener("dropdown-select", (event) => {
+      const selected = event.detail?.value;
+      if (typeof selected !== "string") return;
+      setThemeMode(selected, { persist: true, syncDropdown: false });
+    });
   })();
 </script>
-
-<ThemeToggleMenu client:idle />

@@ -1,4 +1,4 @@
-import type { ButtonSize, ButtonVariant } from "@/components/ui/button";
+import type { ButtonSize, ButtonVariant } from "@/components/ui/Button";
 import type React from "react";
 
 export type CtaIcon = React.ComponentType<
@@ -8,6 +8,7 @@ export type CtaIcon = React.ComponentType<
 export type CtaButton = {
   label: string;
   href: string;
+  ariaLabel?: string;
 
   variant?: ButtonVariant;
   size?: ButtonSize;

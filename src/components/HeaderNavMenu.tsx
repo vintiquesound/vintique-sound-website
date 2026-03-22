@@ -6,8 +6,8 @@ import {
   NavigationMenu,
   NavigationMenuLink,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu"
-import { HeaderNavigationDropdownMenu } from "@/components/ui/HeaderDropdownMenu"
+} from "@/components/ui/navigation/NavigationMenu"
+import { HeaderNavigationDropdownMenu } from "@/components/ui/navigation/HeaderDropdownMenu"
 import { cn } from "@/lib/utils"
 
 type HeaderNavMenuProps = {

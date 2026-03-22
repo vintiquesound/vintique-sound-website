@@ -28,12 +28,14 @@ import KevinUlliacImage from "@/assets/website/about-kevin_ulliac-in_the_studio.
     solidButton={{
       label: "Get in Touch",
       href: "/contact",
+      ariaLabel: "Get in touch",
       icon: ArrowRight,
       iconPosition: "right"
     }}
     outlineButton={{
       label: "View Services",
       href: "/services",
+      ariaLabel: "View services",
       hoverBgColor: "white",
       textColor: "foreground",
       borderColor: "foreground"
@@ -42,8 +44,8 @@ import KevinUlliacImage from "@/assets/website/about-kevin_ulliac-in_the_studio.
       label: "Read full biography",
       href: "/biography"
     }}
-    image={KevinUlliacImage
-  }
+    image={KevinUlliacImage}
+    imageIsPriority={true}
     imagePosition="right"
     imageAlt="Kevin Ulliac at work in the studio"
   />
@@ -140,6 +142,7 @@ import KevinUlliacImage from "@/assets/website/about-kevin_ulliac-in_the_studio.
     solid={{
         label: "Let's Work Together",
         href: "/contact",
+      ariaLabel: "Contact me to work together",
         icon: ArrowRight,
         iconPosition: "right",
         bgColor: "primary",

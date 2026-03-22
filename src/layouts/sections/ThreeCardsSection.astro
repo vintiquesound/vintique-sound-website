@@ -1,7 +1,9 @@
 ---
+// Astro layout and section components
 import TripleColumnContainer from "@/layouts/TripleColumnContainer.astro";
 import SingleColumnContainer from "@/layouts/SingleColumnContainer.astro";
 
+// Local UI components
 import Button from "@/components/ui/Button.astro";
 import Card from "@/components/ui/card/Card.astro";
 import CardContent from "@/components/ui/card/CardContent.astro";
@@ -22,6 +24,7 @@ type BulletItem = {
 type CardButtonDef = {
   label: string;
   href: string;
+  ariaLabel?: string;
   variant?: "solid" | "outline" | "destructive" | "ghost" | "text" | "link";
   bgColor?: string;
   hoverBgColor?: string;
@@ -155,6 +158,7 @@ const cardsWithClasses = resolvedCards.map((card): RenderCard => {
               <CardFooter>
                 <Button
                   href={card.button.href}
+                  aria-label={card.button.ariaLabel}
                   fullWidth
                   variant={card.button.variant ?? "solid"}
                   bgColor={card.button.bgColor}
@@ -210,6 +214,7 @@ const cardsWithClasses = resolvedCards.map((card): RenderCard => {
               <CardFooter>
                 <Button
                   href={card.button.href}
+                  aria-label={card.button.ariaLabel}
                   fullWidth
                   variant={card.button.variant ?? "solid"}
                   bgColor={card.button.bgColor}
@@ -265,6 +270,7 @@ const cardsWithClasses = resolvedCards.map((card): RenderCard => {
               <CardFooter>
                 <Button
                   href={card.button.href}
+                  aria-label={card.button.ariaLabel}
                   fullWidth
                   variant={card.button.variant ?? "solid"}
                   bgColor={card.button.bgColor}

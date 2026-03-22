@@ -34,12 +34,14 @@ import KevinMountainImage from "@/assets/website/biography-kevano-snowboard_moun
     solidButton={{
       label: "Back to About",
       href: "/about",
+      ariaLabel: "Go back to the About page",
       icon: ArrowLeft,
       iconPosition: "left"
     }}
     image={KevinAtSteinbergImage}
     imageAspect="square"
     imageSquareSizePx={480}
+    imageIsPriority={true}
     imagePosition="right"
     imageAlt="Kevin Ulliac at Steinberg headquarters in Hamburg, Germany"
   />
@@ -265,6 +267,7 @@ import KevinMountainImage from "@/assets/website/biography-kevano-snowboard_moun
     solid={{
       label: "Start Your Project",
       href: "/contact",
+      ariaLabel: "Start your project by contacting me",
       icon: ArrowRight,
       iconPosition: "right",
       bgColor: "primary",

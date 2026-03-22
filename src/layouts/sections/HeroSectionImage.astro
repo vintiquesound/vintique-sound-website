@@ -7,6 +7,7 @@ type HeroSectionImageProps = {
 	imageAlt: string;
 	imageAspect?: "responsive" | "square";
 	imageSquareSizePx?: number;
+	isPriority?: boolean;
 };
 
 const {
@@ -14,6 +15,7 @@ const {
 	imageAlt,
 	imageAspect = "responsive",
 	imageSquareSizePx,
+	isPriority = false,
 } = Astro.props as HeroSectionImageProps;
 const imageAspectClass = imageAspect === "square" ? "aspect-square" : "aspect-16/9 md:aspect-4/3";
 const sizeStyle = imageAspect === "square" && imageSquareSizePx
@@ -30,6 +32,8 @@ const sizeStyle = imageAspect === "square" && imageSquareSizePx
 		alt={imageAlt}
 		width={640}
 		height={640}
+		loading={isPriority ? "eager" : "lazy"}
+		fetchpriority={isPriority ? "high" : "auto"}
 		class="block h-full w-full object-cover"
 	/>
 </div>

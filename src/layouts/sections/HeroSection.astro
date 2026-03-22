@@ -1,7 +1,7 @@
 ---
 // Local layout components
 import DoubleColumnContainer from "@/layouts/DoubleColumnContainer.astro";
-import HeroSectionCopy from "@/layouts/sections/HeroSectionCopy.astro";
+import HeroSectionContent from "@/layouts/sections/HeroSectionContent.astro";
 import HeroSectionImage from "@/layouts/sections/HeroSectionImage.astro";
 
 // Types and utilities
@@ -24,6 +24,7 @@ type HeroSectionProps = {
 	imageSquareSizePx?: number;
 	imagePosition?: "left" | "right";
 	imageAlt: string;
+	imageIsPriority?: boolean;
 };
 
 // Const definitions
@@ -39,6 +40,7 @@ const {
 	imageSquareSizePx,
 	imagePosition = "right",
 	imageAlt,
+	imageIsPriority = false,
 } = Astro.props as HeroSectionProps;
 
 const isImageLeft = imagePosition === "left";
@@ -52,11 +54,12 @@ const isImageLeft = imagePosition === "left";
 				<HeroSectionImage
 					image={image}
 					imageAlt={imageAlt}
+					isPriority={imageIsPriority}
 					{...(imageAspect ? { imageAspect } : {})}
 					{...(imageSquareSizePx ? { imageSquareSizePx } : {})}
 				/>
 			) : (
-				<HeroSectionCopy
+				<HeroSectionContent
 					title={title}
 					subtitle={subtitle}
 					solidButton={solidButton}
@@ -68,7 +71,7 @@ const isImageLeft = imagePosition === "left";
 
 		<div slot="right">
 			{isImageLeft ? (
-				<HeroSectionCopy
+				<HeroSectionContent
 					title={title}
 					subtitle={subtitle}
 					solidButton={solidButton}
@@ -79,6 +82,7 @@ const isImageLeft = imagePosition === "left";
 				<HeroSectionImage
 					image={image}
 					imageAlt={imageAlt}
+					isPriority={imageIsPriority}
 					{...(imageAspect ? { imageAspect } : {})}
 					{...(imageSquareSizePx ? { imageSquareSizePx } : {})}
 				/>

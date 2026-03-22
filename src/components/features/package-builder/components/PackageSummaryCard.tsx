@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { BUSINESS_EMAILS } from "@/consts";
-import { inputClassName } from "@/components/package-builder/utils/field-styles";
+import { inputClassName } from "@/components/features/package-builder/utils/field-styles";
 
 export type RequestPackageConfig = {
   subject: string;
@@ -189,10 +189,14 @@ export default function PackageSummaryCard({
         </div>
       )}
 
-      <div className="flex items-center justify-between">
-        <span className="font-semibold">{totalLabel}</span>
-        <span className="font-semibold">{total}</span>
-      </div>
+      {total.trim() ? (
+        <div className="flex items-center justify-between">
+          <span className="font-semibold">{totalLabel}</span>
+          <span className="font-semibold">{total}</span>
+        </div>
+      ) : (
+        <div className="font-semibold whitespace-pre-line">{totalLabel}</div>
+      )}
 
       {canRequestPackage && requestPackage && (
         <Button type="button" className="w-full" onClick={() => setIsRequestOpen(true)}>

@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import MixingAndMasteringBuilder from "@/components/package-builder/builders/MixingAndMasteringBuilder";
-import AudioEditingBuilder from "@/components/package-builder/builders/AudioEditingBuilder";
-import AudioRepairBuilder from "@/components/package-builder/builders/AudioRepairBuilder";
-import TrainingBuilder from "@/components/package-builder/builders/TrainingBuilder";
-import ChangeCategoryButton from "@/components/package-builder/components/ChangeCategoryButton";
+import MixingAndMasteringBuilder from "@/components/features/package-builder/builders/MixingAndMasteringBuilder";
+import AudioEditingBuilder from "@/components/features/package-builder/builders/AudioEditingBuilder";
+import AudioRepairBuilder from "@/components/features/package-builder/builders/AudioRepairBuilder";
+import TrainingBuilder from "@/components/features/package-builder/builders/TrainingBuilder";
+import ChangeCategoryButton from "@/components/features/package-builder/components/ChangeCategoryButton";
 
 type BuilderGroup = "audio" | "training";
 type AudioCategory = "mixingAndMastering" | "audioEditing" | "audioRepair";

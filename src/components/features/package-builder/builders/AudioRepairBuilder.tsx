@@ -1,6 +1,6 @@
 import { REPAIR_SERVICE_PER_TRACK_CAD_CENTS, cadCentsToDollars } from "@/lib/pricing/catalog";
-import AudioTrackServiceBuilder from "@/components/package-builder/builders/AudioTrackServiceBuilder";
-import { REPAIR_SERVICE_NOTE_PLACEHOLDERS } from "@/components/package-builder/config/service-note-placeholders";
+import AudioTrackServiceBuilder from "@/components/features/package-builder/builders/AudioTrackServiceBuilder";
+import { REPAIR_SERVICE_NOTE_PLACEHOLDERS } from "@/components/features/package-builder/config/service-note-placeholders";
 
 export type AudioRepairBuilderProps = {
   onChangeCategory?: () => void;

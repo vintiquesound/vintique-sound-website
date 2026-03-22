@@ -1,28 +1,109 @@
 ---
-import CurrencySelectorMenu from "./CurrencySelectorMenu"
+// Third party libraries
+import { Check } from "lucide-astro"
+
+// Local UI components
+import DropdownMenu from "@/components/ui/DropdownMenu.astro"
+
+// Local utilities
 import {
   DEFAULT_DISPLAY_CURRENCY,
+  DISPLAY_CURRENCY_EVENT,
   DISPLAY_CURRENCY_STORAGE_KEY,
   getAllowedDisplayCurrencies,
 } from "@/lib/pricing/currency-preference"
+import type { CurrencyCode } from "@/lib/pricing/types"
 
 const allowedDisplayCurrencies = getAllowedDisplayCurrencies()
+
+const currencyLabelByCode: Record<CurrencyCode, string> = {
+  CAD: "CAD $",
+  USD: "USD $",
+  EUR: "EUR €",
+  GBP: "GBP £",
+}
 ---
+
+<DropdownMenu
+  id="currency-selector"
+  ariaLabel="Currency Selector"
+  menuAriaLabel="Currency options"
+  selectedValue={DEFAULT_DISPLAY_CURRENCY}
+  triggerClassName="text-sm font-medium"
+  menuClassName="min-w-28"
+>
+  <Fragment slot="trigger">
+    <span data-currency-label>{currencyLabelByCode[DEFAULT_DISPLAY_CURRENCY]}</span>
+  </Fragment>
+
+  {allowedDisplayCurrencies.map((code) => (
+    <button
+      id={`currency-option-${code.toLowerCase()}`}
+      type="button"
+      class="flex w-full items-center justify-between gap-3 py-[0.6rem] px-3 rounded-lg cursor-pointer text-left text-sm hover:text-accent"
+      role="menuitemradio"
+      aria-checked="false"
+      tabindex="-1"
+      data-dropdown-item
+      data-value={code}
+    >
+      <span>{currencyLabelByCode[code]}</span>
+      <span aria-hidden="true" data-dropdown-selected-indicator hidden>
+        <Check class="size-4" />
+      </span>
+    </button>
+  ))}
+</DropdownMenu>
 
 <script
   is:inline
   define:vars={{
     storageKey: DISPLAY_CURRENCY_STORAGE_KEY,
+    eventName: DISPLAY_CURRENCY_EVENT,
     allowed: allowedDisplayCurrencies,
     fallback: DEFAULT_DISPLAY_CURRENCY,
+    labelByCode: currencyLabelByCode,
   }}
 >
   (() => {
-    const raw = localStorage.getItem(storageKey) || fallback;
-    const currency = allowed.includes(raw) ? raw : fallback;
-    localStorage.setItem(storageKey, currency);
-    document.documentElement.dataset.displayCurrency = currency;
+    const root = document.querySelector('[data-dropdown-id="currency-selector"]');
+    if (!(root instanceof HTMLElement)) return;
+
+    const labelNode = root.querySelector("[data-currency-label]");
+
+    if (!(labelNode instanceof HTMLElement)) return;
+
+    const normalize = (value) => (allowed.includes(value) ? value : fallback);
+
+    const setCurrency = (next, { persist = true, emit = true, syncDropdown = true } = {}) => {
+      const currency = normalize(next);
+
+      if (persist) {
+        localStorage.setItem(storageKey, currency);
+      }
+
+      document.documentElement.dataset.displayCurrency = currency;
+      labelNode.textContent = labelByCode[currency] ?? currency;
+
+      if (syncDropdown) {
+        root.dispatchEvent(new CustomEvent("dropdown-set-value", {
+          detail: { value: currency },
+          bubbles: true,
+        }));
+      }
+
+      if (emit) {
+        window.dispatchEvent(new CustomEvent(eventName, { detail: currency }));
+      }
+    };
+
+    const initial = normalize(localStorage.getItem(storageKey) || fallback);
+    setCurrency(initial, { persist: true, emit: false });
+
+    root.addEventListener("dropdown-select", (event) => {
+      const selected = event.detail?.value;
+      if (typeof selected !== "string") return;
+      setCurrency(selected, { persist: true, emit: true, syncDropdown: false });
+    });
   })();
 </script>
-
-<CurrencySelectorMenu client:idle />

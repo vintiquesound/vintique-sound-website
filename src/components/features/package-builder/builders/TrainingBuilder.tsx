@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import BuilderShell from "@/components/package-builder/components/BuilderShell";
-import BuilderStepFooter from "@/components/package-builder/components/BuilderStepFooter";
-import PackageSummaryCard from "@/components/package-builder/components/PackageSummaryCard";
-import { useStepFlow } from "@/components/package-builder/hooks/useStepFlow";
-import { inputClassName, textareaClassName } from "@/components/package-builder/utils/field-styles";
+import BuilderShell from "@/components/features/package-builder/components/BuilderShell";
+import BuilderStepFooter from "@/components/features/package-builder/components/BuilderStepFooter";
+import PackageSummaryCard from "@/components/features/package-builder/components/PackageSummaryCard";
+import { useStepFlow } from "@/components/features/package-builder/hooks/useStepFlow";
+import { inputClassName, textareaClassName } from "@/components/features/package-builder/utils/field-styles";
 import {
   packageOptions,
   trainingRecordingAddOn,
@@ -366,8 +366,8 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
   const summary = (
     <PackageSummaryCard
       title="Request Summary"
-      totalLabel="Pricing"
-      total="Custom quote after review"
+      totalLabel={"Pricing - Custom quote after review"}
+      total=""
       canRequestPackage={canRequestPackage}
       requestPackage={requestPackage}
       requestButtonLabel={requestType === "projectFeedback" ? "Request Project Feedback" : "Request Training"}
