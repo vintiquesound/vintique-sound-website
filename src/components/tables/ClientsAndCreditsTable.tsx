@@ -1,7 +1,7 @@
 import * as React from "react"
 import { ArrowDown, ArrowUp, ArrowUpDown, Search, X } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Button"
 import { cn } from "@/lib/utils"
 
 type SortDir = "asc" | "desc"

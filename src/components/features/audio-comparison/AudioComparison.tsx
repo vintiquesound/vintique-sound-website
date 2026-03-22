@@ -2,7 +2,7 @@ import * as React from "react";
 import { Pause, Play, RotateCcw, AudioWaveform } from "lucide-react";
 import WaveSurfer from "wavesurfer.js";
 
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/Button";
 
 type SampleKey =
   | "rawTracks"

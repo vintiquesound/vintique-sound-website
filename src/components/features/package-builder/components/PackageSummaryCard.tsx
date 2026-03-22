@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { BUSINESS_EMAILS } from "@/consts";
-import { inputClassName } from "@/components/package-builder/utils/field-styles";
+import { inputClassName } from "@/components/features/package-builder/utils/field-styles";
 
 export type RequestPackageConfig = {
   subject: string;

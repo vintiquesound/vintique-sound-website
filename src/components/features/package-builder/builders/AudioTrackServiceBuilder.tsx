@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import BuilderShell from "@/components/package-builder/components/BuilderShell";
-import BuilderStepFooter from "@/components/package-builder/components/BuilderStepFooter";
-import PackageSummaryCard from "@/components/package-builder/components/PackageSummaryCard";
-import PagedItemNav from "@/components/package-builder/components/PagedItemNav";
-import { EXTRAS_PRICING, formatCurrency, getLengthSurcharge, TRACK_LENGTH_TIERS } from "@/components/package-builder/config/pricing";
-import { useCollectionBuilder } from "@/components/package-builder/hooks/useCollectionBuilder";
-import { inputClassName, narrowInputClassName, textareaClassName } from "@/components/package-builder/utils/field-styles";
+import BuilderShell from "@/components/features/package-builder/components/BuilderShell";
+import BuilderStepFooter from "@/components/features/package-builder/components/BuilderStepFooter";
+import PackageSummaryCard from "@/components/features/package-builder/components/PackageSummaryCard";
+import PagedItemNav from "@/components/features/package-builder/components/PagedItemNav";
+import { EXTRAS_PRICING, formatCurrency, getLengthSurcharge, TRACK_LENGTH_TIERS } from "@/components/features/package-builder/config/pricing";
+import { useCollectionBuilder } from "@/components/features/package-builder/hooks/useCollectionBuilder";
+import { inputClassName, narrowInputClassName, textareaClassName } from "@/components/features/package-builder/utils/field-styles";
 import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
 
 export type AudioTrackBuilderStep = "tracks" | "details" | "services" | "extras";

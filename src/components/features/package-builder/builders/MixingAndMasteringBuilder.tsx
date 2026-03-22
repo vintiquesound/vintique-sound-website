@@ -1,19 +1,19 @@
 import * as React from "react";
 
-import BuilderStepFooter from "@/components/package-builder/components/BuilderStepFooter";
-import { Button } from "@/components/ui/button";
+import BuilderStepFooter from "@/components/features/package-builder/components/BuilderStepFooter";
+import { Button } from "@/components/ui/Button";
 
-import PackageSummaryCard from "@/components/package-builder/components/PackageSummaryCard";
-import PagedItemNav from "@/components/package-builder/components/PagedItemNav";
+import PackageSummaryCard from "@/components/features/package-builder/components/PackageSummaryCard";
+import PagedItemNav from "@/components/features/package-builder/components/PagedItemNav";
 import {
   EDITING_SERVICE_NOTE_PLACEHOLDERS,
   REPAIR_SERVICE_NOTE_PLACEHOLDERS,
-} from "@/components/package-builder/config/service-note-placeholders";
+} from "@/components/features/package-builder/config/service-note-placeholders";
 import {
   inputClassName,
   narrowInputClassName,
   textareaClassName,
-} from "@/components/package-builder/utils/field-styles";
+} from "@/components/features/package-builder/utils/field-styles";
 import {
   type BaseService,
 } from "@/lib/pricing/catalog";
