@@ -22,7 +22,12 @@ const THEME_OPTIONS = [
 >
   <Fragment slot="trigger">
     {THEME_OPTIONS.map(({ value, Icon }) => (
-      <span class={`hidden leading-none in-data-[theme-mode=${value}]:inline-flex`} aria-hidden="true" data-theme-icon={value}>
+      <span
+        class="inline-flex leading-none"
+        aria-hidden="true"
+        data-theme-icon={value}
+        hidden={value !== "system"}
+      >
         <Icon class="size-4.5" />
       </span>
     ))}
@@ -70,6 +75,14 @@ const THEME_OPTIONS = [
       document.documentElement.classList.toggle("dark", isDark);
     };
 
+    const syncThemeIcons = (mode) => {
+      root.querySelectorAll("[data-theme-icon]").forEach((node) => {
+        if (!(node instanceof HTMLElement)) return;
+        const iconMode = node.dataset.themeIcon;
+        node.hidden = iconMode !== mode;
+      });
+    };
+
     const setThemeMode = (next, { persist = true, syncDropdown = true } = {}) => {
       const mode = normalize(next);
 
@@ -79,6 +92,7 @@ const THEME_OPTIONS = [
 
       document.documentElement.dataset.themeMode = mode;
       applyThemeClass(mode);
+      syncThemeIcons(mode);
 
       if (syncDropdown) {
         root.dispatchEvent(new CustomEvent("dropdown-set-value", {

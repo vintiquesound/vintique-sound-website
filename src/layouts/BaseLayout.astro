@@ -57,6 +57,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <BaseHead title={finalTitle} description={finalDescription} {...baseHeadImageProps} />
     {hasGtm && (
       <>
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+        <link rel="preconnect" href="https://analytics.google.com" crossorigin />
+        <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
         <!-- Google Tag Manager -->
         <script is:inline set:html={gtmScript}></script>
         <!-- End Google Tag Manager -->
