@@ -1,28 +1,243 @@
 ---
-import CurrencySelectorMenu from "./CurrencySelectorMenu"
 import {
   DEFAULT_DISPLAY_CURRENCY,
+  DISPLAY_CURRENCY_EVENT,
   DISPLAY_CURRENCY_STORAGE_KEY,
   getAllowedDisplayCurrencies,
 } from "@/lib/pricing/currency-preference"
+import type { CurrencyCode } from "@/lib/pricing/types"
 
 const allowedDisplayCurrencies = getAllowedDisplayCurrencies()
+
+const currencyLabelByCode: Record<CurrencyCode, string> = {
+  CAD: "CAD $",
+  USD: "USD $",
+  EUR: "EUR €",
+  GBP: "GBP £",
+}
 ---
+
+<div class="relative" data-currency-selector>
+  <button
+    id="currency-selector-trigger"
+    type="button"
+    class="inline-flex items-center justify-center py-4 px-2 bg-transparent border-0 text-(--text) border-b-4 border-transparent transition-colors hover:text-accent focus:text-accent cursor-pointer focus-visible:outline-none text-sm font-medium"
+    aria-haspopup="menu"
+    aria-controls="currency-selector-menu"
+    aria-label="Currency Selector"
+    aria-expanded="false"
+    data-currency-trigger
+  >
+    <span data-currency-label>{currencyLabelByCode[DEFAULT_DISPLAY_CURRENCY]}</span>
+  </button>
+
+  <div
+    id="currency-selector-menu"
+    class="p-1 rounded-[10px] border border-border shadow-md z-30 text-(--text) bg-background backdrop-blur-lg supports-backdrop-filter:bg-background/85 absolute right-0 mt-2 min-w-28"
+    role="menu"
+    aria-labelledby="currency-selector-trigger"
+    aria-label="Currency options"
+    aria-orientation="vertical"
+    data-currency-menu
+    hidden
+  >
+    {allowedDisplayCurrencies.map((code) => (
+      <button
+        id={`currency-option-${code.toLowerCase()}`}
+        type="button"
+        class="flex w-full items-center justify-between gap-3 py-[0.6rem] px-3 rounded-lg cursor-pointer text-left text-sm hover:text-accent"
+        role="menuitemradio"
+        aria-checked="false"
+        tabindex="-1"
+        data-currency-option={code}
+      >
+        <span>{currencyLabelByCode[code]}</span>
+        <span aria-hidden="true" data-currency-check={code} hidden>✓</span>
+      </button>
+    ))}
+  </div>
+</div>
 
 <script
   is:inline
   define:vars={{
     storageKey: DISPLAY_CURRENCY_STORAGE_KEY,
+    eventName: DISPLAY_CURRENCY_EVENT,
     allowed: allowedDisplayCurrencies,
     fallback: DEFAULT_DISPLAY_CURRENCY,
+    labelByCode: currencyLabelByCode,
   }}
 >
   (() => {
-    const raw = localStorage.getItem(storageKey) || fallback;
-    const currency = allowed.includes(raw) ? raw : fallback;
-    localStorage.setItem(storageKey, currency);
-    document.documentElement.dataset.displayCurrency = currency;
+    const root = document.querySelector("[data-currency-selector]");
+    if (!(root instanceof HTMLElement)) return;
+
+    const trigger = root.querySelector("[data-currency-trigger]");
+    const menu = root.querySelector("[data-currency-menu]");
+    const labelNode = root.querySelector("[data-currency-label]");
+
+    if (!(trigger instanceof HTMLButtonElement)) return;
+    if (!(menu instanceof HTMLElement)) return;
+    if (!(labelNode instanceof HTMLElement)) return;
+
+    const options = Array.from(root.querySelectorAll("[data-currency-option]"));
+    const checks = Array.from(root.querySelectorAll("[data-currency-check]"));
+    const optionButtons = options.filter(
+      (option) => option instanceof HTMLButtonElement
+    );
+
+    if (optionButtons.length === 0) return;
+
+    let activeIndex = 0;
+
+    const normalize = (value) => (allowed.includes(value) ? value : fallback);
+
+    const setActiveIndex = (nextIndex) => {
+      const bounded = ((nextIndex % optionButtons.length) + optionButtons.length) % optionButtons.length;
+      activeIndex = bounded;
+
+      optionButtons.forEach((button, index) => {
+        button.tabIndex = index === bounded ? 0 : -1;
+      });
+    };
+
+    const getCurrentCurrency = () => normalize(localStorage.getItem(storageKey) || fallback);
+
+    const focusActiveOption = () => {
+      optionButtons[activeIndex]?.focus();
+    };
+
+    const setOpen = (open) => {
+      menu.hidden = !open;
+      trigger.setAttribute("aria-expanded", String(open));
+
+      if (!open) return;
+
+      const selected = getCurrentCurrency();
+      const selectedIndex = optionButtons.findIndex(
+        (button) => button.dataset.currencyOption === selected
+      );
+      setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
+      focusActiveOption();
+    };
+
+    const setCurrency = (next, { persist = true, emit = true } = {}) => {
+      const currency = normalize(next);
+
+      if (persist) {
+        localStorage.setItem(storageKey, currency);
+      }
+
+      document.documentElement.dataset.displayCurrency = currency;
+      labelNode.textContent = labelByCode[currency] ?? currency;
+
+      options.forEach((option) => {
+        if (!(option instanceof HTMLElement)) return;
+        const isActive = option.dataset.currencyOption === currency;
+        option.classList.toggle("font-semibold", isActive);
+        option.setAttribute("aria-checked", String(isActive));
+      });
+
+      checks.forEach((check) => {
+        if (!(check instanceof HTMLElement)) return;
+        check.hidden = check.dataset.currencyCheck !== currency;
+      });
+
+      if (emit) {
+        window.dispatchEvent(new CustomEvent(eventName, { detail: currency }));
+      }
+    };
+
+    const initial = normalize(localStorage.getItem(storageKey) || fallback);
+    setCurrency(initial, { persist: true, emit: false });
+
+    const initialIndex = optionButtons.findIndex(
+      (button) => button.dataset.currencyOption === initial
+    );
+    setActiveIndex(initialIndex >= 0 ? initialIndex : 0);
+
+    trigger.addEventListener("click", () => {
+      setOpen(menu.hidden);
+    });
+
+    trigger.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+        event.preventDefault();
+        if (menu.hidden) {
+          setOpen(true);
+          if (event.key === "ArrowUp") setActiveIndex(optionButtons.length - 1);
+          focusActiveOption();
+          return;
+        }
+
+        setActiveIndex(activeIndex + (event.key === "ArrowDown" ? 1 : -1));
+        focusActiveOption();
+      }
+
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        if (menu.hidden) {
+          setOpen(true);
+        }
+      }
+    });
+
+    optionButtons.forEach((option, index) => {
+      option.addEventListener("focus", () => {
+        setActiveIndex(index);
+      });
+
+      option.addEventListener("click", () => {
+        const next = option.dataset.currencyOption || fallback;
+        setCurrency(next);
+        setOpen(false);
+        trigger.focus();
+      });
+
+      option.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowDown") {
+          event.preventDefault();
+          setActiveIndex(activeIndex + 1);
+          focusActiveOption();
+        } else if (event.key === "ArrowUp") {
+          event.preventDefault();
+          setActiveIndex(activeIndex - 1);
+          focusActiveOption();
+        } else if (event.key === "Home") {
+          event.preventDefault();
+          setActiveIndex(0);
+          focusActiveOption();
+        } else if (event.key === "End") {
+          event.preventDefault();
+          setActiveIndex(optionButtons.length - 1);
+          focusActiveOption();
+        } else if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          const next = option.dataset.currencyOption || fallback;
+          setCurrency(next);
+          setOpen(false);
+          trigger.focus();
+        } else if (event.key === "Escape") {
+          event.preventDefault();
+          setOpen(false);
+          trigger.focus();
+        } else if (event.key === "Tab") {
+          setOpen(false);
+        }
+      });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (root.contains(event.target)) return;
+      setOpen(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape") return;
+      if (menu.hidden) return;
+      event.preventDefault();
+      setOpen(false);
+      trigger.focus();
+    });
   })();
 </script>
-
-<CurrencySelectorMenu client:idle />
