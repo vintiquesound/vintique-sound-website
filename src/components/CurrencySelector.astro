@@ -1,5 +1,11 @@
 ---
+// Third party libraries
+import { Check } from "lucide-astro"
+
+// Local UI components
 import DropdownMenu from "@/components/ui/DropdownMenu.astro"
+
+// Local utilities
 import {
   DEFAULT_DISPLAY_CURRENCY,
   DISPLAY_CURRENCY_EVENT,
@@ -42,7 +48,9 @@ const currencyLabelByCode: Record<CurrencyCode, string> = {
       data-value={code}
     >
       <span>{currencyLabelByCode[code]}</span>
-      <span aria-hidden="true" data-dropdown-selected-indicator hidden>✓</span>
+      <span aria-hidden="true" data-dropdown-selected-indicator hidden>
+        <Check class="size-4" />
+      </span>
     </button>
   ))}
 </DropdownMenu>
