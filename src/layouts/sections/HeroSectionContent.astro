@@ -2,7 +2,7 @@
 import type { CtaButton } from "@/types/cta";
 import Button from "@/components/ui/Button.astro";
 
-type HeroSectionCopyProps = {
+type HeroSectionContentProps = {
 	title: string;
 	subtitle?: string;
 	solidButton: CtaButton;
@@ -13,7 +13,7 @@ type HeroSectionCopyProps = {
 	};
 };
 
-const { title, subtitle, solidButton, outlineButton, textLink } = Astro.props as HeroSectionCopyProps;
+const { title, subtitle, solidButton, outlineButton, textLink } = Astro.props as HeroSectionContentProps;
 
 const solidButtonSize = solidButton.size ?? "lg";
 const outlineButtonSize = outlineButton?.size ?? "lg";
@@ -29,6 +29,7 @@ const outlineButtonSize = outlineButton?.size ?? "lg";
 	<div class="flex flex-wrap gap-4">
 		<Button
 			href={solidButton.href}
+			aria-label={solidButton.ariaLabel}
 			variant={"solid"}
 			size={solidButtonSize}
 			fullWidth={solidButton.fullWidth}
@@ -54,6 +55,7 @@ const outlineButtonSize = outlineButton?.size ?? "lg";
 		{outlineButton && (
 			<Button
 				href={outlineButton.href}
+				aria-label={outlineButton.ariaLabel}
 				variant={"outline"}
 				size={outlineButtonSize}
 				fullWidth={outlineButton.fullWidth}

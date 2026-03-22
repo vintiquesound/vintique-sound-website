@@ -8,6 +8,7 @@ export type CtaIcon = React.ComponentType<
 export type CtaButton = {
   label: string;
   href: string;
+  ariaLabel?: string;
 
   variant?: ButtonVariant;
   size?: ButtonSize;
