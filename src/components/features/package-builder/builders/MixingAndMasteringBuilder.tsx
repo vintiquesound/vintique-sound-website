@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Info } from "lucide-react";
 
 import BuilderStepFooter from "@/components/features/package-builder/components/BuilderStepFooter";
 import { Button } from "@/components/ui/Button";
@@ -1902,7 +1903,19 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
                     </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Multitrack Export</label>
+                    <label className="text-sm font-medium inline-flex items-center gap-2">
+                      <span>Multitrack Export</span>
+                      <span className="relative inline-flex items-center group" tabIndex={0}>
+                        <Info className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                        <span
+                          role="tooltip"
+                          className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-72 -translate-x-1/2 rounded-md border border-border bg-background p-3 text-xs font-normal leading-relaxed text-foreground opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
+                        >
+                          Multitrack export includes all individual tracks after processing so you can import
+                          them into your DAW and recreate the full mix session exactly as delivered.
+                        </span>
+                      </span>
+                    </label>
                     <select
                       value={activeSong.multitrackExport ? "yes" : "no"}
                       onChange={(e) => updateActiveSong({ multitrackExport: e.target.value === "yes" })}
