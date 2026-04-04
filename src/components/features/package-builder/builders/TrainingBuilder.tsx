@@ -261,8 +261,8 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
       };
     }
 
-    lines.push(`Request type: ${REQUEST_TYPE_LABELS[requestType]}`);
     lines.push(`Project start date: ${projectStartDate || "—"}`);
+    lines.push(`Request type: ${REQUEST_TYPE_LABELS[requestType]}`);
 
     if (requestType === "oneOnOneTraining") {
       if (trainingPackage) {
@@ -398,8 +398,8 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
       downloadFilePrefix="training-request"
     >
       <ul className="text-sm space-y-2">
-        <li>Request: {requestType ? REQUEST_TYPE_LABELS[requestType] : "—"}</li>
         <li>Project start date: {projectStartDate || "—"}</li>
+        <li>Request: {requestType ? REQUEST_TYPE_LABELS[requestType] : "—"}</li>
 
         {requestType === "oneOnOneTraining" && (
           <>

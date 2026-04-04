@@ -797,12 +797,12 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
 
   const requestPackage = React.useMemo(() => {
     const lines: string[] = [];
+    lines.push(`Project start date: ${projectStartDate || "—"}`);
     lines.push("Service: Mixing & Mastering");
     lines.push(`Project type: ${projectType}`);
     lines.push(`Artist: ${artistName.trim() || "—"}`);
     if (projectType === "album") lines.push(`Album: ${albumName.trim() || "—"}`);
     lines.push(`Songs: ${projectType === "album" ? Math.max(2, songCount) : 1}`);
-    lines.push(`Project start date: ${projectStartDate || "—"}`);
     lines.push("");
 
     songs.forEach((song, idx) => {
@@ -2324,11 +2324,11 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
         requestPackage={requestPackage}
       >
         <ul className="text-sm space-y-2">
+          <li>Project start date: {projectStartDate || "—"}</li>
           <li>Type: {projectType}</li>
           <li>Artist: {artistName.trim() || "—"}</li>
           {projectType === "album" && <li>Album: {albumName.trim() || "—"}</li>}
           <li>Songs: {projectType === "album" ? Math.max(2, songCount) : 1}</li>
-          <li>Project start date: {projectStartDate || "—"}</li>
           {selectedServiceSummary.map((serviceLine) => (
             <li key={serviceLine}>{serviceLine}</li>
           ))}

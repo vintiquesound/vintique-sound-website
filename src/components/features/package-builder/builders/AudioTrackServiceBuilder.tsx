@@ -124,9 +124,9 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
 
   const requestPackage = React.useMemo(() => {
     const lines: string[] = [];
+    lines.push(`Project start date: ${projectStartDate || "—"}`);
     lines.push(`Service: ${copy.requestServiceName}`);
     lines.push(`Tracks: ${trackCount}`);
-    lines.push(`Project start date: ${projectStartDate || "—"}`);
 
     tracks.forEach((track, idx) => {
       lines.push("");
