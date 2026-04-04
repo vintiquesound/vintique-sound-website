@@ -2,6 +2,7 @@ import * as React from "react";
 import { Info } from "lucide-react";
 
 import BuilderStepFooter from "@/components/features/package-builder/components/BuilderStepFooter";
+import ProjectStartDate from "@/components/features/package-builder/components/ProjectStartDate";
 import { Button } from "@/components/ui/Button";
 
 import PackageSummaryCard from "@/components/features/package-builder/components/PackageSummaryCard";
@@ -31,7 +32,7 @@ import { convertCadCentsToCurrencyCents, formatMoneyFromCents } from "@/lib/pric
 import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
 
 type ProjectType = "single" | "album";
-type BuilderStep = "project" | "songs" | "delivery";
+type BuilderStep = "project" | "songs" | "delivery" | "startDate";
 type SongStep = "details" | "base" | "editing" | "repair" | "exports" | "addons";
 
 type ServiceSelection = BaseService | "";
@@ -611,6 +612,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
     custom: false,
   });
   const [customPlatformMasterDetails, setCustomPlatformMasterDetails] = React.useState("");
+  const [projectStartDate, setProjectStartDate] = React.useState("");
 
   const [songs, setSongs] = React.useState<SongConfig[]>(() => [createEmptySong()]);
   const [activeSongIndex, setActiveSongIndex] = React.useState(0);
@@ -642,6 +644,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
     customDeliveryDetails,
     platformMasters,
     customPlatformMasterDetails,
+    projectStartDate,
   ]);
 
   const total = React.useMemo(() => songs.reduce((sum, song) => sum + computeSongPrice(song), 0), [
@@ -698,8 +701,9 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
   const canRequestFinalizedPackage =
     isPackageComplete &&
     isPackageFinalized &&
-    step === "delivery" &&
-    canFinalizeOnDelivery;
+    step === "startDate" &&
+    canFinalizeOnDelivery &&
+    Boolean(projectStartDate);
 
   const selectedDeliveryFormatLabels = React.useMemo(
     () =>
@@ -798,6 +802,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
     lines.push(`Artist: ${artistName.trim() || "—"}`);
     if (projectType === "album") lines.push(`Album: ${albumName.trim() || "—"}`);
     lines.push(`Songs: ${projectType === "album" ? Math.max(2, songCount) : 1}`);
+    lines.push(`Project start date: ${projectStartDate || "—"}`);
     lines.push("");
 
     songs.forEach((song, idx) => {
@@ -1024,6 +1029,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
     selectedPlatformMasterLabels,
     platformMasters.custom,
     customPlatformMasterDetails,
+    projectStartDate,
     displayCurrency,
     conversionFee,
   ]);
@@ -2261,8 +2267,42 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
                 </Button>
                 <Button
                   type="button"
-                  onClick={() => setIsPackageFinalized(true)}
+                  onClick={() => {
+                    if (!canFinalizeOnDelivery) return;
+                    setStep("startDate");
+                  }}
                   disabled={!canFinalizeOnDelivery}
+                >
+                  Next
+                </Button>
+              </div>
+            </section>
+          </>
+        )}
+
+        {step === "startDate" && (
+          <>
+            <div className="space-y-0.5">
+              <h2 className="text-xl font-semibold">Project Start Date</h2>
+              <p className="text-sm text-muted-foreground">
+                Pick your preferred project start date before requesting this package.
+              </p>
+            </div>
+
+            <section className="space-y-5">
+              <ProjectStartDate
+                selectedDate={projectStartDate}
+                onSelectDate={setProjectStartDate}
+              />
+
+              <div className="flex items-center justify-end gap-2">
+                <Button type="button" variant="ghost" onClick={() => setStep("delivery")}>
+                  Back
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => setIsPackageFinalized(true)}
+                  disabled={!projectStartDate}
                 >
                   Done
                 </Button>
@@ -2288,6 +2328,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
           <li>Artist: {artistName.trim() || "—"}</li>
           {projectType === "album" && <li>Album: {albumName.trim() || "—"}</li>}
           <li>Songs: {projectType === "album" ? Math.max(2, songCount) : 1}</li>
+          <li>Project start date: {projectStartDate || "—"}</li>
           {selectedServiceSummary.map((serviceLine) => (
             <li key={serviceLine}>{serviceLine}</li>
           ))}
@@ -2352,7 +2393,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
           </>
         )}
 
-        {step === "delivery" && (
+        {(step === "delivery" || step === "startDate") && (
           <>
             <div className="h-px bg-border" />
             <div className="space-y-2 text-sm">

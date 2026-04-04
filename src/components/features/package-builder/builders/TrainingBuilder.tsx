@@ -3,6 +3,7 @@ import * as React from "react";
 import BuilderShell from "@/components/features/package-builder/components/BuilderShell";
 import BuilderStepFooter from "@/components/features/package-builder/components/BuilderStepFooter";
 import PackageSummaryCard from "@/components/features/package-builder/components/PackageSummaryCard";
+import ProjectStartDate from "@/components/features/package-builder/components/ProjectStartDate";
 import { useStepFlow } from "@/components/features/package-builder/hooks/useStepFlow";
 import { inputClassName, textareaClassName } from "@/components/features/package-builder/utils/field-styles";
 import {
@@ -36,6 +37,7 @@ type TrainingStepId =
   | TrainingTopicKey
   | "projectFeedbackPackage"
   | "projectFeedback"
+  | "startDate"
   | "review";
 
 type StepConfig = {
@@ -92,6 +94,7 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
   const [projectFeedbackPackage, setProjectFeedbackPackage] = React.useState<ProjectFeedbackPackage>("");
   const [projectFeedbackDaw, setProjectFeedbackDaw] = React.useState<ProjectFeedbackDaw>("");
   const [projectFeedbackSelections, setProjectFeedbackSelections] = React.useState<string[]>([]);
+  const [projectStartDate, setProjectStartDate] = React.useState("");
   const [additionalNotes, setAdditionalNotes] = React.useState("");
   const [isPackageFinalized, setIsPackageFinalized] = React.useState(false);
 
@@ -126,6 +129,11 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
           description: trainingBuilderTopics[topic].description,
         })),
         {
+          id: "startDate",
+          title: "Project Start Date",
+          description: "Choose when you want this project to begin. Start dates begin tomorrow and later.",
+        },
+        {
           id: "review",
           title: "Review Your Request",
           description: "Add any final notes, then send your training request.",
@@ -145,6 +153,11 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
           id: "projectFeedback",
           title: "Project Feedback Details",
           description: "Tell me which DAW you use and what you want me to focus on during the walkthrough.",
+        },
+        {
+          id: "startDate",
+          title: "Project Start Date",
+          description: "Choose when you want this project to begin. Start dates begin tomorrow and later.",
         },
         {
           id: "review",
@@ -179,6 +192,8 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
         return Boolean(projectFeedbackPackage);
       case "projectFeedback":
         return Boolean(projectFeedbackDaw) && projectFeedbackSelections.length > 0;
+      case "startDate":
+        return Boolean(projectStartDate);
       case "review":
         return true;
       default:
@@ -199,11 +214,15 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     if (requestType === "oneOnOneTraining") {
       return Boolean(trainingPackage)
         && selectedTopicKeys.length > 0
-        && selectedTopicKeys.every((topic) => topicFocusSelections[topic].length > 0);
+        && selectedTopicKeys.every((topic) => topicFocusSelections[topic].length > 0)
+        && Boolean(projectStartDate);
     }
 
     if (requestType === "projectFeedback") {
-      return Boolean(projectFeedbackPackage) && Boolean(projectFeedbackDaw) && projectFeedbackSelections.length > 0;
+      return Boolean(projectFeedbackPackage)
+        && Boolean(projectFeedbackDaw)
+        && projectFeedbackSelections.length > 0
+        && Boolean(projectStartDate);
     }
 
     return false;
@@ -224,6 +243,7 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     projectFeedbackDaw,
     projectFeedbackPackage,
     projectFeedbackSelections,
+    projectStartDate,
     requestType,
     selectedTopicKeys,
     topicFocusSelections,
@@ -242,6 +262,7 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     }
 
     lines.push(`Request type: ${REQUEST_TYPE_LABELS[requestType]}`);
+    lines.push(`Project start date: ${projectStartDate || "—"}`);
 
     if (requestType === "oneOnOneTraining") {
       if (trainingPackage) {
@@ -298,6 +319,7 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     requestType,
     selectedTopicKeys,
     topicFocusSelections,
+    projectStartDate,
     trainingPackage,
     trainingRecordingRequested,
   ]);
@@ -377,6 +399,7 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
     >
       <ul className="text-sm space-y-2">
         <li>Request: {requestType ? REQUEST_TYPE_LABELS[requestType] : "—"}</li>
+        <li>Project start date: {projectStartDate || "—"}</li>
 
         {requestType === "oneOnOneTraining" && (
           <>
@@ -593,6 +616,13 @@ export default function TrainingBuilder({ onChangeCategory: _onChangeCategory, i
               />
             </div>
           </div>
+        )}
+
+        {currentStep.id === "startDate" && (
+          <ProjectStartDate
+            selectedDate={projectStartDate}
+            onSelectDate={setProjectStartDate}
+          />
         )}
 
         <BuilderStepFooter
