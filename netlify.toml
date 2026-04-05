@@ -3,8 +3,9 @@ command = "pnpm build"
 publish = "dist"
 
 [build.environment]
-NODE_VERSION = "20"
+NODE_VERSION = "22"
 
+# Page redirects
 [[redirects]]
 from = "/mixing-mastering"
 to = "/mixing-and-mastering"
@@ -23,12 +24,45 @@ to = "/clients-and-credits"
 status = 301
 force = true
 
+# Blog post redirects
 [[redirects]]
 from = "/post/mixing-tip-subtractive-eq-first-additive-eq-second"
 to = "/blog/2022/subtractive-eq-first-additive-eq-second"
 status = 301
 force = true
 
+# Blog tag redirects
+[[redirects]]
+from = "/blog/categories/mixing"
+to = "/blog/tag/mixing/"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/categories/mastering"
+to = "/blog/tag/mastering/"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/categories/plugins"
+to = "/blog/tag/plugins/"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/categories/cubase"
+to = "/blog/tag/cubase/"
+status = 301
+force = true
+
+[[redirects]]
+from = "/blog/categories/vintage-gear"
+to = "/blog/tag/vintage/"
+status = 301
+force = true
+
+# Other configs
 [[context.test.headers]]
 for = "/*"
 

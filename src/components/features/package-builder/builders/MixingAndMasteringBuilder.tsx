@@ -1,6 +1,8 @@
 import * as React from "react";
+import { Info } from "lucide-react";
 
 import BuilderStepFooter from "@/components/features/package-builder/components/BuilderStepFooter";
+import ProjectStartDate from "@/components/features/package-builder/components/ProjectStartDate";
 import { Button } from "@/components/ui/Button";
 
 import PackageSummaryCard from "@/components/features/package-builder/components/PackageSummaryCard";
@@ -30,7 +32,7 @@ import { convertCadCentsToCurrencyCents, formatMoneyFromCents } from "@/lib/pric
 import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
 
 type ProjectType = "single" | "album";
-type BuilderStep = "project" | "songs" | "delivery";
+type BuilderStep = "project" | "songs" | "delivery" | "startDate";
 type SongStep = "details" | "base" | "editing" | "repair" | "exports" | "addons";
 
 type ServiceSelection = BaseService | "";
@@ -610,6 +612,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
     custom: false,
   });
   const [customPlatformMasterDetails, setCustomPlatformMasterDetails] = React.useState("");
+  const [projectStartDate, setProjectStartDate] = React.useState("");
 
   const [songs, setSongs] = React.useState<SongConfig[]>(() => [createEmptySong()]);
   const [activeSongIndex, setActiveSongIndex] = React.useState(0);
@@ -641,6 +644,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
     customDeliveryDetails,
     platformMasters,
     customPlatformMasterDetails,
+    projectStartDate,
   ]);
 
   const total = React.useMemo(() => songs.reduce((sum, song) => sum + computeSongPrice(song), 0), [
@@ -697,8 +701,9 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
   const canRequestFinalizedPackage =
     isPackageComplete &&
     isPackageFinalized &&
-    step === "delivery" &&
-    canFinalizeOnDelivery;
+    step === "startDate" &&
+    canFinalizeOnDelivery &&
+    Boolean(projectStartDate);
 
   const selectedDeliveryFormatLabels = React.useMemo(
     () =>
@@ -792,6 +797,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
 
   const requestPackage = React.useMemo(() => {
     const lines: string[] = [];
+    lines.push(`Project start date: ${projectStartDate || "—"}`);
     lines.push("Service: Mixing & Mastering");
     lines.push(`Project type: ${projectType}`);
     lines.push(`Artist: ${artistName.trim() || "—"}`);
@@ -1023,6 +1029,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
     selectedPlatformMasterLabels,
     platformMasters.custom,
     customPlatformMasterDetails,
+    projectStartDate,
     displayCurrency,
     conversionFee,
   ]);
@@ -1902,7 +1909,19 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
                     </div>
 
                   <div className="space-y-2">
-                    <label className="text-sm font-medium">Multitrack Export</label>
+                    <label className="text-sm font-medium inline-flex items-center gap-2">
+                      <span>Multitrack Export</span>
+                      <span className="relative inline-flex items-center group" tabIndex={0}>
+                        <Info className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+                        <span
+                          role="tooltip"
+                          className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-72 -translate-x-1/2 rounded-md border border-border bg-background p-3 text-xs font-normal leading-relaxed text-foreground opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100"
+                        >
+                          Multitrack export includes all individual tracks after processing so you can import
+                          them into your DAW and recreate the full mix session exactly as delivered.
+                        </span>
+                      </span>
+                    </label>
                     <select
                       value={activeSong.multitrackExport ? "yes" : "no"}
                       onChange={(e) => updateActiveSong({ multitrackExport: e.target.value === "yes" })}
@@ -2248,8 +2267,42 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
                 </Button>
                 <Button
                   type="button"
-                  onClick={() => setIsPackageFinalized(true)}
+                  onClick={() => {
+                    if (!canFinalizeOnDelivery) return;
+                    setStep("startDate");
+                  }}
                   disabled={!canFinalizeOnDelivery}
+                >
+                  Next
+                </Button>
+              </div>
+            </section>
+          </>
+        )}
+
+        {step === "startDate" && (
+          <>
+            <div className="space-y-0.5">
+              <h2 className="text-xl font-semibold">Project Start Date</h2>
+              <p className="text-sm text-muted-foreground">
+                Pick your preferred project start date before requesting this package.
+              </p>
+            </div>
+
+            <section className="space-y-5">
+              <ProjectStartDate
+                selectedDate={projectStartDate}
+                onSelectDate={setProjectStartDate}
+              />
+
+              <div className="flex items-center justify-end gap-2">
+                <Button type="button" variant="ghost" onClick={() => setStep("delivery")}>
+                  Back
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => setIsPackageFinalized(true)}
+                  disabled={!projectStartDate}
                 >
                   Done
                 </Button>
@@ -2271,6 +2324,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
         requestPackage={requestPackage}
       >
         <ul className="text-sm space-y-2">
+          <li>Project start date: {projectStartDate || "—"}</li>
           <li>Type: {projectType}</li>
           <li>Artist: {artistName.trim() || "—"}</li>
           {projectType === "album" && <li>Album: {albumName.trim() || "—"}</li>}
@@ -2339,7 +2393,7 @@ export default function MixingAndMasteringBuilder({ onChangeCategory: _onChangeC
           </>
         )}
 
-        {step === "delivery" && (
+        {(step === "delivery" || step === "startDate") && (
           <>
             <div className="h-px bg-border" />
             <div className="space-y-2 text-sm">

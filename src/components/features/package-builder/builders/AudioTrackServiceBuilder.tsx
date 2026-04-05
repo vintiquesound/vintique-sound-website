@@ -4,12 +4,13 @@ import BuilderShell from "@/components/features/package-builder/components/Build
 import BuilderStepFooter from "@/components/features/package-builder/components/BuilderStepFooter";
 import PackageSummaryCard from "@/components/features/package-builder/components/PackageSummaryCard";
 import PagedItemNav from "@/components/features/package-builder/components/PagedItemNav";
+import ProjectStartDate from "@/components/features/package-builder/components/ProjectStartDate";
 import { EXTRAS_PRICING, formatCurrency, getLengthSurcharge, TRACK_LENGTH_TIERS } from "@/components/features/package-builder/config/pricing";
 import { useCollectionBuilder } from "@/components/features/package-builder/hooks/useCollectionBuilder";
 import { inputClassName, narrowInputClassName, textareaClassName } from "@/components/features/package-builder/utils/field-styles";
 import { useDisplayCurrency } from "@/lib/pricing/use-display-currency";
 
-export type AudioTrackBuilderStep = "tracks" | "details" | "services" | "extras";
+export type AudioTrackBuilderStep = "tracks" | "details" | "services" | "extras" | "startDate";
 
 type ServiceConfig = {
   enabled: boolean;
@@ -70,6 +71,7 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
   const [isPackageFinalized, setIsPackageFinalized] = React.useState(false);
   const [rushService2Days, setRushService2Days] = React.useState(false);
   const [unlimitedRevisions1Month, setUnlimitedRevisions1Month] = React.useState(false);
+  const [projectStartDate, setProjectStartDate] = React.useState("");
 
   const createTrack = React.useCallback(
     () => createEmptyTrack(serviceDefinitions),
@@ -94,7 +96,7 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
 
   React.useEffect(() => {
     setIsPackageFinalized(false);
-  }, [trackCount, tracks, rushService2Days, unlimitedRevisions1Month]);
+  }, [trackCount, tracks, rushService2Days, unlimitedRevisions1Month, projectStartDate]);
 
   const activeTrackLengthSurcharge = React.useMemo(
     () => getLengthSurcharge(activeTrack?.lengthMinutes ?? null, TRACK_LENGTH_TIERS),
@@ -122,6 +124,7 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
 
   const requestPackage = React.useMemo(() => {
     const lines: string[] = [];
+    lines.push(`Project start date: ${projectStartDate || "—"}`);
     lines.push(`Service: ${copy.requestServiceName}`);
     lines.push(`Tracks: ${trackCount}`);
 
@@ -206,6 +209,7 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
     trackCount,
     tracks,
     unlimitedRevisions1Month,
+    projectStartDate,
   ]);
 
   const canGoNextFromTrack = Boolean(activeTrack?.lengthMinutes != null);
@@ -236,7 +240,7 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
     <PackageSummaryCard
       title={copy.summaryTitle ?? "Package Summary"}
       total={formatCurrency(total)}
-      canRequestPackage={isPackageFinalized}
+      canRequestPackage={isPackageFinalized && step === "startDate" && Boolean(projectStartDate)}
       requestPackage={requestPackage}
     >
       <div className="space-y-2 text-sm">
@@ -263,6 +267,10 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
         <div className="flex justify-between gap-3">
           <span className="text-muted-foreground">Unlimited revisions</span>
           <span>{formatCurrency(unlimitedRevisions1Month ? EXTRAS_PRICING.unlimitedRevisions1Month : 0)}</span>
+        </div>
+        <div className="flex justify-between gap-3">
+          <span className="text-muted-foreground">Project start date</span>
+          <span>{projectStartDate || "—"}</span>
         </div>
       </div>
     </PackageSummaryCard>
@@ -294,7 +302,7 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
 
           <BuilderStepFooter
             currentStep={1}
-            totalSteps={4}
+            totalSteps={5}
             onNext={() => {
               setActiveIndex(0);
               setStep("details");
@@ -364,7 +372,7 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
 
           <BuilderStepFooter
             currentStep={2}
-            totalSteps={4}
+            totalSteps={5}
             onBack={() => setStep("tracks")}
             onNext={() => setStep("services")}
             nextDisabled={!canGoNextFromTrack}
@@ -438,7 +446,7 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
 
           <BuilderStepFooter
             currentStep={3}
-            totalSteps={4}
+            totalSteps={5}
             onBack={() => setStep("details")}
             onNext={() => {
               if (activeTrackIndex >= trackCount - 1) {
@@ -486,12 +494,30 @@ export default function AudioTrackServiceBuilder<ServiceKey extends string>({
 
           <BuilderStepFooter
             currentStep={4}
-            totalSteps={4}
+            totalSteps={5}
             onBack={() => {
               setActiveIndex(trackCount - 1);
               setStep("services");
             }}
+            onNext={() => setStep("startDate")}
+            nextLabel="Next"
+          />
+        </section>
+      )}
+
+      {step === "startDate" && (
+        <section className="space-y-5">
+          <ProjectStartDate
+            selectedDate={projectStartDate}
+            onSelectDate={setProjectStartDate}
+          />
+
+          <BuilderStepFooter
+            currentStep={5}
+            totalSteps={5}
+            onBack={() => setStep("extras")}
             onNext={() => setIsPackageFinalized(true)}
+            nextDisabled={!projectStartDate}
             nextLabel="Done"
           />
         </section>
