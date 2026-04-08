@@ -1,5 +1,7 @@
 # build output
 dist/
+coverage/
+*.lcov
 
 # generated types
 .astro/
