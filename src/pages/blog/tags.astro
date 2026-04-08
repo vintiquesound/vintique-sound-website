@@ -10,6 +10,8 @@ import {
 } from "@/consts";
 import { slugifyTag } from "@/lib/utils";
 
+export const prerender = true;
+
 const posts = (await getCollection("blog"))
   .filter((post) => (post.data.draft ?? false) === false)
   .filter((post) => (post.data.published ?? true) === true);
