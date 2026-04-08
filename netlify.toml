@@ -5,6 +5,13 @@ publish = "dist"
 [build.environment]
 NODE_VERSION = "22"
 
+# Sitemap alias for tools expecting /sitemap.xml
+[[redirects]]
+from = "/sitemap.xml"
+to = "/sitemap-index.xml"
+status = 301
+force = true
+
 # Page redirects
 [[redirects]]
 from = "/mixing-mastering"
