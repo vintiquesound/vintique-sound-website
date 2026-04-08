@@ -31,15 +31,18 @@ const finalDescription = description ?? SITE_DESCRIPTION;
 const baseHeadImageProps = image ? { image } : {};
 
 const gtmId = getServerEnv("PUBLIC_GTM_ID")?.trim();
+const gaId = getServerEnv("PUBLIC_GA_ID")?.trim();
 const hasGtm = Boolean(gtmId);
-const showGtmMissingWarning = !hasGtm && import.meta.env.DEV;
+const hasGa = Boolean(gaId);
+const showAnalyticsMissingWarning = !hasGtm && !hasGa && import.meta.env.DEV;
+const missingAnalyticsText = "[analytics] Missing analytics ID. Set PUBLIC_GTM_ID (preferred) or PUBLIC_GA_ID.";
 
-if (showGtmMissingWarning) {
-  console.warn("[analytics] PUBLIC_GTM_ID is missing. Google Tag Manager is not loaded.");
+if (showAnalyticsMissingWarning) {
+  console.warn(missingAnalyticsText);
 }
 
-const gtmMissingClientWarning = showGtmMissingWarning
-  ? "console.warn('[analytics] PUBLIC_GTM_ID is missing. Google Tag Manager is not loaded.');"
+const analyticsMissingClientWarning = showAnalyticsMissingWarning
+  ? missingAnalyticsText + ";"
   : "";
 
 const gtmScript = hasGtm
@@ -48,6 +51,13 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','${gtmId}');`
+  : "";
+
+const gaScript = hasGa
+  ? `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${gaId}');`
   : "";
 ---
 
@@ -65,7 +75,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- End Google Tag Manager -->
       </>
     )}
-    {showGtmMissingWarning && <script is:inline set:html={gtmMissingClientWarning}></script>}
+    {!hasGtm && hasGa && (
+      <>
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+        <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />
+        <!-- Google Analytics (gtag.js) -->
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script is:inline set:html={gaScript}></script>
+        <!-- End Google Analytics (gtag.js) -->
+      </>
+    )}
+    {showAnalyticsMissingWarning && <script is:inline set:html={analyticsMissingClientWarning}></script>}
     <slot name="head" />
   </head>
   <body>

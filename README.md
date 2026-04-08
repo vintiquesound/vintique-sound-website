@@ -58,6 +58,29 @@ All commands are run from the root of the project, from a terminal:
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
 
+## Testing (Vitest basics)
+
+- Run all tests once: `pnpm test:run`
+- Watch mode during development: `pnpm test`
+- Unit tests only: `pnpm test:unit`
+- Contract tests only: `pnpm test:contracts`
+
+Current starter coverage:
+
+- Unit tests for pricing conversion and package-builder pricing exports
+- Contract tests for weekly FX snapshot shape and sanity bounds
+
+Optional strict FX freshness gate (recommended in CI):
+
+- `STRICT_FX_FRESHNESS=true pnpm test:contracts`
+- This fails if `src/lib/pricing/fx-weekly-snapshot.ts` is older than 14 days.
+
+Testing convention:
+
+- Test behavior through exported/public functions by default.
+- Keep non-exported helpers private unless they represent shared or complex domain logic.
+- Only extract and export a helper when direct tests would improve clarity more than integration-through-public-API tests.
+
 ## Pricing Architecture
 
 - Canonical prices are stored in CAD cents in `src/lib/pricing/catalog.ts`.
