@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import { blogEntryIdToSlug } from "@/lib/utils";
 
 export const prerender = true;
 
@@ -13,13 +14,14 @@ export async function getStaticPaths() {
   const byLegacySlug = new Map<string, { slug: string; year: number }>();
 
   for (const post of visiblePosts) {
-    const segments = post.slug.split("/").filter(Boolean);
+    const postSlug = blogEntryIdToSlug(post.id);
+    const segments = postSlug.split("/").filter(Boolean);
     const legacySlug = segments[segments.length - 1];
     if (!legacySlug) continue;
 
     const existing = byLegacySlug.get(legacySlug);
     if (!existing || post.data.year > existing.year) {
-      byLegacySlug.set(legacySlug, { slug: post.slug, year: post.data.year });
+      byLegacySlug.set(legacySlug, { slug: postSlug, year: post.data.year });
     }
   }
 
