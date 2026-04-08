@@ -1,4 +1,4 @@
-import { REPAIR_SERVICE_PER_TRACK_CAD_CENTS } from "src/lib/pricing/catalog.ts";
+import { REPAIR_SERVICE_PER_TRACK_CAD_CENTS } from "@/lib/pricing/catalog";
 
 export const services = [
   {

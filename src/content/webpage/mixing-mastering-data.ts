@@ -1,4 +1,4 @@
-import { MIXING_MASTERING_BASE_PRICES_CAD_CENTS } from "src/lib/pricing/catalog.ts";
+import { MIXING_MASTERING_BASE_PRICES_CAD_CENTS } from "@/lib/pricing/catalog";
 
 export const services = [
   {
