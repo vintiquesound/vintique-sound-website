@@ -1,6 +1,7 @@
 ---
 // Astro layout and section components
 import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+import { blogEntryIdToSlug } from "@/lib/utils";
 
 // Types and utilities
 import { type CollectionEntry, getCollection, render } from "astro:content";
@@ -13,7 +14,7 @@ export async function getStaticPaths() {
 		.filter((post) => (post.data.draft ?? false) === false)
 		.filter((post) => (post.data.published ?? true) === true)
 		.map((post) => ({
-			params: { slug: post.slug },
+			params: { slug: blogEntryIdToSlug(post.id) },
 			props: post,
 		}));
 }

@@ -10,7 +10,7 @@ import { getCollection } from "astro:content";
 import FormattedDate from "../../../components/FormattedDate.astro";
 
 // Types and utilities
-import { slugifyTag } from "../../../lib/utils";
+import { blogEntryIdToSlug, slugifyTag } from "../../../lib/utils";
 
 // Local content and assets
 import { BLOG_TAG_TITLE_PREFIX, BLOG_TAG_DESCRIPTION_PREFIX } from "@/consts";
@@ -99,7 +99,7 @@ const count = allPosts.length;
 						<div>
 							<h2 class="m-0">
                 <a
-                  href={`/blog/${post.slug}/`}
+									href={`/blog/${blogEntryIdToSlug(post.id)}/`}
 									class="inline-flex items-center gap-2 text-foreground hover:text-secondary uppercase"
                 >
                   {post.data.title}
@@ -115,7 +115,7 @@ const count = allPosts.length;
 							</p>
 							<p class="mt-3 mb-0">
 								<a
-									href={`/blog/${post.slug}/`}
+									href={`/blog/${blogEntryIdToSlug(post.id)}/`}
 									class="inline-flex items-center gap-2 text-sm text-accent uppercase hover:text-secondary"
 								>
 									Read more <span aria-hidden="true">→</span>

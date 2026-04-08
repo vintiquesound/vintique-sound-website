@@ -9,6 +9,7 @@ import { getCollection } from "astro:content";
 
 // Local content and assets
 import { BLOG_TITLE, BLOG_DESCRIPTION } from "@/consts";
+import { blogEntryIdToSlug } from "@/lib/utils";
 
 // Types and utilities
 import FormattedDate from "@/components/FormattedDate.astro";
@@ -44,7 +45,7 @@ const posts = (await getCollection("blog"))
 						}}
 					>
 						<a
-							href={`/blog/${post.slug}/`}
+							href={`/blog/${blogEntryIdToSlug(post.id)}/`}
 							class="group block no-underline transition"
 						>
 							{post.data.heroImage && (

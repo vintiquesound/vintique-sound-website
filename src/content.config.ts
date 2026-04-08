@@ -1,7 +1,13 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro/zod";
+import { glob } from "astro/loaders";
 
 // Blog Content Collections setup
 const blog = defineCollection({
+	loader: glob({
+		base: "./src/content/blog",
+		pattern: "**/*.{md,mdx}",
+	}),
 	// Type-check frontmatter using a schema
 	schema: ({ image }) =>
 		z.object({
@@ -36,7 +42,12 @@ const blog = defineCollection({
 });
 
 // Partials Content Collection (no schema needed)
-const partials = defineCollection({});
+const partials = defineCollection({
+	loader: glob({
+		base: "./src/content/partials",
+		pattern: "**/*.{md,mdx}",
+	}),
+});
 
 // Explicitly define this collection to avoid auto-generation warnings.
 // Web page data is imported directly from TypeScript modules, so no content files are loaded here.

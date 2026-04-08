@@ -13,3 +13,7 @@ export function slugifyTag(tag: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "")
 }
+
+export function blogEntryIdToSlug(id: string) {
+  return id.replace(/\.(md|mdx)$/i, "")
+}
